@@ -141,6 +141,11 @@ public class MultiManager : Singleton<MultiManager>
 				_lobby = await LobbyService.Instance.JoinLobbyByIdAsync(joinCode, joinLobbyByIdOptions);
 				lobbyJoined.Invoke();
 			}
+			
+			if (_lobby.Data["startGame"].Value != "0" && !_IsOwnerOfLobby)
+			{
+				MultiManager.instance.JoinRelay(_lobby.Data["startGame"].Value);
+			}
 
 			SubToLobbyEvents();
 
