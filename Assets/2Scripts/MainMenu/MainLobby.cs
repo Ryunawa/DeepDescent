@@ -18,10 +18,10 @@ public class MainLobby : NetworkBehaviour
     
     void Start()
     {
-        LobbyManager.instance.lobbyCreated.AddListener(ShowUI);
-        LobbyManager.instance.lobbyJoined.AddListener(ShowUI);
-        LobbyManager.instance.refreshUI.AddListener(RefreshUI);
-        LobbyManager.instance.kickedEvent.AddListener(ReturnToLobbyList);
+        MultiManager.instance.lobbyCreated.AddListener(ShowUI);
+        MultiManager.instance.lobbyJoined.AddListener(ShowUI);
+        MultiManager.instance.refreshUI.AddListener(RefreshUI);
+        MultiManager.instance.kickedEvent.AddListener(ReturnToLobbyList);
     }
 
     private void ShowUI()
@@ -32,9 +32,9 @@ public class MainLobby : NetworkBehaviour
         }
 
         lobbyUI.SetActive(true);
-        lobbyName.text = LobbyManager.instance.Lobby.Name;
+        lobbyName.text = MultiManager.instance.Lobby.Name;
         
-        playButton.interactable = LobbyManager.instance.IsLobbyHost();
+        playButton.interactable = MultiManager.instance.IsLobbyHost();
         
         RefreshUI();
     }
@@ -46,7 +46,7 @@ public class MainLobby : NetworkBehaviour
             Destroy(transformGo.gameObject);
         }
         
-        foreach (var player in LobbyManager.instance.Lobby.Players)
+        foreach (var player in MultiManager.instance.Lobby.Players)
         {
             var playerNameText = Instantiate(playerPrefab, parentUIObject.transform).GetComponentInChildren<TMP_Text>();
             playerNameText.text = player.Data["Name"].Value;
@@ -56,7 +56,7 @@ public class MainLobby : NetworkBehaviour
     private void ReturnToLobbyList()
     {
         lobbyUI.SetActive(false);
-        uiToDeactivate[1].gameObject.SetActive(true);
+        uiToDeactivate[0].gameObject.SetActive(true);
     }
     
 }
