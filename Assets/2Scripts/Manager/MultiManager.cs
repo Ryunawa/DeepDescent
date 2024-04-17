@@ -5,17 +5,20 @@ using System.Threading.Tasks;
 using NaughtyAttributes;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
+using Unity.Networking.Transport.Relay;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
+using Unity.Services.Relay;
+using Unity.Services.Relay.Models;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Player = Unity.Services.Lobbies.Models.Player;
 using DataObject = Unity.Services.Lobbies.Models.DataObject;
 
-public class LobbyManager : Singleton<LobbyManager>
+public class MultiManager : Singleton<MultiManager>
 {
 	[SerializeField] private float heartBeatFrequency = 15f;
 
@@ -55,7 +58,6 @@ public class LobbyManager : Singleton<LobbyManager>
 		}
 	}
 	
-
 	public bool IsLobbyHost()
 	{
 		return _IsOwnerOfLobby;
@@ -96,6 +98,12 @@ public class LobbyManager : Singleton<LobbyManager>
 		Debug.Log("Lobby changed");
 		lobbyChanges.ApplyToLobby(_lobby);
 
+		if (_lobby.Data["startGame"].Value != "0")
+		{
+			MultiManager.instance.JoinRelay(_lobby.Data["startGame"].Value);
+		}
+		
+		
 		refreshUI.Invoke();
 	}
 	
@@ -171,10 +179,14 @@ public class LobbyManager : Singleton<LobbyManager>
 	public async void CreateLobby()
 	{
 		string lobbyName = _playerName + "'s Lobby";
-		int maxPlayers = 10;
+		int maxPlayers = 4;
 		CreateLobbyOptions options = new CreateLobbyOptions();
 		options.IsPrivate = false;
 		options.Player = GetPlayer();
+		options.Data = new Dictionary<string, DataObject>
+		{
+			{"startGame", new DataObject(DataObject.VisibilityOptions.Member, "0")} 
+		};
 
 		try
 		{
@@ -207,7 +219,7 @@ public class LobbyManager : Singleton<LobbyManager>
 			switch(ex.Reason)
 			{
 				case LobbyExceptionReason.AlreadySubscribedToLobby:
-					Debug.LogWarning($"Already subscribed to lobby[{LobbyManager.instance.Lobby.Id}]. We did not need to try and subscribe again. Exception Message: {ex.Message}");
+					Debug.LogWarning($"Already subscribed to lobby[{MultiManager.instance.Lobby.Id}]. We did not need to try and subscribe again. Exception Message: {ex.Message}");
 					break;
 				case LobbyExceptionReason.SubscriptionToLobbyLostWhileBusy:
 					Debug.LogError($"Subscription to lobby events was lost while it was busy trying to subscribe. Exception Message: {ex.Message}");
@@ -319,5 +331,72 @@ public class LobbyManager : Singleton<LobbyManager>
 				{ "Name", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, _playerName) }
 			}
 		);
+	}
+
+	private async Task<string> CreateRelay()
+	{
+		try
+		{
+			Allocation allocation = await RelayService.Instance.CreateAllocationAsync(4);
+
+			string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+
+			RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
+			
+			NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
+			NetworkManager.Singleton.StartHost();
+
+			return joinCode;
+
+		}
+		catch (RelayServiceException e)
+		{
+			Debug.LogError(e);
+			throw;
+		}
+		
+	}
+
+	private async void StartGame()
+	{
+		if (_IsOwnerOfLobby)
+		{
+			try
+			{
+				string relayCode = await CreateRelay();
+
+				await Lobbies.Instance.UpdateLobbyAsync(_lobby.Id, new UpdateLobbyOptions
+				{
+					Data = new Dictionary<string, DataObject>
+					{
+						{"startGame", new DataObject(DataObject.VisibilityOptions.Member, relayCode)}
+					}
+				});
+			}
+			catch (LobbyServiceException e)
+			{
+				Debug.LogError(e);
+				throw;
+			}
+		}
+	}
+
+	private async void JoinRelay(string joinCode)
+	{
+		try
+		{
+			JoinAllocation allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
+
+			RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
+			NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
+			NetworkManager.Singleton.StartClient();
+
+		}
+		catch (RelayServiceException e)
+		{
+			Console.WriteLine(e);
+			throw;
+		}
+		
 	}
 }

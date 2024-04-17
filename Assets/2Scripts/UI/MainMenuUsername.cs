@@ -20,6 +20,6 @@ public class MainMenuUsername : MonoBehaviour
 
     public void SetUsername()
     {
-        LobbyManager.instance.PlayerName = inputField.text;
+        MultiManager.instance.PlayerName = inputField.text;
     }
 }

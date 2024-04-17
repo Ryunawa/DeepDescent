@@ -914,11 +914,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: f6f73097-54c4-4e2c-bd3d-ec51f6e3137b
+  cloudProjectId: a3b18906-2d05-4100-934f-434b569058aa
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: DeepDescent
-  organizationId: scorpio1520
+  organizationId: deepdescent
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
