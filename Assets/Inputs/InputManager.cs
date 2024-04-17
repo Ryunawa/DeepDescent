@@ -38,16 +38,6 @@ public class InputManager : Singleton<InputManager>
 		{
 			_isHoldingShoot = false;
 		};
-
-		_inputs.Player.Zoom.performed += (InputAction) =>
-		{
-			_isHoldingAimDownSight = true;
-		};
-
-		_inputs.Player.Zoom.canceled += (InputAction) =>
-		{
-			_isHoldingAimDownSight = false;
-		};
 	}
 
 	private void OnEnable()
@@ -90,28 +80,8 @@ public class InputManager : Singleton<InputManager>
 		return _inputs.Player.Fire.WasReleasedThisFrame();
 	}
 
-	public bool PlayerHoldAimDownSight()
-	{
-		return _inputs.Player.Zoom.IsInProgress();
-	}
-
-	public bool PlayerCancelAimDownSight()
-	{
-		return _inputs.Player.Zoom.WasReleasedThisFrame();
-	}
-
-	public bool PlayerReload()
-	{
-		return _inputs.Player.Reload.triggered;
-	}
-
 	public float PlayerSwitchWeapon()
 	{
 		return _inputs.Player.SwitchWeapon.ReadValue<float>();
-	}
-
-	public bool PlayerToggleShowScore()
-	{
-		return _inputs.Player.ShowScore.triggered;
 	}
 }

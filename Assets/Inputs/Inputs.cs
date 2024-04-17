@@ -73,24 +73,6 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Zoom"",
-                    ""type"": ""Button"",
-                    ""id"": ""65f01dbf-cb09-47bd-bc3c-e23562b0a28d"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Reload"",
-                    ""type"": ""Button"",
-                    ""id"": ""a51ec276-f4ac-4609-a05d-8c408080d66e"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""SwitchWeapon"",
                     ""type"": ""Value"",
                     ""id"": ""f83ef739-723c-4e7b-8fb7-cf833decc22b"",
@@ -98,15 +80,6 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""ShowScore"",
-                    ""type"": ""Button"",
-                    ""id"": ""546d71d1-ed3b-4d6c-8401-55cd8c6c4b89"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -211,45 +184,12 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a7118b50-eed6-4aec-a9a8-448ed987c38c"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Zoom"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""be57aaa3-bf4c-46eb-aaf6-1621d67eb0ab"",
-                    ""path"": ""<Keyboard>/r"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Reload"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""35e9c7c7-851b-4132-90eb-5062f9569c80"",
                     ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SwitchWeapon"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""de3e9760-f967-444a-ac5e-2ea21e17f210"",
-                    ""path"": ""<Keyboard>/tab"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""ShowScore"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -277,10 +217,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
-        m_Player_Zoom = m_Player.FindAction("Zoom", throwIfNotFound: true);
-        m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
         m_Player_SwitchWeapon = m_Player.FindAction("SwitchWeapon", throwIfNotFound: true);
-        m_Player_ShowScore = m_Player.FindAction("ShowScore", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -347,10 +284,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Fire;
-    private readonly InputAction m_Player_Zoom;
-    private readonly InputAction m_Player_Reload;
     private readonly InputAction m_Player_SwitchWeapon;
-    private readonly InputAction m_Player_ShowScore;
     public struct PlayerActions
     {
         private @Inputs m_Wrapper;
@@ -360,10 +294,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
-        public InputAction @Zoom => m_Wrapper.m_Player_Zoom;
-        public InputAction @Reload => m_Wrapper.m_Player_Reload;
         public InputAction @SwitchWeapon => m_Wrapper.m_Player_SwitchWeapon;
-        public InputAction @ShowScore => m_Wrapper.m_Player_ShowScore;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -388,18 +319,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Fire.started += instance.OnFire;
             @Fire.performed += instance.OnFire;
             @Fire.canceled += instance.OnFire;
-            @Zoom.started += instance.OnZoom;
-            @Zoom.performed += instance.OnZoom;
-            @Zoom.canceled += instance.OnZoom;
-            @Reload.started += instance.OnReload;
-            @Reload.performed += instance.OnReload;
-            @Reload.canceled += instance.OnReload;
             @SwitchWeapon.started += instance.OnSwitchWeapon;
             @SwitchWeapon.performed += instance.OnSwitchWeapon;
             @SwitchWeapon.canceled += instance.OnSwitchWeapon;
-            @ShowScore.started += instance.OnShowScore;
-            @ShowScore.performed += instance.OnShowScore;
-            @ShowScore.canceled += instance.OnShowScore;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -419,18 +341,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Fire.started -= instance.OnFire;
             @Fire.performed -= instance.OnFire;
             @Fire.canceled -= instance.OnFire;
-            @Zoom.started -= instance.OnZoom;
-            @Zoom.performed -= instance.OnZoom;
-            @Zoom.canceled -= instance.OnZoom;
-            @Reload.started -= instance.OnReload;
-            @Reload.performed -= instance.OnReload;
-            @Reload.canceled -= instance.OnReload;
             @SwitchWeapon.started -= instance.OnSwitchWeapon;
             @SwitchWeapon.performed -= instance.OnSwitchWeapon;
             @SwitchWeapon.canceled -= instance.OnSwitchWeapon;
-            @ShowScore.started -= instance.OnShowScore;
-            @ShowScore.performed -= instance.OnShowScore;
-            @ShowScore.canceled -= instance.OnShowScore;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -464,9 +377,6 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
-        void OnZoom(InputAction.CallbackContext context);
-        void OnReload(InputAction.CallbackContext context);
         void OnSwitchWeapon(InputAction.CallbackContext context);
-        void OnShowScore(InputAction.CallbackContext context);
     }
 }
