@@ -2413,6 +2413,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 986839255}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
+        m_MethodName: set_interactable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &986839256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5459,7 +5471,7 @@ MonoBehaviour:
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 2028287128106314195}
-    PlayerPrefab: {fileID: 6523835653301497932, guid: eb3c51f50dc561b4c8ade425095c2c4d,
+    PlayerPrefab: {fileID: 630003422676777307, guid: 5590b7fd31b488245a246408d27dbf56,
       type: 3}
     Prefabs:
       NetworkPrefabsLists:
