@@ -5506,6 +5506,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8e5721486ed913479cac9368186c9de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainMenu: {fileID: 1847275006}
   heartBeatFrequency: 15
   lobbyCreated:
     m_PersistentCalls:

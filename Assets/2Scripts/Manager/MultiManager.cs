@@ -20,6 +20,7 @@ using DataObject = Unity.Services.Lobbies.Models.DataObject;
 
 public class MultiManager : Singleton<MultiManager>
 {
+	[SerializeField] private Canvas mainMenu;
 	[SerializeField] private float heartBeatFrequency = 15f;
 
 	private string _playerName;
@@ -378,6 +379,8 @@ public class MultiManager : Singleton<MultiManager>
 				Debug.LogError(e);
 				throw;
 			}
+			
+			LoadGameScene();
 		}
 	}
 
@@ -398,5 +401,20 @@ public class MultiManager : Singleton<MultiManager>
 			throw;
 		}
 		
+	}
+	
+	private void LoadGameScene(ServerRpcParams serverRpcParams = default)
+	{
+		string sceneName = "";
+		if (PlayerPrefs.GetInt("Level", -1) == -1)
+		{
+			sceneName = "Level";
+		}
+		else
+		{
+			sceneName = "SafeZone";
+		}
+		NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+		mainMenu.gameObject.SetActive(false);
 	}
 }
