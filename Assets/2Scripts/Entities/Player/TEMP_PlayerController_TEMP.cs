@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerControllerTEMP : MonoBehaviour
+public class TEMP_PlayerController_TEMP : MonoBehaviour
 {
     public float speed = 10f;
     public float rotationSpeed = 100;
