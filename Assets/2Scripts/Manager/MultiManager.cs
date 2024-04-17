@@ -81,6 +81,16 @@ public class MultiManager : Singleton<MultiManager>
 		_lobbyEventCallbacks.LobbyEventConnectionStateChanged += OnLobbyEventConnectionStateChanged;
 
 		init.Invoke();
+		
+		NetworkManager.Singleton.OnConnectionEvent += (manager, data) =>
+		{
+			Debug.Log("Client connected");
+			if (!_IsOwnerOfLobby)
+			{
+				HideMainMenu();
+			}
+		} ;
+
 	}
 
 	private void OnLobbyEventConnectionStateChanged(LobbyEventConnectionState obj)
@@ -99,7 +109,7 @@ public class MultiManager : Singleton<MultiManager>
 		Debug.Log("Lobby changed");
 		lobbyChanges.ApplyToLobby(_lobby);
 
-		if (_lobby.Data["startGame"].Value != "0")
+		if (_lobby.Data["startGame"].Value != "0" && !_IsOwnerOfLobby)
 		{
 			MultiManager.instance.JoinRelay(_lobby.Data["startGame"].Value);
 		}
@@ -415,11 +425,10 @@ public class MultiManager : Singleton<MultiManager>
 			sceneName = "SafeZone";
 		}
 		NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
-		HideMainMenuClientRPC();
+		HideMainMenu();
 	}
-
-	[Rpc(SendTo.ClientsAndHost)]
-	private void HideMainMenuClientRPC()
+	
+	private void HideMainMenu()
 	{
 		mainMenu.gameObject.SetActive(false);
 	}
