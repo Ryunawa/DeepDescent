@@ -415,6 +415,12 @@ public class MultiManager : Singleton<MultiManager>
 			sceneName = "SafeZone";
 		}
 		NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+		HideMainMenuClientRPC();
+	}
+
+	[Rpc(SendTo.ClientsAndHost)]
+	private void HideMainMenuClientRPC()
+	{
 		mainMenu.gameObject.SetActive(false);
 	}
 }
