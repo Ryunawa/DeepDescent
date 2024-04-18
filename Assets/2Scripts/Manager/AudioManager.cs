@@ -1,0 +1,89 @@
+using System;
+using System.Collections.Generic;
+using _2Scripts.Audio;
+using UnityEngine;
+
+namespace _2Scripts.Manager
+{
+    public class AudioManager : Singleton<AudioManager>
+    {
+        [SerializeField] private Sound[] musicSounds, sfxSounds;
+        [SerializeField] private AudioSource musicSource, sfxSource;
+
+        private const string MusicValueSettingName = "musicVolume", SfxValueSettingName = "sfxVolume";
+
+        /// <summary>
+        /// Play a music (will loop if the sound is set to loop)
+        /// </summary>
+        /// <param name="pName">The name associated to the music to play</param>
+        public void PlayMusic(string pName)
+        {
+            Sound s = Array.Find(musicSounds, x => x.name == pName);
+
+            if (s == null) 
+                return;
+            
+            musicSource.clip = s.clip;
+            musicSource.Play();
+        }
+
+        /// <summary>
+    ///     Play a sound once
+        /// </summary>
+        /// <param name="pName">The name associated to the sound to play</param>
+        public void PlaySfx(string pName)
+        {
+            Sound s = Array.Find(sfxSounds, x => x.name == pName);
+
+            if (s == null) 
+                return;
+            
+            sfxSource.clip = s.clip;
+            sfxSource.PlayOneShot(s.clip);
+        }
+
+        /// <summary>
+        /// Useful to toggle on/off the music volume
+        /// </summary>
+        public void ToggleMusic()
+        {
+            musicSource.mute = !musicSource.mute;
+        }
+        
+        /// <summary>
+        /// Useful to toggle on/off the sound volume
+        /// </summary>
+        public void ToggleSfx()
+        {
+            sfxSource.mute = !sfxSource.mute;
+        }
+
+        /// <summary>
+        /// Allow to increase or decrease the music volume
+        /// </summary>
+        /// <param name="pVolume"></param>
+        public void MusicVolume(float pVolume)
+        {
+            musicSource.volume = pVolume;
+        }
+        
+        /// <summary>
+        /// Allow to increase or decrease the sound volume
+        /// </summary>
+        /// <param name="pVolume"></param>
+        public void SfxVolume(float pVolume)
+        {
+            sfxSource.volume = pVolume;
+        }
+
+        public void SaveAudioSettings()
+        {
+            PlayerPrefs.SetFloat(MusicValueSettingName, musicSource.volume);
+            PlayerPrefs.SetFloat(SfxValueSettingName, sfxSource.volume);
+        }
+        public float LoadAudioSetting(string pKeyName)
+        {
+            return PlayerPrefs.GetFloat(pKeyName);
+        }
+    }
+}
