@@ -27,6 +27,11 @@ namespace _2Scripts.Manager
             musicSource.Play();
         }
 
+        public void StopMusic()
+        {
+            musicSource.Stop();
+        }
+
         /// <summary>
     ///     Play a sound once
         /// </summary>
