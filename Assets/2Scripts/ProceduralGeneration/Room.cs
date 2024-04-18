@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _2Scripts.ProceduralGeneration
 {
@@ -7,19 +8,19 @@ namespace _2Scripts.ProceduralGeneration
     {
         [SerializeField]private int _roomID;
 
-        [SerializeField]private List<int> WestCompatibleRooms = new ();
-        [SerializeField]private List<int> EastCompatibleRooms = new ();
-        [SerializeField]private List<int> SouthCompatibleRooms = new ();
-        [SerializeField]private List<int> NorthCompatibleRooms = new ();
-
         public int RoomID => _roomID;
 
-        public List<int> WestCompatibleRooms1 => WestCompatibleRooms;
-
-        public List<int> EastCompatibleRooms1 => EastCompatibleRooms;
-
-        public List<int> SouthCompatibleRooms1 => SouthCompatibleRooms;
-
-        public List<int> NorthCompatibleRooms1 => NorthCompatibleRooms;
+        public FaceState north;
+        public FaceState east;
+        public FaceState south;
+        public FaceState west;
     }
+
+    public enum FaceState
+    {
+        Closed,
+        Open,
+        Free
+    }
+    
 }
