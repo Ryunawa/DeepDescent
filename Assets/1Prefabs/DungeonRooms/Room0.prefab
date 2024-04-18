@@ -13930,10 +13930,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _roomID: 0
-  north: 1
-  east: 0
-  south: 0
-  west: 0
+  faceStatesArray: 01000000000000000000000000000000
 --- !u!1 &6213194459817860742
 GameObject:
   m_ObjectHideFlags: 0

@@ -418,11 +418,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3da9c6c41cff4ce8b2e4f46f3851607c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _roomID: 2
-  north: 1
-  east: 0
-  south: 1
-  west: 0
+  faceStatesArray: 01000000000000000100000000000000
 --- !u!1001 &4018937647325567772
 PrefabInstance:
   m_ObjectHideFlags: 0
