@@ -5,12 +5,12 @@ namespace _2Scripts.ProceduralGeneration
 {
     public class Room : MonoBehaviour
     {
-        private int _roomID;
+        [SerializeField]private int _roomID;
 
-        private List<int> WestCompatibleRooms = new ();
-        private List<int> EastCompatibleRooms = new ();
-        private List<int> SouthCompatibleRooms = new ();
-        private List<int> NorthCompatibleRooms = new ();
+        [SerializeField]private List<int> WestCompatibleRooms = new ();
+        [SerializeField]private List<int> EastCompatibleRooms = new ();
+        [SerializeField]private List<int> SouthCompatibleRooms = new ();
+        [SerializeField]private List<int> NorthCompatibleRooms = new ();
 
         public int RoomID => _roomID;
 
