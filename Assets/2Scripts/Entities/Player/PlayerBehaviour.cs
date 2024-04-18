@@ -9,8 +9,6 @@ public class PlayerBehaviour : NetworkBehaviour
 	[SerializeField] private float playerSpeed = 2.0f;
 	[SerializeField] private float jumpHeight = 1.0f;
 	[SerializeField] private float airControl = 0;
-	[SerializeField] BoxCollider reviveBoxCollider;
-
 	private Rigidbody _rb;
 	private InputManager _inputManager;
 	private Transform _camTransform;
@@ -35,19 +33,16 @@ public class PlayerBehaviour : NetworkBehaviour
 		_inputManager = InputManager.instance;
 		_camTransform = GetComponentInChildren<Camera>().transform;
 		_virtualCamera = GetComponentInChildren<CinemachineVirtualCamera>();
-		var canvas = GetComponentInChildren<Canvas>();
 		
-		// if (!IsOwner && !IsServer)
-		// {
+		if (!IsOwner) 
+		{
 			_camTransform.gameObject.SetActive(false);
 			_virtualCamera.gameObject.SetActive(false);
-			canvas.gameObject.SetActive(false);
 
 			Destroy(this);
 			
 
-		// }
-		UnlockCamera();
+		}
 
 		Debug.Log("PLayerBehaviour Done Start ");
 		//SwitchWeapon(true);
@@ -114,9 +109,7 @@ public class PlayerBehaviour : NetworkBehaviour
 		{
 			ModifyDeathValue(true);
 		}
-
-		LockCamera();
-		reviveBoxCollider.enabled = true;
+		
 		transform.Rotate(transform.right, 90.0f);
 	}
 
@@ -125,17 +118,4 @@ public class PlayerBehaviour : NetworkBehaviour
 		Debug.Log("Modify isDead value");
 		_isDead.Value = newBool;
 	}
-
-    private void LockCamera()
-	{
-        _virtualCamera.GetCinemachineComponent<CinemachinePOV>().m_HorizontalAxis.m_MaxSpeed = 0.0f;
-        _virtualCamera.GetCinemachineComponent<CinemachinePOV>().m_VerticalAxis.m_MaxSpeed = 0.0f;
-    }
-
-    private void UnlockCamera()
-	{
-        _virtualCamera.GetCinemachineComponent<CinemachinePOV>().m_HorizontalAxis.m_MaxSpeed = camSens.x * 0.01f;
-        _virtualCamera.GetCinemachineComponent<CinemachinePOV>().m_VerticalAxis.m_MaxSpeed = camSens.y * 0.01f;
-
-    }
 }
