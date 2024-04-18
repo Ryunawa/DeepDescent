@@ -27,6 +27,9 @@ namespace _2Scripts.Manager
             musicSource.Play();
         }
 
+        /// <summary>
+        /// Stop playing the current clip
+        /// </summary>
         public void StopMusic()
         {
             musicSource.Stop();
@@ -81,11 +84,20 @@ namespace _2Scripts.Manager
             sfxSource.volume = pVolume;
         }
 
+        /// <summary>
+        /// Save all the audio settings in the player preferences
+        /// </summary>
         public void SaveAudioSettings()
         {
             PlayerPrefs.SetFloat(MusicValueSettingName, musicSource.volume);
             PlayerPrefs.SetFloat(SfxValueSettingName, sfxSource.volume);
         }
+        
+        /// <summary>
+        /// Load a audio setting depending on the name
+        /// </summary>
+        /// <param name="pKeyName">value get from the saved parameter in the player preferences</param>
+        /// <returns></returns>
         public float LoadAudioSetting(string pKeyName)
         {
             return PlayerPrefs.GetFloat(pKeyName);
