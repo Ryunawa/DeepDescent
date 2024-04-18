@@ -4,101 +4,143 @@ using System.Collections.Generic;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements.Experimental;
+
 public class AIController : MonoBehaviour
 {
-    public NavMeshAgent navMeshAgent;
-    public Animator animator;
+    [Header("Movement Settings")]
+    [SerializeField]
+    private float startWaitTime = 4; // wait time before the ai starts moving between each action
+    [SerializeField]
+    private float timeToRotate = 2; // time it takes for the AI to rotate its direction while patrolling or chasing
+    [SerializeField]
+    private float speedWalk = 3; // speed when patrolling
+    [SerializeField]
+    private float speedRun = 7; // speed when chasing
 
-    public float startWaitTime = 4;
-    public float timeToRotate = 2;
-    public float speedWalk = 6;
-    public float speedRun = 9;
-    public float attackRange = 2;
+    [Header("Detection Settings")]
+    [SerializeField]
+    private float viewDistance = 15; // radius of detection
+    [SerializeField]
+    private float viewAngle = 90; // angle of detection
+    [SerializeField]
+    private LayerMask playerMask;
+    [SerializeField]
+    private LayerMask obstacleMask;
 
-    public float viewRadius = 15;
-    public float viewAngle = 90;
-    public LayerMask playerMask;
-    public LayerMask obstacleMask;
-    public float meshResolution = 1f;
-    public int edgeIterations = 4;
-    public float edgeDistance = 0.5f;
+    [Header("Combat Settings")]
+    [SerializeField]
+    private float attackRange = 1.5f;
+    [SerializeField]
+    private float timeBeforeAttack = 2f; // attack speed in seconds
 
-    public Transform[] waypoints;
-    int m_CurrentWaypointIndex;
+    [Header("Waypoints")]
+    [SerializeField]
+    private Transform[] waypoints; // patrol points
+    private int m_CurrentWaypointIndex;
 
-    Vector3 playerLastPosition = Vector3.zero;
-    Vector3 m_PlayerPosition;
+    // Components
+    private NavMeshAgent navMeshAgent;
+    private Animator animator;
 
-    float m_WaitTime;
-    float m_TimeToRotate;
-    bool m_PlayerInRange;
-    bool m_PlayerNear;
-    bool m_IsPatrol;
-    bool m_CanAttackPlayer;
+    // Other variables...
+    private Vector3 playerLastPosition = Vector3.zero;
+    private Vector3 m_PlayerPosition;
+    private float m_WaitTime;
+    private float m_TimeToRotate;
+    private bool m_PlayerDetected; // player has been saw
+    private bool m_PlayerNear; // player close to the ai
+    private bool m_IsPatrol;
+    private bool m_CanAttackPlayer;
 
 
-    void Start()
+void Start()
     {
         // init var
-        m_PlayerPosition = Vector3.zero;
         m_IsPatrol = true;
         m_CanAttackPlayer = false;
-        m_PlayerInRange = false;
+        m_PlayerDetected = false;
+
+        m_PlayerPosition = Vector3.zero;
         m_WaitTime = startWaitTime;
         m_TimeToRotate = timeToRotate;
         m_CurrentWaypointIndex = 0;
-        navMeshAgent = GetComponent<NavMeshAgent>();
+
         animator = GetComponent<Animator>();
+
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent.stoppingDistance = attackRange - 0.5f;
         navMeshAgent.isStopped = false;
         navMeshAgent.speed = speedWalk;
         navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
 
+        // start attack coroutine
         StartCoroutine(AttackLoop());
     }
 
-    // Update is called once per frame
     void Update()
     {
+        float currentSpeed = navMeshAgent.velocity.magnitude;
+        animator.SetFloat("Speed", currentSpeed);
+
         EnvironmentView();
 
-        if(!m_IsPatrol)
-        {
-            Chasing();
-        }
-        else
+        // Patrol mode
+        if (m_IsPatrol)
         {
             Patrolling();
         }
+        // Chase mode
+        else
+        {
+            Chasing();
+            FaceTarget();
+        }
     }
 
-    // Function for chasing the player
+    // run after the player or its last known position
     private void Chasing()
     {
         m_PlayerNear = false;
         playerLastPosition = Vector3.zero;
 
+        // Run after the player !
         if (!m_CanAttackPlayer)
         {
-            Move(speedRun); // Move character with running speed
+            ActivateMovements(speedRun);
             navMeshAgent.SetDestination(m_PlayerPosition);
         }
 
-        if(navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+        // Check if the player is close enough to stop chasing
+        if (m_PlayerDetected && Vector3.Distance(transform.position, m_PlayerPosition) <= attackRange)
         {
-            if (m_WaitTime <= 0 && !m_CanAttackPlayer && Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >= 6f)
+            // Stop moving towards the player
+            Stop();
+            // Set the destination to the current position to prevent further movement
+            navMeshAgent.SetDestination(transform.position);
+        }
+
+        // The AI arrived at the last known position
+        if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+        {
+            // lost the player for too long
+            if (m_WaitTime <= 0 && !m_CanAttackPlayer && Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) > attackRange)
             {
+                // Get back to patrol
                 m_IsPatrol = true;
                 m_PlayerNear = false;
-                Move(speedWalk); // Move character with walking speed
 
+                ActivateMovements(speedWalk);
                 m_TimeToRotate = timeToRotate;
                 m_WaitTime = startWaitTime;
                 navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
             }
             else
             {
+                // Just lost the player
                 if (Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Player").transform.position) >= 2.5f)
                 {
+                    // Stop moving and wait
                     Stop();
                     m_WaitTime -= Time.deltaTime;
                 }
@@ -106,15 +148,16 @@ public class AIController : MonoBehaviour
         }
     }
 
-    // Function for patrolling
+    // patrolling points by points
     private void Patrolling()
     {
+        // if player is near, move to the last position known of him
         if (m_PlayerNear)
         {
             if (m_TimeToRotate <= 0)
             {
-                Move(speedWalk);
-                LookingPlayer(playerLastPosition);
+                ActivateMovements(speedWalk);
+                MoveToPlayer(playerLastPosition);
             }
             else
             {
@@ -122,6 +165,7 @@ public class AIController : MonoBehaviour
                 m_TimeToRotate -= Time.deltaTime;
             }
         }
+        // player not near, just move waypoints by waypoints
         else
         {
             m_PlayerNear = false;
@@ -132,12 +176,14 @@ public class AIController : MonoBehaviour
             {
                 if(m_WaitTime <= 0)
                 {
+                    // move to the next waypoint
                     NextPoint();
-                    Move(speedWalk);
+                    ActivateMovements(speedWalk);
                     m_WaitTime = startWaitTime;
                 }
                 else
                 {
+                    // wait before moving
                     Stop();
                     m_WaitTime -= Time.deltaTime;
                 }
@@ -145,58 +191,35 @@ public class AIController : MonoBehaviour
         }
     }
 
-    // Function to attack the player
-    private void AttackPlayer()
+    // attack the player
+    private void Attack()
     {
-        Stop();
-        animator.SetBool("isAttacking", true);
-        Debug.Log("ATTACKING");
-
-        // DO IT ONE TIME - you have to repeat it after x secondes (maybe by doing 2 animations (idle attack -> when finish punch)
+        animator.SetTrigger("IsAttacking");
     }
 
-    // Function to move the character with a given speed
-    private void Move(float speed)
+    // set the character state to "move" with a given speed
+    private void ActivateMovements(float speed)
     {
-        if(speed == speedRun)
-        {
-            animator.SetBool("isPatrolling", false);
-            animator.SetBool("isChasing", true);
-        }
-        else
-        {
-            animator.SetBool("isChasing", false);
-            animator.SetBool("isPatrolling", true);
-        }
-
         navMeshAgent.isStopped = false;
         navMeshAgent.speed = speed ;
     }
 
-    // Function to stop the character
+    // stop the character
     private void Stop()
     {
-        PlayIdle();
         navMeshAgent.isStopped = true;
         navMeshAgent.speed = 0;
     }
 
-    // stop animations to play the idle one
-    private void PlayIdle()
-    {
-        animator.SetBool("isChasing", false);
-        animator.SetBool("isPatrolling", false);
-    }
-
-    // Function to move to the next waypoint
+    // move to the next waypoint
     public void NextPoint()
     {
         m_CurrentWaypointIndex = (m_CurrentWaypointIndex + 1) % waypoints.Length;
         navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
     }
 
-    // Function to look towards the player
-    private void LookingPlayer(Vector3 player)
+    // move towards the player
+    private void MoveToPlayer(Vector3 player)
     {
         navMeshAgent.SetDestination(player);
         if(Vector3.Distance(transform.position, player) <= 0.3)
@@ -204,7 +227,7 @@ public class AIController : MonoBehaviour
             if(m_WaitTime <= 0)
             {
                 m_PlayerNear = false;
-                Move(speedWalk);
+                ActivateMovements(speedWalk);
                 navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
                 m_WaitTime = startWaitTime;
                 m_TimeToRotate = timeToRotate;
@@ -217,10 +240,32 @@ public class AIController : MonoBehaviour
         }
     }
 
-    // Function to detect player within view
+    // look at a transform
+    private void LookAt(Transform target)
+    {
+        Vector3 direction = target.position - transform.position;
+        direction.y = 0f;
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        transform.rotation = targetRotation;
+    }
+
+    // face move goal, rotation is way more natural and faster
+    void FaceTarget()
+    {
+        var turnTowardNavSteeringTarget = navMeshAgent.steeringTarget;
+
+        if (turnTowardNavSteeringTarget != transform.position)
+        {
+            Vector3 direction = (turnTowardNavSteeringTarget - transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5);
+        }
+    }
+
+    // detect player within view
     private void EnvironmentView()
     {
-        Collider[] playersInRange = Physics.OverlapSphere(transform.position, viewRadius, playerMask);
+        Collider[] playersInRange = Physics.OverlapSphere(transform.position, viewDistance, playerMask);
 
         for(int i = 0; i < playersInRange.Length; i++)
         {
@@ -230,50 +275,57 @@ public class AIController : MonoBehaviour
             float dstToPlayer = Vector3.Distance(transform.position, player.position);
 
             // if close to the player, attack!
-            if (dstToPlayer < attackRange)
+            if (dstToPlayer <= attackRange)
             {
+                LookAt(player);
                 m_CanAttackPlayer = true;
+                Stop();
+                animator.SetBool("IsPreparingToAttack", true);
                 break;
             }
             else
             {
                 m_CanAttackPlayer = false;
-                animator.SetBool("isAttacking", false);
+                animator.SetBool("IsPreparingToAttack", false);
             }
 
             if (Vector3.Angle(transform.forward, dirToPlayer) < viewAngle / 2)
             {
+                // player is seen
                 if (!Physics.Raycast(transform.position, dirToPlayer, dstToPlayer, obstacleMask))
                 {
-                    m_PlayerInRange = true;
+                    m_PlayerDetected = true;
                     m_IsPatrol = false;
                 }
                 else
                 {
-                    m_PlayerInRange = false;
+                    m_PlayerDetected = false;
                 }
             }
 
+            // player too far
             if(Vector3.Distance(transform.position, player.position) > viewAngle)
             {
-                m_PlayerInRange = false;
+                m_PlayerDetected = false;
             }
 
-            if (m_PlayerInRange)
+            // detected : player becomes the goal
+            if (m_PlayerDetected)
             {
                 m_PlayerPosition = player.transform.position;
             }
         }
     }
 
+    // attack trigger - coroutine
     IEnumerator AttackLoop()
     {
         while (true)
         {
             if (m_CanAttackPlayer)
             {
-                AttackPlayer();
-                yield return new WaitForSeconds(2f);
+                Attack();
+                yield return new WaitForSeconds(timeBeforeAttack);
             }
             else
             {
