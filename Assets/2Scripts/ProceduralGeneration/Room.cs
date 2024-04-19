@@ -18,7 +18,12 @@ namespace _2Scripts.ProceduralGeneration
         {
             
         }
-        
+
+        public RoomType GetRoomType()
+        {
+            return roomType;
+        }
+
         public FaceState[] GetRotatedFaceStates(int numberOfRightRotations)
         {
             FaceState[] newFaceStates = new FaceState[4];
@@ -30,6 +35,25 @@ namespace _2Scripts.ProceduralGeneration
 
             return newFaceStates;
         }
+
+        public bool HasDoor(Directions direction)
+        {
+            switch (direction)
+            {
+                case Directions.North:
+                    return originalFaceStatesArray[(int)direction] == FaceState.Open;
+                case Directions.East:
+                    return originalFaceStatesArray[(int)direction] == FaceState.Open;
+                case Directions.South:
+                    return originalFaceStatesArray[(int)direction] == FaceState.Open;
+                case Directions.West:
+                    return originalFaceStatesArray[(int)direction] == FaceState.Open;
+                default:
+                    return false;
+            }
+        }
+
+
     }
 
 
