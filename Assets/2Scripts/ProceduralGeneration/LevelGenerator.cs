@@ -438,13 +438,22 @@ public class LevelGenerator : Singleton<LevelGenerator>
                 neighbourIndex = roomIndex + _staticDungeonSize;
                 break;
             case Directions.East:
-                neighbourIndex = roomIndex + 1;
+                if ((roomIndex + 1) % dungeonSize != 0)
+                {
+                    neighbourIndex = roomIndex + 1;
+                }
+                else neighbourIndex = -1;
                 break;
             case Directions.South:
                 neighbourIndex = roomIndex - _staticDungeonSize;
                 break;
             case Directions.West:
-                neighbourIndex = roomIndex - 1;
+
+                if (roomIndex % dungeonSize != 0)
+                {
+                    neighbourIndex = roomIndex - 1;
+                }
+                else neighbourIndex = -1;
                 break;
         }
 
