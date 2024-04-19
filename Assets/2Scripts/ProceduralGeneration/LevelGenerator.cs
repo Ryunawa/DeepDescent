@@ -243,8 +243,6 @@ public class LevelGenerator : Singleton<LevelGenerator>
                 int neighbourIndex = GetIndexNeighbour(roomIndex, direction);
                 bool[] doorNeeded = GetAllDoorsNeeded(neighbourIndex);
                 RoomType roomType = ChooseRoomType(doorNeeded);
-
-                Debug.Log("");
                 
                 Quaternion rotation = Quaternion.identity; // TODO adjust this later, maybe further in the code
                 Room instantiatedRoom = InstantiateRoom(roomType, position, rotation).GetComponent<Room>();
