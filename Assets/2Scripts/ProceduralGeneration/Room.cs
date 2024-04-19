@@ -13,7 +13,7 @@ namespace _2Scripts.ProceduralGeneration
 
         [SerializeField] private int _generation;
 
-        private int numberOfRightRotation = 0;
+        [SerializeField] private int numberOfRightRotation = 0;
         public int ID;
 
         public int Generation
@@ -25,6 +25,17 @@ namespace _2Scripts.ProceduralGeneration
         public RoomType GetRoomType()
         {
             return roomType;
+        }
+
+        public void SetNumberOfRotation(int newNumberOfRightRotation)
+        {
+            numberOfRightRotation = newNumberOfRightRotation;
+            this.gameObject.transform.rotation = Quaternion.AngleAxis(90f * newNumberOfRightRotation, Vector3.up);
+        }
+
+        public FaceState[] GetOriginalFaceStatesArray()
+        { 
+            return originalFaceStatesArray;
         }
 
         public FaceState[] GetRotatedFaceStates(int numberOfRightRotations)
@@ -44,13 +55,13 @@ namespace _2Scripts.ProceduralGeneration
             switch (direction)
             {
                 case Directions.North:
-                    return originalFaceStatesArray[(int)direction] == FaceState.Open;
+                    return GetRotatedFaceStates(numberOfRightRotation)[(int)direction] == FaceState.Open;
                 case Directions.East:
-                    return originalFaceStatesArray[(int)direction] == FaceState.Open;
+                    return GetRotatedFaceStates(numberOfRightRotation)[(int)direction] == FaceState.Open;
                 case Directions.South:
-                    return originalFaceStatesArray[(int)direction] == FaceState.Open;
+                    return GetRotatedFaceStates(numberOfRightRotation)[(int)direction] == FaceState.Open;
                 case Directions.West:
-                    return originalFaceStatesArray[(int)direction] == FaceState.Open;
+                    return GetRotatedFaceStates(numberOfRightRotation)[(int)direction] == FaceState.Open;
                 default:
                     return false;
             }

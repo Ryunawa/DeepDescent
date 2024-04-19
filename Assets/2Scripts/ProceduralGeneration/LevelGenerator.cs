@@ -243,15 +243,74 @@ public class LevelGenerator : Singleton<LevelGenerator>
                 int neighbourIndex = GetIndexNeighbour(roomIndex, direction);
                 bool[] doorNeeded = GetAllDoorsNeeded(neighbourIndex);
                 RoomType roomType = ChooseRoomType(doorNeeded);
-                
-                Quaternion rotation = Quaternion.identity; // TODO adjust this later, maybe further in the code
+                Quaternion rotation = Quaternion.identity;
+
+                // create room
                 Room instantiatedRoom = InstantiateRoom(roomType, position, rotation).GetComponent<Room>();
                 instantiatedRoom.Generation = genNumber;
                 instantiatedRoom.ID = roomNum;
+
+                // rotate room
+                int rotationNeeded = GetRotationsNeeded(instantiatedRoom, doorNeeded);
+                instantiatedRoom.SetNumberOfRotation(rotationNeeded);
+
+
                 _dungeon[neighbourIndex] = instantiatedRoom;
             }
         }
     }
+
+
+    private int GetRotationsNeeded(Room room, bool[] doorNeeded)
+    {
+        int rotationsNeeded = 0;
+
+        bool[] neededCopy = new bool[doorNeeded.Length];
+        doorNeeded.CopyTo(neededCopy, 0);
+
+        FaceState[] roomDoors = room.GetOriginalFaceStatesArray();
+
+        while (!ArraysAreEqual(neededCopy, roomDoors))
+        {
+            roomDoors = room.GetRotatedFaceStates(rotationsNeeded);
+            rotationsNeeded++;
+
+            // avoid infinite loop
+            if (rotationsNeeded >= 4)
+            {
+                Debug.LogError("Error: Unable to align doors after 4 rotations.");
+                break;
+            }
+        }
+        return rotationsNeeded;
+    }
+
+    private bool ArraysAreEqual(bool[] array1, FaceState[] array2)
+    {
+        // same lenght?
+        if (array1.Length != array2.Length)
+        {
+            return false;
+        }
+
+        // same array?
+        for (int i = 0; i < array1.Length; i++)
+        {
+            bool boolValue = array1[i];
+            FaceState faceStateValue = array2[i];
+
+            // Convertir from boolean to faceState
+            FaceState expectedFaceState = boolValue ? FaceState.Open : FaceState.Closed;
+
+            if (expectedFaceState != faceStateValue)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 
     // select a room type to construct --> will depends on the door next to it
     private RoomType ChooseRoomType(bool[] doorsNeeded)
