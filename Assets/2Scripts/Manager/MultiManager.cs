@@ -64,6 +64,10 @@ public class MultiManager : Singleton<MultiManager>
 		return _IsOwnerOfLobby;
 	}
 
+	
+	/// <summary>
+	/// This method initiates the unity services and authenticates the user. It also adds listeners for the lobby events
+	/// </summary>
 	public async void Init()
 	{
 		var options = new InitializationOptions();
@@ -93,17 +97,30 @@ public class MultiManager : Singleton<MultiManager>
 
 	}
 
+	/// <summary>
+	/// This is the OnStateChanges event callback for the lobby
+	/// </summary>
+	/// <param name="obj"></param>
 	private void OnLobbyEventConnectionStateChanged(LobbyEventConnectionState obj)
 	{
 		Debug.Log("StateChange");
 	}
 
+	/// <summary>
+	/// This is the OnKickedFromLobby event callback for the lobby
+	/// </summary>
 	private void OnKickedFromLobby()
 	{
 		Debug.Log("Kicked");
 		_lobby = null;
 		kickedEvent.Invoke();
 	}
+	
+	/// <summary>
+	/// This is the OnLobbyChanged event callback, it is used to sync the lobby data across clients and host.
+	/// It launches the game for the client as soon as  the Relay code is received
+	/// </summary>
+	/// <param name="lobbyChanges"></param>
 	private void OnLobbyChanged(ILobbyChanges lobbyChanges)
 	{
 		Debug.Log("Lobby changed");
@@ -114,11 +131,15 @@ public class MultiManager : Singleton<MultiManager>
 			MultiManager.instance.JoinRelay(_lobby.Data["startGame"].Value);
 		}
 		
-		
 		refreshUI.Invoke();
 	}
 	
-
+	/// <summary>
+	/// This async Task is used for joining a lobby with a given lobby code or lobby ID,
+	/// once the lobby is joined it checks for the Relay ID, joins the relay if it exists and launches the game 
+	/// </summary>
+	/// <param name="joinCode"> lobby ID or Code </param>
+	/// <param name="isLobbyCode">is join method lobby Code</param>
 	public async Task JoinLobby(String joinCode, bool isLobbyCode = false)
 	{
 		try
@@ -156,6 +177,10 @@ public class MultiManager : Singleton<MultiManager>
 		}
 	}
 
+	/// <summary>
+	/// Returns all open existing lobbies
+	/// </summary>
+	/// <returns></returns>
 	public async Task<QueryResponse> GetAllLobbies()
 	{
 		QueryResponse lobbies = null;
@@ -191,6 +216,9 @@ public class MultiManager : Singleton<MultiManager>
 		return lobbies;
 	}
 
+	/// <summary>
+	/// Used for creating a lobby, the lobby name is the player's name, it wil create a 4 place lobby
+	/// </summary>
 	[Button("CreateLobby")]
 	public async void CreateLobby()
 	{
@@ -224,6 +252,9 @@ public class MultiManager : Singleton<MultiManager>
 		}
 	}
 
+	/// <summary>
+	/// Called to sub to lobby events 
+	/// </summary>
 	private async void SubToLobbyEvents()
 	{
 		try
@@ -249,6 +280,9 @@ public class MultiManager : Singleton<MultiManager>
 		}
 	}
 
+	/// <summary>
+	/// Called to unsub from lobby events
+	/// </summary>
 	private async Task UnSubToLobbyEvents()
 	{
 		try
@@ -263,11 +297,18 @@ public class MultiManager : Singleton<MultiManager>
 		}
 	}
 
+	/// <summary>
+	/// Called to leave a lobby
+	/// </summary>
 	public async void LeaveLobby()
 	{
 		await LeaveLobbyAsync();
 	}
 
+	/// <summary>
+	/// This Task is used to leave the lobby you are currently in. it will also unsub from events.
+	/// IF you are host it will kick every other player in lobby
+	/// </summary>
 	public async Task LeaveLobbyAsync()
 	{
 		Debug.Log("LeavingLobby");
@@ -328,6 +369,10 @@ public class MultiManager : Singleton<MultiManager>
 		kickedEvent.Invoke();
 	}
 
+	/// <summary>
+	/// This will send a virtual heartbeat to the lobby in order to keep it alive, if all players quit the lobby will die 
+	/// </summary>
+	/// <returns></returns>
 	private IEnumerator LobbyHeartBeat()
 	{
 		while(_lobby != null)
@@ -338,6 +383,10 @@ public class MultiManager : Singleton<MultiManager>
 		}
 	}
 
+	/// <summary>
+	/// gets the player object, with ID and name
+	/// </summary>
+	/// <returns> player object</returns>
 	private Player GetPlayer()
 	{
 		return new Player(
@@ -349,6 +398,10 @@ public class MultiManager : Singleton<MultiManager>
 		);
 	}
 
+	/// <summary>
+	/// This task is used to create a relay
+	/// </summary>
+	/// <returns>Relay join code</returns>
 	private async Task<string> CreateRelay()
 	{
 		try
@@ -373,6 +426,9 @@ public class MultiManager : Singleton<MultiManager>
 		
 	}
 
+	/// <summary>
+	/// Used by host to create and join Relay. This also updates lobby with Relay code
+	/// </summary>
 	private async void StartGame()
 	{
 		if (_IsOwnerOfLobby)
@@ -399,6 +455,10 @@ public class MultiManager : Singleton<MultiManager>
 		}
 	}
 
+	/// <summary>
+	/// This is called by non host clients to join the same relay as the host 
+	/// </summary>
+	/// <param name="joinCode">Relay join Code</param>
 	private async void JoinRelay(string joinCode)
 	{
 		try
@@ -418,7 +478,10 @@ public class MultiManager : Singleton<MultiManager>
 		
 	}
 	
-	private void LoadGameScene(ServerRpcParams serverRpcParams = default)
+	/// <summary>
+	/// This is used by host to change scenes for everyone joining including himself.
+	/// </summary>
+	private void LoadGameScene()
 	{
 		string sceneName = "";
 		if (PlayerPrefs.GetInt("Level", -1) == -1)
@@ -433,6 +496,9 @@ public class MultiManager : Singleton<MultiManager>
 		HideMainMenu();
 	}
 	
+	/// <summary>
+	/// called by clients to hide the main menu UIs 
+	/// </summary>
 	private void HideMainMenu()
 	{
 		mainMenu.gameObject.SetActive(false);
