@@ -2,7 +2,9 @@ using System;
 using System.Diagnostics;
 using _2Scripts.Enum;
 using _2Scripts.Struct;
+using NaughtyAttributes;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace _2Scripts.Manager
 {
@@ -14,13 +16,13 @@ namespace _2Scripts.Manager
         [SerializeField] private EnemyType easyDifficultyEnemyStats;
         [SerializeField] private EnemyType normalDifficultyEnemyStats;
         [SerializeField] private EnemyType hardDifficultyEnemyStats;
-
+        
         [Space(15)] 
         
         [Header("Resources")]
-        [SerializeField] private ResourcesDropRate easyDifficultyResourceDropRate;
-        [SerializeField] private ResourcesDropRate normalDifficultyResourceDropRate;
-        [SerializeField] private ResourcesDropRate hardDifficultyResourceDropRate;
+        [SerializeField] private ResourceType easyDifficultyResourceStats;
+        [SerializeField] private ResourceType normalDifficultyResourceStats;
+        [SerializeField] private ResourceType hardDifficultyResourceStats;
 
         [Space(15)]
         
@@ -33,34 +35,48 @@ namespace _2Scripts.Manager
         [Space(15)]
         
         [Header("Difficulty Over Time")] 
-        //[SerializeField] private float interval;
-        [SerializeField] private float rate;
+        // With these values, the enemies stats are multiply by 3
+        [SerializeField] private int timeInterval = 5;
+        [SerializeField] private float baseTimeRate = 0.9f;
+        [SerializeField] private int totalTimeInMinutes = 40;
+
+        [SerializeField] private Timer.Timer timer;
         
         private EnemyType _enemyTypeStructToUse;
-        private ResourcesDropRate _resourcesDropRateStructToUse;
+        private ResourceType _resourcesDropRateStructToUse;
         
         private TimeSpan _lastDifficultyIncreaseTime = TimeSpan.Zero;
-        private TimeSpan _difficultyIncreaseInterval = TimeSpan.FromMinutes(5);
+        private readonly TimeSpan _difficultyIncreaseInterval = TimeSpan.FromMinutes(0.1666666666666667);
         
         #endregion
-        
+
+        // /!\ DEBUG ONLY /!\
+        // private void Update()
+        // {
+        //     if (timer._timer.Elapsed >= _lastDifficultyIncreaseTime + _difficultyIncreaseInterval)
+        //     {
+        //         DEBUG_UpdateDifficulty();
+        //         _lastDifficultyIncreaseTime = timer._timer.Elapsed;
+        //     }
+        // }
+
         public void AdjustDifficultyParameters(DifficultyMode pDifficulty, int pNumPlayers)
         {
             switch (pDifficulty)
             {
                 case DifficultyMode.Easy:
                     _enemyTypeStructToUse = easyDifficultyEnemyStats;
-                    _resourcesDropRateStructToUse = easyDifficultyResourceDropRate;
+                    _resourcesDropRateStructToUse = easyDifficultyResourceStats;
                     break;
                 
                 case DifficultyMode.Normal:
                     _enemyTypeStructToUse = normalDifficultyEnemyStats;
-                    _resourcesDropRateStructToUse = normalDifficultyResourceDropRate;
+                    _resourcesDropRateStructToUse = normalDifficultyResourceStats;
                     break;
                 
                 case DifficultyMode.Hard:
                     _enemyTypeStructToUse = hardDifficultyEnemyStats;
-                    _resourcesDropRateStructToUse = hardDifficultyResourceDropRate;
+                    _resourcesDropRateStructToUse = hardDifficultyResourceStats;
                     break;
             }
             AdjustEnemiesStatsForNumPlayers(pNumPlayers);
@@ -75,6 +91,7 @@ namespace _2Scripts.Manager
         {
             float multiplier = GetMultiplierForNumPlayers(pNumPlayers);
 
+            // Might break the others stats we didn't modify (such as prefab ref, damage taken)
             _enemyTypeStructToUse.enemyType1 = AdjustEnemyStats(_enemyTypeStructToUse.enemyType1, multiplier);
             _enemyTypeStructToUse.enemyType2 = AdjustEnemyStats(_enemyTypeStructToUse.enemyType2, multiplier);
             _enemyTypeStructToUse.enemyType3 = AdjustEnemyStats(_enemyTypeStructToUse.enemyType3, multiplier);
@@ -84,13 +101,13 @@ namespace _2Scripts.Manager
         /// Adjust some stats of a enemy type depending on the number of players
         /// </summary>
         /// <param name="pStatsToAdjust">struct of an enemy type's stats</param>
-        /// <param name="rate"></param>
+        /// <param name="pRate"></param>
         /// <returns></returns>
-        private EnemyStats AdjustEnemyStats(EnemyStats pStatsToAdjust, float rate)
+        private EnemyStats AdjustEnemyStats(EnemyStats pStatsToAdjust, float pRate)
         {
-            pStatsToAdjust.spawnRate *= rate;
-            pStatsToAdjust.health *= rate;
-            pStatsToAdjust.damageDealt *= rate;
+            pStatsToAdjust.spawnRate *= pRate;
+            pStatsToAdjust.health *= pRate;
+            pStatsToAdjust.damageDealt *= pRate;
 
             return pStatsToAdjust;
         }
@@ -125,19 +142,36 @@ namespace _2Scripts.Manager
         /// Increase few stats for the difficulty over the time
         /// </summary>
         /// <param name="pTimer"></param>
-        public void IncreaseDifficultyOverTime(Stopwatch pTimer)
+        public void UpdateDifficultyOverTime(Stopwatch pTimer)
         {
-            TimeSpan elapsedTime = pTimer.Elapsed;
+            double elapsedTimeMinutes = pTimer.Elapsed.TotalMinutes;
+            float multiplier = 1 + (float)(Math.Log(1 + elapsedTimeMinutes / timeInterval) * baseTimeRate);
             
-            if (elapsedTime - _lastDifficultyIncreaseTime >= _difficultyIncreaseInterval)
-            {
-                _enemyTypeStructToUse.enemyType1 = AdjustEnemyStats(_enemyTypeStructToUse.enemyType1, rate);
-                _enemyTypeStructToUse.enemyType2 = AdjustEnemyStats(_enemyTypeStructToUse.enemyType2, rate);
-                _enemyTypeStructToUse.enemyType3 = AdjustEnemyStats(_enemyTypeStructToUse.enemyType3, rate);
-
-                _lastDifficultyIncreaseTime = elapsedTime;
-            }
+            // _enemyTypeStructToUse.enemyType1 = AdjustEnemyStats(_enemyTypeStructToUse.enemyType1, multiplier);
+            // _enemyTypeStructToUse.enemyType2 = AdjustEnemyStats(_enemyTypeStructToUse.enemyType2, multiplier);
+            // _enemyTypeStructToUse.enemyType3 = AdjustEnemyStats(_enemyTypeStructToUse.enemyType3, multiplier);
+            
+            Debug.Log("Multiplicateur : " + multiplier);
         }
+        
+        // /!\ DEBUG ONLY /!\
+        private void DEBUG_UpdateDifficulty()
+        {
+            Debug.Log("===============================================");
+            Debug.Log("Temps écoulé : " + timer.GetTimerElapsedTime());
+            UpdateDifficultyOverTime(timer._timer);
+        }
+        
+        // /!\ DEBUG ONLY /!\
+        [Button]
+        public void DEBUG_CalculateEnemyMultiplierFor30Minutes()
+        {
+            double totalElapsedTimeMinutes = totalTimeInMinutes;
+            float multiplier = 1 + (float)(Math.Log(1 + totalElapsedTimeMinutes / timeInterval) * baseTimeRate);
+
+            Debug.Log("Stats multipliées par " + multiplier + " au bout de " + totalTimeInMinutes + " minutes.");
+        }
+
 
         /// <summary>
         /// Return all the enemy types with their own stats to use for the game
@@ -152,7 +186,7 @@ namespace _2Scripts.Manager
         /// Return all the resources that can be dropped in the game
         /// </summary>
         /// <returns></returns>
-        public ResourcesDropRate ResourcesDropRateToUse()
+        public ResourceType ResourcesDropRateToUse()
         {
             return _resourcesDropRateStructToUse;
         }
