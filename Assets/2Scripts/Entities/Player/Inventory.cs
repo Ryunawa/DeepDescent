@@ -5,13 +5,13 @@ using UnityEngine;
 
 public struct InventoryObject
 {
-    public int id;
-    public int amount;
+    public int ID;
+    public int Amount;
 
     public InventoryObject(int id, int amount)
     {
-        this.id = id;
-        this.amount = amount;
+        this.ID = id;
+        this.Amount = amount;
     }
 }
 
@@ -35,10 +35,10 @@ public class Inventory : MonoBehaviour
     {
         if (InventoryItems.Count < InventorySpace)
         {
-            int indexOfItem = InventoryItems.FindIndex(x => x.id == itemID);
+            int indexOfItem = InventoryItems.FindIndex(x => x.ID == itemID);
             if(indexOfItem != -1)
             {
-                InventoryItems[indexOfItem] = new InventoryObject(itemID, InventoryItems[indexOfItem].amount + itemAmount);
+                InventoryItems[indexOfItem] = new InventoryObject(itemID, InventoryItems[indexOfItem].Amount + itemAmount);
                 Debug.Log($"[Inventory::AddToInventory()] - Increased amount of item of ID: {itemID} by {itemAmount}");
             }
             else
@@ -55,17 +55,16 @@ public class Inventory : MonoBehaviour
     {
         if (InventoryItems.Count < (InventorySpace - 1))
         {
-            if (InventoryItems[itemPos].amount > 1)
+            InventoryObject newInventoryObject = InventoryItems[itemPos];
+            SpawnFromInventory(newInventoryObject);
+            if (InventoryItems[itemPos].Amount > 1)
             {
-                //TODO do something, spawn item near
-                InventoryObject newInventoryObject = InventoryItems[itemPos];
-                newInventoryObject.amount =- 1;
+                newInventoryObject.Amount =- 1;
                 InventoryItems[itemPos] = newInventoryObject;
-                Debug.Log($"[Inventory::DropFromInventory()] - Dropped item at pos {itemPos}. Remaning item {InventoryItems[itemPos].amount}");
+                Debug.Log($"[Inventory::DropFromInventory()] - Dropped item at pos {itemPos}. Remaning item {InventoryItems[itemPos].Amount}");
             }
             else
             {
-                //TODO do something, spawn item near
                 InventoryItems.RemoveAt(itemPos);
                 Debug.Log($"[Inventory::DropFromInventory()] - Dropped item at pos {itemPos}.No remaining item.");
             }
@@ -74,8 +73,31 @@ public class Inventory : MonoBehaviour
         Debug.Log("[Inventory::DropFromInventory()] - Tried to drop item from inventory that was out of bound");
     }
 
+    private void SpawnFromInventory(InventoryObject inventoryObject)
+    {
+        Instantiate(GlobalItemList.items.Find(x => x.ID == inventoryObject.ID).ObjectPrefab, transform.position, Quaternion.identity);
+    }
+
     public void  UseFromInventory(int itemPos)
     {
-
+        if (InventoryItems.Count < (InventorySpace - 1))
+        {
+            InventoryObject newInventoryObject = InventoryItems[itemPos];
+            ConsumableItem realItem = (ConsumableItem) GlobalItemList.items.Find(x => x.ID == newInventoryObject.ID);
+            realItem.Use();
+            if (InventoryItems[itemPos].Amount > 1)
+            {
+                newInventoryObject.Amount = -1;
+                InventoryItems[itemPos] = newInventoryObject;
+                Debug.Log($"[Inventory::UseFromInventory()] - Used item at pos {itemPos}. Remaning item {InventoryItems[itemPos].Amount}");
+            }
+            else
+            {
+                InventoryItems.RemoveAt(itemPos);
+                Debug.Log($"[Inventory::UseFromInventory()] - Used item at pos {itemPos}.No remaining item.");
+            }
+            return;
+        }
+        Debug.Log("[Inventory::UseFromInventory()] - Tried to use item from inventory that was out of bound");
     }
 }
