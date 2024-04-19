@@ -109,21 +109,21 @@ public class LevelGenerator : Singleton<LevelGenerator>
     private Dictionary<Directions, Room> GetNeighbouringRooms(int roomIndex)
     {
         Dictionary<Directions, Room> rooms = new Dictionary<Directions, Room>()
-    {
-        { Directions.North , null},
-        { Directions.East , null},
-        { Directions.South , null},
-        { Directions.West , null}
-    };
+        {
+            { Directions.North , null},
+            { Directions.East , null},
+            { Directions.South , null},
+            { Directions.West , null}
+        };
 
         // east
-        if (roomIndex + 1 < _dungeon.Length)
+        if ((roomIndex + 1) % dungeonSize != 0)
         {
             rooms[Directions.East] = _dungeon[roomIndex + 1];
         }
 
         // west
-        if (roomIndex - 1 >= 0)
+        if (roomIndex % dungeonSize != 0)
         {
             rooms[Directions.West] = _dungeon[roomIndex - 1];
         }
@@ -410,6 +410,24 @@ public class LevelGenerator : Singleton<LevelGenerator>
         return position;
     }
 
+    // get opposite cardinal direction
+    private Directions GetOppositeDirection(Directions direction)
+    {
+        switch (direction)
+        {
+            case Directions.North:
+                return Directions.South;
+            case Directions.East:
+                return Directions.West;
+            case Directions.South:
+                return Directions.North;
+            case Directions.West:
+                return Directions.East;
+            default:
+                return Directions.North;
+        }
+    }
+
     private int GetIndexNeighbour(int roomIndex, Directions direction)
     {
         int neighbourIndex = -1;
@@ -440,29 +458,10 @@ public class LevelGenerator : Singleton<LevelGenerator>
         }
     }
 
-
-    // get opposite cardinal direction
-    private Directions GetOppositeDirection(Directions direction)
-    {
-        switch (direction)
-        {
-            case Directions.North:
-                return Directions.South;
-            case Directions.East:
-                return Directions.West;
-            case Directions.South:
-                return Directions.North;
-            case Directions.West:
-                return Directions.East;
-            default:
-                return Directions.North;
-        }
-    }
-    
     private bool IsRoomInArray(int roomIndex, Directions direction)
     {
         int newIndex = GetIndexNeighbour(roomIndex, direction);
-        return newIndex >= 0 && newIndex < _dungeon.Length;
+        return newIndex != -1;
     }
 }
 
