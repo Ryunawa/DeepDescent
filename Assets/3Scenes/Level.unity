@@ -313,6 +313,7 @@ MonoBehaviour:
     type: 3}
   _roomSize: 10
   dungeonSize: 5
+  IsOneRoomType: 0
 --- !u!4 &1609772749
 Transform:
   m_ObjectHideFlags: 0

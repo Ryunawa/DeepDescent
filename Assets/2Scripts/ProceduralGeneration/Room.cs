@@ -14,6 +14,7 @@ namespace _2Scripts.ProceduralGeneration
         [SerializeField] private int _generation;
 
         private int numberOfRightRotation = 0;
+        public int ID;
 
         public int Generation
         {

@@ -19,10 +19,12 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
     [SerializeField] private float _roomSize;
     [SerializeField] private int dungeonSize = 5;
-
+    [SerializeField] private bool IsOneRoomType;
     private Room[] _dungeon = new Room[]{};
 
     private static int _staticDungeonSize;
+
+    private int _roomNumber = 1;
 
     // Start is called before the first frame update
     async void Start()
@@ -40,6 +42,8 @@ public class LevelGenerator : Singleton<LevelGenerator>
         Room startRoom = InstantiateRoom(RoomType.Four, GetPosition(centerIndex), Quaternion.identity).GetComponent<Room>();
         startRoom.Generation = 1;
         _dungeon[centerIndex] = startRoom;
+
+        _roomNumber = 0;
         
         await DoGen(1);
         Debug.Log("GenerationFinished");
@@ -57,12 +61,20 @@ public class LevelGenerator : Singleton<LevelGenerator>
         
         startDepth++;
         
+        
         foreach (Room room in roomsToGenNeighbours)
-        {
-            await CreateAdjacentRooms(GetIndexOfRoom(room), startDepth);
+        { 
+            _roomNumber++;
+            // Skip if the room is already generated in the current depth
+            if (room != null && room.Generation >= startDepth)
+            {
+                continue;
+            }
+            
+            await CreateAdjacentRooms(GetIndexOfRoom(room), startDepth, _roomNumber);
         }
         
-        DoGen(startDepth);
+        await DoGen(startDepth);
     }
 
     private int GetIndexOfRoom(Room room)
@@ -214,7 +226,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
 
     // create rooms in the four direction next to the given index
-    public async Task CreateAdjacentRooms(int roomIndex, int genNumber)
+    public async Task CreateAdjacentRooms(int roomIndex, int genNumber, int roomNum)
     {
         Dictionary<Directions, Room> neighbouringRooms = GetNeighbouringRooms(roomIndex);
 
@@ -232,9 +244,12 @@ public class LevelGenerator : Singleton<LevelGenerator>
                 bool[] doorNeeded = GetAllDoorsNeeded(neighbourIndex);
                 RoomType roomType = ChooseRoomType(doorNeeded);
 
+                Debug.Log("");
+                
                 Quaternion rotation = Quaternion.identity; // TODO adjust this later, maybe further in the code
                 Room instantiatedRoom = InstantiateRoom(roomType, position, rotation).GetComponent<Room>();
                 instantiatedRoom.Generation = genNumber;
+                instantiatedRoom.ID = roomNum;
                 _dungeon[neighbourIndex] = instantiatedRoom;
             }
         }
@@ -251,6 +266,11 @@ public class LevelGenerator : Singleton<LevelGenerator>
             {
                 neededDoorsCount++;
             }
+        }
+
+        if (IsOneRoomType)
+        {
+            return RoomType.Four;
         }
 
         // select the good prefab of doors
@@ -319,7 +339,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
     // get position of the room at roomIndex
     private Vector3 GetPosition(int roomIndex)
     {
-        int row = roomIndex / _staticDungeonSize;
+        int row = Mathf.FloorToInt(roomIndex / _staticDungeonSize);
         int col = roomIndex % _staticDungeonSize;
 
         float x = col * _roomSize;
@@ -341,10 +361,10 @@ public class LevelGenerator : Singleton<LevelGenerator>
                 position.z -= _roomSize;
                 break;
             case Directions.East:
-                position.x -= _roomSize;
+                position.x += _roomSize;
                 break;
             case Directions.West:
-                position.x += _roomSize;
+                position.x -= _roomSize;
                 break;
         }
 
