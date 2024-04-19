@@ -1,25 +1,52 @@
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _2Scripts.ProceduralGeneration
 {
     public class Room : MonoBehaviour
     {
-        private int _roomID;
+        [SerializeField] private RoomType roomType;
+        //Ordered : North, East, South, West
+        [SerializeField] private FaceState[] originalFaceStatesArray = new FaceState[4];
 
-        private List<int> WestCompatibleRooms = new ();
-        private List<int> EastCompatibleRooms = new ();
-        private List<int> SouthCompatibleRooms = new ();
-        private List<int> NorthCompatibleRooms = new ();
+        private int numberOfRightRotation = 0;
+        
+        [Button]
+        public void DebugFunc()
+        {
+            
+        }
+        
+        public FaceState[] GetRotatedFaceStates(int numberOfRightRotations)
+        {
+            FaceState[] newFaceStates = new FaceState[4];
 
-        public int RoomID => _roomID;
+            for (int i = 0; i < originalFaceStatesArray.Length; i++)
+            {
+                newFaceStates[(i + numberOfRightRotations) % originalFaceStatesArray.Length] = originalFaceStatesArray[i];
+            }
 
-        public List<int> WestCompatibleRooms1 => WestCompatibleRooms;
-
-        public List<int> EastCompatibleRooms1 => EastCompatibleRooms;
-
-        public List<int> SouthCompatibleRooms1 => SouthCompatibleRooms;
-
-        public List<int> NorthCompatibleRooms1 => NorthCompatibleRooms;
+            return newFaceStates;
+        }
     }
+
+
+public enum FaceState
+{
+    Closed, // no door (just a wall)
+    Open, // has door
+    Free // other
+}
+
+public enum RoomType
+{
+    One,
+    Two,
+    TwoOpposite,
+    Three,
+    Four
+}
+
 }
