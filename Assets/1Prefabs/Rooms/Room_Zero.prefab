@@ -49,3 +49,6 @@ MonoBehaviour:
   _generation: 0
   numberOfRightRotation: 0
   ID: 0
+  doorPrefab:
+  - {fileID: 114226, guid: f7f8afc7225502240bc7b70a9419c566, type: 3}
+  - {fileID: 128464, guid: 30cbf2b140e7ff04cac9897c5ab79430, type: 3}

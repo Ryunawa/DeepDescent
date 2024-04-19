@@ -15,6 +15,15 @@ namespace _2Scripts.ProceduralGeneration
 
         [SerializeField] private int numberOfRightRotation = 0;
         public int ID;
+        private float _sizeRoom = 0;
+
+        [SerializeField] private GameObject[] doorPrefab;
+
+        public float SizeRoom
+        {
+            get => _sizeRoom;
+            set => _sizeRoom = value;
+        }
 
         public int Generation
         {
@@ -31,6 +40,8 @@ namespace _2Scripts.ProceduralGeneration
         {
             numberOfRightRotation = newNumberOfRightRotation;
             this.gameObject.transform.rotation = Quaternion.AngleAxis(90f * newNumberOfRightRotation, Vector3.up);
+
+            createDoors();
         }
 
         public FaceState[] GetOriginalFaceStatesArray()
@@ -67,6 +78,21 @@ namespace _2Scripts.ProceduralGeneration
             }
         }
 
+        public void createDoors()
+        {
+            Vector3 pos = this.gameObject.transform.position;
+
+            if (HasDoor(Directions.North))
+            {
+                Vector3 doorNorth = pos + (Vector3.forward * SizeRoom / 2) + (Vector3.left * 0.6f);
+                Instantiate(doorPrefab[Random.Range(0, doorPrefab.Length)], doorNorth, Quaternion.AngleAxis(180, Vector3.up));
+            }
+            if (HasDoor(Directions.East))
+            {
+                Vector3 doorEast = pos + (Vector3.right * SizeRoom / 2) + (Vector3.forward * 0.6f);
+                Instantiate(doorPrefab[Random.Range(0, doorPrefab.Length)], doorEast, Quaternion.AngleAxis(-90, Vector3.up));
+            }
+        }
 
     }
 

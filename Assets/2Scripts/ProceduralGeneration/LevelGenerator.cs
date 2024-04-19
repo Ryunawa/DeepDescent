@@ -41,7 +41,10 @@ public class LevelGenerator : Singleton<LevelGenerator>
         //Generation n = 1 : center
         int centerIndex = (_staticDungeonSize /2) * (_staticDungeonSize +1);
         Room startRoom = InstantiateRoom(RoomType.Four, GetPosition(centerIndex), Quaternion.identity).GetComponent<Room>();
+        startRoom.SizeRoom = _roomSize;
+        startRoom.createDoors();
         startRoom.Generation = 1;
+
         _dungeon[centerIndex] = startRoom;
 
         _roomNumber = 0;
@@ -230,6 +233,8 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
                 // create room
                 Room instantiatedRoom = InstantiateRoom(roomType, position, rotation).GetComponent<Room>();
+                // set room
+                instantiatedRoom.SizeRoom = _roomSize;
                 instantiatedRoom.Generation = genNumber;
                 instantiatedRoom.ID = roomNum;
 
