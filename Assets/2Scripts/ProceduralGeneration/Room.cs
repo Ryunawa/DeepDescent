@@ -11,12 +11,14 @@ namespace _2Scripts.ProceduralGeneration
         //Ordered : North, East, South, West
         [SerializeField] private FaceState[] originalFaceStatesArray = new FaceState[4];
 
+        [SerializeField] private int _generation;
+
         private int numberOfRightRotation = 0;
-        
-        [Button]
-        public void DebugFunc()
+
+        public int Generation
         {
-            
+            get => _generation;
+            set => _generation = value;
         }
 
         public RoomType GetRoomType()
