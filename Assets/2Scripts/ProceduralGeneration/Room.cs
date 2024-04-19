@@ -80,6 +80,7 @@ public enum FaceState
 
 public enum RoomType
 {
+    Zero,
     One,
     Two,
     TwoOpposite,

@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7742981632512359917
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6443826149549177354}
+  - component: {fileID: 3584134917664296696}
+  m_Layer: 0
+  m_Name: LevelGenerator Singleton
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6443826149549177354
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7742981632512359917}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3584134917664296696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7742981632512359917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf22e93295c0d2845a44f1685ea41a42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomZeroPrefab: {fileID: 732238230619133457, guid: 1e0e8aa7e4c3efe49a66f1eb11762658,
+    type: 3}
+  roomOnePrefab: {fileID: 440173796976011816, guid: 271317ec2f0d2f147a77dc929c5dd6d7,
+    type: 3}
+  roomTwoPrefab: {fileID: 8805677584448145962, guid: 345411074c3debf47b089fac7e1ce0e7,
+    type: 3}
+  roomTwoOppositePrefab: {fileID: 2029878586980014804, guid: 9aa9341fcf6de2c4cb78757da051e5be,
+    type: 3}
+  roomThreePrefab: {fileID: 6622218302258320284, guid: 40436543f5be0a343b75f2d75b901c3e,
+    type: 3}
+  roomFourPrefab: {fileID: 7673283415594151065, guid: d668c8b6112158d48bd2c9d0e5a40f73,
+    type: 3}
+  _roomSize: 10
+  dungeonSize: 5
+  IsOneRoomType: 0

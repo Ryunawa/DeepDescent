@@ -11,6 +11,7 @@ using Random = UnityEngine.Random;
 public class LevelGenerator : Singleton<LevelGenerator>
 {
     // Prefabs
+    public GameObject roomZeroPrefab;
     public GameObject roomOnePrefab;
     public GameObject roomTwoPrefab;
     public GameObject roomTwoOppositePrefab;
@@ -142,7 +143,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
         return rooms;
     }
 
-    private bool DoesNeighbouringRoomNeedDoor(Directions direction, Dictionary<Directions, Room> neighbouringRooms)
+    private bool DoesNeighbouringRoomNeedDoor(Directions direction, Dictionary<Directions, Room> neighbouringRooms, int actualRoomIndex)
     {
         Room neighbourRoom = neighbouringRooms[direction];
 
@@ -160,9 +161,10 @@ public class LevelGenerator : Singleton<LevelGenerator>
         else
         {
             // is in array?
-            bool isWithinBounds = IsWithinBounds(direction);
+            int isWithinBounds = GetIndexNeighbour(actualRoomIndex, direction);
 
-            if (isWithinBounds)
+
+            if (isWithinBounds >= 0)
             {
                 // room does not exist and is not out of bounds -> rand door
                 return Random.Range(0, 2) == 1;
@@ -175,24 +177,6 @@ public class LevelGenerator : Singleton<LevelGenerator>
         }
     }
 
-    // check if its still inside of the array
-    private bool IsWithinBounds(Directions direction)
-    {
-        switch (direction)
-        {
-            case Directions.North:
-                return _staticDungeonSize >= 0;
-            case Directions.East:
-                return _staticDungeonSize <= (_dungeon.Length - 1);
-            case Directions.South:
-                return _staticDungeonSize <= (_dungeon.Length - 1);
-            case Directions.West:
-                return _staticDungeonSize >= 0;
-            default:
-                return false;
-        }
-    }
-
     public bool[] GetAllDoorsNeeded(int roomIndex)
     {
         bool[] doorNeeded = new bool[4];
@@ -201,9 +185,8 @@ public class LevelGenerator : Singleton<LevelGenerator>
         foreach (KeyValuePair<Directions, Room> kvp in neighbouringRooms)
         {
             Directions direction = kvp.Key;
-            Room room = kvp.Value;
 
-            bool needsDoor = DoesNeighbouringRoomNeedDoor(direction, neighbouringRooms);
+            bool needsDoor = DoesNeighbouringRoomNeedDoor(direction, neighbouringRooms, roomIndex);
 
             switch(direction)
             {
@@ -272,8 +255,8 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
         while (!ArraysAreEqual(neededCopy, roomDoors))
         {
-            roomDoors = room.GetRotatedFaceStates(rotationsNeeded);
             rotationsNeeded++;
+            roomDoors = room.GetRotatedFaceStates(rotationsNeeded);
 
             // avoid infinite loop
             if (rotationsNeeded >= 4)
@@ -349,8 +332,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
             case 4:
                 return RoomType.Four;
             default:
-                Debug.LogError("Invalid door count : " + neededDoorsCount);
-                return RoomType.One;
+                return RoomType.Zero;
         }
     }
 
@@ -377,7 +359,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
                 roomPrefab = roomFourPrefab;
                 break;
             default:
-                Debug.LogError("Unknown room type: " + roomType);
+                roomPrefab = roomZeroPrefab;
                 break;
         }
 

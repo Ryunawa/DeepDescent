@@ -610,9 +610,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf22e93295c0d2845a44f1685ea41a42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roomOnePrefab: {fileID: 0}
+  roomTwoPrefab: {fileID: 0}
+  roomTwoOppositePrefab: {fileID: 0}
+  roomThreePrefab: {fileID: 0}
+  roomFourPrefab: {fileID: 0}
+  _roomSize: 0
   dungeonSize: 5
-  rooms: []
-  roomsToHave: []
+  IsOneRoomType: 0
 --- !u!4 &1609772749
 Transform:
   m_ObjectHideFlags: 0
