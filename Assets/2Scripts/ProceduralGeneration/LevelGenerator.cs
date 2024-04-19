@@ -27,9 +27,23 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
     private int _roomNumber = 1;
 
+    // folder
+    private GameObject generatedDungeonParent;
+    private GameObject roomsParent;
+    private GameObject doorsParent;
+
     // Start is called before the first frame update
     async void Start()
     {
+        // create folders
+        generatedDungeonParent = new GameObject("GeneratedDungeon");
+        roomsParent = new GameObject("Rooms");
+        doorsParent = new GameObject("Doors");
+
+        roomsParent.transform.SetParent(generatedDungeonParent.transform);
+        doorsParent.transform.SetParent(generatedDungeonParent.transform);
+
+
         _staticDungeonSize = dungeonSize;
         // Random.InitState((int)DateTime.Now.Ticks);
 
@@ -37,10 +51,10 @@ public class LevelGenerator : Singleton<LevelGenerator>
         
         Random.InitState(35896);
 
-
         //Generation n = 1 : center
         int centerIndex = (_staticDungeonSize /2) * (_staticDungeonSize +1);
         Room startRoom = InstantiateRoom(RoomType.Four, GetPosition(centerIndex), Quaternion.identity).GetComponent<Room>();
+        startRoom.transform.SetParent(roomsParent.transform);
         startRoom.SizeRoom = _roomSize;
         startRoom.createDoors();
         startRoom.Generation = 1;
@@ -242,6 +256,8 @@ public class LevelGenerator : Singleton<LevelGenerator>
                 int rotationNeeded = GetRotationsNeeded(instantiatedRoom, doorNeeded);
                 instantiatedRoom.SetNumberOfRotation(rotationNeeded);
 
+                // place it in their folder
+                instantiatedRoom.transform.SetParent(roomsParent.transform);
 
                 _dungeon[neighbourIndex] = instantiatedRoom;
             }
