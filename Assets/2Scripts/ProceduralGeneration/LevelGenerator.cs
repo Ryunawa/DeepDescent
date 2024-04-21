@@ -6,11 +6,13 @@ using _2Scripts.ProceduralGeneration;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 public class LevelGenerator : Singleton<LevelGenerator>
 {
     // Prefabs
+    [Header("Rooms")]
     public GameObject roomZeroPrefab;
     public GameObject roomOnePrefab;
     public GameObject roomTwoPrefab;
@@ -18,19 +20,23 @@ public class LevelGenerator : Singleton<LevelGenerator>
     public GameObject roomThreePrefab;
     public GameObject roomFourPrefab;
 
+    [Header("Props")]
+    [SerializeField] private GameObject[] _props;
+
+    [Header("Setting")]
     [SerializeField] private float _roomSize;
     [SerializeField] private int dungeonSize = 5;
     [SerializeField] private bool IsOneRoomType;
+
     private Room[] _dungeon = new Room[]{};
-
     private static int _staticDungeonSize;
-
     private int _roomNumber = 1;
 
     // folder
     private GameObject generatedDungeonParent;
     private GameObject roomsParent;
     private GameObject doorsParent;
+    private GameObject propsParent;
 
     // Start is called before the first frame update
     async void Start()
@@ -39,9 +45,11 @@ public class LevelGenerator : Singleton<LevelGenerator>
         generatedDungeonParent = new GameObject("GeneratedDungeon");
         roomsParent = new GameObject("Rooms");
         doorsParent = new GameObject("Doors");
+        propsParent = new GameObject("Props");
 
         roomsParent.transform.SetParent(generatedDungeonParent.transform);
         doorsParent.transform.SetParent(generatedDungeonParent.transform);
+        propsParent.transform.SetParent(generatedDungeonParent.transform);
 
 
         _staticDungeonSize = dungeonSize;
@@ -58,6 +66,12 @@ public class LevelGenerator : Singleton<LevelGenerator>
         startRoom.SizeRoom = _roomSize;
         startRoom.createDoors();
         startRoom.Generation = 1;
+
+        // create props
+        GameObject instantiatedProps = InstantiateProps(RoomType.Four, GetPosition(centerIndex));
+
+        // place it in their folder
+        if(instantiatedProps) instantiatedProps.transform.SetParent(propsParent.transform);
 
         _dungeon[centerIndex] = startRoom;
 
@@ -230,13 +244,13 @@ public class LevelGenerator : Singleton<LevelGenerator>
     {
         Dictionary<Directions, Room> neighbouringRooms = GetNeighbouringRooms(roomIndex);
 
-        foreach(KeyValuePair<Directions, Room> kvp in neighbouringRooms)
+        foreach (KeyValuePair<Directions, Room> kvp in neighbouringRooms)
         {
             Directions direction = kvp.Key;
             Room room = kvp.Value;
 
             await Task.Delay(100);
-            
+
             if (room == null && IsRoomInArray(roomIndex, direction))
             {
                 Vector3 position = GetPositionNeighbour(roomIndex, direction);
@@ -247,19 +261,27 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
                 // create room
                 Room instantiatedRoom = InstantiateRoom(roomType, position, rotation).GetComponent<Room>();
-                // set room
-                instantiatedRoom.SizeRoom = _roomSize;
-                instantiatedRoom.Generation = genNumber;
-                instantiatedRoom.ID = roomNum;
 
-                // rotate room
-                int rotationNeeded = GetRotationsNeeded(instantiatedRoom, doorNeeded);
-                instantiatedRoom.SetNumberOfRotation(rotationNeeded);
+                if(instantiatedRoom)
+                {
+                    // set room
+                    instantiatedRoom.SizeRoom = _roomSize;
+                    instantiatedRoom.Generation = genNumber;
+                    instantiatedRoom.ID = roomNum;
 
-                // place it in their folder
-                instantiatedRoom.transform.SetParent(roomsParent.transform);
+                    // rotate room
+                    int rotationNeeded = GetRotationsNeeded(instantiatedRoom, doorNeeded);
+                    instantiatedRoom.SetNumberOfRotation(rotationNeeded);
 
-                _dungeon[neighbourIndex] = instantiatedRoom;
+                    // create props
+                    GameObject instantiatedProps = InstantiateProps(roomType, position);
+
+                    // place it in their folder
+                    instantiatedRoom.transform.SetParent(roomsParent.transform);
+                    if (instantiatedProps) instantiatedProps.transform.SetParent(propsParent.transform);
+
+                    _dungeon[neighbourIndex] = instantiatedRoom;
+                }
             }
         }
     }
@@ -395,6 +417,37 @@ public class LevelGenerator : Singleton<LevelGenerator>
             return null;
         }
     }
+
+    // create a props
+    public GameObject InstantiateProps(RoomType roomType, Vector3 position)
+    {
+        // TODO later: take the size of the room type to adjust the props
+        if (roomType == RoomType.Zero)
+        {
+            return null;
+        }
+
+        GameObject propsPrefab = _props[Random.Range(0, _props.Length)]; 
+
+        // instantiation of the props
+        if (propsPrefab != null)
+        {
+            // calcul random rotation
+            int numberOfRotation = Random.Range(0, 4);
+            float rotatedSide = 90 * numberOfRotation;
+            Quaternion rotation = Quaternion.Euler(0, rotatedSide, 0);
+
+            // rotate
+            GameObject roomInstance = Instantiate(propsPrefab, position, rotation);
+            return roomInstance;
+        }
+        else
+        {
+            Debug.LogError("Props list is null");
+            return null;
+        }
+    }
+
 
     // get position of the room at roomIndex
     private Vector3 GetPosition(int roomIndex)
