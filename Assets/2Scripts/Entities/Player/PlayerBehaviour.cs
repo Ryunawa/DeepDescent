@@ -21,8 +21,8 @@ public class PlayerBehaviour : NetworkBehaviour
 	private NetworkVariable<bool> _isDead = new NetworkVariable<bool>();
 
 	public NetworkVariable<bool> IsDead { get => _isDead; set => _isDead = value; }
-
-	private void Start()
+    public Inventory inventory;
+    private void Start()
 	{
 		_health = GetComponent<HealthComponent>();
 
