@@ -1,15 +1,23 @@
+using System;
 using System.Diagnostics;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace _2Scripts.Timer
 {
-    public class Timer
+    public class Timer : MonoBehaviour
     {
-        private Stopwatch _timer;
+        public Stopwatch _timer;
+
+        private void Start()
+        {
+            StartTimer();
+        }
 
         /// <summary>
         /// Create or resume the timer.
         /// </summary>
+        [Button]
         public void StartTimer()
         {
             _timer ??= new Stopwatch();
@@ -19,6 +27,7 @@ namespace _2Scripts.Timer
         /// <summary>
         /// Pause the timer.
         /// </summary>
+        [Button]
         public void StopTimer()
         {
             _timer.Stop();
