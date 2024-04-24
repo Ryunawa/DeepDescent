@@ -7,5 +7,5 @@ using UnityEngine;
 
 public abstract class EquippableItem : Item
 {
-    public abstract bool Equip();
+    public abstract (bool, EquippableItem) Equip(Inventory inventoryToEquipTo);
 }

@@ -18,9 +18,36 @@ public class ArmorItem : EquippableItem
     public ArmorType ArmorType;
     public int ArmorValue;
     //More maybe? idk seems ok like that.
-    public override bool Equip()
+    public override (bool, EquippableItem) Equip(Inventory inventoryToEquipTo)
     {
-        //TODO
-        throw new System.NotImplementedException();
+        if (!inventoryToEquipTo)
+            return (false, null);
+        EquippableItem oldItem;
+        switch (ArmorType)
+        {
+            case ArmorType.CHEST:
+                oldItem = inventoryToEquipTo.ChestArmor;
+                inventoryToEquipTo.LegArmor = this;
+                break;
+            case ArmorType.PANTS:
+                oldItem = inventoryToEquipTo.LegArmor;
+                inventoryToEquipTo.LegArmor = this;
+                break;
+            case ArmorType.FEET:
+                oldItem = inventoryToEquipTo.FeetArmor;
+                inventoryToEquipTo.FeetArmor = this;
+                break;
+            case ArmorType.RING:
+                oldItem = inventoryToEquipTo.RingsItem[0];
+                inventoryToEquipTo.RingsItem[0] = this;
+                break;
+            case ArmorType.NECKLACE:
+                oldItem = inventoryToEquipTo.NecklaceItem;
+                inventoryToEquipTo.NecklaceItem = this;
+                break;
+            default:
+                return (false, null);
+        }
+        return (true, oldItem);
     }
 }

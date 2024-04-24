@@ -21,9 +21,10 @@ public class WeaponItem : EquippableItem
     public bool TwoHanded;
     public bool IsDualWieldable;
 
-    public override bool Equip()
+    public override (bool, EquippableItem) Equip(Inventory inventoryToEquipTo)
     {
         //TODO
-        throw new System.NotImplementedException();
+        return (false, null);
+        //throw new System.NotImplementedException();
     }
 }

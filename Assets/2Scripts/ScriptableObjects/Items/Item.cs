@@ -11,6 +11,7 @@ public class Item : ScriptableObject
     public string Description;
     public int SellValue;
     public bool QuickUse;
+    public bool Stackable;
     public Sprite InventoryIcon;
     public GameObject ObjectPrefab;
 }

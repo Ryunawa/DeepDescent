@@ -20,7 +20,7 @@ public class Inventory : MonoBehaviour
     [Header("Equipped Items")]
     public ArmorItem ChestArmor;
     public ArmorItem LegArmor;
-    public ArmorItem FeetItem;
+    public ArmorItem FeetArmor;
     public ArmorItem[] RingsItem = new ArmorItem[2];
     public ArmorItem NecklaceItem;
 
@@ -84,20 +84,56 @@ public class Inventory : MonoBehaviour
         {
             InventoryObject newInventoryObject = InventoryItems[itemPos];
             ConsumableItem realItem = (ConsumableItem) GlobalItemList.items.Find(x => x.ID == newInventoryObject.ID);
-            realItem.Use();
-            if (InventoryItems[itemPos].Amount > 1)
+            if (realItem)
             {
-                newInventoryObject.Amount = -1;
-                InventoryItems[itemPos] = newInventoryObject;
-                Debug.Log($"[Inventory::UseFromInventory()] - Used item at pos {itemPos}. Remaning item {InventoryItems[itemPos].Amount}");
+                realItem.Use();
+                if (InventoryItems[itemPos].Amount > 1)
+                {
+                    newInventoryObject.Amount = -1;
+                    InventoryItems[itemPos] = newInventoryObject;
+                    Debug.Log($"[Inventory::UseFromInventory()] - Used item at pos {itemPos}. Remaning item {InventoryItems[itemPos].Amount}");
+                }
+                else
+                {
+                    InventoryItems.RemoveAt(itemPos);
+                    Debug.Log($"[Inventory::UseFromInventory()] - Used item at pos {itemPos}.No remaining item.");
+                }
+                return;
             }
             else
             {
-                InventoryItems.RemoveAt(itemPos);
-                Debug.Log($"[Inventory::UseFromInventory()] - Used item at pos {itemPos}.No remaining item.");
+                Debug.Log("[Inventory::UseFromInventory()] - Tried to use an item from inventory that isn't a consumable.");
+                return;
             }
-            return;
         }
         Debug.Log("[Inventory::UseFromInventory()] - Tried to use item from inventory that was out of bound");
+    }
+
+    public void EquipFromInventory(int itemPos)
+    {
+        if (InventoryItems.Count < (InventorySpace - 1))
+        {
+            InventoryObject newInventoryObject = InventoryItems[itemPos];
+            EquippableItem realItem = (EquippableItem)GlobalItemList.items.Find(x => x.ID == newInventoryObject.ID);
+            if (realItem)
+            {
+                (bool, EquippableItem) result = realItem.Equip(this);
+                if (result.Item1)
+                {
+                    InventoryObject oldEquippedItem = new InventoryObject(InventoryItems[itemPos].ID, 1);
+                    InventoryItems[itemPos] = oldEquippedItem;
+                    Debug.Log($"[Inventory::EquipFromInventory()] - Equipped new item at pos {itemPos} and put old item in it's place");
+                }
+                else
+                    Debug.Log($"[Inventory::EquipFromInventory()] - Couldn't equip item at pos {itemPos}. Nothing happened");
+                return;
+            }
+            else
+            {
+                Debug.Log("[Inventory::EquipFromInventory()] - Tried to use an item from inventory that isn't a consumable.");
+                return;
+            }
+        }
+        Debug.Log("[Inventory::EquipFromInventory()] - Tried to use item from inventory that was out of bound");
     }
 }
