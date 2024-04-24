@@ -1,47 +1,43 @@
-using System.Collections;
 using UnityEngine;
+using System.Collections;
 
 public class DoorController : MonoBehaviour
 {
-    public Animator doorAnimator;
-    public float autoCloseDelay = 5f;
+    private Animator animator;
+    [SerializeField] private DoorTriggerZone triggerZone;
+    private float animationTime = 0f;
 
-    private bool playerNearby = false;
-
-    void Update()
+    private void Start()
     {
-        if (playerNearby && Input.GetKeyDown(KeyCode.Return))
+        animator = GetComponent<Animator>();
+
+        AnimationClip[] clips = animator.runtimeAnimatorController.animationClips;
+        
+        foreach (AnimationClip clip in clips)
         {
-            OpenDoor();
+            if (clip.name == "DoorClose")
+            {
+                animationTime = clip.length;
+                break;
+            }
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    public void OpenDoor()
     {
-        if (other.CompareTag("Player"))
-        {
-            playerNearby = true;
-        }
+        animator.Play("DoorOpen", 0, 0.0f);
     }
 
-    void OnTriggerExit(Collider other)
+    public void CloseDoor()
     {
-        if (other.CompareTag("Player"))
-        {
-            playerNearby = false;
-        }
+        animator.Play("DoorClose", 0, 0.0f);
+        StartCoroutine(CloseDoorDelayed());
+
     }
 
-    void OpenDoor()
+    private IEnumerator CloseDoorDelayed()
     {
-        doorAnimator.SetTrigger("Open");
-
-        StartCoroutine(AutoCloseDoor());
-    }
-
-    IEnumerator AutoCloseDoor()
-    {
-        yield return new WaitForSeconds(autoCloseDelay);
-        doorAnimator.SetTrigger("Close");
+        yield return new WaitForSeconds(animationTime);
+        triggerZone.setIsOpen(false);
     }
 }

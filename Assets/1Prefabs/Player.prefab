@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 1989982698143821741}
   - component: {fileID: 6107233449341413626}
   - component: {fileID: 6969510745373292748}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -135,6 +135,7 @@ MonoBehaviour:
   playerSpeed: 20
   jumpHeight: 1
   airControl: 0
+  inventory: {fileID: 0}
 --- !u!114 &6107233449341413626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,7 +181,7 @@ GameObject:
   - component: {fileID: 846469962740562193}
   - component: {fileID: 5685322309389839697}
   - component: {fileID: 4785522846223302122}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Virtual Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -270,7 +271,7 @@ GameObject:
   - component: {fileID: 6260993325127035697}
   - component: {fileID: 7257876946946395700}
   - component: {fileID: 6104559196037298682}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -375,7 +376,7 @@ GameObject:
   - component: {fileID: 1923113658855318042}
   - component: {fileID: 1158010563618432775}
   - component: {fileID: 730633988604642414}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: cm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -497,7 +498,7 @@ GameObject:
   - component: {fileID: 1059523982368026368}
   - component: {fileID: 1968535854857958761}
   - component: {fileID: 8240293557676277463}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
