@@ -1,12 +1,10 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using _2Scripts.Manager;
 using _2Scripts.ProceduralGeneration;
-using UnityEditorInternal;
+using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UIElements;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 public class LevelGenerator : Singleton<LevelGenerator>
@@ -27,6 +25,8 @@ public class LevelGenerator : Singleton<LevelGenerator>
     [SerializeField] private float _roomSize;
     [SerializeField] private int dungeonSize = 5;
     [SerializeField] private bool IsOneRoomType;
+    
+    public UnityEvent dungeonGeneratedEvent;
 
     private Room[] _dungeon = new Room[]{};
     private static int _staticDungeonSize;
@@ -79,6 +79,12 @@ public class LevelGenerator : Singleton<LevelGenerator>
         
         await DoGen(1);
         Debug.Log("GenerationFinished");
+        
+        dungeonGeneratedEvent.Invoke();
+
+        MultiManager.instance.playerNetworkObject.transform.position = Vector3.up * 3;
+        
+        SceneManager.UnloadScene(Scenes.Loading);
     }
 
 
@@ -107,6 +113,8 @@ public class LevelGenerator : Singleton<LevelGenerator>
         }
         
         await DoGen(startDepth);
+        
+        
     }
 
     private int GetIndexOfRoom(Room room)
