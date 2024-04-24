@@ -263,8 +263,8 @@ MonoBehaviour:
   numberOfRightRotation: 0
   ID: 0
   doorPrefab:
-  - {fileID: 114226, guid: f7f8afc7225502240bc7b70a9419c566, type: 3}
-  - {fileID: 128464, guid: 30cbf2b140e7ff04cac9897c5ab79430, type: 3}
+  - {fileID: 7091607008960014797, guid: 1d1db2d8b9acd3d41bd39ae29ffc9eb5, type: 3}
+  - {fileID: 1806916446658767855, guid: e1fac5bff34d5bc4dbfcdeba9a138af2, type: 3}
 --- !u!1 &1229192489719863671
 GameObject:
   m_ObjectHideFlags: 0
