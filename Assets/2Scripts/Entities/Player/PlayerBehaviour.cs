@@ -9,6 +9,7 @@ public class PlayerBehaviour : NetworkBehaviour
 	[SerializeField] private float playerSpeed = 2.0f;
 	[SerializeField] private float jumpHeight = 1.0f;
 	[SerializeField] private float airControl = 0;
+	[SerializeField] private Animator animator;
 	private Rigidbody _rb;
 	private InputManager _inputManager;
 	private Transform _camTransform;
@@ -74,11 +75,15 @@ public class PlayerBehaviour : NetworkBehaviour
 
 		_rb.AddForce(move * playerSpeed, ForceMode.Acceleration);
 
+		animator.gameObject.transform.rotation = Quaternion.Euler(0,_camTransform.eulerAngles.y,0);
+		
 		if (_hasJumped)
 		{
 			_hasJumped = false;
 			_rb.AddForce(Vector3.up * jumpHeight, ForceMode.Acceleration);
 		}
+
+		animator.SetFloat("Speed", _rb.velocity.normalized.magnitude);
 	}
 
 	private bool IsGrounded()

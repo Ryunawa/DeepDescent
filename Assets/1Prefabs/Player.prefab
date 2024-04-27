@@ -136,6 +136,7 @@ MonoBehaviour:
   playerSpeed: 20
   jumpHeight: 1
   airControl: 0
+  animator: {fileID: 4055705197530235895}
   inventory: {fileID: 0}
 --- !u!114 &6107233449341413626
 MonoBehaviour:
@@ -972,11 +973,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9547916, guid: 11ffba29df14c054aa5a2695b18e9f59, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 9b81e47b9de16064c8458a322fbdc0db, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11ffba29df14c054aa5a2695b18e9f59, type: 3}
+--- !u!95 &4055705197530235895 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9547916, guid: 11ffba29df14c054aa5a2695b18e9f59,
+    type: 3}
+  m_PrefabInstance: {fileID: 4055705197537620859}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4055705197537198385 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 422474, guid: 11ffba29df14c054aa5a2695b18e9f59,
