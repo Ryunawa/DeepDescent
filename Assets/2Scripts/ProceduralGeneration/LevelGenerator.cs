@@ -82,7 +82,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
         
         dungeonGeneratedEvent.Invoke();
 
-        MultiManager.instance.playerNetworkObject.transform.position = Vector3.up * 3;
+        MultiManager.instance.playerNetworkObject.transform.position = GetPosition(centerIndex) + Vector3.up * 5;
         
         SceneManager.UnloadScene(Scenes.Loading);
     }
