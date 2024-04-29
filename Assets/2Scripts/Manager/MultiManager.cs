@@ -387,7 +387,7 @@ public class MultiManager : Singleton<MultiManager>
 	}
 
 	/// <summary>
-	/// gets the player object, with ID and name
+	/// Gets the player object, with ID and name
 	/// </summary>
 	/// <returns> player object</returns>
 	private Player GetPlayer()
@@ -399,6 +399,15 @@ public class MultiManager : Singleton<MultiManager>
 				{ "Name", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, _playerName) }
 			}
 		);
+	}
+
+	/// <summary>
+	/// Gets the localPlayer's GameObject (ie. the character)
+	/// </summary>
+	/// <returns></returns>
+	public GameObject GetPlayerGameObject()
+	{
+		return NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject().gameObject;
 	}
 
 	/// <summary>
