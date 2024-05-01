@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/1Prefabs/Doors.meta
 guid: 8a66dfacafb086f43a3e6e6968e9507c
+========
+guid: 112808f82390a6744806e3abced35f73
+>>>>>>>> ELV-DEV-DONT-TOUCH:Assets/4Ressources/Animations/Player.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

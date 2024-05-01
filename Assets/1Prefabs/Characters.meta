@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/1Prefabs/Characters.meta
 guid: 319a69e9d31266d468e8483b8bff4dd8
+========
+guid: 6bbd885bf4c58074499c63def6408d3c
+>>>>>>>> ELV-DEV-DONT-TOUCH:Assets/4Ressources/Animations.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

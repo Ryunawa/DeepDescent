@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using _2Scripts.Manager;
 using NaughtyAttributes;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -14,13 +15,13 @@ using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 using Player = Unity.Services.Lobbies.Models.Player;
 using DataObject = Unity.Services.Lobbies.Models.DataObject;
 
 public class MultiManager : Singleton<MultiManager>
 {
 	[SerializeField] private Canvas mainMenu;
+	[SerializeField] private Camera mainMenuCam;
 	[SerializeField] private float heartBeatFrequency = 15f;
 
 	private string _playerName;
@@ -37,7 +38,9 @@ public class MultiManager : Singleton<MultiManager>
 	public UnityEvent kickedEvent;
 	public UnityEvent refreshUI;
 	public UnityEvent init;
-
+	public NetworkObject playerNetworkObject;
+	
+	
 	public string PlayerName
 	{
 		get => _playerName;
@@ -384,7 +387,7 @@ public class MultiManager : Singleton<MultiManager>
 	}
 
 	/// <summary>
-	/// gets the player object, with ID and name
+	/// Gets the player object, with ID and name
 	/// </summary>
 	/// <returns> player object</returns>
 	private Player GetPlayer()
@@ -396,6 +399,15 @@ public class MultiManager : Singleton<MultiManager>
 				{ "Name", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, _playerName) }
 			}
 		);
+	}
+
+	/// <summary>
+	/// Gets the localPlayer's GameObject (ie. the character)
+	/// </summary>
+	/// <returns></returns>
+	public GameObject GetPlayerGameObject()
+	{
+		return NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject().gameObject;
 	}
 
 	/// <summary>
@@ -414,6 +426,10 @@ public class MultiManager : Singleton<MultiManager>
 			
 			NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
 			NetworkManager.Singleton.StartHost();
+			
+			LoadGameScene();
+			
+			playerNetworkObject = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(NetworkManager.Singleton.LocalClientId);
 
 			return joinCode;
 
@@ -451,7 +467,7 @@ public class MultiManager : Singleton<MultiManager>
 				throw;
 			}
 			
-			LoadGameScene();
+			HideMainMenu();
 		}
 	}
 
@@ -468,6 +484,8 @@ public class MultiManager : Singleton<MultiManager>
 			RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
 			NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
 			NetworkManager.Singleton.StartClient();
+			
+			LoadGameScene();
 
 		}
 		catch (RelayServiceException e)
@@ -483,16 +501,17 @@ public class MultiManager : Singleton<MultiManager>
 	/// </summary>
 	private void LoadGameScene()
 	{
-		string sceneName = "";
+		SceneManager.Init();
+		Scenes sceneName;
 		if (PlayerPrefs.GetInt("Level", -1) == -1)
 		{
-			sceneName = "Level";
+			sceneName = Scenes.Level;
 		}
 		else
 		{
-			sceneName = "SafeZone";
+			sceneName = Scenes.SafeZone;
 		}
-		NetworkManager.Singleton.SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+		SceneManager.LoadAndSetActiveScene(sceneName);
 		HideMainMenu();
 	}
 	
@@ -501,6 +520,7 @@ public class MultiManager : Singleton<MultiManager>
 	/// </summary>
 	private void HideMainMenu()
 	{
+		mainMenuCam.gameObject.SetActive(false);
 		mainMenu.gameObject.SetActive(false);
 	}
 }
