@@ -28,6 +28,10 @@ public class DoorTriggerZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             canOpen = false;
+            foreach (GameObject text in texts)
+            {
+                text.SetActive(false);
+            }
         }
     }
 

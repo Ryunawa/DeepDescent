@@ -32,7 +32,6 @@ public class DoorController : MonoBehaviour
     {
         animator.Play("DoorClose", 0, 0.0f);
         StartCoroutine(CloseDoorDelayed());
-
     }
 
     private IEnumerator CloseDoorDelayed()
