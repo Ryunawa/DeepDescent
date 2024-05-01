@@ -35,6 +35,9 @@ public class PlayerBehaviour : NetworkBehaviour
 		_camTransform = GetComponentInChildren<Camera>().transform;
 		_virtualCamera = GetComponentInChildren<CinemachineVirtualCamera>();
 		
+		_virtualCamera.GetCinemachineComponent<CinemachinePOV>().m_HorizontalAxis.m_MaxSpeed = camSens.x * 0.01f;
+		_virtualCamera.GetCinemachineComponent<CinemachinePOV>().m_VerticalAxis.m_MaxSpeed = camSens.y * 0.01f;
+		
 		if (!IsOwner) 
 		{
 			_camTransform.gameObject.SetActive(false);
@@ -73,14 +76,14 @@ public class PlayerBehaviour : NetworkBehaviour
 		if (!IsGrounded())
 			move *= airControl;
 
-		_rb.AddForce(move * playerSpeed, ForceMode.Acceleration);
+		_rb.velocity = move * playerSpeed + (_rb.velocity.y * Vector3.up);
 
 		animator.gameObject.transform.rotation = Quaternion.Euler(0,_camTransform.eulerAngles.y,0);
 		
 		if (_hasJumped)
 		{
 			_hasJumped = false;
-			_rb.AddForce(Vector3.up * jumpHeight, ForceMode.Acceleration);
+			_rb.AddForce(Vector3.up * jumpHeight, ForceMode.VelocityChange);
 		}
 
 		animator.SetFloat("Speed", _rb.velocity.normalized.magnitude);

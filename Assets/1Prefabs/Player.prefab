@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4124624007
+  GlobalObjectIdHash: 955220372
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camSens: {x: 50, y: 50}
-  playerSpeed: 20
+  playerSpeed: 2
   jumpHeight: 1
   airControl: 0
   animator: {fileID: 4055705197530235895}
@@ -358,7 +358,7 @@ MonoBehaviour:
   m_RecenterTarget: 0
   m_VerticalAxis:
     Value: 0
-    m_SpeedMode: 0
+    m_SpeedMode: 1
     m_MaxSpeed: 300
     m_AccelTime: 0.1
     m_DecelTime: 0.1
@@ -382,7 +382,7 @@ MonoBehaviour:
     m_LegacyVelocityFilterStrength: -1
   m_HorizontalAxis:
     Value: 0
-    m_SpeedMode: 0
+    m_SpeedMode: 1
     m_MaxSpeed: 300
     m_AccelTime: 0.1
     m_DecelTime: 0.1
