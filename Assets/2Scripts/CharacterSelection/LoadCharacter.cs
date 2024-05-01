@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class LoadCharacter : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+    [SerializeField] private GameObject[] characterPrefabs;
+    [SerializeField] private Transform spawnPoint;
+
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        int selectedCharacter = PlayerPrefs.GetInt("selectedCharacter");
+        GameObject prefab = characterPrefabs[selectedCharacter];
+        Instantiate(prefab, spawnPoint.position, Quaternion.identity);
     }
 }

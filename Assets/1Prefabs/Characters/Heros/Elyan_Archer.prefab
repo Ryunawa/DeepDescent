@@ -1370,7 +1370,7 @@ GameObject:
   - component: {fileID: 9520156}
   - component: {fileID: 2544062471510057896}
   m_Layer: 0
-  m_Name: Character_Female_Druid_01
+  m_Name: Elyan_Archer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1403,7 +1403,7 @@ Animator:
   m_GameObject: {fileID: 136616}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: e2958561779b1a748a4246b9d0c0b309, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4538eac2d3ae223498d2f23e4af8334c, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1

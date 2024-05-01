@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 95361765663008898}
   - component: {fileID: 7592248244335934661}
   m_Layer: 0
-  m_Name: Dwarf
+  m_Name: Gideon_Dwarf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ Animator:
   m_GameObject: {fileID: 1072503254754400}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 44202c79934aa8c45b2495a49b6e99b1, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3474136bda9c66740ad5d342ce38d2ed, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
