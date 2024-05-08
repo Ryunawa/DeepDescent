@@ -5,70 +5,55 @@ using UnityEngine.SceneManagement;
 
 namespace _2Scripts.Manager
 {
-    public static class SceneManager
+    public class SceneManager : Singleton<SceneManager>
     {
-        public static Scenes SetActiveScene = Scenes.None;
-        private static List<Scenes> _scenesToLoadArray = new List<Scenes>{};
-        public static void Init()
+        public void Init()
         {
-            NetworkManager.Singleton.SceneManager.SetClientSynchronizationMode(LoadSceneMode.Additive);
+            if (MultiManager.instance.IsLobbyHost())
+            {
+                NetworkManager.Singleton.SceneManager.SetClientSynchronizationMode(LoadSceneMode.Additive);
+            }
             NetworkManager.Singleton.SceneManager.ActiveSceneSynchronizationEnabled = true;
+            NetworkManager.Singleton.SceneManager.PostSynchronizationSceneUnloading = true;
             NetworkManager.Singleton.SceneManager.OnLoadComplete += SceneManagerOnOnLoadComplete;
             NetworkManager.Singleton.SceneManager.OnSynchronizeComplete += SceneManagerOnOnSynchronizeComplete;
             NetworkManager.Singleton.SceneManager.OnUnloadComplete += SceneManagerOnOnUnloadComplete;
         }
 
-        private static void SceneManagerOnOnUnloadComplete(ulong clientid, string scenename)
+        private void SceneManagerOnOnUnloadComplete(ulong clientid, string scenename)
         {
             Debug.Log($"{scenename} unloaded");
         }
 
-        private static void SceneManagerOnOnSynchronizeComplete(ulong clientid)
+        private void SceneManagerOnOnSynchronizeComplete(ulong clientid)
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Scenes Synchronized");
         }
 
-        private static void SceneManagerOnOnLoadComplete(ulong clientid, string scenename, LoadSceneMode loadscenemode)
+        private void SceneManagerOnOnLoadComplete(ulong clientid, string scenename, LoadSceneMode loadscenemode)
         {
-            if (SetActiveScene.ToString() == scenename)
-            {
-                Debug.Log(scenename);
-                UnityEngine.SceneManagement.SceneManager.SetActiveScene(
-                    UnityEngine.SceneManagement.SceneManager.GetSceneByName(scenename));
-                
-                SetActiveScene = Scenes.None;
-            }
-
-            if (scenename == Scenes.Loading.ToString())
-            {
-                LoadScene(_scenesToLoadArray[0]);
-            }
-
-            
+            Debug.Log($"{scenename} loaded");
         }
 
-        //TODO : on scene load --> loading screen --> on event called --> load actual loading screen
-        public static void LoadingScene(Scenes scene)
+        [Rpc(SendTo.Everyone)]
+        private void SetActiveSceneRPC(string sceneName)
         {
-            NetworkManager.Singleton.SceneManager.LoadScene(Scenes.Loading.ToString(), LoadSceneMode.Additive);
-            _scenesToLoadArray.Add(scene);
+            UnityEngine.SceneManagement.SceneManager.SetActiveScene(
+                UnityEngine.SceneManagement.SceneManager.GetSceneByName(sceneName));
+        }
+        
+        public void LoadScene(Scenes scenes)
+        {
+            NetworkManager.Singleton.SceneManager.LoadScene(scenes.ToString(), LoadSceneMode.Single);
         }
 
-        private static void LoadScene(Scenes scenes)
+        public void ActivateLoadingScreen()
         {
-            NetworkManager.Singleton.SceneManager.LoadScene(scenes.ToString(), LoadSceneMode.Additive);
+            transform.GetChild(0).gameObject.SetActive(true);
         }
-
-        public static void UnloadScene(Scenes scene)
+        public void DeactivateLoadingScreen()
         {
-            NetworkManager.Singleton.SceneManager.UnloadScene(UnityEngine.SceneManagement.SceneManager.GetSceneByName(scene.ToString()));  
-        }
-
-        public static void LoadAndSetActiveScene(Scenes scene)
-        {
-            LoadingScene(scene);
-
-            SetActiveScene = scene;
+            transform.GetChild(0).gameObject.SetActive(false);
         }
     }
 
@@ -77,7 +62,6 @@ namespace _2Scripts.Manager
         MainMenu,
         Level,
         SafeZone,
-        Loading,
         None
     }
 }
