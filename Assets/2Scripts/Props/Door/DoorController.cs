@@ -26,11 +26,13 @@ public class DoorController : MonoBehaviour
     public void OpenDoor()
     {
         animator.Play("DoorOpen", 0, 0.0f);
+        DynamicNavMesh.UpdateNavMesh();
     }
 
     public void CloseDoor()
     {
         animator.Play("DoorClose", 0, 0.0f);
+        DynamicNavMesh.UpdateNavMesh();
         StartCoroutine(CloseDoorDelayed());
     }
 

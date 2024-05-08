@@ -20,7 +20,6 @@ public class DoorTriggerZone : MonoBehaviour
         {
             canOpen = true;
         }
-
     }
 
     private void OnTriggerExit(Collider other)
@@ -45,7 +44,7 @@ public class DoorTriggerZone : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.E) && canOpen && !isOpen)
+        if (InputManager.instance.PlayerUsed() && canOpen && !isOpen)
         {
             isOpen = true;
             foreach (GameObject text in texts)
