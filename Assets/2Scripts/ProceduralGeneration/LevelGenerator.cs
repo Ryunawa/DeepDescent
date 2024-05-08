@@ -84,7 +84,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
         foreach (var playerId in NetworkManager.Singleton.ConnectedClientsIds)
         {
-           NetworkManager.Singleton.SpawnManager.SpawnedObjects[playerId].transform.position = GetPosition(centerIndex) + Vector3.up * 5;
+           NetworkManager.Singleton.ConnectedClients[playerId].PlayerObject.transform.position = GetPosition(centerIndex) + Vector3.up * 5;
         }
         
         SceneManager.UnloadScene(Scenes.Loading);
