@@ -511,7 +511,11 @@ public class MultiManager : Singleton<MultiManager>
 		{
 			sceneName = Scenes.SafeZone;
 		}
-		SceneManager.LoadAndSetActiveScene(sceneName);
+
+		if (_IsOwnerOfLobby)
+		{
+			SceneManager.LoadAndSetActiveScene(sceneName);
+		}
 		HideMainMenu();
 	}
 	
@@ -522,5 +526,21 @@ public class MultiManager : Singleton<MultiManager>
 	{
 		mainMenuCam.gameObject.SetActive(false);
 		mainMenu.gameObject.SetActive(false);
+	}
+	
+	public void SpawnNetworkObject(NetworkObject objectToSpawn, Vector3 position, Quaternion rotation)
+	{
+		if (IsLobbyHost())
+		{
+			NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(objectToSpawn, NetworkManager.Singleton.LocalClientId,
+            			position: position, rotation: rotation);
+		}
+	}
+	
+	[Rpc(SendTo.Server)]
+	private void SpawnNetworkObjectServerRPC(NetworkObject objectToSpawn, Vector3 position, Quaternion rotation)
+	{
+		NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(objectToSpawn, NetworkManager.Singleton.LocalClientId,
+				position: position, rotation: rotation);
 	}
 }

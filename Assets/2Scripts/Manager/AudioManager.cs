@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using _2Scripts.Audio;
 using UnityEngine;
 

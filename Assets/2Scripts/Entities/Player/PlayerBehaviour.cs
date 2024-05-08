@@ -86,7 +86,7 @@ public class PlayerBehaviour : NetworkBehaviour
 			_rb.AddForce(Vector3.up * jumpHeight, ForceMode.VelocityChange);
 		}
 
-		animator.SetFloat("Speed", _rb.velocity.normalized.magnitude);
+		animator.SetFloat("Speed", _rb.velocity.magnitude * 2);
 	}
 
 	private bool IsGrounded()

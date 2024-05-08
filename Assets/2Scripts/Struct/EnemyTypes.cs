@@ -1,9 +1,8 @@
-using UnityEngine;
 
 namespace _2Scripts.Struct
 {
     [System.Serializable]
-    public struct EnemyType
+    public struct EnemyTypes
     {
         public EnemyStats enemyType1;
         public EnemyStats enemyType2;
