@@ -523,11 +523,13 @@ public class MultiManager : Singleton<MultiManager>
 		mainMenuCam.gameObject.SetActive(false);
 		mainMenu.gameObject.SetActive(false);
 	}
-
-	[Rpc(SendTo.Server)]
+	
 	private void SpawnNetworkObject(NetworkObject objectToSpawn, Vector3 position, Quaternion rotation)
 	{
-		NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(objectToSpawn, NetworkManager.Singleton.LocalClientId,
-			position: position, rotation: rotation);
+		if (IsLobbyHost())
+		{
+			NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(objectToSpawn, NetworkManager.Singleton.LocalClientId,
+            			position: position, rotation: rotation);
+		}
 	}
 }
