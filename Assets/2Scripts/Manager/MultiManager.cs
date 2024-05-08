@@ -532,4 +532,11 @@ public class MultiManager : Singleton<MultiManager>
             			position: position, rotation: rotation);
 		}
 	}
+	
+	[Rpc(SendTo.Server)]
+	private void SpawnNetworkObjectServerRPC(NetworkObject objectToSpawn, Vector3 position, Quaternion rotation)
+	{
+		NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(objectToSpawn, NetworkManager.Singleton.LocalClientId,
+				position: position, rotation: rotation);
+	}
 }
