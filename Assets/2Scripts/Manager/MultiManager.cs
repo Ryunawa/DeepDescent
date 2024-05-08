@@ -92,11 +92,11 @@ public class MultiManager : Singleton<MultiManager>
 		NetworkManager.Singleton.OnConnectionEvent += (manager, data) =>
 		{
 			Debug.Log("Client connected");
-			if (!_IsOwnerOfLobby)
-			{
-				HideMainMenu();
-			}
-		} ;
+			// if (!_IsOwnerOfLobby)
+			// {
+			// 	HideMainMenu();
+			// }
+		};
 
 	}
 
@@ -428,8 +428,8 @@ public class MultiManager : Singleton<MultiManager>
 			NetworkManager.Singleton.StartHost();
 			
 			LoadGameScene();
-			
-			playerNetworkObject = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(NetworkManager.Singleton.LocalClientId);
+
+			WaitForInstantiatedPlayerObject();
 
 			return joinCode;
 
@@ -467,7 +467,7 @@ public class MultiManager : Singleton<MultiManager>
 				throw;
 			}
 			
-			HideMainMenu();
+			
 		}
 	}
 
@@ -484,6 +484,8 @@ public class MultiManager : Singleton<MultiManager>
 			RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
 			NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
 			NetworkManager.Singleton.StartClient();
+
+			WaitForInstantiatedPlayerObject();
 			
 			LoadGameScene();
 
@@ -495,37 +497,40 @@ public class MultiManager : Singleton<MultiManager>
 		}
 		
 	}
+
+	private async Task WaitForInstantiatedPlayerObject()
+	{
+		while (NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject() == null)
+		{
+			await Task.Delay(100);
+		};
+
+		playerNetworkObject = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
+	}
 	
 	/// <summary>
 	/// This is used by host to change scenes for everyone joining including himself.
 	/// </summary>
 	private void LoadGameScene()
 	{
-		SceneManager.Init();
-		Scenes sceneName;
-		if (PlayerPrefs.GetInt("Level", -1) == -1)
-		{
-			sceneName = Scenes.Level;
-		}
-		else
-		{
-			sceneName = Scenes.SafeZone;
-		}
-
+		SceneManager.instance.Init();
 		if (_IsOwnerOfLobby)
 		{
-			SceneManager.LoadAndSetActiveScene(sceneName);
+			Scenes sceneName;
+			if (PlayerPrefs.GetInt("Level", -1) == -1)
+			{
+				sceneName = Scenes.Level;
+			}
+			else
+			{
+				sceneName = Scenes.SafeZone;
+			}
+			
+			SceneManager.instance.LoadScene(sceneName);
 		}
-		HideMainMenu();
-	}
-	
-	/// <summary>
-	/// called by clients to hide the main menu UIs 
-	/// </summary>
-	private void HideMainMenu()
-	{
-		mainMenuCam.gameObject.SetActive(false);
-		mainMenu.gameObject.SetActive(false);
+
+		SceneManager.instance.ActivateLoadingScreen();
+
 	}
 	
 	public void SpawnNetworkObject(NetworkObject objectToSpawn, Vector3 position, Quaternion rotation)
