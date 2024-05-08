@@ -132,6 +132,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flickerIntervalsMS: 100
-  flickerOffset: 0.1
   baseLightIntensity: 2.5
   intensityOffsetMultiplier: 0.2

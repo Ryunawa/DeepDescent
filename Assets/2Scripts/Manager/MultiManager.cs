@@ -533,7 +533,7 @@ public class MultiManager : Singleton<MultiManager>
 
 	}
 	
-	private void SpawnNetworkObject(NetworkObject objectToSpawn, Vector3 position, Quaternion rotation)
+	public void SpawnNetworkObject(NetworkObject objectToSpawn, Vector3 position, Quaternion rotation)
 	{
 		if (IsLobbyHost())
 		{
