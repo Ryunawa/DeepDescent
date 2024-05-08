@@ -56,11 +56,11 @@ MonoBehaviour:
     type: 3}
   roomFourPrefab: {fileID: 4804944387938855065, guid: 0b1595586e51cbe4db13f7be476e3215,
     type: 3}
+  dungeon: []
   _props:
-  - {fileID: 6521452330474019536, guid: 25bf7e7b2d738eb46abe3de8f5b1817b, type: 3}
-  - {fileID: 6521452330474019536, guid: 25bf7e7b2d738eb46abe3de8f5b1817b, type: 3}
-  - {fileID: 6521452330474019536, guid: 25bf7e7b2d738eb46abe3de8f5b1817b, type: 3}
-  - {fileID: 6521452330474019536, guid: 25bf7e7b2d738eb46abe3de8f5b1817b, type: 3}
+  - {fileID: 7825597609852004801, guid: 0d38404e13bb6664f85fb35f6eae552b, type: 3}
+  - {fileID: 289011377166552801, guid: df11e075dbd300b40b02da4537ee1871, type: 3}
+  - {fileID: 56899907952853865, guid: 9b16dae3c6590ca4e8d7a29ae07172e4, type: 3}
   _roomSize: 25
   dungeonSize: 5
   IsOneRoomType: 0

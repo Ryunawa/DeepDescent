@@ -257,7 +257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3da9c6c41cff4ce8b2e4f46f3851607c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomType: 0
+  roomType: 1
   originalFaceStatesArray: 00000000000000000100000000000000
   _generation: 0
   numberOfRightRotation: 0
