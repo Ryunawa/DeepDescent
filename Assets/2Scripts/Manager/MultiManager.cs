@@ -524,7 +524,7 @@ public class MultiManager : Singleton<MultiManager>
 		mainMenu.gameObject.SetActive(false);
 	}
 	
-	private void SpawnNetworkObject(NetworkObject objectToSpawn, Vector3 position, Quaternion rotation)
+	public void SpawnNetworkObject(NetworkObject objectToSpawn, Vector3 position, Quaternion rotation)
 	{
 		if (IsLobbyHost())
 		{

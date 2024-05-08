@@ -1,0 +1,187 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3898088850932888483
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7150967302586417312}
+  - component: {fileID: 4587219548495061341}
+  - component: {fileID: 559719539115313260}
+  m_Layer: 0
+  m_Name: DifficultyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7150967302586417312
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3898088850932888483}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 622.0397, y: 284.77005, z: -1.096297}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4587219548495061341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3898088850932888483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0bc881c362c45df99b7e4f6ea7462fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  easyDifficultyEnemyStats:
+    enemyType1:
+      enemyPrefab: {fileID: 0}
+      spawnRate: 0
+      health: 0
+      damageDealt: 0
+      damageTaken: 0
+    enemyType2:
+      enemyPrefab: {fileID: 0}
+      spawnRate: 0
+      health: 0
+      damageDealt: 0
+      damageTaken: 0
+    enemyType3:
+      enemyPrefab: {fileID: 0}
+      spawnRate: 0
+      health: 0
+      damageDealt: 0
+      damageTaken: 0
+  normalDifficultyEnemyStats:
+    enemyType1:
+      enemyPrefab: {fileID: 0}
+      spawnRate: 0
+      health: 0
+      damageDealt: 0
+      damageTaken: 0
+    enemyType2:
+      enemyPrefab: {fileID: 0}
+      spawnRate: 0
+      health: 0
+      damageDealt: 0
+      damageTaken: 0
+    enemyType3:
+      enemyPrefab: {fileID: 0}
+      spawnRate: 0
+      health: 0
+      damageDealt: 0
+      damageTaken: 0
+  hardDifficultyEnemyStats:
+    enemyType1:
+      enemyPrefab: {fileID: 0}
+      spawnRate: 0
+      health: 0
+      damageDealt: 0
+      damageTaken: 0
+    enemyType2:
+      enemyPrefab: {fileID: 0}
+      spawnRate: 0
+      health: 0
+      damageDealt: 0
+      damageTaken: 0
+    enemyType3:
+      enemyPrefab: {fileID: 0}
+      spawnRate: 0
+      health: 0
+      damageDealt: 0
+      damageTaken: 0
+  easyDifficultyResourceStats:
+    crystalDropRate:
+      prefab: {fileID: 0}
+      category: 0
+      rarity: 0
+      dropRate: 0
+    goldDropRate:
+      prefab: {fileID: 0}
+      category: 0
+      rarity: 0
+      dropRate: 0
+    weaponDropRate:
+      prefab: {fileID: 0}
+      category: 0
+      rarity: 0
+      dropRate: 0
+    itemDropRate:
+      prefab: {fileID: 0}
+      category: 0
+      rarity: 0
+      dropRate: 0
+  normalDifficultyResourceStats:
+    crystalDropRate:
+      prefab: {fileID: 0}
+      category: 0
+      rarity: 0
+      dropRate: 0
+    goldDropRate:
+      prefab: {fileID: 0}
+      category: 0
+      rarity: 0
+      dropRate: 0
+    weaponDropRate:
+      prefab: {fileID: 0}
+      category: 0
+      rarity: 0
+      dropRate: 0
+    itemDropRate:
+      prefab: {fileID: 0}
+      category: 0
+      rarity: 0
+      dropRate: 0
+  hardDifficultyResourceStats:
+    crystalDropRate:
+      prefab: {fileID: 0}
+      category: 0
+      rarity: 0
+      dropRate: 0
+    goldDropRate:
+      prefab: {fileID: 0}
+      category: 0
+      rarity: 0
+      dropRate: 0
+    weaponDropRate:
+      prefab: {fileID: 0}
+      category: 0
+      rarity: 0
+      dropRate: 0
+    itemDropRate:
+      prefab: {fileID: 0}
+      category: 0
+      rarity: 0
+      dropRate: 0
+  onePlayerMultiplier: 1
+  twoPlayerMultiplier: 1.3
+  threePlayerMultiplier: 1.7
+  fourPlayerMultiplier: 2
+  timeInterval: 5
+  baseTimeRate: 0.9
+  totalTimeInMinutes: 40
+  timer: {fileID: 559719539115313260}
+--- !u!114 &559719539115313260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3898088850932888483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d33c498f4b4544b948a3cef3a24825, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

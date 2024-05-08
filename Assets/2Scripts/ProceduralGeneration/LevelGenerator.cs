@@ -5,6 +5,7 @@ using _2Scripts.ProceduralGeneration;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class LevelGenerator : Singleton<LevelGenerator>
@@ -18,6 +19,8 @@ public class LevelGenerator : Singleton<LevelGenerator>
     public GameObject roomThreePrefab;
     public GameObject roomFourPrefab;
 
+    public Room[] dungeon = new Room[]{};
+    
     [Header("Props")]
     [SerializeField] private GameObject[] _props;
 
@@ -28,7 +31,6 @@ public class LevelGenerator : Singleton<LevelGenerator>
     
     public UnityEvent dungeonGeneratedEvent;
 
-    private Room[] _dungeon = new Room[]{};
     private static int _staticDungeonSize;
     private int _roomNumber = 1;
 
@@ -55,7 +57,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
         _staticDungeonSize = dungeonSize;
         // Random.InitState((int)DateTime.Now.Ticks);
 
-        _dungeon = new Room[_staticDungeonSize*_staticDungeonSize];
+        dungeon = new Room[_staticDungeonSize*_staticDungeonSize];
         
         Random.InitState(35896);
 
@@ -73,7 +75,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
         // place it in their folder
         if(instantiatedProps) instantiatedProps.transform.SetParent(propsParent.transform);
 
-        _dungeon[centerIndex] = startRoom;
+        dungeon[centerIndex] = startRoom;
 
         _roomNumber = 0;
         
@@ -119,9 +121,9 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
     private int GetIndexOfRoom(Room room)
     {
-        for (int i = 0; i < _dungeon.Length; i++)
+        for (int i = 0; i < dungeon.Length; i++)
         {
-            if (_dungeon[i] == room)
+            if (dungeon[i] == room)
             {
                 return i;
             }
@@ -134,7 +136,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
     {
         List<Room> roomsOfgivenGen = new List<Room>(); 
 
-        foreach (Room Room in _dungeon)
+        foreach (Room Room in dungeon)
         {
             if (Room != null && Room.Generation == genNumber)
             {
@@ -158,25 +160,25 @@ public class LevelGenerator : Singleton<LevelGenerator>
         // east
         if ((roomIndex + 1) % dungeonSize != 0)
         {
-            rooms[Directions.East] = _dungeon[roomIndex + 1];
+            rooms[Directions.East] = dungeon[roomIndex + 1];
         }
 
         // west
         if (roomIndex % dungeonSize != 0)
         {
-            rooms[Directions.West] = _dungeon[roomIndex - 1];
+            rooms[Directions.West] = dungeon[roomIndex - 1];
         }
 
         // north
-        if (roomIndex + _staticDungeonSize < _dungeon.Length)
+        if (roomIndex + _staticDungeonSize < dungeon.Length)
         {
-            rooms[Directions.North] = _dungeon[roomIndex + _staticDungeonSize];
+            rooms[Directions.North] = dungeon[roomIndex + _staticDungeonSize];
         }
 
         // south
         if (roomIndex - _staticDungeonSize >= 0)
         {
-            rooms[Directions.South] = _dungeon[roomIndex - _staticDungeonSize];
+            rooms[Directions.South] = dungeon[roomIndex - _staticDungeonSize];
         }
 
         return rooms;
@@ -288,7 +290,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
                     instantiatedRoom.transform.SetParent(roomsParent.transform);
                     if (instantiatedProps) instantiatedProps.transform.SetParent(propsParent.transform);
 
-                    _dungeon[neighbourIndex] = instantiatedRoom;
+                    dungeon[neighbourIndex] = instantiatedRoom;
                 }
             }
         }
@@ -458,7 +460,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
 
     // get position of the room at roomIndex
-    private Vector3 GetPosition(int roomIndex)
+    public Vector3 GetPosition(int roomIndex)
     {
         int row = Mathf.FloorToInt(roomIndex / _staticDungeonSize);
         int col = roomIndex % _staticDungeonSize;
@@ -539,7 +541,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
                 break;
         }
 
-        if (neighbourIndex >= 0 && neighbourIndex < _dungeon.Length)
+        if (neighbourIndex >= 0 && neighbourIndex < dungeon.Length)
         {
             return neighbourIndex;
         }
