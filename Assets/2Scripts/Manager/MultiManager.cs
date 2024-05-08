@@ -511,7 +511,11 @@ public class MultiManager : Singleton<MultiManager>
 		{
 			sceneName = Scenes.SafeZone;
 		}
-		SceneManager.LoadAndSetActiveScene(sceneName);
+
+		if (_IsOwnerOfLobby)
+		{
+			SceneManager.LoadAndSetActiveScene(sceneName);
+		}
 		HideMainMenu();
 	}
 	
