@@ -24,7 +24,7 @@ namespace _2Scripts.Manager
         
         private void Start()
         {
-            player = MultiManager.instance.GetPlayerGameObject();
+            player = MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().gameObject;
             
             CheckForPlayer();
         }

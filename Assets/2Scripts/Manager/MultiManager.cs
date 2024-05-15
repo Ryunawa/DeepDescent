@@ -92,10 +92,9 @@ public class MultiManager : Singleton<MultiManager>
 		NetworkManager.Singleton.OnConnectionEvent += (manager, data) =>
 		{
 			Debug.Log("Client connected");
-			// if (!_IsOwnerOfLobby)
-			// {
-			// 	HideMainMenu();
-			// }
+			
+			
+			
 		};
 
 	}

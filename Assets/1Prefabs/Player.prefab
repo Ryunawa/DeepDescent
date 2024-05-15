@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8694979190430898155}
   - component: {fileID: 4253600266606473369}
+  - component: {fileID: 6906729635416023856}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -56,6 +57,37 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &6906729635416023856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630003422676777307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c647dfaf2e3f1224c9457302e3ec3b82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseUnreliableDeltas: 0
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!1 &1266541918576173683
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,12 +253,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camSens: {x: 50, y: 50}
-  playerSpeed: 2
+  playerSpeed: 5
   jumpHeight: 3
-  airControl: 2
+  airControl: 1
   animator: {fileID: 4055705197530235895}
   _camTransform: {fileID: 3755937543100378714}
   _virtualCamera: {fileID: 5685322309389839697}
+  _isDead:
+    m_InternalValue: 0
   inventory: {fileID: 0}
 --- !u!114 &7865229117149206806
 MonoBehaviour:
