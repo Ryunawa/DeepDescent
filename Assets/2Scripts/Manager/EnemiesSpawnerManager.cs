@@ -122,6 +122,7 @@ namespace _2Scripts.Manager
         [Button]
         private void DEBUG_StartSpawn()
         {
+            DifficultyManager.instance.DEBUG_SetEasyStatsForEnemies();
             _enemiesList = DifficultyManager.instance.GetEnemiesStatsToUse();
             StartCoroutine(SpawnEnemies());
         }
