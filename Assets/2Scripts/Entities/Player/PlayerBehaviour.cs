@@ -19,7 +19,7 @@ public class PlayerBehaviour : NetworkBehaviour
 	private Collider _ground = null;
 
 	private HealthComponent _health;
-	private NetworkVariable<bool> _isDead = new NetworkVariable<bool>();
+	[SerializeField]private NetworkVariable<bool> _isDead = new NetworkVariable<bool>();
 
 	public NetworkVariable<bool> IsDead { get => _isDead; set => _isDead = value; }
     public Inventory inventory;
@@ -40,14 +40,12 @@ public class PlayerBehaviour : NetworkBehaviour
 		{
 			_camTransform.gameObject.SetActive(false);
 			_virtualCamera.gameObject.SetActive(false);
-
-			Destroy(this);
-			
-
+			enabled = false;
 		}
 
 		Debug.Log("PLayerBehaviour Done Start ");
 		//SwitchWeapon(true);
+		
 	}
 
 	private void Update()

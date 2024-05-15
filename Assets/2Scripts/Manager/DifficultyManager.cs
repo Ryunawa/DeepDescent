@@ -50,6 +50,12 @@ namespace _2Scripts.Manager
         
         #endregion
         
+        /// <summary>
+        /// Must be called by the game manager or whatever start the game.
+        /// Adjust difficulty depending on the parameters.
+        /// </summary>
+        /// <param name="pDifficulty"> Easy, Normal or Hard</param>
+        /// <param name="pNumPlayers">One, two, three or four</param>
         public void AdjustDifficultyParameters(DifficultyMode pDifficulty, int pNumPlayers)
         {
             switch (pDifficulty)
@@ -73,7 +79,7 @@ namespace _2Scripts.Manager
         }
 
         /// <summary>
-        /// Adjust all the enemy types stats depending on the number of players 
+        /// Adjust all the enemy types stats depending on the number of players.
         /// </summary>
         /// <param name="pNumPlayers">The number of players</param>
         /// <returns></returns>
@@ -85,10 +91,11 @@ namespace _2Scripts.Manager
             _enemyTypesStructToUse.enemyType1 = AdjustEnemyStats(_enemyTypesStructToUse.enemyType1, multiplier);
             _enemyTypesStructToUse.enemyType2 = AdjustEnemyStats(_enemyTypesStructToUse.enemyType2, multiplier);
             _enemyTypesStructToUse.enemyType3 = AdjustEnemyStats(_enemyTypesStructToUse.enemyType3, multiplier);
+            _enemyTypesStructToUse.enemyType4 = AdjustEnemyStats(_enemyTypesStructToUse.enemyType3, multiplier);
         }
         
         /// <summary>
-        /// Adjust some stats of a enemy type depending on the number of players
+        /// Adjust some stats of a enemy type depending on the number of players.
         /// </summary>
         /// <param name="pStatsToAdjust">struct of an enemy type's stats</param>
         /// <param name="pRate"></param>
@@ -103,9 +110,9 @@ namespace _2Scripts.Manager
         }
         
         /// <summary>
-        /// Return a multiplier depending on the number of players
+        /// Return a multiplier depending on the number of players.
         /// </summary>
-        /// <param name="pNumPlayers"></param>
+        /// <param name="pNumPlayers">Number of player</param>
         /// <returns></returns>
         private float GetMultiplierForNumPlayers(int pNumPlayers)
         {
@@ -129,7 +136,8 @@ namespace _2Scripts.Manager
         }
 
         /// <summary>
-        /// Increase few stats for the difficulty over the time
+        /// Must be called by the game manager.
+        /// Increase few stats for the difficulty over the time.
         /// </summary>
         /// <param name="pTimer"></param>
         public void UpdateDifficultyOverTime(Stopwatch pTimer)
@@ -149,6 +157,13 @@ namespace _2Scripts.Manager
             
             Debug.Log("Multiplicateur : " + multiplier);
         }
+
+        // /!\ DEBUG ONLY /!\
+        [Button]
+        private void DEBUG_SetEasyStatsForEnemies()
+        {
+            AdjustDifficultyParameters(DifficultyMode.Easy, 1);
+        }
         
         // /!\ DEBUG ONLY /!\
         [Button]
@@ -161,7 +176,7 @@ namespace _2Scripts.Manager
         
         // /!\ DEBUG ONLY /!\
         [Button]
-        public void DEBUG_CalculateEnemyMultiplierFor30Minutes()
+        public void DEBUG_CalculateEnemyMultiplierFor40Minutes()
         {
             double totalElapsedTimeMinutes = totalTimeInMinutes;
             float multiplier = 1 + (float)(Math.Log(1 + totalElapsedTimeMinutes / timeInterval) * baseTimeRate);

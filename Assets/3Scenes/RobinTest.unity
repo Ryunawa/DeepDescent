@@ -1283,6 +1283,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: DifficultyManager
       objectReference: {fileID: 0}
+    - target: {fileID: 4587219548495061341, guid: 01ec7c7644f588d43a94dbc0d2630a8b,
+        type: 3}
+      propertyPath: baseTimeRate
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4587219548495061341, guid: 01ec7c7644f588d43a94dbc0d2630a8b,
+        type: 3}
+      propertyPath: timeInterval
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4587219548495061341, guid: 01ec7c7644f588d43a94dbc0d2630a8b,
+        type: 3}
+      propertyPath: totalTimeInMinutes
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 7150967302586417312, guid: 01ec7c7644f588d43a94dbc0d2630a8b,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -39,10 +39,7 @@ public class HealthComponent : NetworkBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
-		if (IsServer)
-		{
-			m_Health.Value = MaxHealth;
-		}
+		Heal(MaxHealth);
 	}
 
 	public void TakeDamage(sbyte iDamage)
@@ -79,13 +76,13 @@ public class HealthComponent : NetworkBehaviour
 
     }
 
-	[ServerRpc]
+	[Rpc(SendTo.Server)]
 	private void TakeDamageServerRPC(sbyte iDamage)
 	{
 		TakeDamage(iDamage);
 	}
 
-	[ServerRpc]
+	[Rpc(SendTo.Server, RequireOwnership = false)]
 	private void HealServerRPC(sbyte iHeal)
 	{
 		Heal(iHeal);
