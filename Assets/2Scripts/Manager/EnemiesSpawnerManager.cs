@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using _2Scripts.Struct;
+using NaughtyAttributes;
 using UnityEngine;
 using Unity.Mathematics;
 using Unity.Netcode;
@@ -10,13 +11,13 @@ using Random = UnityEngine.Random;
 
 namespace _2Scripts.Manager
 {
-    [System.Serializable]
+    [Serializable]
     public class LevelData
     {
         public List<GameObject> enemyPrefabsSpawnable;
     }
     
-    public class EnemiesSpawnerManager : MonoBehaviour
+    public class EnemiesSpawnerManager : Singleton<EnemiesSpawnerManager>
     {
         #region Variables
         
@@ -27,14 +28,13 @@ namespace _2Scripts.Manager
 
         private EnemyTypes _enemiesList;
         private int _currentEnemiesCount;
-        private int _currLevel; // Depend on the game manager
+        private int _currLevel = 1; // Depend on the game manager
         
         #endregion
         
         private void Start()
         {
             _enemiesList = DifficultyManager.instance.GetEnemiesStatsToUse();
-            StartCoroutine(SpawnEnemies());
         }
 
         /// <summary>
@@ -43,8 +43,8 @@ namespace _2Scripts.Manager
         /// <returns></returns>
         private EnemyStats ChooseEnemyToSpawn()
         {
-            int index = Math.Min(_currLevel, spawnableEnemiesPrefabsByLevel.Count - 1);
-            LevelData currSpawnableEnemiesPrefabs = spawnableEnemiesPrefabsByLevel[index];
+            int index = Math.Min(_currLevel, spawnableEnemiesPrefabsByLevel.Count);
+            LevelData currSpawnableEnemiesPrefabs = spawnableEnemiesPrefabsByLevel[index - 1];
 
             foreach (var spawnableEnemyPrefab in currSpawnableEnemiesPrefabs.enemyPrefabsSpawnable)
             {
@@ -59,7 +59,7 @@ namespace _2Scripts.Manager
                     }
                 }
             }
-            return default;
+            return GetStructElementByIndex<EnemyStats>(_enemiesList, 0);;
         }
 
         /// <summary>
@@ -90,6 +90,10 @@ namespace _2Scripts.Manager
                     MultiManager.instance.SpawnNetworkObject(objectToSpawn.enemyPrefab.GetComponent<NetworkObject>(),
                         spawningPosition,
                         quaternion.identity);
+                    
+                    //DEBUG ONLY
+                    //Instantiate(objectToSpawn.enemyPrefab, spawningPosition, quaternion.identity);
+                    
                     _currentEnemiesCount++;
                 }
             }
@@ -101,6 +105,21 @@ namespace _2Scripts.Manager
         public void EnemyDestroyed()
         {
             _currentEnemiesCount--;
+        }
+
+        
+        // /!\ DEBUG ONLY /!\
+        [Button]
+        private void DEBUG_StartSpawn()
+        {
+            _enemiesList = DifficultyManager.instance.GetEnemiesStatsToUse();
+            StartCoroutine(SpawnEnemies());
+        }
+        // /!\ DEBUG ONLY /!\
+        [Button]
+        private void DEBUG_StopSpawn()
+        {
+            StopCoroutine(SpawnEnemies());
         }
     }
 
