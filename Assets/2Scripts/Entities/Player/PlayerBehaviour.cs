@@ -40,7 +40,7 @@ public class PlayerBehaviour : NetworkBehaviour
 		{
 			_camTransform.gameObject.SetActive(false);
 			_virtualCamera.gameObject.SetActive(false);
-			this.gameObject.SetActive(false);
+			enabled = false;
 		}
 
 		Debug.Log("PLayerBehaviour Done Start ");
