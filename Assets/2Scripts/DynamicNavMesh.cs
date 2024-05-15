@@ -9,16 +9,23 @@ public static class DynamicNavMesh
 
     public static void UpdateNavMesh()
     {
+        Debug.LogWarning("update?");
         if (navMeshSurface == null)
         {
+            Debug.LogWarning("find?");
             navMeshSurface = UnityEngine.Object.FindObjectOfType<NavMeshSurface>();
             if(navMeshSurface == null ) 
             {
                 Debug.LogError("No NavMeshSurface found in scene.");
                 return;
             }
+            else
+            {
+
+                Debug.LogWarning("found.");
+            }
         }
         navMeshSurface.BuildNavMesh();
-        Debug.LogError("BuildNavMesh.");
+        Debug.LogWarning("BuildNavMesh.");
     }
 }
