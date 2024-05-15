@@ -20,6 +20,8 @@ namespace _2Scripts.Manager
     public class EnemiesSpawnerManager : Singleton<EnemiesSpawnerManager>
     {
         #region Variables
+
+        public bool bSpawnInMultiplayer;
         
         [SerializeField] private List<LevelData> spawnableEnemiesPrefabsByLevel;
         [SerializeField] private int maxEnemiesPerLevel = 5;
@@ -86,14 +88,20 @@ namespace _2Scripts.Manager
                 {
                     EnemyStats objectToSpawn = ChooseEnemyToSpawn();
                     Vector3 spawningPosition = GetSpawnPosition();
-                    
-                    // MultiManager.instance.SpawnNetworkObject(objectToSpawn.enemyPrefab.GetComponent<NetworkObject>(),
-                    //     spawningPosition,
-                    //     quaternion.identity);
-                    
-                    //DEBUG ONLY
-                    Instantiate(objectToSpawn.enemyPrefab, new Vector3(GetSpawnPosition().x, 1, GetSpawnPosition().z), quaternion.identity);
-                    
+
+                    if (bSpawnInMultiplayer)
+                    {
+                         MultiManager.instance.SpawnNetworkObject(objectToSpawn.enemyPrefab.GetComponent<NetworkObject>(),
+                             spawningPosition,
+                             quaternion.identity);
+                    }
+                    else
+                    {
+                        //DEBUG ONLY
+                        Instantiate(objectToSpawn.enemyPrefab, new Vector3(spawningPosition.x, 1, spawningPosition.z),
+                            quaternion.identity);
+                    }
+
                     _currentEnemiesCount++;
                 }
             }
