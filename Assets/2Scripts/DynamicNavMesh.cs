@@ -19,5 +19,6 @@ public static class DynamicNavMesh
             }
         }
         navMeshSurface.BuildNavMesh();
+        Debug.LogError("BuildNavMesh.");
     }
 }
