@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3388948}
   - component: {fileID: 2305258}
   - component: {fileID: 64581156573220054}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Prop_Torch_Ornate_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,6 +119,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Point Light
+      objectReference: {fileID: 0}
+    - target: {fileID: 623253814331888907, guid: 3b5f6aaa328a007409250262b923a521,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2878238876235204573, guid: 3b5f6aaa328a007409250262b923a521,
         type: 3}

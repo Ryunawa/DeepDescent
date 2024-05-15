@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3345258}
   - component: {fileID: 2398262}
   - component: {fileID: 64087588486616290}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_Mushroom_Giant_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}

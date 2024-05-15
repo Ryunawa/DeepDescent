@@ -238,7 +238,7 @@ void Start()
 
     private IEnumerator StartWaiting(float waitTime)
     {
-        Debug.LogWarning("waiting... " +  waitTime);
+        // Debug.LogWarning("waiting... " +  waitTime);
         isWaiting = true;
         yield return new WaitForSeconds(waitTime);
         isWaiting = false;
@@ -261,13 +261,9 @@ void Start()
                 NavMeshHit hit;
                 Vector3 randomPoint = Vector3.zero;
 
-                Debug.Log("Tentative à une distance de " + distance + " unités.");
-
                 if (NavMesh.SamplePosition(randomDirection, out hit, distance, NavMesh.AllAreas))
                 {
                     randomPoint = hit.position;
-                    Debug.Log("Position choisie : " + randomPoint);
-                    Debug.Log("Distance dans le tableau : " + distance);
                     
                     // is the point accessible? by trying to raycast it
                     RaycastHit raycastHit;
@@ -277,26 +273,18 @@ void Start()
                         if (raycastHit.collider.gameObject.layer == obstacleMask)
                         {
                             randomPoint = Vector3.zero;
-                            Debug.Log("Point bloqué par un obstacle. Essai suivant...");
                             failedAttempts++;
-                            if (failedAttempts == 2)
-                            {
-                                Debug.LogWarning("Les deux essais ont échoué pour une distance de " + distance + " unités.");
-                            }
                             continue;
                         }
                     }
                     else
                     {
-                        Debug.Log("Point valide trouvé à une distance de " + distance + " unités.");
                         pointFound = true;
                         return randomPoint; // return the point if has been found
                     }
                 }
             }
-            
         }
-
         // no valid point
         if (!pointFound)
         {

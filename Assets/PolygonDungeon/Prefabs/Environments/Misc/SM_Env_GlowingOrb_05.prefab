@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3377696}
   - component: {fileID: 2382802}
   - component: {fileID: 64216610553592694}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Env_GlowingOrb_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,6 +119,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Point Light
+      objectReference: {fileID: 0}
+    - target: {fileID: 623253814331888907, guid: 3b5f6aaa328a007409250262b923a521,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2150252418461414674, guid: 3b5f6aaa328a007409250262b923a521,
         type: 3}

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3317658}
   - component: {fileID: 2398272}
   - component: {fileID: 64206126175661296}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SM_Prop_Goblin_Meat_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
