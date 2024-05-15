@@ -192,6 +192,7 @@ GameObject:
   - component: {fileID: 7217337416643402615}
   - component: {fileID: 5061184010628317641}
   - component: {fileID: 4837371637697299105}
+  - component: {fileID: 5559061447972688155}
   m_Layer: 6
   m_Name: ActualPlayer
   m_TagString: Untagged
@@ -260,10 +261,9 @@ MonoBehaviour:
   airControl: 1
   animator: {fileID: 4055705197530235895}
   _camTransform: {fileID: 3755937543100378714}
+  _overrideNetwork: 0
   _virtualCamera: {fileID: 5685322309389839697}
-  _isDead:
-    m_InternalValue: 0
-  inventory: {fileID: 0}
+  inventory: {fileID: 5559061447972688155}
 --- !u!114 &7865229117149206806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -352,6 +352,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5559061447972688155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3362452139282482207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef2b82b41b712ab4ebef0146dea13585, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ChestArmor: {fileID: 0}
+  LegArmor: {fileID: 0}
+  FeetArmor: {fileID: 0}
+  RingsItem:
+  - {fileID: 0}
+  - {fileID: 0}
+  NecklaceItem: {fileID: 0}
+  MainHandItem: {fileID: 0}
+  OffHandItem: {fileID: 0}
+  InventoryItems: []
+  GlobalItemList: {fileID: 11400000, guid: 9955bbdfc35aa654eabe5762843da012, type: 2}
+  InventorySpace: 6
 --- !u!1 &6744575752435435962
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,7 +451,7 @@ MonoBehaviour:
   m_VerticalAxis:
     Value: 0
     m_SpeedMode: 1
-    m_MaxSpeed: 300
+    m_MaxSpeed: 0.25
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse Y
@@ -451,7 +475,7 @@ MonoBehaviour:
   m_HorizontalAxis:
     Value: 0
     m_SpeedMode: 1
-    m_MaxSpeed: 300
+    m_MaxSpeed: 0.25
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
