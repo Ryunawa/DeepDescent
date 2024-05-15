@@ -556,6 +556,11 @@ public class LevelGenerator : Singleton<LevelGenerator>
         int newIndex = GetIndexNeighbour(roomIndex, direction);
         return newIndex != -1;
     }
+
+    public bool IsRoomEmpty(int roomIndex)
+    {
+        return dungeon[roomIndex].GetRoomType() == RoomType.Zero;
+    }
 }
 
 public enum Directions
