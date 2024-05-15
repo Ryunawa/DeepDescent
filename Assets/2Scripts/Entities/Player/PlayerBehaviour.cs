@@ -10,11 +10,11 @@ public class PlayerBehaviour : NetworkBehaviour
 	[SerializeField] private float jumpHeight = 1.0f;
 	[SerializeField] private float airControl = 0;
 	[SerializeField] private Animator animator;
+	[SerializeField] private Transform _camTransform;
+	[SerializeField] private CinemachineVirtualCamera _virtualCamera;
+	
 	private Rigidbody _rb;
 	private InputManager _inputManager;
-	private Transform _camTransform;
-	private CinemachineVirtualCamera _virtualCamera;
-
 	private bool _hasJumped = false;
 	private Collider _ground = null;
 
@@ -32,8 +32,6 @@ public class PlayerBehaviour : NetworkBehaviour
 
 		_rb = GetComponent<Rigidbody>();
 		_inputManager = InputManager.instance;
-		_camTransform = GetComponentInChildren<Camera>().transform;
-		_virtualCamera = GetComponentInChildren<CinemachineVirtualCamera>();
 		
 		_virtualCamera.GetCinemachineComponent<CinemachinePOV>().m_HorizontalAxis.m_MaxSpeed = camSens.x * 0.01f;
 		_virtualCamera.GetCinemachineComponent<CinemachinePOV>().m_VerticalAxis.m_MaxSpeed = camSens.y * 0.01f;
@@ -76,9 +74,11 @@ public class PlayerBehaviour : NetworkBehaviour
 		if (!IsGrounded())
 			move *= airControl;
 
+		transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
+		
 		_rb.velocity = move * playerSpeed + (_rb.velocity.y * Vector3.up);
 
-		animator.gameObject.transform.rotation = Quaternion.Euler(0,_camTransform.eulerAngles.y,0);
+		gameObject.transform.rotation = Quaternion.Euler(0,_camTransform.eulerAngles.y,0);
 		
 		if (_hasJumped)
 		{
