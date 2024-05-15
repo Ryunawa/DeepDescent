@@ -87,12 +87,12 @@ namespace _2Scripts.Manager
                     EnemyStats objectToSpawn = ChooseEnemyToSpawn();
                     Vector3 spawningPosition = GetSpawnPosition();
                     
-                    MultiManager.instance.SpawnNetworkObject(objectToSpawn.enemyPrefab.GetComponent<NetworkObject>(),
-                        spawningPosition,
-                        quaternion.identity);
+                    // MultiManager.instance.SpawnNetworkObject(objectToSpawn.enemyPrefab.GetComponent<NetworkObject>(),
+                    //     spawningPosition,
+                    //     quaternion.identity);
                     
                     //DEBUG ONLY
-                    //Instantiate(objectToSpawn.enemyPrefab, spawningPosition, quaternion.identity);
+                    Instantiate(objectToSpawn.enemyPrefab, new Vector3(GetSpawnPosition().x, 1, GetSpawnPosition().z), quaternion.identity);
                     
                     _currentEnemiesCount++;
                 }

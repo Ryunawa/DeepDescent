@@ -76,6 +76,12 @@ namespace _2Scripts.Manager
                     break;
             }
             AdjustEnemiesStatsForNumPlayers(pNumPlayers);
+            
+            for (int i = 0; i <= GetNumberOfElementsInStruct(_enemyTypesStructToUse); i++)
+            {
+                OnEnemiesStatsUpdated?.Invoke(GetStructElementByIndex<EnemyStats>(_enemyTypesStructToUse, i).enemyPrefab, 
+                    GetStructElementByIndex<EnemyStats>(_enemyTypesStructToUse, i));
+            }
         }
 
         /// <summary>
