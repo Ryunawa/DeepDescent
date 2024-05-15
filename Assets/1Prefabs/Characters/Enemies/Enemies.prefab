@@ -2305,6 +2305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbd6cb26d85f0d24b9bb3acf2e8dcb53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distanceAcceptation: 2
   startWaitTime: 4
   timeToRotate: 2
   speedWalk: 3
@@ -2322,6 +2323,7 @@ MonoBehaviour:
   waypoints:
   - {fileID: 0}
   - {fileID: 0}
+  stopChance: 0.5
 --- !u!114 &-8515664152495936704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2334,7 +2336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3233595993
+  GlobalObjectIdHash: 763546247
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -2355,6 +2357,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7cc0c3813364b1caa5268549ecfe1a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyStats:
+    enemyPrefab: {fileID: 0}
+    spawnRate: 0
+    health: 0
+    damageDealt: 0
+    damageTaken: 0
 --- !u!1 &4730096399801604774
 GameObject:
   m_ObjectHideFlags: 0

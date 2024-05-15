@@ -10,6 +10,8 @@ public class AIController : MonoBehaviour
 {
     [Header("Movement Settings")]
     [SerializeField]
+    private float distanceAcceptation = 2f; // distance where we can considere the IA managed to go to his goal
+    [SerializeField]
     private float startWaitTime = 4; // wait time before the ai starts moving between each action
     [SerializeField]
     private float timeToRotate = 2; // time it takes for the AI to rotate its direction while patrolling or chasing
@@ -34,10 +36,12 @@ public class AIController : MonoBehaviour
     [SerializeField]
     private float timeBeforeAttack = 2f; // attack speed in seconds
 
-    [Header("Waypoints")]
-    [SerializeField]
-    private Transform[] waypoints; // patrol points
+    [Header("Patrol")]
+    [SerializeField] private Transform[] waypoints; // patrol points
     private int m_CurrentWaypointIndex;
+    [SerializeField][Range(0f, 1f)] private float stopChance = 0.5f; // percentage of chance to stop once at the destination
+    private bool isWaiting = false; // is the ia waiting before patrolling again?
+    private bool didAlreadyWait = false; // did it already wait once at its patrol point?
 
     // Components
     private NavMeshAgent navMeshAgent;
@@ -148,8 +152,9 @@ void Start()
         }
     }
 
+    
     // patrolling points by points
-    private void Patrolling()
+    private void PatrollingPointsByPoints()
     {
         // if player is near, move to the last position known of him
         if (m_PlayerNear)
@@ -190,6 +195,117 @@ void Start()
             }
         }
     }
+
+    private void NewRandomPointPatrolling()
+    {
+        Vector3 randomPoint = GetRandomAccessiblePoint();
+
+        // if a point is valid -> become destination
+        if (randomPoint != Vector3.zero)
+        {
+            navMeshAgent.SetDestination(randomPoint);
+            didAlreadyWait = false;
+        }
+    }
+
+    private void Patrolling()
+    {
+        // if ia close to its destination and finished his journey
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < distanceAcceptation)
+        {
+            if(!didAlreadyWait)
+            {
+                float percentage = UnityEngine.Random.value;
+                if (percentage <= stopChance)
+                {
+                    didAlreadyWait = true;
+                    float waitTime = UnityEngine.Random.Range(2f, 5f);
+                    StartCoroutine(StartWaiting(waitTime));
+                }
+                else
+                {
+                    Debug.LogError("should not wait: " + percentage + " > " + stopChance);
+                    NewRandomPointPatrolling();
+                }
+            }
+            else if (!isWaiting)
+            {
+                NewRandomPointPatrolling();
+            }
+
+        }
+    }
+
+    private IEnumerator StartWaiting(float waitTime)
+    {
+        Debug.LogWarning("waiting... " +  waitTime);
+        isWaiting = true;
+        yield return new WaitForSeconds(waitTime);
+        isWaiting = false;
+    }
+
+
+    private Vector3 GetRandomAccessiblePoint()
+    {
+        int[] distances = { 30, 20, 10, 5 }; // distances to try to find a point
+        bool pointFound = false;
+
+        foreach (int distance in distances)
+        {
+            int failedAttempts = 0;
+
+            for (int i = 0; i < 2; i++) // test 2 times for each distances
+            {
+                Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * distance;
+                randomDirection += transform.position;
+                NavMeshHit hit;
+                Vector3 randomPoint = Vector3.zero;
+
+                Debug.Log("Tentative à une distance de " + distance + " unités.");
+
+                if (NavMesh.SamplePosition(randomDirection, out hit, distance, NavMesh.AllAreas))
+                {
+                    randomPoint = hit.position;
+                    Debug.Log("Position choisie : " + randomPoint);
+                    Debug.Log("Distance dans le tableau : " + distance);
+                    
+                    // is the point accessible? by trying to raycast it
+                    RaycastHit raycastHit;
+                    if (Physics.Raycast(transform.position, randomPoint - transform.position, out raycastHit, distance))
+                    {
+                        // raycast collides with an obstacle
+                        if (raycastHit.collider.gameObject.layer == obstacleMask)
+                        {
+                            randomPoint = Vector3.zero;
+                            Debug.Log("Point bloqué par un obstacle. Essai suivant...");
+                            failedAttempts++;
+                            if (failedAttempts == 2)
+                            {
+                                Debug.LogWarning("Les deux essais ont échoué pour une distance de " + distance + " unités.");
+                            }
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("Point valide trouvé à une distance de " + distance + " unités.");
+                        pointFound = true;
+                        return randomPoint; // return the point if has been found
+                    }
+                }
+            }
+            
+        }
+
+        // no valid point
+        if (!pointFound)
+        {
+            Debug.LogWarning("No points found in all distances, just gonna wait then...");
+        }
+
+        return Vector3.zero;
+    }
+
 
     // attack the player
     private void Attack()
@@ -333,4 +449,5 @@ void Start()
             }
         }
     }
+
 }
