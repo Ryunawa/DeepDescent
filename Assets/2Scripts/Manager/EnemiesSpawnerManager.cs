@@ -71,7 +71,12 @@ namespace _2Scripts.Manager
         /// <returns></returns>
         private Vector3 GetSpawnPosition()
         {
-            int randomInt = Random.Range(0, LevelGenerator.instance.dungeon.Length);
+            int randomInt;
+            do
+            {
+                randomInt = Random.Range(0, LevelGenerator.instance.dungeon.Length);
+            } while (LevelGenerator.instance.IsRoomEmpty(randomInt));
+
             return LevelGenerator.instance.GetPosition(randomInt);
         }
 
