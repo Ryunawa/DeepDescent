@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using _2Scripts.Struct;
@@ -9,18 +10,24 @@ using Random = UnityEngine.Random;
 
 namespace _2Scripts.Manager
 {
+    [System.Serializable]
+    public class LevelData
+    {
+        public List<GameObject> enemyPrefabsSpawnable;
+    }
+    
     public class EnemiesSpawnerManager : MonoBehaviour
     {
         #region Variables
-
-        [SerializeField] private List<GameObject> spawnableEnemiesPrefabs;
+        
+        [SerializeField] private List<LevelData> spawnableEnemiesPrefabsByLevel;
         [SerializeField] private int maxEnemiesPerLevel = 5;
         [Range(0.1f, 10)]
         [SerializeField] private float spawnIntervalInSecond = 2f;
 
-
         private EnemyTypes _enemiesList;
         private int _currentEnemiesCount;
+        private int _currLevel; // Depend on the game manager
         
         #endregion
         
@@ -36,7 +43,10 @@ namespace _2Scripts.Manager
         /// <returns></returns>
         private EnemyStats ChooseEnemyToSpawn()
         {
-            foreach (var spawnableEnemyPrefab in spawnableEnemiesPrefabs)
+            int index = Math.Min(_currLevel, spawnableEnemiesPrefabsByLevel.Count - 1);
+            LevelData currSpawnableEnemiesPrefabs = spawnableEnemiesPrefabsByLevel[index];
+
+            foreach (var spawnableEnemyPrefab in currSpawnableEnemiesPrefabs.enemyPrefabsSpawnable)
             {
                 for (int i = 0; i < GetNumberOfElementsInStruct(_enemiesList); i++)
                 {
