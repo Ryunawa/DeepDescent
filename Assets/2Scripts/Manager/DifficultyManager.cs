@@ -166,7 +166,7 @@ namespace _2Scripts.Manager
 
         // /!\ DEBUG ONLY /!\
         [Button]
-        private void DEBUG_SetEasyStatsForEnemies()
+        public void DEBUG_SetEasyStatsForEnemies()
         {
             AdjustDifficultyParameters(DifficultyMode.Easy, 1);
         }
