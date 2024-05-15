@@ -84,7 +84,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
         
         dungeonGeneratedEvent.Invoke();
         
-        MultiManager.instance.playerNetworkObject.gameObject.transform.position = GetPosition(centerIndex) + Vector3.up * 5;
+        MultiManager.instance.playerNetworkObject.gameObject.GetComponent<PlayerBehaviour>().gameObject.transform.position = GetPosition(centerIndex) + Vector3.up * 5;
         
         SceneManager.instance.DeactivateLoadingScreen();
     }
