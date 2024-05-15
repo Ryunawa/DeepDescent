@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using _2Scripts.Entities;
 using _2Scripts.Struct;
 using NaughtyAttributes;
 using UnityEngine;
@@ -98,8 +99,9 @@ namespace _2Scripts.Manager
                     else
                     {
                         //DEBUG ONLY
-                        Instantiate(objectToSpawn.enemyPrefab, new Vector3(spawningPosition.x, 1, spawningPosition.z),
+                        var newEnemy = Instantiate(objectToSpawn.enemyPrefab, new Vector3(spawningPosition.x, 1, spawningPosition.z),
                             quaternion.identity);
+                        newEnemy.GetComponent<AdjustEnemyStats>().enemyStats = objectToSpawn;
                     }
 
                     _currentEnemiesCount++;
