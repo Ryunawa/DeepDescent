@@ -1,8 +1,12 @@
+using NaughtyAttributes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[Serializable]
 public struct InventoryObject
 {
     public int ID;
@@ -75,7 +79,7 @@ public class Inventory : MonoBehaviour
 
     private void SpawnFromInventory(InventoryObject inventoryObject)
     {
-        Instantiate(GlobalItemList.items.Find(x => x.ID == inventoryObject.ID).ObjectPrefab, transform.position, Quaternion.identity);
+        MultiManager.instance.SpawnNetworkObjectServerRPC(GlobalItemList.FindItemFromID(inventoryObject.ID).ObjectPrefab.GetComponent<NetworkObject>(), transform.position, Quaternion.identity);
     }
 
     public void  UseFromInventory(int itemPos)
@@ -83,7 +87,7 @@ public class Inventory : MonoBehaviour
         if (InventoryItems.Count < (InventorySpace - 1))
         {
             InventoryObject newInventoryObject = InventoryItems[itemPos];
-            ConsumableItem realItem = (ConsumableItem) GlobalItemList.items.Find(x => x.ID == newInventoryObject.ID);
+            ConsumableItem realItem = (ConsumableItem) GlobalItemList.FindItemFromID(newInventoryObject.ID);
             if (realItem)
             {
                 realItem.Use();
@@ -114,7 +118,7 @@ public class Inventory : MonoBehaviour
         if (InventoryItems.Count < (InventorySpace - 1))
         {
             InventoryObject newInventoryObject = InventoryItems[itemPos];
-            EquippableItem realItem = (EquippableItem)GlobalItemList.items.Find(x => x.ID == newInventoryObject.ID);
+            EquippableItem realItem = (EquippableItem)GlobalItemList.FindItemFromID(newInventoryObject.ID);
             if (realItem)
             {
                 (bool, EquippableItem) result = realItem.Equip(this);
@@ -135,5 +139,11 @@ public class Inventory : MonoBehaviour
             }
         }
         Debug.Log("[Inventory::EquipFromInventory()] - Tried to use item from inventory that was out of bound");
+    }
+
+    [Button]
+    public void DropFirstItem()
+    {
+        DropFromInventory(0);
     }
 }

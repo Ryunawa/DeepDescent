@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using _2Scripts.Entities;
 using _2Scripts.Struct;
 using NaughtyAttributes;
 using UnityEngine;
@@ -70,7 +71,12 @@ namespace _2Scripts.Manager
         /// <returns></returns>
         private Vector3 GetSpawnPosition()
         {
-            int randomInt = Random.Range(0, LevelGenerator.instance.dungeon.Length);
+            int randomInt;
+            do
+            {
+                randomInt = Random.Range(0, LevelGenerator.instance.dungeon.Length);
+            } while (LevelGenerator.instance.IsRoomEmpty(randomInt));
+
             return LevelGenerator.instance.GetPosition(randomInt);
         }
 
@@ -98,8 +104,9 @@ namespace _2Scripts.Manager
                     else
                     {
                         //DEBUG ONLY
-                        Instantiate(objectToSpawn.enemyPrefab, new Vector3(spawningPosition.x, 1, spawningPosition.z),
+                        var newEnemy = Instantiate(objectToSpawn.enemyPrefab, new Vector3(spawningPosition.x, 1, spawningPosition.z),
                             quaternion.identity);
+                        newEnemy.GetComponent<AdjustEnemyStats>().enemyStats = objectToSpawn;
                     }
 
                     _currentEnemiesCount++;
@@ -120,6 +127,7 @@ namespace _2Scripts.Manager
         [Button]
         private void DEBUG_StartSpawn()
         {
+            DifficultyManager.instance.DEBUG_SetEasyStatsForEnemies();
             _enemiesList = DifficultyManager.instance.GetEnemiesStatsToUse();
             StartCoroutine(SpawnEnemies());
         }
