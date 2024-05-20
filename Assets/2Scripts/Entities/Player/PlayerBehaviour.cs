@@ -1,6 +1,7 @@
 using Cinemachine;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerBehaviour : NetworkBehaviour
@@ -13,7 +14,9 @@ public class PlayerBehaviour : NetworkBehaviour
     [SerializeField] private Transform _camTransform;
     [SerializeField] private bool _overrideNetwork = false;
     [SerializeField] private CinemachineVirtualCamera _virtualCamera;
-
+    [SerializeField] private GameObject rightHandRoot;
+    [SerializeField] private GameObject leftHandRoot;
+    
     private Rigidbody _rb;
     private InputManager _inputManager;
 
