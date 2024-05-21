@@ -16,11 +16,13 @@ MonoBehaviour:
   Name: Basic Sword
   Description: 'This sword was given to you by the adventurers guild, it''s far from
     the best but it''ll do '
+  Rarity: 0
   SellValue: 5
   QuickUse: 0
   Stackable: 0
   InventoryIcon: {fileID: 21300000, guid: 719c2201c2f5f6c4aafffaeb5abdf5f9, type: 3}
-  ObjectPrefab: {fileID: 0}
+  ObjectPrefab: {fileID: 8778570344472889581, guid: 05bc2222eb1f77a47836f7bff22c159c,
+    type: 3}
   WeaponType: 1
   AttackValue: 5
   AttackSpeed: 1
