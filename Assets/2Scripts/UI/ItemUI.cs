@@ -3,16 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using _2Scripts.Enum;
 using _2Scripts.Manager;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     static ItemList GlobalItemList;
     
     [SerializeField] private Image Image;
     [SerializeField] private Image Border;
+    [SerializeField] private TextMeshProUGUI Quantity;
     [SerializeField] private bool IsEquipment;
     [SerializeField] private bool IsDrop;
     private int ItemID;
@@ -21,17 +23,8 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     private bool _isGrabbed;
 
     private Transform parentAfterDrag;
-
-    private Dictionary<Rarity, Color> Colors = new Dictionary<Rarity, Color>()
-    {
-        {Rarity.Common, Color.white},
-        {Rarity.Uncommon, new Color(30, 255, 0)},
-        {Rarity.Rare, new Color(0, 112, 221)},
-        {Rarity.Epic, new Color(163, 53, 238)},
-        {Rarity.Legendary, new Color(255, 128, 0)}
-    };
     
-    public void Setup(int itemID)
+    public void Setup(int itemID, int quantity)
     {
         if (GlobalItemList == null)
         {
@@ -39,13 +32,15 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         }
         
         ItemID = itemID;
-        Border.color = Colors[GlobalItemList.FindItemFromID(itemID).Rarity];
+        Border.color = InventoryUIManager.Colors[GlobalItemList.FindItemFromID(itemID).Rarity];
         Image.sprite = GlobalItemList.FindItemFromID(itemID).InventoryIcon;
+        if (Quantity != null) Quantity.text = quantity.ToString();
         Image.color = Color.white;
     }
 
     public void Clear()
     {
+        ItemID = -1;
         Image.color = Color.clear;
     }
 
@@ -96,5 +91,39 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         }
         
         InventoryUIManager.instance.DrawInventory();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Inventory inventory = InventoryUIManager.instance.Inventory;
+        ItemPos = transform.GetSiblingIndex();
+        inventory.UseFromInventory(ItemPos);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (_isGrabbed || IsEquipment || IsDrop) return;
+
+        ItemUI itemUI = eventData.pointerEnter.gameObject.GetComponentInParent<ItemUI>();
+
+        if (itemUI.ItemID == -1) return;
+     
+        if (GlobalItemList == null) GlobalItemList = MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().inventory.GlobalItemList;
+        
+        Item item = GlobalItemList.FindItemFromID(itemUI.ItemID);
+        
+        InventoryUIManager.instance.ItemDetailUI.Setup(item);
+        InventoryUIManager.instance.ItemDetailUI.ToggleUI();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (_isGrabbed || IsEquipment || IsDrop) return;
+        
+        ItemUI itemUI = eventData.pointerEnter.gameObject.GetComponentInParent<ItemUI>();
+        
+        if (itemUI.ItemID == -1) return;
+        
+        InventoryUIManager.instance.ItemDetailUI.ToggleUI();
     }
 }

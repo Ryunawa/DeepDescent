@@ -27,4 +27,9 @@ public class WeaponItem : EquippableItem
         return (false, null);
         //throw new System.NotImplementedException();
     }
+
+    public override string GetStats()
+    {
+        return $"Attack : {AttackValue}\\r\\nAttack speed : {AttackSpeed}" + (TwoHanded?"\\r\\nTwo handed":"") + (IsDualWieldable?"\\r\\nCan dual wield":"") ;
+    }
 }

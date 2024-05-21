@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using _2Scripts.Enum;
 using NaughtyAttributes;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace _2Scripts.Manager
     {
         [SerializeField] private ItemUI ItemPrefab;
         [SerializeField] private GameObject inventoryRoot;
+        [SerializeField] private ItemDetailUI itemDetailUI;
         [Header("Slots")]
         [SerializeField] private ItemUI Head;
         [SerializeField] private ItemUI Chest;
@@ -20,11 +22,22 @@ namespace _2Scripts.Manager
         [SerializeField] private ItemUI MainHand;
         [SerializeField] private ItemUI OffHand;
         
+        public static readonly Dictionary<Rarity, Color> Colors = new Dictionary<Rarity, Color>()
+        {
+            {Rarity.Common, Color.white},
+            {Rarity.Uncommon, new Color(30, 255, 0)},
+            {Rarity.Rare, new Color(0, 112, 221)},
+            {Rarity.Epic, new Color(163, 53, 238)},
+            {Rarity.Legendary, new Color(255, 128, 0)}
+        };
+        
         private Inventory _inventory;
         private List<ItemUI> ListUI = new List<ItemUI>();
         private bool _isOpened;
 
         public Inventory Inventory => _inventory;
+
+        public ItemDetailUI ItemDetailUI => itemDetailUI;
 
         private void Start()
         {
@@ -66,7 +79,7 @@ namespace _2Scripts.Manager
             {
                 if (i < _inventory.InventoryItems.Count)
                 {
-                    ListUI[i].Setup(_inventory.InventoryItems[i].ID);
+                    ListUI[i].Setup(_inventory.InventoryItems[i].ID, _inventory.InventoryItems[i].Amount);
                 }
                 else
                 {
@@ -87,7 +100,7 @@ namespace _2Scripts.Manager
         private void DrawEquipment(ItemUI itemUI, Item item)
         {
             if (item != null)
-                itemUI.Setup(item.ID);
+                itemUI.Setup(item.ID, -1);
             else
                 itemUI.Clear();
         }

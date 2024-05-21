@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using _2Scripts.Enum;
 using UnityEngine;
 

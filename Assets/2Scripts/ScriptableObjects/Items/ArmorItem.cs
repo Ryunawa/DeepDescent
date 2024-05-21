@@ -50,4 +50,10 @@ public class ArmorItem : EquippableItem
         }
         return (true, oldItem);
     }
+
+    public override string GetStats()
+    {
+        //TODO
+        return "NEED TO DO";
+    }
 }
