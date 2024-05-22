@@ -62,7 +62,7 @@ public class Inventory : MonoBehaviour
         if (InventoryItems.Count < (InventorySpace - 1))
         {
             InventoryObject newInventoryObject = InventoryItems[itemPos];
-            SpawnFromInventory(newInventoryObject);
+            SpawnFromInventoryRpc(newInventoryObject);
             if (InventoryItems[itemPos].Amount > 1)
             {
                 newInventoryObject.Amount =- 1;
@@ -78,19 +78,17 @@ public class Inventory : MonoBehaviour
         }
         Debug.Log("[Inventory::DropFromInventory()] - Tried to drop item from inventory that was out of bound");
     }
-
-    private void SpawnFromInventory(InventoryObject inventoryObject)
+    
+    [Rpc(SendTo.Server)]
+    private void SpawnFromInventoryRpc(InventoryObject inventoryObject)
     {
-        NetworkObject o = Instantiate(GlobalItemList.FindItemFromID(inventoryObject.ID).ObjectPrefab.GetComponent<NetworkObject>());
-        testRpc(o);
+        Debug.Log("SERVERRRR");
+        NetworkObject o = Instantiate(GlobalItemList.FindItemFromID(inventoryObject.ID).ObjectPrefab.GetComponent<NetworkObject>(), transform.position, Quaternion.identity);
+        o.Spawn();
         //SpawnerManager.instance.SpawnNetworkObjectRpc(GlobalItemList.FindItemFromID(inventoryObject.ID).ObjectPrefab.GetComponent<NetworkObject>(), transform.position, Quaternion.identity);
     }
 
-    [Rpc(SendTo.Server)]
-    private void testRpc(NetworkObject o)
-    {
-        o.Spawn();
-    }
+    
 
     public void  UseFromInventory(int itemPos)
     {
