@@ -67,7 +67,6 @@ public class ArmorItem : EquippableItem
 
     public override string GetStats()
     {
-        //TODO
-        return "NEED TO DO";
+        return $"Armor : {ArmorValue})";
     }
 }

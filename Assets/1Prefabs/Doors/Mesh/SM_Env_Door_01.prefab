@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 65138897227120086}
   - component: {fileID: 7752806074720542603}
   - component: {fileID: 7666728361961032820}
+  - component: {fileID: 3207871699140707336}
   m_Layer: 9
   m_Name: SM_Env_Door_01
   m_TagString: Untagged
@@ -141,3 +142,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3207871699140707336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b095a90f74f443aa037b042b1d46c5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 7666728361961032820}
