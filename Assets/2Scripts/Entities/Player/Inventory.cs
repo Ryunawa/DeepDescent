@@ -82,8 +82,14 @@ public class Inventory : MonoBehaviour
     private void SpawnFromInventory(InventoryObject inventoryObject)
     {
         NetworkObject o = Instantiate(GlobalItemList.FindItemFromID(inventoryObject.ID).ObjectPrefab.GetComponent<NetworkObject>());
-        o.Spawn();
+        testRpc(o);
         //SpawnerManager.instance.SpawnNetworkObjectRpc(GlobalItemList.FindItemFromID(inventoryObject.ID).ObjectPrefab.GetComponent<NetworkObject>(), transform.position, Quaternion.identity);
+    }
+
+    [Rpc(SendTo.Server)]
+    private void testRpc(NetworkObject o)
+    {
+        o.Spawn();
     }
 
     public void  UseFromInventory(int itemPos)
