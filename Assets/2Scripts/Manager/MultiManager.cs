@@ -545,14 +545,14 @@ public class MultiManager : Singleton<MultiManager>
 		}
 	}
 	
-	[Rpc(SendTo.Server)]
+	[Rpc(SendTo.Server, RequireOwnership = false)]
 	public void SpawnNetworkObjectRpc(NetworkObject objectToSpawn, Vector3 position, Quaternion rotation)
 	{
-		NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(objectToSpawn, NetworkManager.Singleton.LocalClientId,
-				position: position, rotation: rotation);
+		objectToSpawn.InstantiateAndSpawn(NetworkManager.Singleton, NetworkManager.Singleton.LocalClientId,
+			position: position, rotation: rotation);
 	}
 
-	[Rpc(SendTo.Server)]
+	[Rpc(SendTo.Server, RequireOwnership = false)]
 	public void DespawnNetworkObjectRpc(NetworkObject objectToDespawn)
 	{
 		objectToDespawn.Despawn();
