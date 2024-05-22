@@ -5,6 +5,7 @@ using _2Scripts.Manager;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using Input = UnityEngine.Windows.Input;
 
 public class ItemDetailUI : MonoBehaviour
@@ -13,6 +14,8 @@ public class ItemDetailUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemDesc;
     [SerializeField] private TextMeshProUGUI itemRarity;
     [SerializeField] private TextMeshProUGUI itemStats;
+    [SerializeField] private TextMeshProUGUI itemSellValue;
+    [SerializeField] private Image frame;
 
 
     private RectTransform _rectTransform;
@@ -51,7 +54,10 @@ public class ItemDetailUI : MonoBehaviour
         {
             itemStats.text = "";
         }
-        
+
+        frame.color = InventoryUIManager.Colors[item.Rarity];
+        itemSellValue.text = item.SellValue.ToString();
+
     }
 
     public void ToggleUI(bool state)

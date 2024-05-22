@@ -39,7 +39,8 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         ItemID = itemID;
         Border.color = InventoryUIManager.Colors[GlobalItemList.FindItemFromID(itemID).Rarity];
         Image.sprite = GlobalItemList.FindItemFromID(itemID).InventoryIcon;
-        if (Quantity != null) Quantity.text = quantity.ToString();
+        
+        if (Quantity != null) Quantity.text = GlobalItemList.FindItemFromID(ItemID).Stackable ? quantity.ToString() : "";
         Image.color = Color.white;
     }
 
@@ -58,8 +59,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         _isGrabbed = true;
         ItemPos = transform.GetSiblingIndex();
         parentAfterDrag = transform.parent;
-        transform.SetParent(transform.root);
-        transform.SetAsLastSibling();
+        transform.SetParent(InventoryUIManager.instance.InventoryMove.transform);
         Image.raycastTarget = false;
         Border.raycastTarget = false;
         Border.transform.parent.GetComponent<Image>().raycastTarget = false;
@@ -102,13 +102,6 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         
         InventoryUIManager.instance.DrawInventory();
     }
-
-    // public void OnPointerClick(PointerEventData eventData)
-    // {
-    //     Inventory inventory = InventoryUIManager.instance.Inventory;
-    //     ItemPos = transform.GetSiblingIndex();
-    //     inventory.UseFromInventory(ItemPos);
-    // }
 
     public void OnPointerEnter(PointerEventData eventData)
     {

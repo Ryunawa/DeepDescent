@@ -12,6 +12,8 @@ namespace _2Scripts.Manager
     {
         [SerializeField] private ItemUI ItemPrefab;
         [SerializeField] private GameObject inventoryRoot;
+        [SerializeField] private GameObject inventoryBG;
+        [SerializeField] private GameObject inventoryMove;
         [SerializeField] private ItemDetailUI itemDetailUI;
         [Header("Slots")]
         [SerializeField] private ItemUI Head;
@@ -38,6 +40,12 @@ namespace _2Scripts.Manager
         public Inventory Inventory => _inventory;
 
         public ItemDetailUI ItemDetailUI => itemDetailUI;
+
+        public GameObject InventoryMove
+        {
+            get => inventoryMove;
+            set => inventoryMove = value;
+        }
 
         private void Start()
         {
@@ -66,6 +74,7 @@ namespace _2Scripts.Manager
             for (int i = 0; i < _inventory.InventorySpace; i++)
             {
                 ItemUI item = Instantiate(ItemPrefab, inventoryRoot.transform);
+                Instantiate(ItemPrefab, inventoryBG.transform);
                 ListUI.Add(item);
             }
             
