@@ -8,4 +8,5 @@ using UnityEngine;
 public abstract class EquippableItem : Item
 {
     public abstract (bool, EquippableItem) Equip(Inventory inventoryToEquipTo);
+    public abstract string GetStats();
 }

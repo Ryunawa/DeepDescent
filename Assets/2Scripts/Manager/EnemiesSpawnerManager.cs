@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using _2Scripts.Entities;
+using _2Scripts.ProceduralGeneration;
 using _2Scripts.Struct;
 using NaughtyAttributes;
 using UnityEngine;
@@ -20,6 +21,8 @@ namespace _2Scripts.Manager
     
     public class EnemiesSpawnerManager : Singleton<EnemiesSpawnerManager>
     {
+        public EventHandler<int> OnEnemiesSpawnedOrKilledEventHandler;
+
         #region Variables
 
         public bool bSpawnInMultiplayer;
@@ -69,15 +72,15 @@ namespace _2Scripts.Manager
         /// Return the position of a random room to use to spawn the enemy
         /// </summary>
         /// <returns></returns>
-        private Vector3 GetSpawnPosition()
+        private int GetRandomRoomToSpawnIn()
         {
             int randomInt;
             do
             {
                 randomInt = Random.Range(0, LevelGenerator.instance.dungeon.Length);
-            } while (LevelGenerator.instance.IsRoomEmpty(randomInt));
+            } while (LevelGenerator.instance.IsRoomEmpty(randomInt) && LevelGenerator.instance.dungeon[randomInt].enemiesCount <= 3);
 
-            return LevelGenerator.instance.GetPosition(randomInt);
+            return randomInt;
         }
 
         /// <summary>
@@ -93,7 +96,9 @@ namespace _2Scripts.Manager
                 if (_currentEnemiesCount < maxEnemiesPerLevel)
                 {
                     EnemyStats objectToSpawn = ChooseEnemyToSpawn();
-                    Vector3 spawningPosition = GetSpawnPosition();
+                    int roomToSpawnInIndex = GetRandomRoomToSpawnIn();
+                    Vector3 spawningPosition = LevelGenerator.instance.GetPosition(roomToSpawnInIndex);
+                    Room roomToSpawnInObject = LevelGenerator.instance.dungeon[roomToSpawnInIndex];
 
                     if (bSpawnInMultiplayer)
                     {
@@ -106,10 +111,12 @@ namespace _2Scripts.Manager
                         //DEBUG ONLY
                         var newEnemy = Instantiate(objectToSpawn.enemyPrefab, new Vector3(spawningPosition.x, 1, spawningPosition.z),
                             quaternion.identity);
-                        newEnemy.GetComponent<AdjustEnemyStats>().enemyStats = objectToSpawn;
+                        EnemyData newEnemyData = newEnemy.GetComponent<EnemyData>();
+                        newEnemyData.enemyStats = objectToSpawn;
+                        newEnemyData.roomSpawnedInID = roomToSpawnInObject.ID;
                     }
-
                     _currentEnemiesCount++;
+                    OnEnemiesSpawnedOrKilledEventHandler?.Invoke(roomToSpawnInObject, 1);
                 }
             }
         }
@@ -117,9 +124,10 @@ namespace _2Scripts.Manager
         /// <summary>
         /// Decrement the total enemies number 
         /// </summary>
-        public void EnemyDestroyed()
+        public void EnemyDestroyed(EnemyData penemyKilled)
         {
             _currentEnemiesCount--;
+            OnEnemiesSpawnedOrKilledEventHandler?.Invoke(penemyKilled.roomSpawnedInID, -1);
         }
 
         

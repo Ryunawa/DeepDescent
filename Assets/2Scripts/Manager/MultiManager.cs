@@ -428,7 +428,9 @@ public class MultiManager : Singleton<MultiManager>
 			
 			LoadGameScene();
 
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 			WaitForInstantiatedPlayerObject();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
 			return joinCode;
 
@@ -484,7 +486,9 @@ public class MultiManager : Singleton<MultiManager>
 			NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
 			NetworkManager.Singleton.StartClient();
 
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 			WaitForInstantiatedPlayerObject();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 			
 			LoadGameScene();
 

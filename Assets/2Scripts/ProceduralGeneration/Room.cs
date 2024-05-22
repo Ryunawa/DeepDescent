@@ -1,7 +1,9 @@
-using System.Collections.Generic;
+using System;
+using _2Scripts.Manager;
 using NaughtyAttributes;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace _2Scripts.ProceduralGeneration
 {
@@ -11,13 +13,16 @@ namespace _2Scripts.ProceduralGeneration
         //Ordered : North, East, South, West
         [SerializeField] private FaceState[] originalFaceStatesArray = new FaceState[4];
 
-        [SerializeField] private int _generation;
+        [SerializeField] private int generation;
 
         [SerializeField] private int numberOfRightRotation = 0;
         public int ID;
         private float _sizeRoom = 0;
 
         [SerializeField] private GameObject[] doorPrefab;
+
+        public int enemiesCount { get; private set; }
+
 
         public float SizeRoom
         {
@@ -27,10 +32,23 @@ namespace _2Scripts.ProceduralGeneration
 
         public int Generation
         {
-            get => _generation;
-            set => _generation = value;
+            get => generation;
+            set => generation = value;
         }
 
+        private void OnEnable()
+        {
+            EnemiesSpawnerManager.instance.OnEnemiesSpawnedOrKilledEventHandler += UpdateSpawnedNumber;
+        }
+
+        private void UpdateSpawnedNumber(object receiver, int value)
+        {
+            if (receiver.Equals(this))
+            {
+                enemiesCount += value;
+            }
+        }
+        
         public RoomType GetRoomType()
         {
             return roomType;
