@@ -5,7 +5,7 @@ public class Infight : MonoBehaviour
 {
     private bool _swinging;
     private bool _canInflictDamage = true;
-    [SerializeField] private float damageCooldown = 2f;
+    [SerializeField] private float damageCooldown = 1f;
 
     [SerializeField]
     private MonoBehaviour controller;
