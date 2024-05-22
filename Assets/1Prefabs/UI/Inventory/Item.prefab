@@ -138,6 +138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Image: {fileID: 4125783367004368271}
   Border: {fileID: 7312085739138402213}
+  Quantity: {fileID: 4224017791262643467}
   IsEquipment: 0
   IsDrop: 0
 --- !u!1 &5281722948024648478

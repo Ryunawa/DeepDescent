@@ -41,15 +41,14 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     public void Clear()
     {
         ItemID = -1;
+        if (Quantity != null) Quantity.text = "";
         Image.color = Color.clear;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (IsEquipment || IsDrop)
-        {
-            return;
-        }
+        if (IsEquipment || IsDrop) return;
+        
         
         _isGrabbed = true;
         ItemPos = transform.GetSiblingIndex();
@@ -63,11 +62,16 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (IsEquipment || IsDrop) return;
+        
         transform.position = Input.mousePosition;
+        InventoryUIManager.instance.ItemDetailUI.ToggleUI(false);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (IsEquipment || IsDrop) return;
+        
         _isGrabbed = false;
         transform.SetParent(parentAfterDrag);
         transform.SetSiblingIndex(ItemPos);
@@ -103,6 +107,12 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (_isGrabbed || IsEquipment || IsDrop) return;
+        
+        Debug.Log("Hovering " + eventData.hovered.Count);
+        foreach (var VARIABLE in eventData.hovered)
+        {
+            Debug.Log(VARIABLE.gameObject.name);
+        }
 
         ItemUI itemUI = eventData.pointerEnter.gameObject.GetComponentInParent<ItemUI>();
 
@@ -113,7 +123,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         Item item = GlobalItemList.FindItemFromID(itemUI.ItemID);
         
         InventoryUIManager.instance.ItemDetailUI.Setup(item);
-        InventoryUIManager.instance.ItemDetailUI.ToggleUI();
+        InventoryUIManager.instance.ItemDetailUI.ToggleUI(true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -124,6 +134,6 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         
         if (itemUI.ItemID == -1) return;
         
-        InventoryUIManager.instance.ItemDetailUI.ToggleUI();
+        InventoryUIManager.instance.ItemDetailUI.ToggleUI(false);
     }
 }

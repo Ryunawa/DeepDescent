@@ -54,9 +54,9 @@ public class ItemDetailUI : MonoBehaviour
         
     }
 
-    public void ToggleUI()
+    public void ToggleUI(bool state)
     {
-        gameObject.SetActive(!gameObject.activeSelf);
+        gameObject.SetActive(state);
     }
 
 }
