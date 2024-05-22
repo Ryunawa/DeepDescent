@@ -29,7 +29,7 @@ public class ItemDetailUI : MonoBehaviour
         float pivotX = pos.x / Screen.width;
         float pivotY = pos.y / Screen.height;
 
-        _rectTransform.pivot = new Vector2(pivotX, pivotY);
+        _rectTransform.pivot = new Vector2(Mathf.Round(pivotX), Mathf.Round(pivotY));
         
         transform.position = pos;
     }

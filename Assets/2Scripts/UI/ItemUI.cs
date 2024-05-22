@@ -112,7 +112,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (_isGrabbed || IsEquipment || IsDrop) return;
+        if (_isGrabbed || IsDrop) return;
         
         Debug.Log("Hovering " + eventData.hovered.Count);
         foreach (var VARIABLE in eventData.hovered)
@@ -134,7 +134,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (_isGrabbed || IsEquipment || IsDrop) return;
+        if (_isGrabbed || IsDrop) return;
         
         ItemUI itemUI = eventData.pointerEnter.gameObject.GetComponentInParent<ItemUI>();
         
@@ -176,6 +176,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             }
             
             InventoryUIManager.instance.DrawInventory();
+            InventoryUIManager.instance.ItemDetailUI.ToggleUI(false);
 
         }
         else if (clicked > 2 || Time.time - clicktime > 1) clicked = 0;
