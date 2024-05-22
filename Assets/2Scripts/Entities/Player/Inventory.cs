@@ -81,7 +81,7 @@ public class Inventory : MonoBehaviour
 
     private void SpawnFromInventory(InventoryObject inventoryObject)
     {
-        NetworkObject o =Instantiate(GlobalItemList.FindItemFromID(inventoryObject.ID).ObjectPrefab.GetComponent<NetworkObject>());
+        NetworkObject o = Instantiate(GlobalItemList.FindItemFromID(inventoryObject.ID).ObjectPrefab.GetComponent<NetworkObject>());
         o.Spawn();
         //SpawnerManager.instance.SpawnNetworkObjectRpc(GlobalItemList.FindItemFromID(inventoryObject.ID).ObjectPrefab.GetComponent<NetworkObject>(), transform.position, Quaternion.identity);
     }
