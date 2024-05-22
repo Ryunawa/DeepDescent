@@ -29,6 +29,7 @@ public class Inventory : MonoBehaviour
     public ArmorItem NecklaceItem;
 
     public WeaponItem MainHandItem;
+    public bool CanDualWield;
     public WeaponItem OffHandItem;
 
     [Header("InventoryStuff")]
@@ -113,7 +114,7 @@ public class Inventory : MonoBehaviour
         Debug.Log("[Inventory::UseFromInventory()] - Tried to use item from inventory that was out of bound");
     }
 
-    public void EquipFromInventory(int itemPos)
+    public void EquipFromInventory(int itemPos, bool OffSlot = false)
     {
         if (InventoryItems.Count < (InventorySpace - 1))
         {
@@ -121,12 +122,26 @@ public class Inventory : MonoBehaviour
             EquippableItem realItem = (EquippableItem)GlobalItemList.FindItemFromID(newInventoryObject.ID);
             if (realItem)
             {
-                (bool, EquippableItem) result = realItem.Equip(this);
+                (bool, List<EquippableItem>) result = realItem.Equip(this, OffSlot);
                 if (result.Item1)
                 {
-                    InventoryObject oldEquippedItem = new InventoryObject(InventoryItems[itemPos].ID, 1);
-                    InventoryItems[itemPos] = oldEquippedItem;
-                    Debug.Log($"[Inventory::EquipFromInventory()] - Equipped new item at pos {itemPos} and put old item in it's place");
+                    if (result.Item2.Count > 0)
+                    {
+                        for (int i = 0; i < result.Item2.Count; i++)
+                        {
+                            InventoryObject oldEquippedItem = new InventoryObject(result.Item2[i].ID, 1);
+                            if (i == 0)
+                                InventoryItems[itemPos] = oldEquippedItem;
+                            else
+                                AddToInventory(oldEquippedItem.ID, 1);
+                        }
+                        Debug.Log($"[Inventory::EquipFromInventory()] - Equipped new item at pos {itemPos} and put old item in it's place");
+                    }
+                    else
+                    {
+                        InventoryItems.Remove(newInventoryObject);
+                        Debug.Log($"[Inventory::EquipFromInventory()] - Equipped new item at pos {itemPos}.");
+                    }
                 }
                 else
                     Debug.Log($"[Inventory::EquipFromInventory()] - Couldn't equip item at pos {itemPos}. Nothing happened");
@@ -139,6 +154,22 @@ public class Inventory : MonoBehaviour
             }
         }
         Debug.Log("[Inventory::EquipFromInventory()] - Tried to use item from inventory that was out of bound");
+    }
+
+    public void UnequipItem(List<EquippableItem> itemsToUnequip)
+    {
+        if (itemsToUnequip.Count > 0)
+        {
+            for (int i = 0; i < itemsToUnequip.Count; i++)
+            {
+                InventoryObject oldEquippedItem = new InventoryObject(itemsToUnequip[i].ID, 1);
+                AddToInventory(oldEquippedItem.ID, 1);
+            }
+            Debug.Log($"[Inventory::UnequipItem()] - Unequipped {itemsToUnequip.Count} item(s)");
+            return;
+        }
+        Debug.Log($"[Inventory::UnequipItem()] - Couldn't find any object to unequip.");
+            return;
     }
 
     [Button]

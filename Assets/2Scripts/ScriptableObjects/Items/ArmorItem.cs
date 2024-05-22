@@ -18,36 +18,50 @@ public class ArmorItem : EquippableItem
     public ArmorType ArmorType;
     public int ArmorValue;
     //More maybe? idk seems ok like that.
-    public override (bool, EquippableItem) Equip(Inventory inventoryToEquipTo)
+    public override (bool, List<EquippableItem>) Equip(Inventory inventoryToEquipTo, bool EquipToOffHand = false)
     {
         if (!inventoryToEquipTo)
             return (false, null);
-        EquippableItem oldItem;
+        List<EquippableItem> oldItems = new List<EquippableItem>();
         switch (ArmorType)
         {
             case ArmorType.CHEST:
-                oldItem = inventoryToEquipTo.ChestArmor;
+                oldItems.Add(inventoryToEquipTo.ChestArmor);
                 inventoryToEquipTo.LegArmor = this;
                 break;
             case ArmorType.PANTS:
-                oldItem = inventoryToEquipTo.LegArmor;
+                oldItems.Add(inventoryToEquipTo.LegArmor);
                 inventoryToEquipTo.LegArmor = this;
                 break;
             case ArmorType.FEET:
-                oldItem = inventoryToEquipTo.FeetArmor;
+                oldItems.Add(inventoryToEquipTo.FeetArmor);
                 inventoryToEquipTo.FeetArmor = this;
                 break;
             case ArmorType.RING:
-                oldItem = inventoryToEquipTo.RingsItem[0];
-                inventoryToEquipTo.RingsItem[0] = this;
+                if (EquipToOffHand)
+                {
+                    oldItems.Add(inventoryToEquipTo.RingsItem[1]);
+                    inventoryToEquipTo.RingsItem[1] = this;
+                }
+                else
+                {
+                    oldItems.Add(inventoryToEquipTo.RingsItem[0]);
+                    inventoryToEquipTo.RingsItem[0] = this;
+                }
                 break;
             case ArmorType.NECKLACE:
-                oldItem = inventoryToEquipTo.NecklaceItem;
+                oldItems.Add(inventoryToEquipTo.NecklaceItem);
                 inventoryToEquipTo.NecklaceItem = this;
                 break;
             default:
                 return (false, null);
         }
-        return (true, oldItem);
+        return (true, oldItems);
+    }
+
+    public override string GetStats()
+    {
+        //TODO
+        return "NEED TO DO";
     }
 }

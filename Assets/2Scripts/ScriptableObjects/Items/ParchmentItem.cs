@@ -12,4 +12,10 @@ public class ParchmentItem : ConsumableItem
     {
         throw new System.NotImplementedException();
     }
+
+    public override string GetStats()
+    {
+        //TODO
+        return "NEED TO DO";
+    }
 }

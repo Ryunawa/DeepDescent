@@ -5,4 +5,6 @@ using UnityEngine;
 public abstract class ConsumableItem : Item
 {
     public abstract bool Use();
+    public abstract string GetStats();
+    
 }

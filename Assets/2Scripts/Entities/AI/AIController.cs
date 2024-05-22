@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements.Experimental;
 
-public class AIController : MonoBehaviour
+public class AIController : MonoBehaviour, IController
 {
     [Header("Movement Settings")]
     [SerializeField]
@@ -35,6 +35,8 @@ public class AIController : MonoBehaviour
     private float attackRange = 1.5f;
     [SerializeField]
     private float timeBeforeAttack = 2f; // attack speed in seconds
+    [SerializeField]
+    private bool _isSwinging;
 
     [Header("Patrol")]
     [SerializeField] private Transform[] waypoints; // patrol points
@@ -295,11 +297,26 @@ void Start()
     }
 
 
+    public event Action<bool> OnSwingStateChanged;
+
     // attack the player
     private void Attack()
     {
         animator.SetTrigger("IsAttacking");
     }
+
+    public void StartSwing()
+    {
+        _isSwinging = true;
+        OnSwingStateChanged?.Invoke(_isSwinging);
+    }
+
+    public void EndSwing()
+    {
+        _isSwinging = false;
+        OnSwingStateChanged?.Invoke(_isSwinging);
+    }
+
 
     // set the character state to "move" with a given speed
     private void ActivateMovements(float speed)
