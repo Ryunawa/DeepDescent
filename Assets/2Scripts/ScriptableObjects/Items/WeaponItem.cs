@@ -18,14 +18,36 @@ public class WeaponItem : EquippableItem
     public WeaponType WeaponType;
     public int AttackValue;
     public float AttackSpeed;
-    public bool TwoHanded;
-    public bool IsDualWieldable;
+    public bool IsTwoHanded;
+    //public bool IsDualWieldable;
 
-    public override (bool, EquippableItem) Equip(Inventory inventoryToEquipTo)
+    public override (bool, List<EquippableItem>) Equip(Inventory inventoryToEquipTo, bool EquipToOffHand = false)
     {
-        //TODO
-        return (false, null);
-        //throw new System.NotImplementedException();
+        if (!inventoryToEquipTo)
+            return (false, null);
+        List<EquippableItem> oldItems = new List<EquippableItem>();
+
+        if (!IsTwoHanded)
+        {
+            if (EquipToOffHand)
+            {
+                oldItems.Add(inventoryToEquipTo.OffHandItem);
+                inventoryToEquipTo.OffHandItem = this;
+            }
+            else
+            {
+                oldItems.Add(inventoryToEquipTo.MainHandItem);
+                inventoryToEquipTo.MainHandItem = this;
+            }
+        }
+        else
+        {
+            oldItems.Add(inventoryToEquipTo.MainHandItem);
+            oldItems.Add(inventoryToEquipTo.OffHandItem);
+            inventoryToEquipTo.MainHandItem = this;
+        }
+
+        return (true, oldItems);
     }
 
     public override string GetStats()
