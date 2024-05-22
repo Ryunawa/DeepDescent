@@ -31,19 +31,23 @@ public class WeaponItem : EquippableItem
         {
             if (EquipToOffHand)
             {
-                oldItems.Add(inventoryToEquipTo.OffHandItem);
+                if (inventoryToEquipTo.OffHandItem)
+                    oldItems.Add(inventoryToEquipTo.OffHandItem);
                 inventoryToEquipTo.OffHandItem = this;
             }
             else
             {
-                oldItems.Add(inventoryToEquipTo.MainHandItem);
+                if (inventoryToEquipTo.MainHandItem)
+                    oldItems.Add(inventoryToEquipTo.MainHandItem);
                 inventoryToEquipTo.MainHandItem = this;
             }
         }
         else
         {
-            oldItems.Add(inventoryToEquipTo.MainHandItem);
-            oldItems.Add(inventoryToEquipTo.OffHandItem);
+            if (inventoryToEquipTo.MainHandItem)
+                oldItems.Add(inventoryToEquipTo.MainHandItem);
+            if (inventoryToEquipTo.OffHandItem)
+                oldItems.Add(inventoryToEquipTo.OffHandItem);
             inventoryToEquipTo.MainHandItem = this;
         }
 

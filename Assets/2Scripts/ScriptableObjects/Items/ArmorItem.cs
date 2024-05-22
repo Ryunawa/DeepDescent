@@ -26,31 +26,37 @@ public class ArmorItem : EquippableItem
         switch (ArmorType)
         {
             case ArmorType.CHEST:
-                oldItems.Add(inventoryToEquipTo.ChestArmor);
-                inventoryToEquipTo.LegArmor = this;
+                if (inventoryToEquipTo.ChestArmor)
+                    oldItems.Add(inventoryToEquipTo.ChestArmor);
+                inventoryToEquipTo.ChestArmor = this;
                 break;
             case ArmorType.PANTS:
-                oldItems.Add(inventoryToEquipTo.LegArmor);
+                if (inventoryToEquipTo.LegArmor)
+                    oldItems.Add(inventoryToEquipTo.LegArmor);
                 inventoryToEquipTo.LegArmor = this;
                 break;
             case ArmorType.FEET:
-                oldItems.Add(inventoryToEquipTo.FeetArmor);
+                if (inventoryToEquipTo.FeetArmor)
+                    oldItems.Add(inventoryToEquipTo.FeetArmor);
                 inventoryToEquipTo.FeetArmor = this;
                 break;
             case ArmorType.RING:
                 if (EquipToOffHand)
                 {
-                    oldItems.Add(inventoryToEquipTo.RingsItem[1]);
+                    if (inventoryToEquipTo.RingsItem[1])
+                        oldItems.Add(inventoryToEquipTo.RingsItem[1]);
                     inventoryToEquipTo.RingsItem[1] = this;
                 }
                 else
                 {
-                    oldItems.Add(inventoryToEquipTo.RingsItem[0]);
+                    if (inventoryToEquipTo.RingsItem[0])
+                        oldItems.Add(inventoryToEquipTo.RingsItem[0]);
                     inventoryToEquipTo.RingsItem[0] = this;
                 }
                 break;
             case ArmorType.NECKLACE:
-                oldItems.Add(inventoryToEquipTo.NecklaceItem);
+                if (inventoryToEquipTo.NecklaceItem)
+                    oldItems.Add(inventoryToEquipTo.NecklaceItem);
                 inventoryToEquipTo.NecklaceItem = this;
                 break;
             default:
