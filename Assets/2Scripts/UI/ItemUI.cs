@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using _2Scripts.Enum;
 using _2Scripts.Manager;
 using TMPro;
@@ -8,7 +9,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
     static ItemList GlobalItemList;
     
@@ -23,6 +24,10 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     private bool _isGrabbed;
 
     private Transform parentAfterDrag;
+    
+    int clicked = 0;
+    float clicktime = 0;
+    float clickdelay = 0.5f;
     
     public void Setup(int itemID, int quantity)
     {
@@ -98,12 +103,12 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         InventoryUIManager.instance.DrawInventory();
     }
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        Inventory inventory = InventoryUIManager.instance.Inventory;
-        ItemPos = transform.GetSiblingIndex();
-        inventory.UseFromInventory(ItemPos);
-    }
+    // public void OnPointerClick(PointerEventData eventData)
+    // {
+    //     Inventory inventory = InventoryUIManager.instance.Inventory;
+    //     ItemPos = transform.GetSiblingIndex();
+    //     inventory.UseFromInventory(ItemPos);
+    // }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -136,5 +141,44 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         if (itemUI.ItemID == -1) return;
         
         InventoryUIManager.instance.ItemDetailUI.ToggleUI(false);
+    }
+    
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (_isGrabbed || IsEquipment || IsDrop) return;
+        
+        clicked++;
+        if (clicked == 1) clicktime = Time.time;
+ 
+        if ((clicked > 1 && Time.time - clicktime < clickdelay) || eventData.button == PointerEventData.InputButton.Right)
+        {
+            clicked = 0;
+            clicktime = 0;
+
+            Inventory inventory = InventoryUIManager.instance.Inventory;
+            
+            ItemUI itemUI = eventData.pointerEnter.gameObject.GetComponentInParent<ItemUI>();
+            
+            itemUI.ItemPos = itemUI.transform.GetSiblingIndex();
+            
+            Item item = GlobalItemList.FindItemFromID(itemUI.ItemID);
+            
+            switch (item)
+            {
+                case EquippableItem:
+                    inventory.EquipFromInventory(itemUI.ItemPos);
+                    break;
+                case ConsumableItem:
+                    inventory.UseFromInventory(itemUI.ItemPos);
+                    break;
+                default:
+                    break;
+            }
+            
+            InventoryUIManager.instance.DrawInventory();
+
+        }
+        else if (clicked > 2 || Time.time - clicktime > 1) clicked = 0;
+ 
     }
 }
