@@ -31,24 +31,15 @@ namespace _2Scripts.Manager
         
         [SerializeField] private List<LevelData> spawnableEnemiesPrefabsByLevel;
         [SerializeField] private int maxEnemiesPerLevel = 5;
-        [SerializeField] private int maxEnemiesPerRoom = 3;
         [Range(0.1f, 10)]
-        [SerializeField] private float spawnIntervalInSecond;
-
-        [SerializeField] private GameObject spawnParticle;
+        [SerializeField] private float spawnIntervalInSecond = 2f;
 
         private EnemyTypes _enemiesList;
         private int _currentEnemiesCount;
         private int _currLevel = 1; // Depend on the game manager
         
         #endregion
-
-        protected override void Awake()
-        {
-            base.Awake();
-            LevelGenerator.instance.dungeonGeneratedEvent.AddListener(DEBUG_StartSpawn);
-        }
-
+        
         private void Start()
         {
             _enemiesList = DifficultyManager.instance.GetEnemiesStatsToUse();
@@ -76,25 +67,22 @@ namespace _2Scripts.Manager
                     }
                 }
             }
-            return GetStructElementByIndex<EnemyStats>(_enemiesList, 0);
+            return GetStructElementByIndex<EnemyStats>(_enemiesList, 0);;
         }
 
         /// <summary>
         /// Return the position of a random room to use to spawn the enemy
         /// </summary>
         /// <returns></returns>
-        private (Room,List<GameObject>) GetRandomRoomToSpawnIn()
+        private int GetRandomRoomToSpawnIn()
         {
-            (Room,List<GameObject>) randomRoom;
-            List<(Room, List<GameObject>)> roomsTuple = LevelGenerator.instance.GetEnemySpawnPoints();
-            int roomIndex;
+            int randomInt;
             do
             {
-                int randomInt = Random.Range(0, roomsTuple.Count);
-                randomRoom = roomsTuple[randomInt];
-                roomIndex = LevelGenerator.instance.GetIndexOfRoom(randomRoom.Item1);
-            } while (LevelGenerator.instance.IsRoomEmpty(roomIndex) || randomRoom.Item1.enemiesCount >= maxEnemiesPerRoom);
-            return randomRoom;
+                randomInt = Random.Range(0, LevelGenerator.instance.dungeon.Length);
+            } while (LevelGenerator.instance.IsRoomEmpty(randomInt) && LevelGenerator.instance.dungeon[randomInt].enemiesCount <= 3);
+
+            return randomInt;
         }
 
         /// <summary>
@@ -110,11 +98,10 @@ namespace _2Scripts.Manager
                 if (_currentEnemiesCount < maxEnemiesPerLevel)
                 {
                     EnemyStats objectToSpawn = ChooseEnemyToSpawn();
-                    (Room,List<GameObject>) roomToSpawnIn = GetRandomRoomToSpawnIn();
-                    Vector3 spawningPosition = roomToSpawnIn.Item2[Random.Range(0, roomToSpawnIn.Item2.Count)].transform.position;
+                    int roomToSpawnInIndex = GetRandomRoomToSpawnIn();
+                    Vector3 spawningPosition = LevelGenerator.instance.GetPosition(roomToSpawnInIndex);
+                    Room roomToSpawnInObject = LevelGenerator.instance.dungeon[roomToSpawnInIndex];
 
-                    OnEnemiesSpawnedOrKilledEventHandler?.Invoke(roomToSpawnIn.Item1, 1);
-                    
                     if (bSpawnInMultiplayer)
                     {
                          MultiManager.instance.SpawnNetworkObject(objectToSpawn.enemyPrefab.GetComponent<NetworkObject>(),
@@ -126,7 +113,6 @@ namespace _2Scripts.Manager
                         //DEBUG ONLY
                         GameObject newEnemy = Instantiate(objectToSpawn.enemyPrefab, new Vector3(spawningPosition.x, -1, spawningPosition.z),
                             quaternion.identity);
-                        
                         EnemyData newEnemyData = newEnemy.GetComponent<EnemyData>();
                         newEnemyData.enemyStats = objectToSpawn;
                         newEnemyData.roomSpawnedInID = roomToSpawnIn.Item1.ID;
@@ -136,31 +122,18 @@ namespace _2Scripts.Manager
                         StartCoroutine(StartSpawnAnim(newEnemyPosition, newEnemy));
                     }
                     _currentEnemiesCount++;
+                    OnEnemiesSpawnedOrKilledEventHandler?.Invoke(roomToSpawnInObject, 1);
                 }
             }
-        }
-
-        IEnumerator StartSpawnAnim(Vector3 pEnemyPosition, GameObject pEnemyGameObject)
-        {
-            yield return new WaitForSeconds(0.2f);
-            GameObject newParticle = Instantiate(spawnParticle, new Vector3(pEnemyPosition.x, 0.2f, pEnemyPosition.z - 0.5f),
-                quaternion.identity);
-                        
-            newParticle.transform.localScale *= 2.5f;
-                        
-            yield return new WaitForSeconds(pEnemyGameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length + 0.25f);
-                        
-            Destroy(newParticle);
-            pEnemyGameObject.GetComponent<AIController>().enabled = true;
         }
         
         /// <summary>
         /// Decrement the total enemies number 
         /// </summary>
-        public void EnemyDestroyed(EnemyData pEnemyKilled)
+        public void EnemyDestroyed(EnemyData penemyKilled)
         {
             _currentEnemiesCount--;
-            OnEnemiesSpawnedOrKilledEventHandler?.Invoke(pEnemyKilled.roomSpawnedInID, -1);
+            OnEnemiesSpawnedOrKilledEventHandler?.Invoke(penemyKilled.roomSpawnedInID, -1);
         }
 
         
