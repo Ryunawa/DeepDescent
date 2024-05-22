@@ -7,6 +7,7 @@ using UnityEngine;
 
 public abstract class EquippableItem : Item
 {
-    public abstract (bool, EquippableItem) Equip(Inventory inventoryToEquipTo);
+
     public abstract string GetStats();
+    public abstract (bool, List<EquippableItem>) Equip(Inventory inventoryToEquipTo, bool EquipToOffHand = false);
 }
