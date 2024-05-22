@@ -327,6 +327,8 @@ MonoBehaviour:
   _virtualCamera: {fileID: 5685322309389839697}
   rightHandRoot: {fileID: 0}
   leftHandRoot: {fileID: 0}
+  _isDead:
+    m_InternalValue: 0
   inventory: {fileID: 5559061447972688155}
 --- !u!114 &7865229117149206806
 MonoBehaviour:
@@ -436,6 +438,7 @@ MonoBehaviour:
   - {fileID: 0}
   NecklaceItem: {fileID: 0}
   MainHandItem: {fileID: 0}
+  CanDualWield: 0
   OffHandItem: {fileID: 0}
   InventoryItems:
   - ID: 1
@@ -1187,7 +1190,11 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 7841701170287972559}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 131680, guid: 11ffba29df14c054aa5a2695b18e9f59,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1733140220314849854}
   m_SourcePrefab: {fileID: 100100000, guid: 11ffba29df14c054aa5a2695b18e9f59, type: 3}
 --- !u!95 &4055705197530235895 stripped
 Animator:
@@ -1219,3 +1226,23 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4055705197537620859}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4055705197537489179 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 131680, guid: 11ffba29df14c054aa5a2695b18e9f59,
+    type: 3}
+  m_PrefabInstance: {fileID: 4055705197537620859}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1733140220314849854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4055705197537489179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b095a90f74f443aa037b042b1d46c5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 4055705197530235895}
