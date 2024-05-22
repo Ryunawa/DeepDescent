@@ -325,6 +325,8 @@ MonoBehaviour:
   _camTransform: {fileID: 3755937543100378714}
   _overrideNetwork: 0
   _virtualCamera: {fileID: 5685322309389839697}
+  rightHandRoot: {fileID: 0}
+  leftHandRoot: {fileID: 0}
   inventory: {fileID: 5559061447972688155}
 --- !u!114 &7865229117149206806
 MonoBehaviour:
@@ -435,7 +437,11 @@ MonoBehaviour:
   NecklaceItem: {fileID: 0}
   MainHandItem: {fileID: 0}
   OffHandItem: {fileID: 0}
-  InventoryItems: []
+  InventoryItems:
+  - ID: 1
+    Amount: 1
+  - ID: 2
+    Amount: 1
   GlobalItemList: {fileID: 11400000, guid: 9955bbdfc35aa654eabe5762843da012, type: 2}
   InventorySpace: 6
 --- !u!1 &4795011785944814375

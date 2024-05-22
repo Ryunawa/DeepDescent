@@ -27,7 +27,7 @@ public class ArmorItem : EquippableItem
         {
             case ArmorType.CHEST:
                 oldItem = inventoryToEquipTo.ChestArmor;
-                inventoryToEquipTo.LegArmor = this;
+                inventoryToEquipTo.ChestArmor = this;
                 break;
             case ArmorType.PANTS:
                 oldItem = inventoryToEquipTo.LegArmor;
@@ -49,5 +49,11 @@ public class ArmorItem : EquippableItem
                 return (false, null);
         }
         return (true, oldItem);
+    }
+
+    public override string GetStats()
+    {
+        //TODO
+        return "NEED TO DO";
     }
 }

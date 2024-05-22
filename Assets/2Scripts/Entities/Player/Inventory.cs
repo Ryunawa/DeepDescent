@@ -124,9 +124,17 @@ public class Inventory : MonoBehaviour
                 (bool, EquippableItem) result = realItem.Equip(this);
                 if (result.Item1)
                 {
-                    InventoryObject oldEquippedItem = new InventoryObject(InventoryItems[itemPos].ID, 1);
-                    InventoryItems[itemPos] = oldEquippedItem;
-                    Debug.Log($"[Inventory::EquipFromInventory()] - Equipped new item at pos {itemPos} and put old item in it's place");
+                    if (result.Item2)
+                    {
+                        InventoryObject oldEquippedItem = new InventoryObject(result.Item2.ID, 1);
+                        InventoryItems[itemPos] = oldEquippedItem;
+                        Debug.Log($"[Inventory::EquipFromInventory()] - Equipped new item at pos {itemPos} and put old item in it's place");
+                    }
+                    else
+                    {
+                        InventoryItems.Remove(newInventoryObject);
+                        Debug.Log($"[Inventory::EquipFromInventory()] - Equipped new item at pos {itemPos}.");
+                    }
                 }
                 else
                     Debug.Log($"[Inventory::EquipFromInventory()] - Couldn't equip item at pos {itemPos}. Nothing happened");

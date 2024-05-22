@@ -10,6 +10,8 @@ public class InputManager : Singleton<InputManager>
 	private bool _isHoldingShoot = false;
 	private bool _isHoldingAimDownSight = false;
 
+	public Inputs Inputs => _inputs;
+
 	public bool IsHoldingShoot
 	{
 		get => _isHoldingShoot; set => _isHoldingShoot = value;
