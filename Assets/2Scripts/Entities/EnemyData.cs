@@ -4,19 +4,20 @@ using UnityEngine;
 
 namespace _2Scripts.Entities
 {
-    public class AdjustEnemyStats : MonoBehaviour
+    public class EnemyData : MonoBehaviour
 
     {
+        public int roomSpawnedInID;
         public EnemyStats enemyStats;
 
         private void OnEnable()
         {
-            DifficultyManager.instance.OnEnemiesStatsUpdated += UpdateStats;
+            DifficultyManager.instance.OnEnemiesStatsUpdatedEventHandler += UpdateStats;
         }
 
         private void OnDestroy()
         {
-            DifficultyManager.instance.OnEnemiesStatsUpdated -= UpdateStats;
+            DifficultyManager.instance.OnEnemiesStatsUpdatedEventHandler -= UpdateStats;
         }
 
         private void UpdateStats(object receiver, EnemyStats newEnemyStats)
@@ -25,6 +26,11 @@ namespace _2Scripts.Entities
             {
                 enemyStats = newEnemyStats;
             }
+        }
+
+        public void SetRoomSpawnedInID(int pRoomID)
+        {
+            roomSpawnedInID = pRoomID;
         }
 
     }

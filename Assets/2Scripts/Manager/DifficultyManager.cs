@@ -11,7 +11,7 @@ namespace _2Scripts.Manager
 {
     public class DifficultyManager: Singleton<DifficultyManager>
     {
-        public EventHandler<EnemyStats> OnEnemiesStatsUpdated;
+        public EventHandler<EnemyStats> OnEnemiesStatsUpdatedEventHandler;
         
         #region Variables
 
@@ -79,7 +79,7 @@ namespace _2Scripts.Manager
             
             for (int i = 0; i <= GetNumberOfElementsInStruct(_enemyTypesStructToUse); i++)
             {
-                OnEnemiesStatsUpdated?.Invoke(GetStructElementByIndex<EnemyStats>(_enemyTypesStructToUse, i).enemyPrefab, 
+                OnEnemiesStatsUpdatedEventHandler?.Invoke(GetStructElementByIndex<EnemyStats>(_enemyTypesStructToUse, i).enemyPrefab, 
                     GetStructElementByIndex<EnemyStats>(_enemyTypesStructToUse, i));
             }
         }
@@ -157,7 +157,7 @@ namespace _2Scripts.Manager
 
             for (int i = 0; i <= GetNumberOfElementsInStruct(_enemyTypesStructToUse); i++)
             {
-                OnEnemiesStatsUpdated?.Invoke(GetStructElementByIndex<EnemyStats>(_enemyTypesStructToUse, i).enemyPrefab, 
+                OnEnemiesStatsUpdatedEventHandler?.Invoke(GetStructElementByIndex<EnemyStats>(_enemyTypesStructToUse, i).enemyPrefab, 
                                         GetStructElementByIndex<EnemyStats>(_enemyTypesStructToUse, i));
             }
             
