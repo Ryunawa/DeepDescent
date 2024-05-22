@@ -20,7 +20,7 @@ public struct InventoryObject
     }
 }
 
-public class Inventory : MonoBehaviour
+public class Inventory : NetworkBehaviour
 {
     [Header("Equipped Items")]
     public ArmorItem ChestArmor;
@@ -87,7 +87,6 @@ public class Inventory : MonoBehaviour
         o.Spawn();
         //SpawnerManager.instance.SpawnNetworkObjectRpc(GlobalItemList.FindItemFromID(inventoryObject.ID).ObjectPrefab.GetComponent<NetworkObject>(), transform.position, Quaternion.identity);
     }
-
     
 
     public void  UseFromInventory(int itemPos)
