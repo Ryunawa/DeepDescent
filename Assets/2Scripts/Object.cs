@@ -10,7 +10,7 @@ public class Object : NetworkBehaviour, IInteractable
     {
         //Pickup Object
         playerBehaviour.inventory.AddToInventory(ItemDetails.ID, amount);
-        MultiManager.instance.DespawnNetworkObjectServerRPC(GetComponent<NetworkObject>());
+        MultiManager.instance.DespawnNetworkObjectRpc(GetComponent<NetworkObject>());
     }
     public Item ItemDetails;
     public int amount;
