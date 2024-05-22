@@ -2,6 +2,7 @@ using NaughtyAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using _2Scripts.Manager;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -80,7 +81,7 @@ public class Inventory : MonoBehaviour
 
     private void SpawnFromInventory(InventoryObject inventoryObject)
     {
-        MultiManager.instance.SpawnNetworkObjectRpc(GlobalItemList.FindItemFromID(inventoryObject.ID).ObjectPrefab.GetComponent<NetworkObject>(), transform.position, Quaternion.identity);
+        SpawnerManager.instance.SpawnNetworkObjectRpc(GlobalItemList.FindItemFromID(inventoryObject.ID).ObjectPrefab.GetComponent<NetworkObject>(), transform.position, Quaternion.identity);
     }
 
     public void  UseFromInventory(int itemPos)
