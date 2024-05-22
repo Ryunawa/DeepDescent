@@ -43,9 +43,9 @@ public class ItemDetailUI : MonoBehaviour
         itemRarity.text = item.Rarity.ToString();
         itemRarity.color = InventoryUIManager.Colors[item.Rarity];
 
-        if (item.GetType() == typeof(EquippableItem) || item.GetType() == typeof(ConsumableItem))
+        if (item.GetType().BaseType == typeof(EquippableItem) || item.GetType().BaseType == typeof(ConsumableItem))
         {
-            itemStats.text = item.GetType() == typeof(EquippableItem) ? ((EquippableItem)item).GetStats() : ((ConsumableItem)item).GetStats();
+            itemStats.text = item.GetType().BaseType == typeof(EquippableItem) ? ((EquippableItem)item).GetStats() : ((ConsumableItem)item).GetStats();
         }
         else
         {

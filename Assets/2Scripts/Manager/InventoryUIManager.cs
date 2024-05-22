@@ -22,13 +22,13 @@ namespace _2Scripts.Manager
         [SerializeField] private ItemUI MainHand;
         [SerializeField] private ItemUI OffHand;
         
-        public static readonly Dictionary<Rarity, Color> Colors = new Dictionary<Rarity, Color>()
+        public static readonly Dictionary<Rarity, Color32> Colors = new Dictionary<Rarity, Color32>()
         {
-            {Rarity.Common, Color.white},
-            {Rarity.Uncommon, new Color(30, 255, 0)},
-            {Rarity.Rare, new Color(0, 112, 221)},
-            {Rarity.Epic, new Color(163, 53, 238)},
-            {Rarity.Legendary, new Color(255, 128, 0)}
+            {Rarity.Common, new Color32(255,255,255,255)},
+            {Rarity.Uncommon, new Color32(30, 255, 0,255)},
+            {Rarity.Rare, new Color32(0, 112, 221,255)},
+            {Rarity.Epic, new Color32(163, 53, 238,255)},
+            {Rarity.Legendary, new Color32(255, 128, 0,255)}
         };
         
         private Inventory _inventory;

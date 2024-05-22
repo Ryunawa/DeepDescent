@@ -30,6 +30,6 @@ public class WeaponItem : EquippableItem
 
     public override string GetStats()
     {
-        return $"Attack : {AttackValue}\\r\\nAttack speed : {AttackSpeed}" + (TwoHanded?"\\r\\nTwo handed":"") + (IsDualWieldable?"\\r\\nCan dual wield":"") ;
+        return $"Attack : {AttackValue}\r\nAttack speed : {AttackSpeed}" + (TwoHanded?"\r\nTwo handed":"") + (IsDualWieldable?"\r\nCan dual wield":"") ;
     }
 }

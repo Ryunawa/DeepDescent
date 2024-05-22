@@ -16,7 +16,7 @@ MonoBehaviour:
   Name: Basic Sword
   Description: 'This sword was given to you by the adventurers guild, it''s far from
     the best but it''ll do '
-  Rarity: 0
+  Rarity: 3
   SellValue: 5
   QuickUse: 0
   Stackable: 0
