@@ -8,6 +8,7 @@ using NaughtyAttributes;
 using UnityEngine;
 using Unity.Mathematics;
 using Unity.Netcode;
+using UnityEngine.AI;
 using static _2Scripts.Helpers.StructureAccessMethods;
 using Random = UnityEngine.Random;
 
@@ -31,6 +32,8 @@ namespace _2Scripts.Manager
         [SerializeField] private int maxEnemiesPerLevel = 5;
         [Range(0.1f, 10)]
         [SerializeField] private float spawnIntervalInSecond = 2f;
+
+        [SerializeField] private GameObject spawnParticle;
 
         private EnemyTypes _enemiesList;
         private int _currentEnemiesCount;
@@ -65,7 +68,7 @@ namespace _2Scripts.Manager
                     }
                 }
             }
-            return GetStructElementByIndex<EnemyStats>(_enemiesList, 0);;
+            return GetStructElementByIndex<EnemyStats>(_enemiesList, 0);
         }
 
         /// <summary>
@@ -109,11 +112,26 @@ namespace _2Scripts.Manager
                     else
                     {
                         //DEBUG ONLY
-                        var newEnemy = Instantiate(objectToSpawn.enemyPrefab, new Vector3(spawningPosition.x, 1, spawningPosition.z),
+                        var newEnemy = Instantiate(objectToSpawn.enemyPrefab, new Vector3(spawningPosition.x, -1, spawningPosition.z),
                             quaternion.identity);
+                        
                         EnemyData newEnemyData = newEnemy.GetComponent<EnemyData>();
                         newEnemyData.enemyStats = objectToSpawn;
                         newEnemyData.roomSpawnedInID = roomToSpawnInObject.ID;
+                        
+                        newEnemy.GetComponent<AIController>().enabled = false;
+                        
+                        Vector3 newEnemyPosition = newEnemy.transform.position;
+
+                        yield return new WaitForSeconds(0.2f);
+                        GameObject newParticle = Instantiate(spawnParticle, new Vector3(newEnemyPosition.x, 0, newEnemyPosition.z - 0.5f),
+                            quaternion.identity);
+                        
+                        newParticle.transform.localScale *= 2.5f;
+                        
+                        yield return new WaitForSeconds(10f);
+                        Destroy(newParticle);
+                        newEnemy.GetComponent<AIController>().enabled = true;
                     }
                     _currentEnemiesCount++;
                     OnEnemiesSpawnedOrKilledEventHandler?.Invoke(roomToSpawnInObject, 1);
