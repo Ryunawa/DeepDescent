@@ -1,7 +1,5 @@
-using System;
 using _2Scripts.Manager;
 using NaughtyAttributes;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
