@@ -18,6 +18,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     [SerializeField] private TextMeshProUGUI Quantity;
     [SerializeField] private bool IsEquipment;
     [SerializeField] private bool IsDrop;
+    [SerializeField] private bool IsOffHand;
     private int ItemID;
     private int ItemPos;
     

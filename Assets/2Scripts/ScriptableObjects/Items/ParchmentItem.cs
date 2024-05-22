@@ -15,7 +15,6 @@ public class ParchmentItem : ConsumableItem
 
     public override string GetStats()
     {
-        //TODO
-        return "NEED TO DO";
+        return $"Cooldown : {ParchmentCooldown}";
     }
 }

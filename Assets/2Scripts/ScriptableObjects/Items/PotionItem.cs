@@ -22,7 +22,14 @@ public class PotionItem : ConsumableItem
 
     public override string GetStats()
     {
-        //TODO
-        return "NEED TO DO";
+        string stat = "";
+        switch (PotionType)
+        {
+            default:
+                stat += "Heal :";
+                break;
+        }
+        
+        return $"{stat} {PotionValue}\r\nCooldown : {PotionCooldown}";
     }
 }
