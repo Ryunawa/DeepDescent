@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Item List", menuName = "ScriptableObjects/Item/Create New ItemList")]
@@ -11,4 +12,6 @@ public class ItemList : ScriptableObject
     {
         return items.Find(x => x.ID == id);
     }
+
+    public List<Item> Items => items;
 }

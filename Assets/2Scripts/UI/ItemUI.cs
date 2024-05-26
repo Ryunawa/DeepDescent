@@ -11,8 +11,6 @@ using UnityEngine.UI;
 
 public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
-    static ItemList GlobalItemList;
-    
     [SerializeField] private Image Image;
     [SerializeField] private Image Border;
     [SerializeField] private TextMeshProUGUI Quantity;
@@ -33,16 +31,11 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     
     public void Setup(int itemID, int quantity)
     {
-        if (GlobalItemList == null)
-        {
-            GlobalItemList = MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().inventory.GlobalItemList;
-        }
-        
         ItemID = itemID;
-        Border.color = InventoryUIManager.Colors[GlobalItemList.FindItemFromID(itemID).Rarity];
-        Image.sprite = GlobalItemList.FindItemFromID(itemID).InventoryIcon;
+        Border.color = InventoryUIManager.Colors[ItemManager.instance.GetItem(itemID).Rarity];
+        Image.sprite = ItemManager.instance.GetItem(itemID).InventoryIcon;
         
-        if (Quantity != null) Quantity.text = GlobalItemList.FindItemFromID(ItemID).Stackable ? quantity.ToString() : "";
+        if (Quantity != null) Quantity.text = ItemManager.instance.GetItem(ItemID).Stackable ? quantity.ToString() : "";
         Image.color = Color.white;
     }
 
@@ -114,7 +107,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         {
             inventory.UnequipItem(new List<(EquippableItem, bool)>
             {
-                (GlobalItemList.FindItemFromID(eventData.pointerDrag.GetComponent<ItemUI>().ItemID) as EquippableItem, IsOffHand)
+                (ItemManager.instance.GetItem(eventData.pointerDrag.GetComponent<ItemUI>().ItemID) as EquippableItem, IsOffHand)
             });
             InventoryUIManager.instance.DrawInventory();
         }
@@ -128,10 +121,8 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         ItemUI itemUI = eventData.pointerEnter.gameObject.GetComponentInParent<ItemUI>();
 
         if (itemUI.ItemID == -1) return;
-     
-        if (GlobalItemList == null) GlobalItemList = MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().inventory.GlobalItemList;
         
-        Item item = GlobalItemList.FindItemFromID(itemUI.ItemID);
+        Item item = ItemManager.instance.GetItem(itemUI.ItemID);
         
         InventoryUIManager.instance.ItemDetailUI.Setup(item);
         InventoryUIManager.instance.ItemDetailUI.ToggleUI(true);
@@ -168,7 +159,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             {
                 inventory.UnequipItem(new List<(EquippableItem, bool)>
                 {
-                    (GlobalItemList.FindItemFromID(itemUI.ItemID) as EquippableItem, IsOffHand)
+                    (ItemManager.instance.GetItem(itemUI.ItemID) as EquippableItem, IsOffHand)
                 });
             }
 
@@ -176,7 +167,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             {
                 itemUI.ItemPos = itemUI.transform.GetSiblingIndex();
                             
-                Item item = GlobalItemList.FindItemFromID(itemUI.ItemID);
+                Item item = ItemManager.instance.GetItem(itemUI.ItemID);
                             
                 switch (item)
                 {

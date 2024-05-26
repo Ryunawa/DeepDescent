@@ -35,7 +35,7 @@ public class Inventory : NetworkBehaviour
 
     [Header("InventoryStuff")]
     [DoNotSerialize] public List<InventoryObject> InventoryItems = new List<InventoryObject>();
-    public ItemList GlobalItemList;
+    //public ItemList GlobalItemList;
     public int InventorySpace = 6;
     public void AddToInventory(int itemID, int itemAmount)
     {
@@ -62,7 +62,7 @@ public class Inventory : NetworkBehaviour
         if (InventoryItems.Count < (InventorySpace - 1))
         {
             InventoryObject newInventoryObject = InventoryItems[itemPos];
-            SpawnFromInventoryRpc(newInventoryObject.ID);
+            SpawnerManager.instance.SpawnInventoryItemsRpc(newInventoryObject.ID);
             if (InventoryItems[itemPos].Amount > 1)
             {
                 newInventoryObject.Amount =- 1;
@@ -78,15 +78,6 @@ public class Inventory : NetworkBehaviour
         }
         Debug.Log("[Inventory::DropFromInventory()] - Tried to drop item from inventory that was out of bound");
     }
-
-    [Rpc(SendTo.Server)]
-    private void SpawnFromInventoryRpc(int inventoryObjectID)
-    {
-        Debug.Log("SERVERRRR");
-        NetworkObject o = Instantiate(GlobalItemList.FindItemFromID(inventoryObjectID).ObjectPrefab.GetComponent<NetworkObject>(), transform.position, Quaternion.identity);
-        o.Spawn();
-        //SpawnerManager.instance.SpawnNetworkObjectRpc(GlobalItemList.FindItemFromID(inventoryObject.ID).ObjectPrefab.GetComponent<NetworkObject>(), transform.position, Quaternion.identity);
-    }
     
 
     public void  UseFromInventory(int itemPos)
@@ -94,7 +85,7 @@ public class Inventory : NetworkBehaviour
         if (InventoryItems.Count < (InventorySpace - 1))
         {
             InventoryObject newInventoryObject = InventoryItems[itemPos];
-            ConsumableItem realItem = (ConsumableItem) GlobalItemList.FindItemFromID(newInventoryObject.ID);
+            ConsumableItem realItem = ItemManager.instance.GetItem(newInventoryObject.ID) as ConsumableItem;
             if (realItem)
             {
                 realItem.Use();
@@ -125,7 +116,7 @@ public class Inventory : NetworkBehaviour
         if (InventoryItems.Count < (InventorySpace - 1))
         {
             InventoryObject newInventoryObject = InventoryItems[itemPos];
-            EquippableItem realItem = (EquippableItem)GlobalItemList.FindItemFromID(newInventoryObject.ID);
+            EquippableItem realItem = ItemManager.instance.GetItem(newInventoryObject.ID) as EquippableItem;
             if (realItem)
             {
                 (bool, List<EquippableItem>) result = realItem.Equip(this, OffSlot);
@@ -187,7 +178,7 @@ public class Inventory : NetworkBehaviour
 
     public void RemoveFromEquipment(InventoryObject item, bool offHand = false)
     {
-        switch (GlobalItemList.FindItemFromID(item.ID))
+        switch (ItemManager.instance.GetItem(item.ID))
         {
             case ArmorItem armorItem:
 
