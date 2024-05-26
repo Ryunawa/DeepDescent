@@ -162,14 +162,15 @@ public class Inventory : NetworkBehaviour
         Debug.Log("[Inventory::EquipFromInventory()] - Tried to use item from inventory that was out of bound");
     }
 
-    public void UnequipItem(List<EquippableItem> itemsToUnequip)
+    public void UnequipItem(List<(EquippableItem, bool)> itemsToUnequip)
     {
         if (itemsToUnequip.Count > 0)
         {
             for (int i = 0; i < itemsToUnequip.Count; i++)
             {
-                InventoryObject oldEquippedItem = new InventoryObject(itemsToUnequip[i].ID, 1);
+                InventoryObject oldEquippedItem = new InventoryObject(itemsToUnequip[i].Item1.ID, 1);
                 AddToInventory(oldEquippedItem.ID, 1);
+                RemoveFromEquipment(oldEquippedItem, itemsToUnequip[i].Item2);
             }
             Debug.Log($"[Inventory::UnequipItem()] - Unequipped {itemsToUnequip.Count} item(s)");
             return;
@@ -182,5 +183,53 @@ public class Inventory : NetworkBehaviour
     public void DropFirstItem()
     {
         DropFromInventory(0);
+    }
+
+    public void RemoveFromEquipment(InventoryObject item, bool offHand = false)
+    {
+        switch (GlobalItemList.FindItemFromID(item.ID))
+        {
+            case ArmorItem armorItem:
+
+                ArmorType type = armorItem.ArmorType;
+                switch (type)
+                {
+                    case ArmorType.NECKLACE :
+                        NecklaceItem = null;
+                        break;
+                    case ArmorType.CHEST : 
+                        ChestArmor = null;
+                        break;
+                    case ArmorType.PANTS: 
+                        LegArmor = null;
+                        break;
+                    case ArmorType.FEET : 
+                        FeetArmor = null;
+                        break;
+                    case ArmorType.RING :
+                        if (offHand)
+                        {
+                            RingsItem[1] = null;
+                        }
+                        else
+                        {
+                            RingsItem[0] = null;
+                        }
+                        break;
+                }
+                
+                    
+                break;
+            case WeaponItem:
+                if (offHand)
+                {
+                    OffHandItem = null;
+                }
+                else
+                {
+                    MainHandItem = null;
+                }
+                break;
+        }
     }
 }

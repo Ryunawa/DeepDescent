@@ -17,6 +17,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     [SerializeField] private Image Border;
     [SerializeField] private TextMeshProUGUI Quantity;
     [SerializeField] private bool IsEquipment;
+    [SerializeField] private bool IsInventory;
     [SerializeField] private bool IsDrop;
     [SerializeField] private bool IsOffHand;
     private int ItemID;
@@ -50,11 +51,12 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         ItemID = -1;
         if (Quantity != null) Quantity.text = "";
         Image.color = Color.clear;
+        Border.color = Color.white;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (IsEquipment || IsDrop) return;
+        if ( IsDrop) return;
         
         
         _isGrabbed = true;
@@ -68,7 +70,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (IsEquipment || IsDrop) return;
+        if (IsDrop) return;
         
         transform.position = Input.mousePosition;
         InventoryUIManager.instance.ItemDetailUI.ToggleUI(false);
@@ -76,7 +78,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (IsEquipment || IsDrop) return;
+        if (IsDrop) return;
         
         _isGrabbed = false;
         transform.SetParent(parentAfterDrag);
@@ -89,30 +91,39 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     public void OnDrop(PointerEventData eventData)
     {
         Inventory inventory = InventoryUIManager.instance.Inventory;
-
+        if (eventData.pointerDrag.GetComponent<ItemUI>().ItemID == -1) return;
+        
         if (IsDrop)
         {
+            if (IsEquipment) return;
+            
             Debug.Log("Drop");
             inventory.DropFromInventory(eventData.pointerDrag.GetComponent<ItemUI>().ItemPos);
+            InventoryUIManager.instance.DrawInventory();
+            return;
         }
         
-        if (IsEquipment)
+        if (IsEquipment && !eventData.pointerDrag.GetComponent<ItemUI>().IsEquipment)
         {
-            inventory.EquipFromInventory(eventData.pointerDrag.GetComponent<ItemUI>().ItemPos);
+            inventory.EquipFromInventory(eventData.pointerDrag.GetComponent<ItemUI>().ItemPos, IsOffHand);
+            InventoryUIManager.instance.DrawInventory();
+            return;
+        }
+
+        if (IsInventory && !eventData.pointerDrag.GetComponent<ItemUI>().IsInventory)
+        {
+            inventory.UnequipItem(new List<(EquippableItem, bool)>
+            {
+                (GlobalItemList.FindItemFromID(eventData.pointerDrag.GetComponent<ItemUI>().ItemID) as EquippableItem, IsOffHand)
+            });
+            InventoryUIManager.instance.DrawInventory();
         }
         
-        InventoryUIManager.instance.DrawInventory();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (_isGrabbed || IsDrop) return;
-        
-        Debug.Log("Hovering " + eventData.hovered.Count);
-        foreach (var VARIABLE in eventData.hovered)
-        {
-            Debug.Log(VARIABLE.gameObject.name);
-        }
 
         ItemUI itemUI = eventData.pointerEnter.gameObject.GetComponentInParent<ItemUI>();
 
@@ -139,7 +150,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (_isGrabbed || IsEquipment || IsDrop) return;
+        if (_isGrabbed || IsDrop) return;
         
         clicked++;
         if (clicked == 1) clicktime = Time.time;
@@ -150,23 +161,34 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             clicktime = 0;
 
             Inventory inventory = InventoryUIManager.instance.Inventory;
-            
             ItemUI itemUI = eventData.pointerEnter.gameObject.GetComponentInParent<ItemUI>();
+            if (itemUI.ItemID == -1 ) return;
             
-            itemUI.ItemPos = itemUI.transform.GetSiblingIndex();
-            
-            Item item = GlobalItemList.FindItemFromID(itemUI.ItemID);
-            
-            switch (item)
+            if (IsEquipment)
             {
-                case EquippableItem:
-                    inventory.EquipFromInventory(itemUI.ItemPos);
-                    break;
-                case ConsumableItem:
-                    inventory.UseFromInventory(itemUI.ItemPos);
-                    break;
-                default:
-                    break;
+                inventory.UnequipItem(new List<(EquippableItem, bool)>
+                {
+                    (GlobalItemList.FindItemFromID(itemUI.ItemID) as EquippableItem, IsOffHand)
+                });
+            }
+
+            if (IsInventory)
+            {
+                itemUI.ItemPos = itemUI.transform.GetSiblingIndex();
+                            
+                Item item = GlobalItemList.FindItemFromID(itemUI.ItemID);
+                            
+                switch (item)
+                {
+                    case EquippableItem:
+                        inventory.EquipFromInventory(itemUI.ItemPos, IsOffHand);
+                        break;
+                    case ConsumableItem:
+                        inventory.UseFromInventory(itemUI.ItemPos);
+                        break;
+                    default:
+                        break;
+                }
             }
             
             InventoryUIManager.instance.DrawInventory();
