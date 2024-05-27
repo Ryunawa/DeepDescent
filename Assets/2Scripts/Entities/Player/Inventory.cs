@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using _2Scripts.Manager;
+using _2Scripts.Save;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -22,7 +23,10 @@ public struct InventoryObject
 
 public class Inventory : NetworkBehaviour
 {
-    [Header("Equipped Items")]
+    [Header("Options")]
+    [SerializeField] private bool overrideWithSavedInventory;
+    
+    [Space,Header("Equipped Items")]
     public ArmorItem ChestArmor;
     public ArmorItem LegArmor;
     public ArmorItem FeetArmor;
@@ -37,6 +41,15 @@ public class Inventory : NetworkBehaviour
     [DoNotSerialize] public List<InventoryObject> InventoryItems = new List<InventoryObject>();
     //public ItemList GlobalItemList;
     public int InventorySpace = 6;
+
+    private void Start()
+    {
+        if (overrideWithSavedInventory)
+        {
+            SaveSystem.LoadInventory();
+        }
+    }
+
     public void AddToInventory(int itemID, int itemAmount)
     {
         if (InventoryItems.Count < InventorySpace)
@@ -52,9 +65,12 @@ public class Inventory : NetworkBehaviour
                 InventoryItems.Add(new InventoryObject(itemID, itemAmount));
                 Debug.Log($"[Inventory::AddToInventory()] - Added new item of ID: {itemID} with an amount of {itemAmount} to inventory");
             }
+            SaveSystem.Save();
             return;
         }
         Debug.Log("[Inventory::AddToInventory()]; - Inventory is full");
+        
+        SaveSystem.Save();
     }
 
     public void DropFromInventory(int itemPos)
@@ -74,9 +90,12 @@ public class Inventory : NetworkBehaviour
                 InventoryItems.RemoveAt(itemPos);
                 Debug.Log($"[Inventory::DropFromInventory()] - Dropped item at pos {itemPos}.No remaining item.");
             }
+            SaveSystem.Save();
             return;
         }
         Debug.Log("[Inventory::DropFromInventory()] - Tried to drop item from inventory that was out of bound");
+        
+        SaveSystem.Save();
     }
     
     [Rpc(SendTo.Server)]
@@ -106,15 +125,19 @@ public class Inventory : NetworkBehaviour
                     InventoryItems.RemoveAt(itemPos);
                     Debug.Log($"[Inventory::UseFromInventory()] - Used item at pos {itemPos}.No remaining item.");
                 }
+                SaveSystem.Save();
                 return;
             }
             else
             {
                 Debug.Log("[Inventory::UseFromInventory()] - Tried to use an item from inventory that isn't a consumable.");
+                SaveSystem.Save();
                 return;
             }
         }
         Debug.Log("[Inventory::UseFromInventory()] - Tried to use item from inventory that was out of bound");
+        
+        SaveSystem.Save();
     }
 
     public void EquipFromInventory(int itemPos, bool OffSlot = false)
@@ -147,16 +170,23 @@ public class Inventory : NetworkBehaviour
                     }
                 }
                 else
+                {
                     Debug.Log($"[Inventory::EquipFromInventory()] - Couldn't equip item at pos {itemPos}. Nothing happened");
+                    
+                }
+                SaveSystem.Save();
                 return;
             }
             else
             {
                 Debug.Log("[Inventory::EquipFromInventory()] - Tried to use an item from inventory that isn't a consumable.");
+                SaveSystem.Save();
                 return;
             }
         }
         Debug.Log("[Inventory::EquipFromInventory()] - Tried to use item from inventory that was out of bound");
+        
+        SaveSystem.Save();
     }
 
     public void UnequipItem(List<(EquippableItem, bool)> itemsToUnequip)
@@ -170,10 +200,12 @@ public class Inventory : NetworkBehaviour
                 RemoveFromEquipment(oldEquippedItem, itemsToUnequip[i].Item2);
             }
             Debug.Log($"[Inventory::UnequipItem()] - Unequipped {itemsToUnequip.Count} item(s)");
+            SaveSystem.Save();
             return;
         }
         Debug.Log($"[Inventory::UnequipItem()] - Couldn't find any object to unequip.");
-            return;
+        
+        SaveSystem.Save();
     }
 
     [Button]
@@ -227,6 +259,38 @@ public class Inventory : NetworkBehaviour
                     MainHandItem = null;
                 }
                 break;
+        }
+    }
+
+    public List<int> GetEquipmentIds()
+    {
+        List<int> equipment = new List<int>();
+        
+        equipment.Add(NecklaceItem != null?NecklaceItem.ID:-1);
+        equipment.Add(ChestArmor != null?ChestArmor.ID:-1);
+        equipment.Add(LegArmor != null?LegArmor.ID:-1);
+        equipment.Add(FeetArmor != null?FeetArmor.ID:-1);
+        equipment.Add(RingsItem[0] != null?RingsItem[0].ID:-1);
+        equipment.Add(RingsItem[1] != null?RingsItem[1].ID:-1);
+        equipment.Add(MainHandItem != null?MainHandItem.ID:-1);
+        equipment.Add(OffHandItem != null?OffHandItem.ID:-1);
+
+        return equipment;
+    }
+
+    public void SetEquipment(List<int> ids)
+    {
+        bool isOffHand = false;
+        for (int i = 0; i < ids.Count; i++)
+        {
+            EquippableItem item = ItemManager.instance.GetItem(ids[i]) as EquippableItem;
+            if (i == 5 || i ==7)
+            {
+                isOffHand = true;
+            }
+
+            if (item != null) item.Equip(this, isOffHand);
+            isOffHand = false;
         }
     }
 }
