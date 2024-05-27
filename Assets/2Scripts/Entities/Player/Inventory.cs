@@ -62,7 +62,7 @@ public class Inventory : NetworkBehaviour
         if (InventoryItems.Count < (InventorySpace - 1))
         {
             InventoryObject newInventoryObject = InventoryItems[itemPos];
-            SpawnerManager.instance.SpawnInventoryItemsRpc(newInventoryObject.ID);
+            SpawnInventoryItemsRpc(newInventoryObject.ID);
             if (InventoryItems[itemPos].Amount > 1)
             {
                 newInventoryObject.Amount =- 1;
@@ -79,6 +79,12 @@ public class Inventory : NetworkBehaviour
         Debug.Log("[Inventory::DropFromInventory()] - Tried to drop item from inventory that was out of bound");
     }
     
+    [Rpc(SendTo.Server)]
+    public void SpawnInventoryItemsRpc(int id)
+    {
+        NetworkObject o = Instantiate(ItemManager.instance.GetItemNetworkObject(id), transform.position, Quaternion.identity);
+        o.Spawn();
+    }
 
     public void  UseFromInventory(int itemPos)
     {
