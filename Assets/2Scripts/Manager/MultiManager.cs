@@ -408,7 +408,19 @@ public class MultiManager : Singleton<MultiManager>
 	{
 		return NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject().gameObject;
 	}
+	
+	public List<GameObject> GetAllPlayerGameObjects()
+	{
 
+		List<GameObject> go = new List<GameObject>();
+		foreach (ulong clientID in NetworkManager.Singleton.ConnectedClientsIds)
+		{
+			go.Add(NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(clientID).gameObject);
+		}
+
+		return go;
+	}
+	
 	/// <summary>
 	/// This task is used to create a relay
 	/// </summary>
@@ -543,13 +555,6 @@ public class MultiManager : Singleton<MultiManager>
 			NetworkManager.Singleton.SpawnManager.InstantiateAndSpawn(objectToSpawn, NetworkManager.Singleton.LocalClientId,
             			position: position, rotation: rotation);
 		}
-	}
-	
-	[Rpc(SendTo.Server, RequireOwnership = false)]
-	public void SpawnNetworkObjectRpc(NetworkObject objectToSpawn, Vector3 position, Quaternion rotation)
-	{
-		objectToSpawn.InstantiateAndSpawn(NetworkManager.Singleton, NetworkManager.Singleton.LocalClientId,
-			position: position, rotation: rotation);
 	}
 
 	[Rpc(SendTo.Server, RequireOwnership = false)]
