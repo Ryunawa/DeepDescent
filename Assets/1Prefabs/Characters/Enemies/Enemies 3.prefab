@@ -2184,6 +2184,7 @@ GameObject:
   - component: {fileID: 4123103312939607119}
   - component: {fileID: -8515664152495936704}
   - component: {fileID: -4435357719316504908}
+  - component: {fileID: -8703055347366504262}
   m_Layer: 8
   m_Name: Enemies 3
   m_TagString: Enemy
@@ -2320,6 +2321,7 @@ MonoBehaviour:
     m_Bits: 128
   attackRange: 1.5
   timeBeforeAttack: 2
+  _isSwinging: 0
   waypoints:
   - {fileID: 0}
   - {fileID: 0}
@@ -2357,12 +2359,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7cc0c3813364b1caa5268549ecfe1a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roomSpawnedInID: 0
   enemyStats:
     enemyPrefab: {fileID: 0}
     spawnRate: 0
     health: 0
     damageDealt: 0
     damageTaken: 0
+--- !u!114 &-8703055347366504262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3959042653490119952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList:
+  - IsCrossFadeExit: 0
+    Layer: 0
+    OriginatingState: -218158204
+    DestinationState: 1080829965
+    TransitionDuration: 0.25
+    TriggerNameHash: -1130678506
+    TransitionIndex: 0
+  m_Animator: {fileID: 6560489301098289846}
 --- !u!1 &4730096399801604774
 GameObject:
   m_ObjectHideFlags: 0
