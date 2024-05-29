@@ -1321,6 +1321,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnerManager
       objectReference: {fileID: 0}
+    - target: {fileID: 3295599234532194143, guid: 8d2e40b9ff3b60c4781cbf29ad49db4e,
+        type: 3}
+      propertyPath: maxEnemiesPerLevel
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 3295599234532194143, guid: 8d2e40b9ff3b60c4781cbf29ad49db4e,
+        type: 3}
+      propertyPath: spawnIntervalInSecond
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
