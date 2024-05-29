@@ -79,10 +79,28 @@ public class PlayerBehaviour : NetworkBehaviour
         if (Physics.SphereCast(_camTransform.position, 1.0f, _camTransform.TransformDirection(_camTransform.forward), out hit, 5.0f, 1 << 10))
         {
             _objectToAddToInventory = hit.collider.gameObject;
+            if (_objectToAddToInventory.TryGetComponent(out Object obj))
+                obj.GOText.SetActive(true);
         }
         else
         {
+            if (_objectToAddToInventory)
+            {
+                if(_objectToAddToInventory.TryGetComponent(out Object obj))
+                    obj.GOText.SetActive(false);
+            }
             _objectToAddToInventory = null;
+        }
+
+        if (_objectToAddToInventory)
+        {
+            if (_objectToAddToInventory.TryGetComponent(out Object obj))
+            {
+                if(obj.GOText.TryGetComponent(out RectTransform rectTransform))
+                    rectTransform.rotation = Quaternion.LookRotation(_objectToAddToInventory.transform.position - transform.position, Vector3.up);
+                if (_inputManager.PlayerUsed())
+                    obj.Interact(this);
+            }
         }
 
         if (_inputManager.PlayerUsed() && _objectToAddToInventory)

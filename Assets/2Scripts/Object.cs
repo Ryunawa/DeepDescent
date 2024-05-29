@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Object : NetworkBehaviour, IInteractable
 {
-    
     public void Interact(PlayerBehaviour playerBehaviour)
     {
         //Pickup Object
@@ -14,4 +13,5 @@ public class Object : NetworkBehaviour, IInteractable
     }
     public Item ItemDetails;
     public int amount;
+    public GameObject GOText;
 }

@@ -46,6 +46,7 @@ namespace _2Scripts.Save
 
             TextWriter writer = new StreamWriter(Path);
             serializer.Serialize(writer, data);
+            writer.Close();
             
             Debug.Log("Saved Inventory");
         }

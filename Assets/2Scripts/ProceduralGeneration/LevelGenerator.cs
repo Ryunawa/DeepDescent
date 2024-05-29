@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using _2Scripts.Manager;
 using _2Scripts.ProceduralGeneration;
@@ -74,6 +75,8 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
         // place it in their folder
         if(instantiatedProps) instantiatedProps.transform.SetParent(propsParent.transform);
+
+        startRoom.RoomProps = instantiatedProps.GetComponentInChildren<RoomProps>();
 
         dungeon[centerIndex] = startRoom;
 
@@ -289,6 +292,9 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
                     // place it in their folder
                     instantiatedRoom.transform.SetParent(roomsParent.transform);
+                    
+                    instantiatedRoom.RoomProps = instantiatedProps.GetComponentInChildren<RoomProps>();
+                    
                     if (instantiatedProps) instantiatedProps.transform.SetParent(propsParent.transform);
 
                     dungeon[neighbourIndex] = instantiatedRoom;
@@ -561,6 +567,38 @@ public class LevelGenerator : Singleton<LevelGenerator>
     public bool IsRoomEmpty(int roomIndex)
     {
         return dungeon[roomIndex].GetRoomType() == RoomType.Zero;
+    }
+
+    public List<(Room,List<GameObject>)> GetEnemySpawnPoints()
+    {
+        Vector3 playerPos = MultiManager.instance.GetPlayerGameObject().gameObject.transform.position;
+
+        Room playerRoom = dungeon[0];
+        
+        foreach (Room room in dungeon)
+        {
+            if (Vector3.Distance(room.transform.position, playerPos) < Vector3.Distance(playerRoom.transform.position, playerPos))
+            {
+                playerRoom = room;
+            }
+        }
+
+
+        Dictionary<Directions, Room> rooms = GetNeighbouringRooms(GetIndexOfRoom(playerRoom));
+
+        List<(Room,List<GameObject>)> spawnPointsOfSurroundingRooms = new List<(Room, List<GameObject>)>();
+
+        Room[] roomsList = rooms.Values.ToArray();
+        
+        foreach (var t in roomsList)
+        {
+            if (t != null)
+            {
+                spawnPointsOfSurroundingRooms.Add((t,t.RoomProps.SpawnPoints));
+            }
+        }
+
+        return spawnPointsOfSurroundingRooms;
     }
 }
 

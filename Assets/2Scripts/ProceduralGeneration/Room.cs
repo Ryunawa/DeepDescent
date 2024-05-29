@@ -19,9 +19,17 @@ namespace _2Scripts.ProceduralGeneration
         public int ID;
         private float _sizeRoom = 0;
 
+        private RoomProps _roomProps;
+        
         [SerializeField] private GameObject[] doorPrefab;
 
         public int enemiesCount { get; private set; }
+
+        public RoomProps RoomProps
+        {
+            get => _roomProps;
+            set => _roomProps = value;
+        }
 
 
         public float SizeRoom
