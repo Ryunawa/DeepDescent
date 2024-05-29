@@ -116,11 +116,11 @@ public class PlayerBehaviour : NetworkBehaviour
         if (!IsGrounded())
             move *= airControl;
 
-        transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
+        //transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
 
         _rb.velocity = move * playerSpeed + (_rb.velocity.y * Vector3.up);
 
-        gameObject.transform.rotation = Quaternion.Euler(0, _camTransform.eulerAngles.y, 0);
+        transform.rotation = Quaternion.Euler(0, _camTransform.eulerAngles.y, 0);
 
         if (_hasJumped)
         {
@@ -128,7 +128,8 @@ public class PlayerBehaviour : NetworkBehaviour
             _rb.AddForce(Vector3.up * jumpHeight, ForceMode.VelocityChange);
         }
 
-        animator.SetFloat("Speed", _rb.velocity.magnitude * 2);
+        animator.SetFloat("XAxis", IsGrounded()?_inputManager.GetPlayerMovement().x:10);
+        animator.SetFloat("YAxis", IsGrounded()?_inputManager.GetPlayerMovement().y:10);
     }
 
     private bool IsGrounded()

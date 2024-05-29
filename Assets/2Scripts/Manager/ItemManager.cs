@@ -14,7 +14,7 @@ namespace _2Scripts.Manager
 
         private void Start()
         {
-            _itemsDictionary = itemList.Items.ToDictionary(x => x.ID);
+            _itemsDictionary = itemList.Items.ToDictionary(x => x.ID, x=>x);
         }
 
         public Item GetItem(int id)
