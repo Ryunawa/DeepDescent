@@ -8,8 +8,6 @@ using NaughtyAttributes;
 using UnityEngine;
 using Unity.Mathematics;
 using Unity.Netcode;
-using UnityEngine.AI;
-using UnityEngine.Serialization;
 using static _2Scripts.Helpers.StructureAccessMethods;
 using Random = UnityEngine.Random;
 
@@ -46,12 +44,15 @@ namespace _2Scripts.Manager
         protected override void Awake()
         {
             base.Awake();
-            LevelGenerator.instance.dungeonGeneratedEvent.AddListener(DEBUG_StartSpawn);
-        }
-
-        private void Start()
-        {
-            _enemiesList = DifficultyManager.instance.GetEnemiesStatsToUse();
+            LevelGenerator.instance.dungeonGeneratedEvent.AddListener(() =>
+            {
+                if (NetworkManager.Singleton.IsServer)
+                {
+                    DifficultyManager.instance.AdjustDifficultyParameters(MultiManager.instance.GetAllPlayerGameObjects().Count);
+                    _enemiesList = DifficultyManager.instance.GetEnemiesStatsToUse();
+                    StartCoroutine(SpawnEnemies());
+                }
+            });
         }
 
         /// <summary>
@@ -76,7 +77,7 @@ namespace _2Scripts.Manager
                     }
                 }
             }
-            return GetStructElementByIndex<EnemyStats>(_enemiesList, 0);
+            return (GetStructElementByIndex<EnemyStats>(_enemiesList, 0));
         }
 
         /// <summary>
@@ -86,14 +87,16 @@ namespace _2Scripts.Manager
         private (Room,List<GameObject>) GetRandomRoomToSpawnIn()
         {
             (Room,List<GameObject>) randomRoom;
-            List<(Room, List<GameObject>)> roomsTuple = LevelGenerator.instance.GetEnemySpawnPoints();
+            List<(Room, List<GameObject>)> roomsTuple = LevelGenerator.instance.GetAllEnemySpawnPoints();
             int roomIndex;
+            
             do
             {
                 int randomInt = Random.Range(0, roomsTuple.Count);
                 randomRoom = roomsTuple[randomInt];
                 roomIndex = LevelGenerator.instance.GetIndexOfRoom(randomRoom.Item1);
-            } while (LevelGenerator.instance.IsRoomEmpty(roomIndex) || randomRoom.Item1.enemiesCount >= maxEnemiesPerRoom);
+            } while (LevelGenerator.instance.IsRoomEmpty(roomIndex));
+            
             return randomRoom;
         }
 
@@ -115,26 +118,18 @@ namespace _2Scripts.Manager
 
                     OnEnemiesSpawnedOrKilledEventHandler?.Invoke(roomToSpawnIn.Item1, 1);
                     
-                    if (bSpawnInMultiplayer)
-                    {
-                         MultiManager.instance.SpawnNetworkObject(objectToSpawn.enemyPrefab.GetComponent<NetworkObject>(),
-                             spawningPosition,
-                             quaternion.identity);
-                    }
-                    else
-                    {
-                        //DEBUG ONLY
-                        GameObject newEnemy = Instantiate(objectToSpawn.enemyPrefab, new Vector3(spawningPosition.x, -1, spawningPosition.z),
-                            quaternion.identity);
-                        
-                        EnemyData newEnemyData = newEnemy.GetComponent<EnemyData>();
-                        newEnemyData.enemyStats = objectToSpawn;
-                        newEnemyData.roomSpawnedInID = roomToSpawnIn.Item1.ID;
-                        
-                        newEnemy.GetComponent<AIController>().enabled = false;
-                        Vector3 newEnemyPosition = newEnemy.transform.position;
-                        StartCoroutine(StartSpawnAnim(newEnemyPosition, newEnemy));
-                    }
+                    
+                    GameObject newEnemy = Instantiate(objectToSpawn.enemyPrefab, new Vector3(spawningPosition.x, -1, spawningPosition.z),
+                        quaternion.identity);
+                    newEnemy.GetComponent<NetworkObject>().Spawn();
+                    
+                    EnemyData newEnemyData = newEnemy.GetComponent<EnemyData>();
+                    newEnemyData.enemyStats = objectToSpawn;
+                    newEnemyData.roomSpawnedInID = roomToSpawnIn.Item1.ID;
+                    
+                    newEnemy.GetComponent<AIController>().enabled = false;
+                    Vector3 newEnemyPosition = newEnemy.transform.position;
+                    StartCoroutine(StartSpawnAnim(newEnemyPosition, newEnemy));
                     _currentEnemiesCount++;
                 }
             }

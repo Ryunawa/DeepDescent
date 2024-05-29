@@ -55,3 +55,4 @@ MonoBehaviour:
   maxEnemiesPerRoom: 5
   spawnIntervalInSecond: 6
   spawnParticle: {fileID: 152438, guid: 9d82e1be9de81be4dbc15c60c39dd6ff, type: 3}
+  enemyManager: {fileID: 0}

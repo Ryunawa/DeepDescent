@@ -5,6 +5,8 @@ namespace _2Scripts.Struct
     [System.Serializable]
     public struct EnemyStats
     {
+        [Tooltip("Id to identifie the enemy")] 
+        public int id;
         [Tooltip("The prefab who represent the enemy")] 
         public GameObject enemyPrefab;
         [Tooltip("Rate of spawn")] 
