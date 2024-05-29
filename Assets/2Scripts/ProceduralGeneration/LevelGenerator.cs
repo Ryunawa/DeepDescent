@@ -30,7 +30,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
     [SerializeField] private int dungeonSize = 5;
     [SerializeField] private bool IsOneRoomType;
     
-    public UnityEvent dungeonGeneratedEvent;
+    public UnityEvent dungeonGeneratedEvent = new UnityEvent();
 
     private static int _staticDungeonSize;
     private int _roomNumber = 1;
