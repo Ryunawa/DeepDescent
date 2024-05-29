@@ -3,12 +3,15 @@ using UnityEngine;
 
 public class VisibleItems : MonoBehaviour
 {
+    [Header("Inventory")]
     public List<GameObject> scraps;
     public List<GameObject> swords;
-    public List<GameObject> armors;
     public GameObject shield;
+    public GameObject potion;
     public GameObject spellBook;
 
+    [Header("Equipped")]
+    public List<GameObject> armors;
     public List<GameObject> swordEquippable;
     public List<GameObject> shieldEquippable;
     public GameObject equippedWeapon;
@@ -96,6 +99,24 @@ public class VisibleItems : MonoBehaviour
         }
     }
 
+    // Activates the potion
+    public void AddVisiblePotions()
+    {
+        if (!potion.activeSelf)
+        {
+            potion.SetActive(true);
+        }
+    }
+
+    // Deactivates the potion
+    public void RemoveVisiblePotions()
+    {
+        if (potion.activeSelf)
+        {
+            potion.SetActive(false);
+        }
+    }
+
     // Activates the next armor in order
     public void AddVisibleArmor()
     {
@@ -118,6 +139,57 @@ public class VisibleItems : MonoBehaviour
             }
         }
     }
+
+    // Equips a specified weapon
+    public void EquipRightHand(string itemName)
+    {
+        GameObject weaponToEquip = swordEquippable.Find(sword => sword.name == "SM_Wep_" + itemName);
+        if (weaponToEquip != null)
+        {
+            if (equippedWeapon != null)
+            {
+                equippedWeapon.SetActive(false);
+            }
+            equippedWeapon = weaponToEquip;
+            equippedWeapon.SetActive(true);
+        }
+    }
+
+    // Equips a specified shield
+    public void EquipLeftHand(string itemName)
+    {
+        GameObject shieldToEquip = shieldEquippable.Find(shield => shield.name == itemName);
+        if (shieldToEquip != null)
+        {
+            if (equippedShield != null)
+            {
+                equippedShield.SetActive(false);
+            }
+            equippedShield = shieldToEquip;
+            equippedShield.SetActive(true);
+        }
+    }
+
+    // Unequips the currently equipped weapon
+    public void UnequipRightHand()
+    {
+        if (equippedWeapon != null)
+        {
+            equippedWeapon.SetActive(false);
+            equippedWeapon = null;
+        }
+    }
+
+    // Unequips the currently equipped shield
+    public void UnequipLeftHand()
+    {
+        if (equippedShield != null)
+        {
+            equippedShield.SetActive(false);
+            equippedShield = null;
+        }
+    }
+
 
     // Deactivates all items
     public void DeactivateAllItems()
@@ -161,33 +233,5 @@ public class VisibleItems : MonoBehaviour
         }
     }
 
-    // Equips a specified sword
-    public void EquipSwordInHand(string itemName)
-    {
-        GameObject swordToEquip = swordEquippable.Find(sword => sword.name == itemName);
-        if (swordToEquip != null)
-        {
-            if (equippedWeapon != null)
-            {
-                equippedWeapon.SetActive(false);
-            }
-            equippedWeapon = swordToEquip;
-            equippedWeapon.SetActive(true);
-        }
-    }
-
-    // Equips a specified shield
-    public void EquipShieldInHand(string itemName)
-    {
-        GameObject shieldToEquip = shieldEquippable.Find(shield => shield.name == itemName);
-        if (shieldToEquip != null)
-        {
-            if (equippedShield != null)
-            {
-                equippedShield.SetActive(false);
-            }
-            equippedShield = shieldToEquip;
-            equippedShield.SetActive(true);
-        }
-    }
+    
 }

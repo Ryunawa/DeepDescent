@@ -7,6 +7,7 @@ using _2Scripts.Save;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 [Serializable]
 public struct InventoryObject
@@ -25,6 +26,7 @@ public class Inventory : NetworkBehaviour
 {
     [Header("Options")]
     [SerializeField] private bool overrideWithSavedInventory;
+    [SerializeField] private VisibleItems visibleItems;
     
     [Space,Header("Equipped Items")]
     public ArmorItem ChestArmor;
@@ -54,7 +56,8 @@ public class Inventory : NetworkBehaviour
     {
         if (InventoryItems.Count < InventorySpace)
         {
-            if (ItemManager.instance.GetItem(itemID).Stackable)
+            var item = ItemManager.instance.GetItem(itemID);
+            if (item.Stackable)
             {
                 int indexOfItem = InventoryItems.FindIndex(x => x.ID == itemID);
                 if (indexOfItem != -1)
@@ -73,7 +76,8 @@ public class Inventory : NetworkBehaviour
                 InventoryItems.Add(new InventoryObject(itemID, itemAmount));
                 Debug.Log($"[Inventory::AddToInventory()] - Added new unstackable item of ID: {itemID} with an amount of {itemAmount} to inventory");
             }
-            
+
+            ActivateItemVisibilityInventory(item);
             SaveSystem.Save();
             return;
         }
@@ -81,6 +85,70 @@ public class Inventory : NetworkBehaviour
         
         SaveSystem.Save();
     }
+
+    // Activates the visibility of the item based on its type
+    private void ActivateItemVisibilityInventory(Item item)
+    {
+        switch (item)
+        {
+            case ArmorItem:
+                visibleItems.AddVisibleArmor();
+                break;
+            case WeaponItem weapon:
+                // left hand - shield
+                if (weapon.WeaponType == WeaponType.SHIELD)
+                {
+                    visibleItems.AddVisibleShield();
+                }
+                // right hand - weapon
+                else
+                {
+                    visibleItems.AddVisibleSword();
+                }
+                break;
+            case ParchmentItem:
+                visibleItems.AddVisibleSpellBook();
+                break;
+            case PotionItem:
+                visibleItems.AddVisiblePotions();
+                break;
+            default: // scrap
+                visibleItems.AddVisibleScrap();
+                break;
+        }
+    }
+
+    private void DeactivateItemVisibilityInventory(Item item)
+    {
+        switch (item)
+        {
+            case ArmorItem _:
+                visibleItems.RemoveVisibleArmor();
+                break;
+            case WeaponItem weapon:
+                // left hand - shield
+                if (weapon.WeaponType == WeaponType.SHIELD)
+                {
+                    visibleItems.RemoveVisibleShield();
+                }
+                // right hand - weapon
+                else
+                {
+                    visibleItems.RemoveVisibleSword();
+                }
+                break;
+            case ParchmentItem _:
+                visibleItems.RemoveVisibleSpellBook();
+                break;
+            case PotionItem _:
+                visibleItems.RemoveVisiblePotions();
+                break;
+            default: // scrap
+                visibleItems.RemoveVisibleScrap();
+                break;
+        }
+    }
+
 
     public void DropFromInventory(int itemPos)
     {
@@ -99,6 +167,7 @@ public class Inventory : NetworkBehaviour
                 InventoryItems.RemoveAt(itemPos);
                 Debug.Log($"[Inventory::DropFromInventory()] - Dropped item at pos {itemPos}.No remaining item.");
             }
+            DeactivateItemVisibilityInventory(ItemManager.instance.GetItem(newInventoryObject.ID));
             SaveSystem.Save();
             return;
         }
@@ -134,6 +203,7 @@ public class Inventory : NetworkBehaviour
                     InventoryItems.RemoveAt(itemPos);
                     Debug.Log($"[Inventory::UseFromInventory()] - Used item at pos {itemPos}.No remaining item.");
                 }
+                DeactivateItemVisibilityInventory(ItemManager.instance.GetItem(newInventoryObject.ID));
                 SaveSystem.Save();
                 return;
             }
@@ -175,6 +245,7 @@ public class Inventory : NetworkBehaviour
                     else
                     {
                         InventoryItems.Remove(newInventoryObject);
+                        DeactivateItemVisibilityInventory(ItemManager.instance.GetItem(newInventoryObject.ID));
                         Debug.Log($"[Inventory::EquipFromInventory()] - Equipped new item at pos {itemPos}.");
                     }
                 }
@@ -183,6 +254,9 @@ public class Inventory : NetworkBehaviour
                     Debug.Log($"[Inventory::EquipFromInventory()] - Couldn't equip item at pos {itemPos}. Nothing happened");
                     
                 }
+
+                ShowVisibleItem(realItem, OffSlot);
+
                 SaveSystem.Save();
                 return;
             }
@@ -207,6 +281,7 @@ public class Inventory : NetworkBehaviour
                 InventoryObject oldEquippedItem = new InventoryObject(itemsToUnequip[i].Item1.ID, 1);
                 AddToInventory(oldEquippedItem.ID, 1);
                 RemoveFromEquipment(oldEquippedItem, itemsToUnequip[i].Item2);
+                HideVisibleItem(itemsToUnequip[i].Item1, itemsToUnequip[i].Item2);
             }
             Debug.Log($"[Inventory::UnequipItem()] - Unequipped {itemsToUnequip.Count} item(s)");
             SaveSystem.Save();
@@ -267,6 +342,55 @@ public class Inventory : NetworkBehaviour
                 {
                     MainHandItem = null;
                 }
+                break;
+        }
+    }
+
+
+    private void ShowVisibleItem(EquippableItem item, bool OffSlot = false)
+    {
+        switch (item)
+        {
+            case ArmorItem:
+                visibleItems.AddVisibleArmor();
+                break;
+            case WeaponItem weapon:
+                // left hand - shield
+                if (OffSlot)
+                {
+                    visibleItems.EquipLeftHand(weapon.Name);
+                }
+                // right hand - weapon
+                else
+                {
+                    visibleItems.EquipRightHand(weapon.Name);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void HideVisibleItem(EquippableItem item, bool OffSlot = false)
+    {
+        switch (item)
+        {
+            case ArmorItem:
+                visibleItems.RemoveVisibleArmor();
+                break;
+            case WeaponItem weapon:
+                // left hand - shield
+                if (OffSlot)
+                {
+                    visibleItems.UnequipLeftHand();
+                }
+                // right hand - weapon
+                else
+                {
+                    visibleItems.UnequipRightHand();
+                }
+                break;
+            default:
                 break;
         }
     }

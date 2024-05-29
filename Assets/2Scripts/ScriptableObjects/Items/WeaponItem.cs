@@ -8,7 +8,8 @@ public enum WeaponType
     SWORD,
     AXE,
     DAGGERS,
-    MAGIC_STAFF
+    MAGIC_STAFF,
+    SHIELD
 }
 
 [CreateAssetMenu(fileName = "New Weapon Item", menuName = "ScriptableObjects/Item/Create New Weapon Item")]
