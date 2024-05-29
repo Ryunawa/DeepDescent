@@ -124,7 +124,7 @@ namespace _2Scripts.Manager
                     else
                     {
                         //DEBUG ONLY
-                        GameObject newEnemy = Instantiate(objectToSpawn.enemyPrefab, new Vector3(spawningPosition.x + 5, -1, spawningPosition.z),
+                        GameObject newEnemy = Instantiate(objectToSpawn.enemyPrefab, new Vector3(spawningPosition.x, -1, spawningPosition.z),
                             quaternion.identity);
                         
                         EnemyData newEnemyData = newEnemy.GetComponent<EnemyData>();
