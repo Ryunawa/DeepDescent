@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using NaughtyAttributes;
 using Unity.Jobs;
 using Unity.VisualScripting;
@@ -26,6 +27,10 @@ namespace _2Scripts.Save
             inventory = inventoryObjects;
             this.equipment = equipment;
         }
+
+        public SaveData()
+        {
+        }
     }
     public static class SaveSystem
     {
@@ -34,13 +39,13 @@ namespace _2Scripts.Save
         
         public static void Save()
         {
-            BinaryFormatter formatter = new BinaryFormatter();
+            XmlSerializer serializer = new XmlSerializer(typeof(SaveData));
             Inventory inventory = MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<Inventory>();
 
             SaveData data = new SaveData(inventory.InventoryItems, inventory.GetEquipmentIds());
-            
-            using FileStream stream = new FileStream(Path, FileMode.Create);
-            formatter.Serialize(stream, data);
+
+            TextWriter writer = new StreamWriter(Path);
+            serializer.Serialize(writer, data);
             
             Debug.Log("Saved Inventory");
         }
@@ -63,10 +68,10 @@ namespace _2Scripts.Save
         {
             if (CheckForSave())
             {
-                BinaryFormatter formatter = new BinaryFormatter();
+                XmlSerializer serializer = new XmlSerializer(typeof(SaveData));
                 FileStream stream = new FileStream(Path, FileMode.Open);
 
-                SaveData data = formatter.Deserialize(stream) as SaveData;
+                SaveData data = serializer.Deserialize(stream) as SaveData;
 
                 stream.Close();
                 return data;
@@ -82,5 +87,7 @@ namespace _2Scripts.Save
         {
             File.Delete(Path);
         }
+        
+        //TODO: encrypt and Decrypt using XmlSerializer or just keep binarySerializer ?????
     }
 }
