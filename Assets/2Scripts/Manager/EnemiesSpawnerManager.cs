@@ -157,10 +157,10 @@ namespace _2Scripts.Manager
         /// <summary>
         /// Decrement the total enemies number 
         /// </summary>
-        public void EnemyDestroyed(EnemyData penemyKilled)
+        public void EnemyDestroyed(EnemyData pEnemyKilled)
         {
             _currentEnemiesCount--;
-            OnEnemiesSpawnedOrKilledEventHandler?.Invoke(penemyKilled.roomSpawnedInID, -1);
+            OnEnemiesSpawnedOrKilledEventHandler?.Invoke(pEnemyKilled.roomSpawnedInID, -1);
         }
 
         
