@@ -54,17 +54,26 @@ public class Inventory : NetworkBehaviour
     {
         if (InventoryItems.Count < InventorySpace)
         {
-            int indexOfItem = InventoryItems.FindIndex(x => x.ID == itemID);
-            if(indexOfItem != -1)
+            if (ItemManager.instance.GetItem(itemID).Stackable)
             {
-                InventoryItems[indexOfItem] = new InventoryObject(itemID, InventoryItems[indexOfItem].Amount + itemAmount);
-                Debug.Log($"[Inventory::AddToInventory()] - Increased amount of item of ID: {itemID} by {itemAmount}");
+                int indexOfItem = InventoryItems.FindIndex(x => x.ID == itemID);
+                if (indexOfItem != -1)
+                {
+                    InventoryItems[indexOfItem] = new InventoryObject(itemID, InventoryItems[indexOfItem].Amount + itemAmount);
+                    Debug.Log($"[Inventory::AddToInventory()] - Increased amount of stackable item of ID: {itemID} by {itemAmount}");
+                }
+                else
+                {
+                    InventoryItems.Add(new InventoryObject(itemID, itemAmount));
+                    Debug.Log($"[Inventory::AddToInventory()] - Added new stackable item of ID: {itemID} with an amount of {itemAmount} to inventory");
+                }
             }
             else
             {
                 InventoryItems.Add(new InventoryObject(itemID, itemAmount));
-                Debug.Log($"[Inventory::AddToInventory()] - Added new item of ID: {itemID} with an amount of {itemAmount} to inventory");
+                Debug.Log($"[Inventory::AddToInventory()] - Added new unstackable item of ID: {itemID} with an amount of {itemAmount} to inventory");
             }
+            
             SaveSystem.Save();
             return;
         }
