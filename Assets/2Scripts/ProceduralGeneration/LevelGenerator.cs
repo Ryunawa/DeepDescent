@@ -292,10 +292,11 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
                     // place it in their folder
                     instantiatedRoom.transform.SetParent(roomsParent.transform);
-                    
-                    instantiatedRoom.RoomProps = instantiatedProps.GetComponentInChildren<RoomProps>();
-                    
-                    if (instantiatedProps) instantiatedProps.transform.SetParent(propsParent.transform);
+                    if (instantiatedProps)
+                    {
+                        instantiatedRoom.RoomProps = instantiatedProps.GetComponent<RoomProps>();
+                        instantiatedProps.transform.SetParent(propsParent.transform);
+                    }
 
                     dungeon[neighbourIndex] = instantiatedRoom;
                 }
