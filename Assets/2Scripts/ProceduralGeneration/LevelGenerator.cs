@@ -74,9 +74,12 @@ public class LevelGenerator : Singleton<LevelGenerator>
         GameObject instantiatedProps = InstantiateProps(RoomType.Four, GetPosition(centerIndex));
 
         // place it in their folder
-        if(instantiatedProps) instantiatedProps.transform.SetParent(propsParent.transform);
+        if (instantiatedProps)
+        {
+            instantiatedProps.transform.SetParent(propsParent.transform);
+            startRoom.RoomProps = instantiatedProps.GetComponentInChildren<RoomProps>();
+        }
 
-        startRoom.RoomProps = instantiatedProps.GetComponentInChildren<RoomProps>();
 
         dungeon[centerIndex] = startRoom;
 
@@ -608,7 +611,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
         foreach (GameObject player in MultiManager.instance.GetAllPlayerGameObjects())
         {
-            roomAndSpawnPoints.AddRange(GetEnemySpawnPoints(player));
+            roomAndSpawnPoints.AddRange(GetEnemySpawnPoints(player.GetComponent<PlayerBehaviour>().gameObject));
         }
 
         return roomAndSpawnPoints;
