@@ -123,7 +123,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
         
     }
 
-    private int GetIndexOfRoom(Room room)
+    public int GetIndexOfRoom(Room room)
     {
         for (int i = 0; i < dungeon.Length; i++)
         {
