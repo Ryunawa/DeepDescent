@@ -87,9 +87,9 @@ public class LevelGenerator : Singleton<LevelGenerator>
         DynamicNavMesh.UpdateNavMesh();
 
         dungeonGeneratedEvent.Invoke();
-        
+
         MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().gameObject.transform.position = GetPosition(centerIndex) + Vector3.up * 5;
-        
+
         SceneManager.instance.DeactivateLoadingScreen();
     }
 
