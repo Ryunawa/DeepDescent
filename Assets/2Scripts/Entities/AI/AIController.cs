@@ -226,7 +226,6 @@ void Start()
                 }
                 else
                 {
-                    Debug.LogError("should not wait: " + percentage + " > " + stopChance);
                     NewRandomPointPatrolling();
                 }
             }
