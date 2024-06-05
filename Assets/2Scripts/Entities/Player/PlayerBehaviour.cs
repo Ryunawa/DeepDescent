@@ -3,7 +3,8 @@ using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.Serialization;
 
-[RequireComponent(typeof(Rigidbody))]
+namespace _2Scripts.Entities.Player
+{[RequireComponent(typeof(Rigidbody))]
 public class PlayerBehaviour : NetworkBehaviour
 {
     [SerializeField] private Vector2 camSens = new(100, 100);
