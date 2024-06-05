@@ -1,13 +1,11 @@
 using NaughtyAttributes;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using _2Scripts.Manager;
 using _2Scripts.Save;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 [Serializable]
 public struct InventoryObject

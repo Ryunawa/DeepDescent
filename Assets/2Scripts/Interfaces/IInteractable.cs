@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using _2Scripts.Entities.Player;
 
 public interface IInteractable
 {

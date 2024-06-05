@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
+using _2Scripts.Entities.Player;
 using _2Scripts.Enum;
 using NaughtyAttributes;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace _2Scripts.Manager
 {
