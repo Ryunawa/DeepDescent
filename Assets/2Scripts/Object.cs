@@ -9,8 +9,8 @@ public class Object : NetworkBehaviour, IInteractable
     public void Interact(PlayerBehaviour playerBehaviour)
     {
         //Pickup Object
-        playerBehaviour.inventory.AddToInventory(ItemDetails.ID, amount);
-        DespawnNetworkObjectRpc();
+        bool isItemAdded = playerBehaviour.inventory.AddToInventory(ItemDetails.ID, amount);
+        if(isItemAdded) DespawnNetworkObjectRpc();
     }
     
     [Rpc(SendTo.Server, RequireOwnership = false)]

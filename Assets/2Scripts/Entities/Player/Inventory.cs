@@ -50,9 +50,9 @@ public class Inventory : NetworkBehaviour
         }
     }
 
-    public void AddToInventory(int itemID, int itemAmount)
+    public bool AddToInventory(int itemID, int itemAmount)
     {
-        if (InventoryItems.Count <= InventorySpace)
+        if (InventoryItems.Count + 1 <= InventorySpace)  // 0 is counted
         {
             var item = ItemManager.instance.GetItem(itemID);
             if (item.Stackable)
@@ -78,11 +78,12 @@ public class Inventory : NetworkBehaviour
             ActivateItemVisibilityInventory(item);
             SaveSystem.Save();
             InventoryUIManager.instance.DrawInventory();
-            return;
+            return true;
         }
         Debug.Log("[Inventory::AddToInventory()]; - Inventory is full");
-        
         SaveSystem.Save();
+
+        return false;
     }
 
     // Activates the visibility of the item based on its type
@@ -170,7 +171,7 @@ public class Inventory : NetworkBehaviour
             SaveSystem.Save();
             return;
         }
-        Debug.Log("[Inventory::DropFromInventory()] - Tried to drop item from inventory that was out of bound");
+        Debug.Log($"[Inventory::DropFromInventory()] - Tried to drop item from inventory that was out of bound: InventoryItems.Count({InventoryItems.Count + 1}) <= InventorySpace({InventorySpace})");
         
         SaveSystem.Save();
     }
@@ -182,7 +183,7 @@ public class Inventory : NetworkBehaviour
         o.Spawn();
     }
 
-    public void  UseFromInventory(int itemPos)
+    public void UseFromInventory(int itemPos)
     {
         if (InventoryItems.Count <= InventorySpace)
         {
@@ -213,8 +214,8 @@ public class Inventory : NetworkBehaviour
                 return;
             }
         }
-        Debug.Log("[Inventory::UseFromInventory()] - Tried to use item from inventory that was out of bound");
-        
+        Debug.Log($"[Inventory::UseFromInventory()] - Tried to use item from inventory that was out of bound: InventoryItems.Count({InventoryItems.Count + 1}) <= InventorySpace({InventorySpace})");
+
         SaveSystem.Save();
     }
 
@@ -251,7 +252,7 @@ public class Inventory : NetworkBehaviour
                 else
                 {
                     Debug.Log($"[Inventory::EquipFromInventory()] - Couldn't equip item at pos {itemPos}. Nothing happened");
-                    
+
                 }
 
                 ShowVisibleItem(realItem, OffSlot);
@@ -266,8 +267,8 @@ public class Inventory : NetworkBehaviour
                 return;
             }
         }
-        Debug.Log("[Inventory::EquipFromInventory()] - Tried to use item from inventory that was out of bound");
-        
+        Debug.Log($"[Inventory::EquipFromInventory()] - Tried to use item from inventory that was out of bound: InventoryItems.Count({InventoryItems.Count + 1}) <= InventorySpace({InventorySpace})");
+
         SaveSystem.Save();
     }
 
@@ -278,9 +279,13 @@ public class Inventory : NetworkBehaviour
             for (int i = 0; i < itemsToUnequip.Count; i++)
             {
                 InventoryObject oldEquippedItem = new InventoryObject(itemsToUnequip[i].Item1.ID, 1);
-                AddToInventory(oldEquippedItem.ID, 1);
-                RemoveFromEquipment(oldEquippedItem, itemsToUnequip[i].Item2);
-                HideVisibleItem(itemsToUnequip[i].Item1, itemsToUnequip[i].Item2);
+                bool isItemAdded = AddToInventory(oldEquippedItem.ID, 1);
+                if(isItemAdded)
+                {
+                    RemoveFromEquipment(oldEquippedItem, itemsToUnequip[i].Item2);
+                    HideVisibleItem(itemsToUnequip[i].Item1, itemsToUnequip[i].Item2);
+                }
+                else Debug.Log($"[Inventory::UnequipItem()] - No available slot in inventory: {itemsToUnequip.Count}");
             }
             Debug.Log($"[Inventory::UnequipItem()] - Unequipped {itemsToUnequip.Count} item(s)");
             SaveSystem.Save();
