@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using _2Scripts.Helpers;
 using _2Scripts.Manager;
 using _2Scripts.ProceduralGeneration;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class LevelGenerator : Singleton<LevelGenerator>
@@ -611,7 +610,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
         foreach (GameObject player in MultiManager.instance.GetAllPlayerGameObjects())
         {
-            roomAndSpawnPoints.AddRange(GetEnemySpawnPoints(player.GetComponent<PlayerBehaviour>().gameObject));
+            roomAndSpawnPoints.AddRange(GetEnemySpawnPoints(player.GetComponentInChildren<PlayerBehaviour>().gameObject));
         }
 
         return roomAndSpawnPoints;
