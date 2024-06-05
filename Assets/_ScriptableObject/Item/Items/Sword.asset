@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Sword
   m_EditorClassIdentifier: 
   ID: 1
-  Name: Basic Sword
+  Name: Broken Sword
   Description: 'This sword was given to you by the adventurers guild, it''s far from
     the best but it''ll do '
-  Rarity: 3
+  Rarity: 0
   SellValue: 5
   QuickUse: 0
   Stackable: 0

@@ -86,70 +86,6 @@ public class Inventory : NetworkBehaviour
         return false;
     }
 
-    // Activates the visibility of the item based on its type
-    private void ActivateItemVisibilityInventory(Item item)
-    {
-        switch (item)
-        {
-            case ArmorItem:
-                visibleItems.AddVisibleArmor();
-                break;
-            case WeaponItem weapon:
-                // left hand - shield
-                if (weapon.WeaponType == WeaponType.SHIELD)
-                {
-                    visibleItems.AddVisibleShield();
-                }
-                // right hand - weapon
-                else
-                {
-                    visibleItems.AddVisibleSword();
-                }
-                break;
-            case ParchmentItem:
-                visibleItems.AddVisibleSpellBook();
-                break;
-            case PotionItem:
-                visibleItems.AddVisiblePotions();
-                break;
-            default: // scrap
-                visibleItems.AddVisibleScrap();
-                break;
-        }
-    }
-
-    private void DeactivateItemVisibilityInventory(Item item)
-    {
-        switch (item)
-        {
-            case ArmorItem _:
-                visibleItems.RemoveVisibleArmor();
-                break;
-            case WeaponItem weapon:
-                // left hand - shield
-                if (weapon.WeaponType == WeaponType.SHIELD)
-                {
-                    visibleItems.RemoveVisibleShield();
-                }
-                // right hand - weapon
-                else
-                {
-                    visibleItems.RemoveVisibleSword();
-                }
-                break;
-            case ParchmentItem _:
-                visibleItems.RemoveVisibleSpellBook();
-                break;
-            case PotionItem _:
-                visibleItems.RemoveVisiblePotions();
-                break;
-            default: // scrap
-                visibleItems.RemoveVisibleScrap();
-                break;
-        }
-    }
-
-
     public void DropFromInventory(int itemPos)
     {
         if (InventoryItems.Count <= InventorySpace)
@@ -245,17 +181,14 @@ public class Inventory : NetworkBehaviour
                     else
                     {
                         InventoryItems.Remove(newInventoryObject);
-                        DeactivateItemVisibilityInventory(ItemManager.instance.GetItem(newInventoryObject.ID));
+                        AddFromEquipment(realItem, OffSlot);
                         Debug.Log($"[Inventory::EquipFromInventory()] - Equipped new item at pos {itemPos}.");
                     }
                 }
                 else
                 {
                     Debug.Log($"[Inventory::EquipFromInventory()] - Couldn't equip item at pos {itemPos}. Nothing happened");
-
                 }
-
-                ShowVisibleItem(realItem, OffSlot);
 
                 SaveSystem.Save();
                 return;
@@ -351,7 +284,7 @@ public class Inventory : NetworkBehaviour
     }
 
 
-    private void ShowVisibleItem(EquippableItem item, bool OffSlot = false)
+    private void AddFromEquipment(EquippableItem item, bool OffSlot = false)
     {
         switch (item)
         {
@@ -362,11 +295,13 @@ public class Inventory : NetworkBehaviour
                 // left hand - shield
                 if (OffSlot)
                 {
+                    Debug.Log("(\"------------------- add shield");
                     visibleItems.EquipLeftHand(weapon.Name);
                 }
                 // right hand - weapon
                 else
                 {
+                    Debug.Log("------------------- add sword");
                     visibleItems.EquipRightHand(weapon.Name);
                 }
                 break;
@@ -428,6 +363,69 @@ public class Inventory : NetworkBehaviour
 
             if (item != null) item.Equip(this, isOffHand);
             isOffHand = false;
+        }
+    }
+
+    // Activates the visibility of the item based on its type
+    private void ActivateItemVisibilityInventory(Item item)
+    {
+        switch (item)
+        {
+            case ArmorItem:
+                visibleItems.AddVisibleArmor();
+                break;
+            case WeaponItem weapon:
+                // left hand - shield
+                if (weapon.WeaponType == WeaponType.SHIELD)
+                {
+                    visibleItems.AddVisibleShield();
+                }
+                // right hand - weapon
+                else
+                {
+                    visibleItems.AddVisibleSword();
+                }
+                break;
+            case ParchmentItem:
+                visibleItems.AddVisibleSpellBook();
+                break;
+            case PotionItem:
+                visibleItems.AddVisiblePotions();
+                break;
+            default: // scrap
+                visibleItems.AddVisibleScrap();
+                break;
+        }
+    }
+
+    private void DeactivateItemVisibilityInventory(Item item)
+    {
+        switch (item)
+        {
+            case ArmorItem _:
+                visibleItems.RemoveVisibleArmor();
+                break;
+            case WeaponItem weapon:
+                // left hand - shield
+                if (weapon.WeaponType == WeaponType.SHIELD)
+                {
+                    visibleItems.RemoveVisibleShield();
+                }
+                // right hand - weapon
+                else
+                {
+                    visibleItems.RemoveVisibleSword();
+                }
+                break;
+            case ParchmentItem _:
+                visibleItems.RemoveVisibleSpellBook();
+                break;
+            case PotionItem _:
+                visibleItems.RemoveVisiblePotions();
+                break;
+            default: // scrap
+                visibleItems.RemoveVisibleScrap();
+                break;
         }
     }
 }

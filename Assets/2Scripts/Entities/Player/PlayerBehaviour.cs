@@ -86,45 +86,22 @@ namespace _2Scripts.Entities.Player
             Vector3 move = forward.normalized * _inputManager.GetPlayerMovement().y +
                            _camTransform.right * _inputManager.GetPlayerMovement().x;
 
-            RaycastHit hit;
-            if (Physics.SphereCast(_camTransform.position, 1.0f, _camTransform.TransformDirection(_camTransform.forward), out hit, 5.0f, 1 << 10))
+            if (!IsGrounded())
             {
-                _objectToAddToInventory = hit.collider.gameObject;
-                if (_objectToAddToInventory.TryGetComponent(out Object obj))
-                    obj.GOText.SetActive(true);
+                move *= airControl;
             }
-            else
+
+            transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
+            _rb.velocity = move * playerSpeed + (_rb.velocity.y * Vector3.up);
+            gameObject.transform.rotation = Quaternion.Euler(0, _camTransform.eulerAngles.y, 0);
+
+            if (_hasJumped)
             {
-                if (_objectToAddToInventory)
-                {
-                    if (_objectToAddToInventory.TryGetComponent(out Object obj))
-                    {
-                        if (obj.GOText.TryGetComponent(out RectTransform rectTransform))
-                            rectTransform.rotation =
-                                Quaternion.LookRotation(_objectToAddToInventory.transform.position - transform.position,
-                                    Vector3.up);
-                        if (_inputManager.PlayerUsed())
-                            obj.Interact(this);
-                    }
-                }
-
-                if (!IsGrounded())
-                    move *= airControl;
-
-                transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
-
-                _rb.velocity = move * playerSpeed + (_rb.velocity.y * Vector3.up);
-
-                gameObject.transform.rotation = Quaternion.Euler(0, _camTransform.eulerAngles.y, 0);
-
-                if (_hasJumped)
-                {
-                    _hasJumped = false;
-                    _rb.AddForce(Vector3.up * jumpHeight, ForceMode.VelocityChange);
-                }
-
-                animator.SetFloat("Speed", _rb.velocity.magnitude * 2);
+                _hasJumped = false;
+                _rb.AddForce(Vector3.up * jumpHeight, ForceMode.VelocityChange);
             }
+
+            animator.SetFloat("Speed", _rb.velocity.magnitude * 2);
         }
 
         private bool IsGrounded()

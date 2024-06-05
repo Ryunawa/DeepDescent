@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Shield
   m_EditorClassIdentifier: 
   ID: 4
-  Name: Rare Shield
-  Description: This shield is rare
+  Name: Shield Bone
+  Description: This shield is rare and made of bones
   Rarity: 2
   SellValue: 15
   QuickUse: 0
@@ -25,4 +25,3 @@ MonoBehaviour:
   WeaponType: 5
   AttackValue: 5
   AttackSpeed: 1
-  IsTwoHanded: 0

@@ -14,6 +14,8 @@ public class VisibleItems : MonoBehaviour
     public List<GameObject> armors;
     public List<GameObject> swordEquippable;
     public List<GameObject> shieldEquippable;
+    [SerializeField] private GameObject rightHandFolderParent;
+    [SerializeField] private GameObject leftHandFolderParent;
     public GameObject equippedWeapon;
     public GameObject equippedShield;
 
@@ -143,30 +145,54 @@ public class VisibleItems : MonoBehaviour
     // Equips a specified weapon
     public void EquipRightHand(string itemName)
     {
-        GameObject weaponToEquip = swordEquippable.Find(sword => sword.name == "SM_Wep_" + itemName);
-        if (weaponToEquip != null)
+        // Replace spaces with underscores
+        string formattedItemName = itemName.Replace(" ", "_");
+
+        if (rightHandFolderParent != null)
         {
-            if (equippedWeapon != null)
+            GameObject weaponToEquip = rightHandFolderParent.transform.Find("SM_Wep_" + formattedItemName)?.gameObject;
+            if (weaponToEquip != null)
             {
-                equippedWeapon.SetActive(false);
+                if (equippedWeapon != null)
+                {
+                    UnequipRightHand();
+                }
+
+                equippedWeapon = weaponToEquip;
+                equippedWeapon.SetActive(true);
             }
-            equippedWeapon = weaponToEquip;
-            equippedWeapon.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("Weapon parent is null.");
         }
     }
+
+
 
     // Equips a specified shield
     public void EquipLeftHand(string itemName)
     {
-        GameObject shieldToEquip = shieldEquippable.Find(shield => shield.name == itemName);
-        if (shieldToEquip != null)
+        // Replace spaces with underscores
+        string formattedItemName = itemName.Replace(" ", "_");
+
+        if (leftHandFolderParent != null)
         {
-            if (equippedShield != null)
+            GameObject weaponToEquip = leftHandFolderParent.transform.Find("SM_Wep_" + formattedItemName)?.gameObject;
+            if (weaponToEquip != null)
             {
-                equippedShield.SetActive(false);
+                if (equippedShield != null)
+                {
+                    UnequipLeftHand();
+                }
+
+                equippedShield = weaponToEquip;
+                equippedShield.SetActive(true);
             }
-            equippedShield = shieldToEquip;
-            equippedShield.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("Weapon parent is null.");
         }
     }
 
