@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,7 +7,6 @@ using _2Scripts.ProceduralGeneration;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class LevelGenerator : Singleton<LevelGenerator>
@@ -34,6 +34,8 @@ public class LevelGenerator : Singleton<LevelGenerator>
 
     private static int _staticDungeonSize;
     private int _roomNumber = 1;
+
+    private bool _lateUpdateOnlyOnce = false;
 
     // folder
     private GameObject generatedDungeonParent;
@@ -86,13 +88,27 @@ public class LevelGenerator : Singleton<LevelGenerator>
         Debug.Log("GenerationFinished");
         DynamicNavMesh.UpdateNavMesh();
 
-        dungeonGeneratedEvent.Invoke();
+        _lateUpdateOnlyOnce = true;
         
         MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().gameObject.transform.position = GetPosition(centerIndex) + Vector3.up * 5;
-        
-        SceneManager.instance.DeactivateLoadingScreen();
     }
 
+    private void LateUpdate()
+    {
+        if (_lateUpdateOnlyOnce)
+        {
+            _lateUpdateOnlyOnce = !_lateUpdateOnlyOnce;
+            DoWhenGenEnd();
+        }
+    }
+
+    private void DoWhenGenEnd()
+    {
+        dungeonGeneratedEvent.Invoke();
+                
+        SceneManager.instance.DeactivateLoadingScreen();
+    }
+    
 
     private async Task DoGen(int startDepth)
     {
@@ -400,40 +416,18 @@ public class LevelGenerator : Singleton<LevelGenerator>
     // create a room
     public GameObject InstantiateRoom(RoomType roomType, Vector3 position, Quaternion rotation)
     {
-        GameObject roomPrefab = null;
+        GameObject roomPrefab = roomType switch
+        {
+            RoomType.One => roomOnePrefab,
+            RoomType.Two => roomTwoPrefab,
+            RoomType.TwoOpposite => roomTwoOppositePrefab,
+            RoomType.Three => roomThreePrefab,
+            RoomType.Four => roomFourPrefab,
+            _ => roomZeroPrefab
+        };
 
-        switch (roomType)
-        {
-            case RoomType.One:
-                roomPrefab = roomOnePrefab;
-                break;
-            case RoomType.Two:
-                roomPrefab = roomTwoPrefab;
-                break;
-            case RoomType.TwoOpposite:
-                roomPrefab = roomTwoOppositePrefab;
-                break;
-            case RoomType.Three:
-                roomPrefab = roomThreePrefab;
-                break;
-            case RoomType.Four:
-                roomPrefab = roomFourPrefab;
-                break;
-            default:
-                roomPrefab = roomZeroPrefab;
-                break;
-        }
-
-        // instantiation of the room
-        if (roomPrefab != null)
-        {
-            GameObject roomInstance = Instantiate(roomPrefab, position, rotation);
-            return roomInstance;
-        }
-        else
-        {
-            return null;
-        }
+        GameObject roomInstance = Instantiate(roomPrefab, position, rotation);
+        return roomInstance;
     }
 
     // create a props
