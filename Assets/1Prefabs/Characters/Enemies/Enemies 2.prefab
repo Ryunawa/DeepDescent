@@ -2364,7 +2364,10 @@ MonoBehaviour:
     spawnRate: 0
     health: 0
     damageDealt: 0
-    damageTaken: 0
+    armor: 0
+  damageToInflict: 20
+  armorPenetration: 0
+  damageInflicted: 20
 --- !u!114 &-8332211726196220897
 MonoBehaviour:
   m_ObjectHideFlags: 0

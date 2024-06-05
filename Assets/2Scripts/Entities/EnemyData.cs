@@ -1,37 +1,60 @@
 using _2Scripts.Manager;
 using _2Scripts.Struct;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace _2Scripts.Entities
 {
+    
     public class EnemyData : MonoBehaviour
 
     {
         public int roomSpawnedInID;
-        public EnemyStats enemyStats;
+        private EnemyStats _enemyStats;
+
+        public EnemyStats enemyStats
+        {
+            get => _enemyStats;
+            set => _enemyStats = value;
+        }
 
         private void OnEnable()
         {
-            DifficultyManager.instance.OnEnemiesStatsUpdatedEventHandler += UpdateStats;
+            DifficultyManager.instance.OnEnemiesStatsUpdatedEventHandler += UpdateStatsOnNewLevel;
         }
 
         private void OnDestroy()
         {
-            DifficultyManager.instance.OnEnemiesStatsUpdatedEventHandler -= UpdateStats;
+            DifficultyManager.instance.OnEnemiesStatsUpdatedEventHandler -= UpdateStatsOnNewLevel;
         }
 
-        private void UpdateStats(object receiver, EnemyStats newEnemyStats)
+        /// <summary>
+        /// Allow us to increase enemy stats at each new level
+        /// Do not use it to decrease health or armor if the enemy is hit
+        /// </summary>
+        /// <param name="pReceiver">the enemy prefab to act on</param>
+        /// <param name="pNewEnemyStats">the new stats for the prefab</param>
+        private void UpdateStatsOnNewLevel(object pReceiver, EnemyStats pNewEnemyStats)
         {
-            if (receiver.Equals(gameObject))
+            if (pReceiver.Equals(gameObject))
             {
-                enemyStats = newEnemyStats;
+                _enemyStats = pNewEnemyStats;
             }
         }
-
-        public void SetRoomSpawnedInID(int pRoomID)
+        
+        //DEBUG ONLY
+        [Header("DEBUG ONLY")]
+        [SerializeField] private int damageToInflict;
+        [SerializeField] private int armorPenetration;
+        [ReadOnly] public float damageInflicted;
+        
+        [Button]
+        private void DEBUG_DamageTaken()
         {
-            roomSpawnedInID = pRoomID;
+            float effectiveArmor = _enemyStats.armor * (1 - armorPenetration / 100f);
+            float damageReductionFactor = 1 - effectiveArmor / 100;
+            float damage = damageToInflict * damageReductionFactor;
+            damageInflicted = damage;
         }
-
     }
 }

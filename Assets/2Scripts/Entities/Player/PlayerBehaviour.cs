@@ -1,7 +1,6 @@
 using Cinemachine;
 using UnityEngine;
 using Unity.Netcode;
-using UnityEngine.Serialization;
 
 namespace _2Scripts.Entities.Player
 {
@@ -19,7 +18,7 @@ namespace _2Scripts.Entities.Player
 
         private Rigidbody _rb;
         private InputManager _inputManager;
-
+        
         private GameObject _objectToAddToInventory;
 
         private bool _hasJumped = false;
@@ -27,7 +26,7 @@ namespace _2Scripts.Entities.Player
 
         private HealthComponent _health;
         [SerializeField] private NetworkVariable<bool> _isDead = new NetworkVariable<bool>();
-
+        
         public NetworkVariable<bool> IsDead
         {
             get => _isDead;
@@ -121,7 +120,7 @@ namespace _2Scripts.Entities.Player
                 _ground = null;
         }
 
-        private void OnDamaged(int damage)
+        private void OnDamaged(float damage)
         {
             //TODO do smthg?
         }
