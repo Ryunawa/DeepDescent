@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _2Scripts.Struct
 {
@@ -15,7 +16,7 @@ namespace _2Scripts.Struct
         public float health;
         [Tooltip("The damage dealt by the enemy")]
         public float damageDealt;
-        [Tooltip("The damage taken by the enemy")]
-        public float damageTaken;
+        [Tooltip("Percentage of damage reduced by the enemy' armor")]
+        public float armor;
     }
 }

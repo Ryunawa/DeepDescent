@@ -19,7 +19,7 @@ namespace _2Scripts.Entities.Player
 
         private Rigidbody _rb;
         private InputManager _inputManager;
-
+        
         private GameObject _objectToAddToInventory;
 
         private bool _hasJumped = false;
@@ -27,7 +27,7 @@ namespace _2Scripts.Entities.Player
 
         private HealthComponent _health;
         [SerializeField] private NetworkVariable<bool> _isDead = new NetworkVariable<bool>();
-
+        
         public NetworkVariable<bool> IsDead
         {
             get => _isDead;
