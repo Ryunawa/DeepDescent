@@ -21,9 +21,8 @@ MonoBehaviour:
   QuickUse: 0
   Stackable: 0
   InventoryIcon: {fileID: 21300000, guid: 08d5ec2d201ece949a5e428ba3ea0e63, type: 3}
-  ObjectPrefab: {fileID: 1534316808149004593, guid: c1d4b2d2c4134574e83a20f5a3bd808d,
+  ObjectPrefab: {fileID: 8778570344472889581, guid: c1d4b2d2c4134574e83a20f5a3bd808d,
     type: 3}
   WeaponType: 1
   AttackValue: 5
   AttackSpeed: 1
-  IsTwoHanded: 0

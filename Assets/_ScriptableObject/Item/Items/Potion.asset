@@ -16,7 +16,7 @@ MonoBehaviour:
   Name: Potion Blue
   Description: A nice potion
   Rarity: 1
-  SellValue: 0
+  SellValue: 4
   QuickUse: 1
   Stackable: 1
   InventoryIcon: {fileID: 21300000, guid: 10876d86c0d0c7948ab7c3f219be6325, type: 3}

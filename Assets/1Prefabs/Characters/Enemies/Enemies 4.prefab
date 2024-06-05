@@ -2322,9 +2322,7 @@ MonoBehaviour:
   attackRange: 1.5
   timeBeforeAttack: 2
   _isSwinging: 0
-  waypoints:
-  - {fileID: 0}
-  - {fileID: 0}
+  waypoints: []
   stopChance: 0.5
 --- !u!114 &-8515664152495936704
 MonoBehaviour:
@@ -2361,6 +2359,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomSpawnedInID: 0
   enemyStats:
+    id: 0
     enemyPrefab: {fileID: 0}
     spawnRate: 0
     health: 0
