@@ -1,7 +1,6 @@
 using Cinemachine;
 using UnityEngine;
 using Unity.Netcode;
-using UnityEngine.Serialization;
 
 namespace _2Scripts.Entities.Player
 {
@@ -144,7 +143,7 @@ namespace _2Scripts.Entities.Player
                 _ground = null;
         }
 
-        private void OnDamaged(int damage)
+        private void OnDamaged(float damage)
         {
             //TODO do smthg?
         }

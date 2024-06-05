@@ -1,101 +1,114 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
-public class HealthComponent : NetworkBehaviour
+namespace _2Scripts.Entities
 {
-	public sbyte MaxHealth = 100;
-
-	private NetworkVariable<sbyte> m_Health = new NetworkVariable<sbyte>();
-
-	public UnityEvent OnDeath;
-
-	public UnityEvent<int> OnDamaged;
-
-	public UnityEvent<int> OnHealed;
-
-	private void Awake()
+	public class HealthComponent : NetworkBehaviour
 	{
-		if(OnDeath == null)
-			OnDeath = new UnityEvent();
-		if(OnDamaged == null)
-			OnDamaged = new UnityEvent<int>();
-        if (OnHealed == null)
-            OnHealed = new UnityEvent<int>();
+		[FormerlySerializedAs("MaxHealth")] [SerializeField] private float maxHealth = 100;
 
-        m_Health.OnValueChanged += _CheckForDeath;
-	}
+		private NetworkVariable<float> _health = new NetworkVariable<float>();
 
-	private void _CheckForDeath(sbyte iPrevVal, sbyte iCurVal)
-	{
-		if (iPrevVal > 0 && iCurVal <= 0)
+		public UnityEvent OnDeath;
+
+		public UnityEvent<float> OnDamaged;
+
+		public UnityEvent<float> OnHealed;
+
+		private EnemyData _enemyData;
+	
+		private void Awake()
 		{
-			OnDeath.Invoke();
-		}
-	}
+			if(OnDeath == null)
+				OnDeath = new UnityEvent();
+			if(OnDamaged == null)
+				OnDamaged = new UnityEvent<float>();
+			if (OnHealed == null)
+				OnHealed = new UnityEvent<float>();
 
-	// Start is called before the first frame update
-	void Start()
-	{
-		Heal(MaxHealth);
-	}
+			_health.OnValueChanged += _CheckForDeath;
 
-	public void TakeDamage(sbyte iDamage)
-	{
-		if(!IsServer)
-		{
-			TakeDamageServerRPC(iDamage);
-			return;
+			_enemyData = GetComponent<EnemyData>();
 		}
 
-		if(iDamage <= 0 || m_Health.Value <= 0)
-			return;
-
-		m_Health.Value -= (sbyte)Mathf.Min(iDamage, m_Health.Value);
-		OnDamaged.Invoke(iDamage);
-	}
-
-	public void Heal(sbyte iHeal)
-	{
-		if(!IsServer) 
+		private void _CheckForDeath(float iPrevVal, float iCurVal)
 		{
-			HealServerRPC(iHeal);
-			return;
+			if (iPrevVal > 0 && iCurVal <= 0)
+			{
+				OnDeath.Invoke();
+			}
 		}
 
-		if (iHeal <= 0 || m_Health.Value >= MaxHealth)
+		// Start is called before the first frame update
+		void Start()
 		{
-			return;
+			if (_enemyData)
+			{
+				maxHealth = _enemyData.enemyStats.health;
+				Heal(_enemyData.enemyStats.health);
+			}
+			Heal(maxHealth);
 		}
 
-		m_Health.Value = (sbyte)Mathf.Min((int)m_Health.Value + (int) iHeal, MaxHealth);
-		OnHealed.Invoke(iHeal);
+		public void TakeDamage(float pDamage, float pArmorPenetration = 0)
+		{
+			if(!IsServer)
+			{
+				TakeDamageServerRPC(pDamage);
+				return;
+			}
+
+			if(pDamage <= 0 || _health.Value <= 0)
+				return;
+
+			float effectiveArmor = _enemyData.enemyStats.armor * (1 - pArmorPenetration / 100);
+			float damageReductionFactor = 1 - effectiveArmor / 100;
+			float damage = pDamage * damageReductionFactor;
+		
+			_health.Value -= damage;
+			OnDamaged.Invoke(pDamage);
+		}
+
+		public void Heal(float iHeal)
+		{
+			if(!IsServer) 
+			{
+				HealServerRPC(iHeal);
+				return;
+			}
+
+			if (iHeal <= 0 || _health.Value >= maxHealth)
+			{
+				return;
+			}
+
+			_health.Value = Mathf.Min((int)_health.Value + (int) iHeal, maxHealth);
+			OnHealed.Invoke(iHeal);
+		}
+
+		[Rpc(SendTo.Server)]
+		private void TakeDamageServerRPC(float iDamage)
+		{
+			TakeDamage(iDamage);
+		}
+
+		[Rpc(SendTo.Server, RequireOwnership = false)]
+		private void HealServerRPC(float iHeal)
+		{
+			Heal(iHeal);
+		}
 
 
-    }
+		public float GetHealth()
+		{
+			return _health.Value;
+		}
 
-	[Rpc(SendTo.Server)]
-	private void TakeDamageServerRPC(sbyte iDamage)
-	{
-		TakeDamage(iDamage);
-	}
-
-	[Rpc(SendTo.Server, RequireOwnership = false)]
-	private void HealServerRPC(sbyte iHeal)
-	{
-		Heal(iHeal);
-	}
-
-
-	public sbyte GetHealth()
-	{
-		return m_Health.Value;
-	}
-
-	public void OnValueChanged(NetworkVariable<sbyte>.OnValueChangedDelegate iListener)
-	{
-		m_Health.OnValueChanged += iListener;
+		public void OnValueChanged(NetworkVariable<float>.OnValueChangedDelegate iListener)
+		{
+			_health.OnValueChanged += iListener;
+		}
 	}
 }
