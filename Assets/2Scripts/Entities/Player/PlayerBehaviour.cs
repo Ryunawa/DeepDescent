@@ -164,14 +164,14 @@ namespace _2Scripts.Entities.Player
             Debug.Log("Modify isDead value");
             _isDead.Value = newBool;
         }
-    }
 
-    void OnDrawGizmosSelected()
-    {
-        // Draw a yellow sphere at the transform's position
-        Gizmos.color = Color.yellow;
-        //Gizmos.DrawWireSphere(_camTransform.position, 1.0f);
-        Gizmos.DrawRay(_camTransform.position, _camTransform.TransformDirection(_camTransform.forward));
-        //Gizmos.DrawSphere(transform.position, 1);
+        void OnDrawGizmosSelected()
+        {
+            // Draw a yellow sphere at the transform's position
+            Gizmos.color = Color.yellow;
+            //Gizmos.DrawWireSphere(_camTransform.position, 1.0f);
+            Gizmos.DrawRay(_camTransform.position, _camTransform.TransformDirection(_camTransform.forward));
+            //Gizmos.DrawSphere(transform.position, 1);
+        }
     }
 }
