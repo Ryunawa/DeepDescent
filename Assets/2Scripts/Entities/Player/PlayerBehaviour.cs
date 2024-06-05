@@ -87,8 +87,7 @@ namespace _2Scripts.Entities.Player
                            _camTransform.right * _inputManager.GetPlayerMovement().x;
 
             RaycastHit hit;
-            if (Physics.SphereCast(_camTransform.position, 2.5f,
-                    _camTransform.TransformDirection(_camTransform.forward), out hit, 5.0f, 1 << 10))
+            if (Physics.SphereCast(_camTransform.position, 1.0f, _camTransform.TransformDirection(_camTransform.forward), out hit, 5.0f, 1 << 10))
             {
                 _objectToAddToInventory = hit.collider.gameObject;
                 if (_objectToAddToInventory.TryGetComponent(out Object obj))
@@ -99,41 +98,33 @@ namespace _2Scripts.Entities.Player
                 if (_objectToAddToInventory)
                 {
                     if (_objectToAddToInventory.TryGetComponent(out Object obj))
-                        obj.GOText.SetActive(false);
+                    {
+                        if (obj.GOText.TryGetComponent(out RectTransform rectTransform))
+                            rectTransform.rotation =
+                                Quaternion.LookRotation(_objectToAddToInventory.transform.position - transform.position,
+                                    Vector3.up);
+                        if (_inputManager.PlayerUsed())
+                            obj.Interact(this);
+                    }
                 }
 
-                _objectToAddToInventory = null;
-            }
+                if (!IsGrounded())
+                    move *= airControl;
 
-            if (_objectToAddToInventory)
-            {
-                if (_objectToAddToInventory.TryGetComponent(out Object obj))
+                transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
+
+                _rb.velocity = move * playerSpeed + (_rb.velocity.y * Vector3.up);
+
+                gameObject.transform.rotation = Quaternion.Euler(0, _camTransform.eulerAngles.y, 0);
+
+                if (_hasJumped)
                 {
-                    if (obj.GOText.TryGetComponent(out RectTransform rectTransform))
-                        rectTransform.rotation =
-                            Quaternion.LookRotation(_objectToAddToInventory.transform.position - transform.position,
-                                Vector3.up);
-                    if (_inputManager.PlayerUsed())
-                        obj.Interact(this);
+                    _hasJumped = false;
+                    _rb.AddForce(Vector3.up * jumpHeight, ForceMode.VelocityChange);
                 }
+
+                animator.SetFloat("Speed", _rb.velocity.magnitude * 2);
             }
-
-            if (!IsGrounded())
-                move *= airControl;
-
-            transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
-
-            _rb.velocity = move * playerSpeed + (_rb.velocity.y * Vector3.up);
-
-            gameObject.transform.rotation = Quaternion.Euler(0, _camTransform.eulerAngles.y, 0);
-
-            if (_hasJumped)
-            {
-                _hasJumped = false;
-                _rb.AddForce(Vector3.up * jumpHeight, ForceMode.VelocityChange);
-            }
-
-            animator.SetFloat("Speed", _rb.velocity.magnitude * 2);
         }
 
         private bool IsGrounded()
@@ -173,5 +164,14 @@ namespace _2Scripts.Entities.Player
             Debug.Log("Modify isDead value");
             _isDead.Value = newBool;
         }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = Color.yellow;
+        //Gizmos.DrawWireSphere(_camTransform.position, 1.0f);
+        Gizmos.DrawRay(_camTransform.position, _camTransform.TransformDirection(_camTransform.forward));
+        //Gizmos.DrawSphere(transform.position, 1);
     }
 }
