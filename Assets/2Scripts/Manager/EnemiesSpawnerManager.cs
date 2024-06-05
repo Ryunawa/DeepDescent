@@ -41,9 +41,9 @@ namespace _2Scripts.Manager
         
         #endregion
 
-        protected override void Awake()
+
+        void Start()
         {
-            base.Awake();
             LevelGenerator.instance.dungeonGeneratedEvent.AddListener(() =>
             {
                 if (NetworkManager.Singleton.IsServer)
