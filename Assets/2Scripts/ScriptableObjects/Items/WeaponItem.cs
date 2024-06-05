@@ -19,8 +19,6 @@ public class WeaponItem : EquippableItem
     public WeaponType WeaponType;
     public int AttackValue;
     public float AttackSpeed;
-    public bool IsTwoHanded;
-    //public bool IsDualWieldable;
 
     public override (bool, List<EquippableItem>) Equip(Inventory inventoryToEquipTo, bool EquipToOffHand = false)
     {
@@ -28,35 +26,24 @@ public class WeaponItem : EquippableItem
             return (false, null);
         List<EquippableItem> oldItems = new List<EquippableItem>();
 
-        if (!IsTwoHanded)
+        switch (WeaponType)
         {
-            if (EquipToOffHand)
-            {
+            case WeaponType.SHIELD:
                 if (inventoryToEquipTo.OffHandItem)
                     oldItems.Add(inventoryToEquipTo.OffHandItem);
                 inventoryToEquipTo.OffHandItem = this;
-            }
-            else
-            {
+                break;
+            default:
                 if (inventoryToEquipTo.MainHandItem)
                     oldItems.Add(inventoryToEquipTo.MainHandItem);
                 inventoryToEquipTo.MainHandItem = this;
-            }
+                break;
         }
-        else
-        {
-            if (inventoryToEquipTo.MainHandItem)
-                oldItems.Add(inventoryToEquipTo.MainHandItem);
-            if (inventoryToEquipTo.OffHandItem)
-                oldItems.Add(inventoryToEquipTo.OffHandItem);
-            inventoryToEquipTo.MainHandItem = this;
-        }
-
         return (true, oldItems);
     }
 
     public override string GetStats()
     {
-        return $"Attack : {AttackValue}\r\nAttack speed : {AttackSpeed}" + (IsTwoHanded ? "\r\nTwo handed":"") /*+ (IsDualWieldable?"\r\nCan dual wield":"")*/ ;
+        return $"Attack : {AttackValue}\r\nAttack speed : {AttackSpeed}"/* + (IsTwoHanded ? "\r\nTwo handed":"") /*+ (IsDualWieldable?"\r\nCan dual wield":"")*/ ;
     }
 }

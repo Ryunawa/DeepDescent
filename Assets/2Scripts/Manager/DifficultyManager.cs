@@ -56,7 +56,7 @@ namespace _2Scripts.Manager
         /// </summary>
         /// <param name="pDifficulty"> Easy, Normal or Hard</param>
         /// <param name="pNumPlayers">One, two, three or four</param>
-        public void AdjustDifficultyParameters(DifficultyMode pDifficulty, int pNumPlayers)
+        public void AdjustDifficultyParameters(int pNumPlayers, DifficultyMode pDifficulty = DifficultyMode.Normal)
         {
             switch (pDifficulty)
             {
@@ -168,7 +168,7 @@ namespace _2Scripts.Manager
         [Button]
         public void DEBUG_SetEasyStatsForEnemies()
         {
-            AdjustDifficultyParameters(DifficultyMode.Easy, 1);
+            AdjustDifficultyParameters(1, DifficultyMode.Easy);
         }
         
         // /!\ DEBUG ONLY /!\

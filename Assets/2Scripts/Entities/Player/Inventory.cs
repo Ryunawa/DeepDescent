@@ -54,7 +54,7 @@ public class Inventory : NetworkBehaviour
 
     public void AddToInventory(int itemID, int itemAmount)
     {
-        if (InventoryItems.Count < InventorySpace)
+        if (InventoryItems.Count <= InventorySpace)
         {
             var item = ItemManager.instance.GetItem(itemID);
             if (item.Stackable)
@@ -152,7 +152,7 @@ public class Inventory : NetworkBehaviour
 
     public void DropFromInventory(int itemPos)
     {
-        if (InventoryItems.Count < (InventorySpace - 1))
+        if (InventoryItems.Count <= InventorySpace)
         {
             InventoryObject newInventoryObject = InventoryItems[itemPos];
             SpawnInventoryItemsRpc(newInventoryObject.ID);
@@ -185,7 +185,7 @@ public class Inventory : NetworkBehaviour
 
     public void  UseFromInventory(int itemPos)
     {
-        if (InventoryItems.Count < (InventorySpace - 1))
+        if (InventoryItems.Count <= InventorySpace)
         {
             InventoryObject newInventoryObject = InventoryItems[itemPos];
             ConsumableItem realItem = ItemManager.instance.GetItem(newInventoryObject.ID) as ConsumableItem;
@@ -221,7 +221,7 @@ public class Inventory : NetworkBehaviour
 
     public void EquipFromInventory(int itemPos, bool OffSlot = false)
     {
-        if (InventoryItems.Count < (InventorySpace - 1))
+        if (InventoryItems.Count <= InventorySpace)
         {
             InventoryObject newInventoryObject = InventoryItems[itemPos];
             EquippableItem realItem = ItemManager.instance.GetItem(newInventoryObject.ID) as EquippableItem;

@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using _2Scripts.Helpers;
 using _2Scripts.Manager;
 using _2Scripts.ProceduralGeneration;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class LevelGenerator : Singleton<LevelGenerator>
@@ -30,7 +29,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
     [SerializeField] private int dungeonSize = 5;
     [SerializeField] private bool IsOneRoomType;
     
-    public UnityEvent dungeonGeneratedEvent;
+    public UnityEvent dungeonGeneratedEvent = new UnityEvent();
 
     private static int _staticDungeonSize;
     private int _roomNumber = 1;
@@ -74,9 +73,12 @@ public class LevelGenerator : Singleton<LevelGenerator>
         GameObject instantiatedProps = InstantiateProps(RoomType.Four, GetPosition(centerIndex));
 
         // place it in their folder
-        if(instantiatedProps) instantiatedProps.transform.SetParent(propsParent.transform);
+        if (instantiatedProps)
+        {
+            instantiatedProps.transform.SetParent(propsParent.transform);
+            startRoom.RoomProps = instantiatedProps.GetComponentInChildren<RoomProps>();
+        }
 
-        startRoom.RoomProps = instantiatedProps.GetComponentInChildren<RoomProps>();
 
         dungeon[centerIndex] = startRoom;
 
@@ -123,7 +125,7 @@ public class LevelGenerator : Singleton<LevelGenerator>
         
     }
 
-    private int GetIndexOfRoom(Room room)
+    public int GetIndexOfRoom(Room room)
     {
         for (int i = 0; i < dungeon.Length; i++)
         {
@@ -570,9 +572,9 @@ public class LevelGenerator : Singleton<LevelGenerator>
         return dungeon[roomIndex].GetRoomType() == RoomType.Zero;
     }
 
-    public List<(Room,List<GameObject>)> GetEnemySpawnPoints()
+    public List<(Room,List<GameObject>)> GetEnemySpawnPoints(GameObject pPlayer)
     {
-        Vector3 playerPos = MultiManager.instance.GetPlayerGameObject().gameObject.transform.position;
+        Vector3 playerPos = pPlayer.transform.position;
 
         Room playerRoom = dungeon[0];
         
@@ -600,6 +602,18 @@ public class LevelGenerator : Singleton<LevelGenerator>
         }
 
         return spawnPointsOfSurroundingRooms;
+    }
+
+    public List<(Room, List<GameObject>)> GetAllEnemySpawnPoints()
+    {
+        List<(Room, List<GameObject>)> roomAndSpawnPoints = new List<(Room, List<GameObject>)>();
+
+        foreach (GameObject player in MultiManager.instance.GetAllPlayerGameObjects())
+        {
+            roomAndSpawnPoints.AddRange(GetEnemySpawnPoints(player.GetComponentInChildren<PlayerBehaviour>().gameObject));
+        }
+
+        return roomAndSpawnPoints;
     }
 }
 

@@ -76,7 +76,7 @@ public class PlayerBehaviour : NetworkBehaviour
         Vector3 move = forward.normalized * _inputManager.GetPlayerMovement().y + _camTransform.right * _inputManager.GetPlayerMovement().x;
 
         RaycastHit hit;
-        if (Physics.SphereCast(_camTransform.position, 1.0f, _camTransform.TransformDirection(_camTransform.forward), out hit, 5.0f, 1 << 10))
+        if (Physics.SphereCast(_camTransform.position, 2.5f, _camTransform.TransformDirection(_camTransform.forward), out hit, 5.0f, 1 << 10))
         {
             _objectToAddToInventory = hit.collider.gameObject;
             if (_objectToAddToInventory.TryGetComponent(out Object obj))
@@ -100,14 +100,6 @@ public class PlayerBehaviour : NetworkBehaviour
                     rectTransform.rotation = Quaternion.LookRotation(_objectToAddToInventory.transform.position - transform.position, Vector3.up);
                 if (_inputManager.PlayerUsed())
                     obj.Interact(this);
-            }
-        }
-
-        if (_inputManager.PlayerUsed() && _objectToAddToInventory)
-        {
-            if (_objectToAddToInventory.TryGetComponent(out Object obj))
-            {
-                obj.Interact(this);
             }
         }
 
