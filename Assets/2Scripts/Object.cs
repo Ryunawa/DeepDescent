@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using _2Scripts.Entities.Player;
 using Unity.Netcode;
 using UnityEngine;
 

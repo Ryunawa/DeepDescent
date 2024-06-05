@@ -329,7 +329,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 181008, guid: 9e311f4d0c272f44ea83aed3c3b15c40,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8631635630456251024}
+      addedObject: {fileID: 7223330734871665539}
   m_SourcePrefab: {fileID: 100100000, guid: 9e311f4d0c272f44ea83aed3c3b15c40, type: 3}
 --- !u!1 &1599939382474266747 stripped
 GameObject:
@@ -337,7 +337,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1599939382474414955}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8631635630456251024
+--- !u!114 &7223330734871665539
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -350,7 +350,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineColor: {r: 1, g: 0.81289893, b: 0.24056602, a: 1}
   outlineWidth: 2
   precomputeOutline: 0
   bakeKeys: []
