@@ -77,6 +77,7 @@ public class Inventory : NetworkBehaviour
 
             ActivateItemVisibilityInventory(item);
             SaveSystem.Save();
+            InventoryUIManager.instance.DrawInventory();
             return;
         }
         Debug.Log("[Inventory::AddToInventory()]; - Inventory is full");

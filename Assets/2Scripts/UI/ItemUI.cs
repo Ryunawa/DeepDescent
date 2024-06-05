@@ -107,7 +107,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         {
             inventory.UnequipItem(new List<(EquippableItem, bool)>
             {
-                (ItemManager.instance.GetItem(eventData.pointerDrag.GetComponent<ItemUI>().ItemID) as EquippableItem, IsOffHand)
+                (ItemManager.instance.GetItem(eventData.pointerDrag.GetComponent<ItemUI>().ItemID) as EquippableItem, eventData.pointerDrag.GetComponent<ItemUI>().IsOffHand)
             });
             InventoryUIManager.instance.DrawInventory();
         }
@@ -159,7 +159,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             {
                 inventory.UnequipItem(new List<(EquippableItem, bool)>
                 {
-                    (ItemManager.instance.GetItem(itemUI.ItemID) as EquippableItem, IsOffHand)
+                    (ItemManager.instance.GetItem(itemUI.ItemID) as EquippableItem, itemUI.IsOffHand)
                 });
             }
 
