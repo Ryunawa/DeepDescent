@@ -34,13 +34,13 @@ namespace _2Scripts.ProceduralGeneration
         private static int _staticDungeonSize;
         private int _roomNumber = 1;
 
-    private bool _lateUpdateOnlyOnce = false;
-
-    // folder
-    private GameObject generatedDungeonParent;
-    private GameObject roomsParent;
-    private GameObject doorsParent;
-    private GameObject propsParent;
+        private bool _lateUpdateOnlyOnce = false;
+    
+        // folder
+        private GameObject generatedDungeonParent;
+        private GameObject roomsParent;
+        private GameObject doorsParent;
+        private GameObject propsParent;
 
         // Start is called before the first frame update
         async void Start()
@@ -90,26 +90,26 @@ namespace _2Scripts.ProceduralGeneration
             Debug.Log("GenerationFinished");
             DynamicNavMesh.UpdateNavMesh();
 
-        _lateUpdateOnlyOnce = true;
+            _lateUpdateOnlyOnce = true;
         
-        MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().gameObject.transform.position = GetPosition(centerIndex) + Vector3.up * 5;
-    }
-
-    private void LateUpdate()
-    {
-        if (_lateUpdateOnlyOnce)
-        {
-            _lateUpdateOnlyOnce = !_lateUpdateOnlyOnce;
-            DoWhenGenEnd();
+            MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().TeleportPlayer(GetPosition(centerIndex) + Vector3.up * 5);
         }
-    }
 
-    private void DoWhenGenEnd()
-    {
-        dungeonGeneratedEvent.Invoke();
+        private void LateUpdate()
+        {
+            if (_lateUpdateOnlyOnce)
+            {
+                _lateUpdateOnlyOnce = !_lateUpdateOnlyOnce;
+                DoWhenGenEnd();
+            }
+        }
+    
+        private void DoWhenGenEnd()
+        {
+            dungeonGeneratedEvent.Invoke();
                 
-        SceneManager.instance.DeactivateLoadingScreen();
-    }
+            SceneManager.instance.DeactivateLoadingScreen();
+        }
     
 
         private async Task DoGen(int startDepth)

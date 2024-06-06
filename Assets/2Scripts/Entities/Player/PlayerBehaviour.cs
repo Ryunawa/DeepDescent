@@ -4,7 +4,7 @@ using Unity.Netcode;
 
 namespace _2Scripts.Entities.Player
 {
-    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(CharacterController))]
     public class PlayerBehaviour : NetworkBehaviour
     {
         [SerializeField] private Vector2 camSens = new(100, 100);
@@ -16,13 +16,13 @@ namespace _2Scripts.Entities.Player
         [SerializeField] private bool _overrideNetwork = false;
         [SerializeField] private CinemachineVirtualCamera _virtualCamera;
 
-        private Rigidbody _rb;
+        private CharacterController _characterController;
+        private float _characterControllerOriginalStepOffset;
         private InputManager _inputManager;
         
         private GameObject _objectToAddToInventory;
-
-        private bool _hasJumped = false;
-        private Collider _ground = null;
+        
+        private float ySpeed;
 
         private HealthComponent _health;
         [SerializeField] private NetworkVariable<bool> _isDead = new NetworkVariable<bool>();
@@ -42,7 +42,8 @@ namespace _2Scripts.Entities.Player
             _health.OnDeath.AddListener(OnDie);
             _health.OnDamaged.AddListener(OnDamaged);
 
-            _rb = GetComponent<Rigidbody>();
+            _characterController = GetComponent<CharacterController>();
+            _characterControllerOriginalStepOffset = _characterController.stepOffset;
             _inputManager = InputManager.instance;
 
 
@@ -68,8 +69,7 @@ namespace _2Scripts.Entities.Player
                 return;
             }
 
-            if (IsGrounded() && _inputManager.PlayerJumped())
-                _hasJumped = true;
+            
 
         }
 
@@ -118,42 +118,33 @@ namespace _2Scripts.Entities.Player
                 obj.Interact(this);
             }
         }
+        
+        ySpeed += Physics.gravity.y * Time.fixedDeltaTime; 
+        
+        switch (_characterController.isGrounded)
+        {
+            case true when _inputManager.PlayerJumped():
+                ySpeed = jumpHeight;
+                break;
+            case true :
+                ySpeed = -0.5f;
+                _characterController.stepOffset = _characterControllerOriginalStepOffset;
+                break;
+            case false:
+                _characterController.stepOffset = 0;
+                move *= airControl;
+                break;
+        }
 
-        if (!IsGrounded())
-            move *= airControl;
-    
-        //transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
-    
-        _rb.velocity = move * playerSpeed + (_rb.velocity.y * Vector3.up);
+
+        _characterController.Move((move * playerSpeed + Vector3.up * ySpeed)*Time.fixedDeltaTime);
     
         transform.rotation = Quaternion.Euler(0, _camTransform.eulerAngles.y, 0);
-
-        if (_hasJumped)
-        {
-            _hasJumped = false;
-            _rb.AddForce(Vector3.up * jumpHeight, ForceMode.VelocityChange);
-        }
-
-        animator.SetFloat("XAxis", IsGrounded()?_inputManager.GetPlayerMovement().x:10);
-        animator.SetFloat("YAxis", IsGrounded()?_inputManager.GetPlayerMovement().y:10);
+        
+        animator.SetFloat("XAxis", _inputManager.GetPlayerMovement().x);
+        animator.SetFloat("YAxis", _inputManager.GetPlayerMovement().y);
+        animator.SetBool("IsJumping", !_characterController.isGrounded);
     }
-
-        private bool IsGrounded()
-        {
-            return _ground != null;
-        }
-
-        private void OnCollisionEnter(Collision iCollision)
-        {
-            if (Vector3.Dot(iCollision.GetContact(0).normal, Vector3.up) > 0.8f)
-                _ground = iCollision.collider;
-        }
-
-        private void OnCollisionExit(Collision iCollision)
-        {
-            if (iCollision.collider == _ground)
-                _ground = null;
-        }
 
         private void OnDamaged(float damage)
         {
@@ -174,6 +165,13 @@ namespace _2Scripts.Entities.Player
         {
             Debug.Log("Modify isDead value");
             _isDead.Value = newBool;
+        }
+
+        public void TeleportPlayer(Vector3 pos)
+        {
+            _characterController.enabled = false;
+            gameObject.transform.position = pos;
+            _characterController.enabled = true;
         }
 
         void OnDrawGizmosSelected()
