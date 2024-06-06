@@ -44,11 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edf09592a36817a458e4d72a05a0b5be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bSpawnInMultiplayer: 0
   spawnableEnemiesPrefabsByLevel:
   - enemyPrefabsSpawnable:
     - {fileID: 3959042653490119952, guid: 7a48f06c595cad34ca4b9450ea942854, type: 3}
     - {fileID: 3959042653490119952, guid: 4a260646042892b4a8873521cc3c1b8c, type: 3}
     - {fileID: 3959042653490119952, guid: 8e122492e8d7c754ab1efdff6faaf459, type: 3}
     - {fileID: 3959042653490119952, guid: bf7079a114337a64f9c64f12fcf62083, type: 3}
-  maxEnemiesPerLevel: 4
-  spawnIntervalInSecond: 3
+  maxEnemiesPerLevel: 10
+  maxEnemiesPerRoom: 5
+  spawnIntervalInSecond: 6
+  spawnParticle: {fileID: 152438, guid: 9d82e1be9de81be4dbc15c60c39dd6ff, type: 3}
+  enemyManager: {fileID: 0}

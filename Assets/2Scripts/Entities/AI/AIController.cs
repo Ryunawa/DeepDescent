@@ -78,7 +78,7 @@ void Start()
         navMeshAgent.stoppingDistance = attackRange - 0.5f;
         navMeshAgent.isStopped = false;
         navMeshAgent.speed = speedWalk;
-        navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
+        if(waypoints.Length > 0) navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
 
         // start attack coroutine
         StartCoroutine(AttackLoop());
@@ -226,7 +226,6 @@ void Start()
                 }
                 else
                 {
-                    Debug.LogError("should not wait: " + percentage + " > " + stopChance);
                     NewRandomPointPatrolling();
                 }
             }
