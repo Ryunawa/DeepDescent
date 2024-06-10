@@ -6,6 +6,7 @@ using _2Scripts.Save;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
+using _2Scripts.Entities.Player;
 
 [Serializable]
 public struct InventoryObject
@@ -41,6 +42,8 @@ public class Inventory : NetworkBehaviour
     [DoNotSerialize] public List<InventoryObject> InventoryItems = new List<InventoryObject>();
     //public ItemList GlobalItemList;
     public int InventorySpace = 6;
+
+    public StatComponent stat;
 
     private void Start()
     {
@@ -191,11 +194,12 @@ public class Inventory : NetworkBehaviour
                 }
 
                 SaveSystem.Save();
+                stat.UpdateArmourValue(this);
                 return;
             }
             else
             {
-                Debug.Log("[Inventory::EquipFromInventory()] - Tried to use an item from inventory that isn't a consumable.");
+                Debug.Log("[Inventory::EquipFromInventory()] - Tried to equip an item from inventory that isn't an equippable item.");
                 SaveSystem.Save();
                 return;
             }
@@ -222,10 +226,10 @@ public class Inventory : NetworkBehaviour
             }
             Debug.Log($"[Inventory::UnequipItem()] - Unequipped {itemsToUnequip.Count} item(s)");
             SaveSystem.Save();
+            stat.UpdateArmourValue(this);
             return;
         }
         Debug.Log($"[Inventory::UnequipItem()] - Couldn't find any object to unequip.");
-        
         SaveSystem.Save();
     }
 
@@ -281,6 +285,7 @@ public class Inventory : NetworkBehaviour
                 }
                 break;
         }
+        stat.UpdateArmourValue(this);
     }
 
 
@@ -308,6 +313,7 @@ public class Inventory : NetworkBehaviour
             default:
                 break;
         }
+        stat.UpdateArmourValue(this);
     }
 
     private void HideVisibleItem(EquippableItem item, bool OffSlot = false)
