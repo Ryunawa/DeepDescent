@@ -88,7 +88,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         
         if (IsDrop)
         {
-            if (IsEquipment) return;
+            if (eventData.pointerDrag.GetComponent<ItemUI>().IsEquipment) return;
             
             Debug.Log("Drop");
             inventory.DropFromInventory(eventData.pointerDrag.GetComponent<ItemUI>().ItemPos);

@@ -192,6 +192,7 @@ GameObject:
   - component: {fileID: 5061184010628317641}
   - component: {fileID: 5559061447972688155}
   - component: {fileID: 2509654312490104346}
+  - component: {fileID: 5409913450011231913}
   m_Layer: 6
   m_Name: ActualPlayer
   m_TagString: Player
@@ -265,6 +266,7 @@ MonoBehaviour:
   _isDead:
     m_InternalValue: 0
   inventory: {fileID: 5559061447972688155}
+  stat: {fileID: 5409913450011231913}
 --- !u!114 &7865229117149206806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,6 +350,7 @@ MonoBehaviour:
   - ID: 2
     Amount: 1
   InventorySpace: 6
+  stat: {fileID: 5409913450011231913}
 --- !u!114 &2509654312490104346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -441,6 +444,22 @@ MonoBehaviour:
   leftHandFolderParent: {fileID: 338359194627865009}
   equippedWeapon: {fileID: 0}
   equippedShield: {fileID: 0}
+--- !u!114 &5409913450011231913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3362452139282482207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 992ed26a64d70614dbecd8ec7c783615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BaseArmour: 0
+  EquippedArmour: 0
+  DamageInflictedModifier: 1
+  DamageReceivedModifier: 1
 --- !u!1 &6744575752435435962
 GameObject:
   m_ObjectHideFlags: 0

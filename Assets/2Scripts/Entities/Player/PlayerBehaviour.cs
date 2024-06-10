@@ -1,6 +1,7 @@
 using Cinemachine;
 using UnityEngine;
 using Unity.Netcode;
+using NaughtyAttributes;
 
 namespace _2Scripts.Entities.Player
 {
@@ -34,6 +35,7 @@ namespace _2Scripts.Entities.Player
         }
 
         public Inventory inventory;
+        public StatComponent stat;
 
         private void Start()
         {
@@ -68,9 +70,11 @@ namespace _2Scripts.Entities.Player
             {
                 return;
             }
+        }
 
-            
-
+        public void tst()
+        {
+            _health.InflictDamageTest();
         }
 
     private void FixedUpdate()
@@ -108,14 +112,6 @@ namespace _2Scripts.Entities.Player
                     rectTransform.rotation = Quaternion.LookRotation(_objectToAddToInventory.transform.position - transform.position, Vector3.up);
                 if (_inputManager.PlayerUsed())
                     obj.Interact(this);
-            }
-        }
-
-        if (_inputManager.PlayerUsed() && _objectToAddToInventory)
-        {
-            if (_objectToAddToInventory.TryGetComponent(out Object obj))
-            {
-                obj.Interact(this);
             }
         }
         
