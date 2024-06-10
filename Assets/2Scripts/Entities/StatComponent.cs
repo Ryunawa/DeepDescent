@@ -8,15 +8,16 @@ public class StatComponent : MonoBehaviour
     public float BaseArmour = 0.0f;
     public float EquippedArmour = 0.0f;
 
-    public float DamageModifier = 1.0f;
-    public float CalcMitigatedDamageReceiving(float damage)
+    public float DamageInflictedModifier = 1.0f;
+    public float DamageReceivedModifier = 1.0f;
+    public float CalcDamageReceived(float damage)
     {
-        return damage * (100/(100 + (BaseArmour +  EquippedArmour)));
+        return damage * (100/(100 + (BaseArmour +  EquippedArmour))) * DamageReceivedModifier;
     }
 
-    public float CalcDamageInflicting(float damage)
+    public float CalcDamageInflicted(float damage)
     {
-        return damage * DamageModifier;
+        return damage * DamageInflictedModifier;
     }
 
     public void UpdateArmourValue(Inventory inventory)

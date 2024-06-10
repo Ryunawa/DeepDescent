@@ -34,6 +34,7 @@ namespace _2Scripts.Entities.Player
         }
 
         public Inventory inventory;
+        public StatComponent stat;
 
         private void Start()
         {
