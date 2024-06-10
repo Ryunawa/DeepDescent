@@ -4,6 +4,7 @@ using UnityEngine;
 using Unity.Netcode;
 using NaughtyAttributes;
 using UnityEngine.Serialization;
+using UnityEngine.Serialization;
 
 namespace _2Scripts.Entities.Player
 {
