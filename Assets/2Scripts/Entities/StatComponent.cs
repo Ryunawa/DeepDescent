@@ -1,3 +1,5 @@
+using _2Scripts.Entities.Player;
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -10,6 +12,14 @@ public class StatComponent : MonoBehaviour
 
     public float DamageInflictedModifier = 1.0f;
     public float DamageReceivedModifier = 1.0f;
+
+    public PlayerBehaviour PlayerBehaviour;
+
+    private void Start()
+    {
+        PlayerBehaviour = GetComponent<PlayerBehaviour>();
+    }
+
     public float CalcDamageReceived(float damage)
     {
         return damage * (100/(100 + (BaseArmour +  EquippedArmour))) * DamageReceivedModifier;
@@ -31,5 +41,11 @@ public class StatComponent : MonoBehaviour
             EquippedArmour += inventory.LegArmor ? inventory.LegArmor.ArmorValue : 0;
             
         }
+    }
+
+    [Button]
+    public void NiqueTamMère()
+    {
+        PlayerBehaviour.tst();
     }
 }

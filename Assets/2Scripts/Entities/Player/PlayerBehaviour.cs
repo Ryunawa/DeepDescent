@@ -70,13 +70,9 @@ namespace _2Scripts.Entities.Player
             {
                 return;
             }
-
-            
-
         }
 
-        [Button]
-        public void Test()
+        public void tst()
         {
             _health.InflictDamageTest();
         }
