@@ -361,7 +361,11 @@ public class Inventory : NetworkBehaviour
                 isOffHand = true;
             }
 
-            if (item != null) item.Equip(this, isOffHand);
+            if (item != null)
+            {
+                item.Equip(this, isOffHand);
+                AddFromEquipment(item, isOffHand);
+            }
             isOffHand = false;
         }
     }

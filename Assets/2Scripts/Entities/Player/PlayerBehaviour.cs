@@ -110,14 +110,6 @@ namespace _2Scripts.Entities.Player
                     obj.Interact(this);
             }
         }
-
-        if (_inputManager.PlayerUsed() && _objectToAddToInventory)
-        {
-            if (_objectToAddToInventory.TryGetComponent(out Object obj))
-            {
-                obj.Interact(this);
-            }
-        }
         
         ySpeed += Physics.gravity.y * Time.fixedDeltaTime; 
         
