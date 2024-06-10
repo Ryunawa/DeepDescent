@@ -263,6 +263,7 @@ MonoBehaviour:
   _camTransform: {fileID: 3755937543100378714}
   _overrideNetwork: 0
   _virtualCamera: {fileID: 5685322309389839697}
+  gold: 0
   _isDead:
     m_InternalValue: 0
   inventory: {fileID: 5559061447972688155}
@@ -341,6 +342,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   NecklaceItem: {fileID: 0}
+  gold: 0
+  isInShop: 0
   MainHandItem: {fileID: 0}
   CanDualWield: 0
   OffHandItem: {fileID: 0}
@@ -460,6 +463,7 @@ MonoBehaviour:
   EquippedArmour: 0
   DamageInflictedModifier: 1
   DamageReceivedModifier: 1
+  PlayerBehaviour: {fileID: 0}
 --- !u!1 &6744575752435435962
 GameObject:
   m_ObjectHideFlags: 0
