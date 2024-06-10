@@ -18,6 +18,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     [SerializeField] private bool IsInventory;
     [SerializeField] private bool IsDrop;
     [SerializeField] private bool IsOffHand;
+    [SerializeField] private int Price;
     private int ItemID;
     private int ItemPos;
     
@@ -34,7 +35,8 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         ItemID = itemID;
         Border.color = InventoryUIManager.Colors[ItemManager.instance.GetItem(itemID).Rarity];
         Image.sprite = ItemManager.instance.GetItem(itemID).InventoryIcon;
-        
+        Price = ItemManager.instance.GetItem(itemID).SellValue;
+
         if (Quantity != null) Quantity.text = ItemManager.instance.GetItem(ItemID).Stackable ? quantity.ToString() : "";
         Image.color = Color.white;
     }
@@ -90,7 +92,6 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         {
             if (eventData.pointerDrag.GetComponent<ItemUI>().IsEquipment) return;
             
-            Debug.Log("Drop");
             inventory.DropFromInventory(eventData.pointerDrag.GetComponent<ItemUI>().ItemPos);
             InventoryUIManager.instance.DrawInventory();
             return;
