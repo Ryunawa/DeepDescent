@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 
 namespace _2Scripts.Entities
 {
-	public class HealthComponent : NetworkBehaviour
+    public class HealthComponent : NetworkBehaviour
 	{
 		[FormerlySerializedAs("MaxHealth")] [SerializeField] private float maxHealth = 100;
 
@@ -19,6 +19,7 @@ namespace _2Scripts.Entities
 		public UnityEvent<float> OnHealed;
 
 		private EnemyData _enemyData;
+		private StatComponent _statComponent;
 	
 		private void Awake()
 		{
@@ -32,6 +33,7 @@ namespace _2Scripts.Entities
 			_health.OnValueChanged += _CheckForDeath;
 
 			_enemyData = GetComponent<EnemyData>();
+			_statComponent = GetComponent<StatComponent>();
 		}
 
 		private void _CheckForDeath(float iPrevVal, float iCurVal)
@@ -57,18 +59,25 @@ namespace _2Scripts.Entities
 		{
 			if(!IsServer)
 			{
-				TakeDamageServerRPC(pDamage);
+				TakeDamageServerRpc(pDamage);
 				return;
 			}
 
 			if(pDamage <= 0 || _health.Value <= 0)
 				return;
 
-			float effectiveArmor = _enemyData.enemyStats.armor * (1 - pArmorPenetration / 100);
-			float damageReductionFactor = 1 - effectiveArmor / 100;
-			float damage = pDamage * damageReductionFactor;
+			float damageReceived = 0.0f;
+
+			if (_enemyData)
+			{
+				float effectiveArmor = _enemyData.enemyStats.armor * (1 - pArmorPenetration / 100);
+				float damageReductionFactor = 1 - effectiveArmor / 100;
+				damageReceived = pDamage * damageReductionFactor;
+			}
+			else
+				damageReceived = _statComponent.CalcDamageReceived(pDamage);
 		
-			_health.Value -= damage;
+			_health.Value -= damageReceived;
 			OnDamaged.Invoke(pDamage);
 		}
 
@@ -77,7 +86,7 @@ namespace _2Scripts.Entities
 		{
 			if (!IsServer)
 			{
-				TakeDamageServerRPC(10.0f);
+				TakeDamageServerRpc(10.0f);
 				return;
 			}
 			_health.Value -= 10.0f;
@@ -88,7 +97,7 @@ namespace _2Scripts.Entities
 		{
 			if(!IsServer) 
 			{
-				HealServerRPC(iHeal);
+				HealServerRpc(iHeal);
 				return;
 			}
 
@@ -102,13 +111,13 @@ namespace _2Scripts.Entities
 		}
 
 		[Rpc(SendTo.Server)]
-		private void TakeDamageServerRPC(float iDamage)
+		private void TakeDamageServerRpc(float iDamage, float iArmorPenetration = 0)
 		{
-			TakeDamage(iDamage);
+			TakeDamage(iDamage, iArmorPenetration);
 		}
 
 		[Rpc(SendTo.Server, RequireOwnership = false)]
-		private void HealServerRPC(float iHeal)
+		private void HealServerRpc(float iHeal)
 		{
 			Heal(iHeal);
 		}
