@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731713, g: 0.13414738, b: 0.121078536, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5598,6 +5598,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemList: {fileID: 11400000, guid: 9955bbdfc35aa654eabe5762843da012, type: 2}
+  weaponList: {fileID: 11400000, guid: bbcb656dfed990444bd88ebcee39bbc3, type: 2}
+  armorList: {fileID: 11400000, guid: 688bc97c35fb8834b88e8a5ec12f669c, type: 2}
+  potionList: {fileID: 11400000, guid: ea60ba94b8c61f345bcd2287e0258a6a, type: 2}
+  parchmentList: {fileID: 11400000, guid: 8beac4ff4ef77a04b9ccd4bdd208ed6f, type: 2}
 --- !u!4 &1954673452
 Transform:
   m_ObjectHideFlags: 0

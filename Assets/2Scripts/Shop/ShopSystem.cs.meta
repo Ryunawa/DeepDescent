@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: ab77c99d0b14e7341959b02d602ee0eb
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - shopUIPrefab: {fileID: 338178106216065483, guid: 3b37a0037839dbe4289d4fddb23bea68,
+      type: 3}
+  - itemUIPrefab: {fileID: 4593185310634887095, guid: 2ef9ee2a307a27644a38ceef8a7dd2a7,
+      type: 3}
+  - weaponUIParent: {instanceID: 0}
+  - armorUIParent: {instanceID: 0}
+  - potionUIParent: {instanceID: 0}
+  - parchmentUIParent: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
