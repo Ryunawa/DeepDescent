@@ -38,12 +38,21 @@ namespace _2Scripts.ProceduralGeneration
     
         // folder
         private GameObject generatedDungeonParent;
+
+        public GameObject generatedDungeonParent1 => generatedDungeonParent;
+
         private GameObject roomsParent;
         private GameObject doorsParent;
         private GameObject propsParent;
 
         // Start is called before the first frame update
         async void Start()
+        {
+            if(MultiManager.instance.IsLobbyHost())
+                StartGeneration();
+        }
+
+        public async void StartGeneration()
         {
             // create folders
             generatedDungeonParent = new GameObject("GeneratedDungeon");
@@ -95,6 +104,7 @@ namespace _2Scripts.ProceduralGeneration
             MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().TeleportPlayer(GetPosition(centerIndex) + Vector3.up * 5);
         }
 
+        
         private void LateUpdate()
         {
             if (_lateUpdateOnlyOnce)

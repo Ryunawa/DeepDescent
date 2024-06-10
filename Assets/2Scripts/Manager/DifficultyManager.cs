@@ -101,7 +101,7 @@ namespace _2Scripts.Manager
         }
         
         /// <summary>
-        /// Adjust some stats of a enemy type depending on the number of players.
+        /// Adjust some stats of an enemy type depending on the number of players.
         /// </summary>
         /// <param name="pStatsToAdjust">struct of an enemy type's stats</param>
         /// <param name="pRate"></param>

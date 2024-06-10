@@ -16,7 +16,7 @@ namespace _2Scripts.UI
             TryGetComponent(out text);
             StartCoroutine(LoadingText());
         }
-
+        
         private IEnumerator LoadingText()
         {
             while (true)
