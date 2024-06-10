@@ -1,6 +1,7 @@
 using Cinemachine;
 using UnityEngine;
 using Unity.Netcode;
+using NaughtyAttributes;
 
 namespace _2Scripts.Entities.Player
 {
@@ -15,7 +16,6 @@ namespace _2Scripts.Entities.Player
         [SerializeField] private Transform _camTransform;
         [SerializeField] private bool _overrideNetwork = false;
         [SerializeField] private CinemachineVirtualCamera _virtualCamera;
-        public int gold;
 
         private CharacterController _characterController;
         private float _characterControllerOriginalStepOffset;
@@ -72,6 +72,11 @@ namespace _2Scripts.Entities.Player
             }
         }
 
+        public void tst()
+        {
+            _health.InflictDamageTest();
+        }
+
     private void FixedUpdate()
     {
         if (_isDead.Value)
@@ -82,7 +87,6 @@ namespace _2Scripts.Entities.Player
         forward.y = 0;
         Vector3 move = forward.normalized * _inputManager.GetPlayerMovement().y + _camTransform.right * _inputManager.GetPlayerMovement().x;
 
-        // TODO - USELESS NO ?? FROM HERE
         RaycastHit hit;
         if (Physics.SphereCast(_camTransform.position, 1.0f, _camTransform.TransformDirection(_camTransform.forward), out hit, 5.0f, 1 << 10))
         {
@@ -110,9 +114,8 @@ namespace _2Scripts.Entities.Player
                     obj.Interact(this);
             }
         }
-        // TO HERE
-
-            ySpeed += Physics.gravity.y * Time.fixedDeltaTime; 
+        
+        ySpeed += Physics.gravity.y * Time.fixedDeltaTime; 
         
         switch (_characterController.isGrounded)
         {

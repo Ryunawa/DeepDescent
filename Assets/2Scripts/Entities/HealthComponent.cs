@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
@@ -69,6 +70,18 @@ namespace _2Scripts.Entities
 		
 			_health.Value -= damage;
 			OnDamaged.Invoke(pDamage);
+		}
+
+		[Button]
+		public void InflictDamageTest()
+		{
+			if (!IsServer)
+			{
+				TakeDamageServerRPC(10.0f);
+				return;
+			}
+			_health.Value -= 10.0f;
+			OnDamaged.Invoke(10.0f);
 		}
 
 		public void Heal(float iHeal)
