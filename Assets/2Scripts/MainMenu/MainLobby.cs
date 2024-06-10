@@ -1,4 +1,3 @@
-using _2Scripts.Manager;
 using TMPro;
 using Unity.Netcode;
 using Unity.Services.Lobbies;
@@ -73,7 +72,6 @@ public class MainLobby : NetworkBehaviour
 
     private void OnCharacterChosen()
     {
-        SceneManager.instance.DeactivateLoadingScreen();
         transform.root.gameObject.SetActive(true);
     }
     

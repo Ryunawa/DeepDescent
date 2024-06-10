@@ -42,7 +42,6 @@ public class CharacterSelection : MonoBehaviour
 
     public void Ready()
     {
-        SceneManager.instance.ActivateLoadingScreen();
         MultiManager.instance.UpdatePlayer(selectedCharacter, true);
 
         UnitySceneManager.SceneManager.UnloadSceneAsync(Scenes.CharacterSelection.ToString());
