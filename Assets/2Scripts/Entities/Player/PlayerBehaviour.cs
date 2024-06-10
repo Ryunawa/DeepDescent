@@ -1,6 +1,7 @@
 using Cinemachine;
 using UnityEngine;
 using Unity.Netcode;
+using NaughtyAttributes;
 
 namespace _2Scripts.Entities.Player
 {
@@ -72,6 +73,12 @@ namespace _2Scripts.Entities.Player
 
             
 
+        }
+
+        [Button]
+        public void Test()
+        {
+            _health.InflictDamageTest();
         }
 
     private void FixedUpdate()

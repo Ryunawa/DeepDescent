@@ -24,7 +24,12 @@ public class StatComponent : MonoBehaviour
     {
         if (inventory != null) 
         {
-            EquippedArmour = inventory.OffHandItem.AttackValue + inventory.ChestArmor.ArmorValue + inventory.FeetArmor.ArmorValue + inventory.LegArmor.ArmorValue;
+            EquippedArmour = 0.0f;
+            EquippedArmour += inventory.OffHandItem ? inventory.OffHandItem.AttackValue : 0;
+            EquippedArmour += inventory.ChestArmor ? inventory.ChestArmor.ArmorValue : 0;
+            EquippedArmour += inventory.FeetArmor ? inventory.FeetArmor.ArmorValue : 0;
+            EquippedArmour += inventory.LegArmor ? inventory.LegArmor.ArmorValue : 0;
+            
         }
     }
 }
