@@ -447,6 +447,12 @@ public class MultiManager : Singleton<MultiManager>
 		}
 	}
 
+	
+	/// <summary>
+	/// This will wait for a lobby to be sel before sending the update, it will request every 100 ms
+	/// </summary>
+	/// <param name="playerId"></param>
+	/// <param name="options"></param>
 	private async Task SendLobbyUpdate(string playerId, UpdatePlayerOptions options)
 	{
 		Debug.Log("Wait");
@@ -460,6 +466,17 @@ public class MultiManager : Singleton<MultiManager>
 		
 		await LobbyService.Instance.UpdatePlayerAsync(_lobby.Id, playerId, options);
 		CharacterChosen.Invoke();
+	}
+
+	/// <summary>
+	/// Gives the ID of the selected character
+	/// </summary>
+	/// <returns>int</returns>
+	public int GetSelectedCharacterID()
+	{
+		Player player = instance.Lobby.Players.Find(x => x.Data["Name"].Value == instance.PlayerName);
+
+		return Convert.ToInt32(player.Data["CharacterID"].Value);
 	}
 
 	/// <summary>
