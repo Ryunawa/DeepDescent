@@ -24,8 +24,15 @@ namespace _2Scripts.Manager
             InitializeItemLists();
         }
 
+
         private void InitializeItemLists()
         {
+            if (weaponList == null || armorList == null || potionList == null || parchmentList == null)
+            {
+                Debug.LogError("One or more ItemLists are not assigned in the Inspector.");
+                return;
+            }
+
             weaponList.Items.Clear();
             armorList.Items.Clear();
             potionList.Items.Clear();
@@ -49,6 +56,7 @@ namespace _2Scripts.Manager
                         break;
                 }
             }
+
         }
 
         public Item GetItem(int id)

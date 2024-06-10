@@ -1,11 +1,11 @@
 using _2Scripts.Entities.Player;
 using _2Scripts.Manager;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ShopSystem : MonoBehaviour
 {
-    public GameObject shopUIPrefab;
     private Dictionary<PlayerBehaviour, GameObject> activeShopUIs = new Dictionary<PlayerBehaviour, GameObject>();
 
     public KeyCode openShopKey = KeyCode.E;
@@ -13,10 +13,12 @@ public class ShopSystem : MonoBehaviour
     private bool isNearShop = false;
     private PlayerBehaviour currentPlayer;
 
-    [SerializeField] private List<ItemUI> WeaponUI;
-    [SerializeField] private List<ItemUI> ArmorUI;
-    [SerializeField] private List<ItemUI> PotionUI;
-    [SerializeField] private List<ItemUI> ParchmentUI;
+    [SerializeField] private GameObject itemUIPrefab; // Prefab for ItemUI
+    [SerializeField] private GameObject shopUI;
+    [SerializeField] private Transform weaponUIParent;
+    [SerializeField] private Transform armorUIParent;
+    [SerializeField] private Transform potionUIParent;
+    [SerializeField] private Transform parchmentUIParent;
 
     private void Start()
     {
@@ -27,30 +29,56 @@ public class ShopSystem : MonoBehaviour
     {
         ItemManager itemManager = ItemManager.instance;
 
+        if (itemManager == null)
+        {
+            Debug.LogError("ItemManager instance is not found.");
+            return;
+        }
+
+        if (itemUIPrefab == null)
+        {
+            Debug.LogError("ItemUIPrefab is not assigned.");
+            return;
+        }
+
+        if (weaponUIParent == null || armorUIParent == null || potionUIParent == null || parchmentUIParent == null)
+        {
+            Debug.LogError("One or more UI Parent transforms are not assigned.");
+            return;
+        }
+
         // Fill weapon UI
-        SetupItemUI(itemManager.weaponList.Items, WeaponUI);
+        CreateAndSetupItemUI(itemManager.weaponList.Items, weaponUIParent);
 
         // Fill armor UI
-        SetupItemUI(itemManager.armorList.Items, ArmorUI);
+        CreateAndSetupItemUI(itemManager.armorList.Items, armorUIParent);
 
         // Fill potion UI
-        SetupItemUI(itemManager.potionList.Items, PotionUI);
+        CreateAndSetupItemUI(itemManager.potionList.Items, potionUIParent);
 
         // Fill parchment UI
-        SetupItemUI(itemManager.parchmentList.Items, ParchmentUI);
+        CreateAndSetupItemUI(itemManager.parchmentList.Items, parchmentUIParent);
     }
 
-    private void SetupItemUI(List<Item> items, List<ItemUI> uiList)
+    private void CreateAndSetupItemUI(List<Item> items, Transform parent)
     {
-        for (int i = 0; i < uiList.Count; i++)
+        if (items == null)
         {
-            if (i < items.Count)
+            Debug.LogError("Items list is null.");
+            return;
+        }
+
+        foreach (var item in items)
+        {
+            GameObject itemUIGameObject = Instantiate(itemUIPrefab, parent);
+            ItemUI itemUI = itemUIGameObject.GetComponent<ItemUI>();
+            if (itemUI != null)
             {
-                uiList[i].Setup(items[i].ID, 1);
+                itemUI.Setup(item.ID, 1);
             }
             else
             {
-                uiList[i].Clear();
+                Debug.LogError("ItemUI component is not found in the instantiated prefab.");
             }
         }
     }
@@ -75,8 +103,8 @@ public class ShopSystem : MonoBehaviour
 
         if (activeShopUIs.ContainsKey(player) || !inventory) return;
 
+        InventoryUIManager.instance.DrawInventoryShop();
         inventory.isInShop = true;
-        GameObject shopUI = Instantiate(shopUIPrefab);
         shopUI.SetActive(true);
         activeShopUIs[player] = shopUI;
     }
@@ -88,24 +116,31 @@ public class ShopSystem : MonoBehaviour
         if (activeShopUIs.ContainsKey(player) && inventory)
         {
             inventory.isInShop = false;
-            Destroy(activeShopUIs[player]);
+            shopUI.SetActive(false);
             activeShopUIs.Remove(player);
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Shop") && currentPlayer == null)
+        if (other.CompareTag("Player"))
         {
-            isNearShop = true;
-            currentPlayer = other.GetComponent<PlayerBehaviour>();
-            Debug.Log("Press " + openShopKey.ToString() + " to open shop.");
+            currentPlayer = other.GetComponentInChildren<PlayerBehaviour>();
+            if (currentPlayer != null)
+            {
+                isNearShop = true;
+                Debug.Log("Press " + openShopKey.ToString() + " to open shop.");
+            }
+            else
+            {
+                Debug.LogError("PlayerBehaviour component not found in children of the collider.");
+            }
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Shop") && currentPlayer != null)
+        if (other.CompareTag("Player") && currentPlayer != null)
         {
             isNearShop = false;
             currentPlayer = null;
