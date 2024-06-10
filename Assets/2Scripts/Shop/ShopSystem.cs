@@ -1,77 +1,114 @@
 using _2Scripts.Entities.Player;
+using _2Scripts.Manager;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ShopSystem : MonoBehaviour
 {
-    public GameObject shopUI;
-    public PlayerBehaviour playerBehaviour;
-    public Inventory inventory;
+    public GameObject shopUIPrefab;
+    private Dictionary<PlayerBehaviour, GameObject> activeShopUIs = new Dictionary<PlayerBehaviour, GameObject>();
+
     public KeyCode openShopKey = KeyCode.E;
     public KeyCode closeShopKey = KeyCode.Escape;
-    public KeyCode inventoryKey = KeyCode.Tab;
-    private bool isShopOpen = false;
+    private bool isNearShop = false;
+    private PlayerBehaviour currentPlayer;
 
-    void OnTriggerEnter(Collider other)
+    [SerializeField] private List<ItemUI> WeaponUI;
+    [SerializeField] private List<ItemUI> ArmorUI;
+    [SerializeField] private List<ItemUI> PotionUI;
+    [SerializeField] private List<ItemUI> ParchmentUI;
+
+    private void Start()
     {
-        if (other.CompareTag("Player"))
+        InitializeShop();
+    }
+
+    private void InitializeShop()
+    {
+        ItemManager itemManager = ItemManager.instance;
+
+        // Fill weapon UI
+        SetupItemUI(itemManager.weaponList.Items, WeaponUI);
+
+        // Fill armor UI
+        SetupItemUI(itemManager.armorList.Items, ArmorUI);
+
+        // Fill potion UI
+        SetupItemUI(itemManager.potionList.Items, PotionUI);
+
+        // Fill parchment UI
+        SetupItemUI(itemManager.parchmentList.Items, ParchmentUI);
+    }
+
+    private void SetupItemUI(List<Item> items, List<ItemUI> uiList)
+    {
+        for (int i = 0; i < uiList.Count; i++)
         {
-            Debug.Log("Player detected. Press " + openShopKey.ToString() + " to open shop.");
-            playerBehaviour = other.GetComponent<PlayerBehaviour>();
+            if (i < items.Count)
+            {
+                uiList[i].Setup(items[i].ID, 1);
+            }
+            else
+            {
+                uiList[i].Clear();
+            }
         }
     }
 
     void Update()
     {
-        if (playerBehaviour != null && Input.GetKeyDown(openShopKey))
+        if (!isNearShop || currentPlayer == null) return;
+
+        if (Input.GetKeyDown(openShopKey))
         {
-            OpenShop();
+            OpenShop(currentPlayer);
         }
-        else if (isShopOpen && Input.GetKeyDown(closeShopKey))
+        else if (Input.GetKeyDown(closeShopKey))
         {
-            CloseShop();
+            CloseShop(currentPlayer);
         }
     }
 
-    void OpenShop()
+    public void OpenShop(PlayerBehaviour player)
     {
-        isShopOpen = true;
+        Inventory inventory = InventoryUIManager.instance.Inventory;
+
+        if (activeShopUIs.ContainsKey(player) || !inventory) return;
+
+        inventory.isInShop = true;
+        GameObject shopUI = Instantiate(shopUIPrefab);
         shopUI.SetActive(true);
-        playerBehaviour.canMove = false;
+        activeShopUIs[player] = shopUI;
     }
 
-    void CloseShop()
+    public void CloseShop(PlayerBehaviour player)
     {
-        isShopOpen = false;
-        shopUI.SetActive(false);
-        playerBehaviour.canMove = true;
-    }
+        Inventory inventory = InventoryUIManager.instance.Inventory;
 
-    public void BuyItem(Item item)
-    {
-        if (playerBehaviour.gold >= item.SellValue)
+        if (activeShopUIs.ContainsKey(player) && inventory)
         {
-            bool isItemAdded = playerBehaviour.inventory.AddToInventory(item.ID, 1);
-            if (isItemAdded)
-            {
-                playerBehaviour.gold -= item.SellValue;
-                Debug.Log(item.Name + " bought for " + item.SellValue + " gold.");
-            }
-        }
-        else
-        {
-            Debug.Log("Not enough gold.");
+            inventory.isInShop = false;
+            Destroy(activeShopUIs[player]);
+            activeShopUIs.Remove(player);
         }
     }
 
-    public void SellItem(Item item)
+    void OnTriggerEnter(Collider other)
     {
-        bool isItemRemoved = playerBehaviour.inventory.RemoveFromInventory(item.ID, 1);
-        if (isItemRemoved)
+        if (other.CompareTag("Shop") && currentPlayer == null)
         {
-            int sellPrice = Mathf.FloorToInt(item.SellValue * 0.9f);
-            playerBehaviour.gold += sellPrice;
-            Debug.Log(item.Name + " sold for " + sellPrice + " gold.");
+            isNearShop = true;
+            currentPlayer = other.GetComponent<PlayerBehaviour>();
+            Debug.Log("Press " + openShopKey.ToString() + " to open shop.");
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Shop") && currentPlayer != null)
+        {
+            isNearShop = false;
+            currentPlayer = null;
         }
     }
 }

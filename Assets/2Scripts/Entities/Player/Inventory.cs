@@ -1,12 +1,11 @@
+using _2Scripts.Manager;
+using _2Scripts.Save;
 using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
-using _2Scripts.Manager;
-using _2Scripts.Save;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
-using _2Scripts.Entities.Player;
 
 [Serializable]
 public struct InventoryObject
@@ -33,6 +32,8 @@ public class Inventory : NetworkBehaviour
     public ArmorItem FeetArmor;
     public ArmorItem[] RingsItem = new ArmorItem[2];
     public ArmorItem NecklaceItem;
+    public int gold;
+    public bool isInShop;
 
     public WeaponItem MainHandItem;
     public bool CanDualWield;
@@ -89,12 +90,12 @@ public class Inventory : NetworkBehaviour
         return false;
     }
 
-    public void DropFromInventory(int itemPos)
+
+    public void RemoveFromInventory(int itemPos)
     {
         if (InventoryItems.Count <= InventorySpace)
         {
             InventoryObject newInventoryObject = InventoryItems[itemPos];
-            SpawnInventoryItemsRpc(newInventoryObject.ID);
             if (InventoryItems[itemPos].Amount > 1)
             {
                 newInventoryObject.Amount =- 1;
@@ -114,7 +115,33 @@ public class Inventory : NetworkBehaviour
         
         SaveSystem.Save();
     }
-    
+
+    public void DropFromInventory(int itemPos)
+    {
+        if (InventoryItems.Count <= InventorySpace)
+        {
+            InventoryObject newInventoryObject = InventoryItems[itemPos];
+            SpawnInventoryItemsRpc(newInventoryObject.ID);
+            if (InventoryItems[itemPos].Amount > 1)
+            {
+                newInventoryObject.Amount = -1;
+                InventoryItems[itemPos] = newInventoryObject;
+                Debug.Log($"[Inventory::DropFromInventory()] - Dropped item at pos {itemPos}. Remaning item {InventoryItems[itemPos].Amount}");
+            }
+            else
+            {
+                InventoryItems.RemoveAt(itemPos);
+                Debug.Log($"[Inventory::DropFromInventory()] - Dropped item at pos {itemPos}.No remaining item.");
+            }
+            DeactivateItemVisibilityInventory(ItemManager.instance.GetItem(newInventoryObject.ID));
+            SaveSystem.Save();
+            return;
+        }
+        Debug.Log($"[Inventory::DropFromInventory()] - Tried to drop item from inventory that was out of bound: InventoryItems.Count({InventoryItems.Count + 1}) <= InventorySpace({InventorySpace})");
+
+        SaveSystem.Save();
+    }
+
     [Rpc(SendTo.Server)]
     public void SpawnInventoryItemsRpc(int id)
     {

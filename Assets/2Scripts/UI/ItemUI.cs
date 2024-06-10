@@ -5,9 +5,11 @@ using System.Runtime.CompilerServices;
 using _2Scripts.Enum;
 using _2Scripts.Manager;
 using TMPro;
+using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
@@ -19,9 +21,11 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     [SerializeField] private bool IsDrop;
     [SerializeField] private bool IsOffHand;
     [SerializeField] private int Price;
+    [SerializeField] private float sellMultiplicator = 0.9f;
+
     private int ItemID;
     private int ItemPos;
-    
+
     private bool _isGrabbed;
 
     private Transform parentAfterDrag;
@@ -39,6 +43,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
         if (Quantity != null) Quantity.text = ItemManager.instance.GetItem(ItemID).Stackable ? quantity.ToString() : "";
         Image.color = Color.white;
+
     }
 
     public void Clear()
@@ -87,16 +92,33 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     {
         Inventory inventory = InventoryUIManager.instance.Inventory;
         if (eventData.pointerDrag.GetComponent<ItemUI>().ItemID == -1) return;
-        
+
+        bool IsInShop = inventory.isInShop;
+
+        // Drag item on the drop pannel
         if (IsDrop)
         {
             if (eventData.pointerDrag.GetComponent<ItemUI>().IsEquipment) return;
-            
-            inventory.DropFromInventory(eventData.pointerDrag.GetComponent<ItemUI>().ItemPos);
+
+            if (!IsInShop)
+            {
+                inventory.DropFromInventory(eventData.pointerDrag.GetComponent<ItemUI>().ItemPos);
+            }
+            else
+            {
+                // gain gold for selling item
+                int sellPrice = Mathf.FloorToInt(Price * sellMultiplicator);
+                inventory.gold += sellPrice;
+                Debug.Log(name + " sold for " + sellPrice + " gold.");
+                // remove item
+                inventory.RemoveFromInventory(eventData.pointerDrag.GetComponent<ItemUI>().ItemPos);
+            }
+
             InventoryUIManager.instance.DrawInventory();
             return;
         }
         
+        // Equip item from inventory to equipment
         if (IsEquipment && !eventData.pointerDrag.GetComponent<ItemUI>().IsEquipment)
         {
             inventory.EquipFromInventory(eventData.pointerDrag.GetComponent<ItemUI>().ItemPos, IsOffHand);
@@ -104,7 +126,8 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             return;
         }
 
-        if (IsInventory && !eventData.pointerDrag.GetComponent<ItemUI>().IsInventory)
+        // Desequip item from equipment to inventory
+        if (IsInventory && !eventData.pointerDrag.GetComponent<ItemUI>().IsInventory && !IsInShop)
         {
             inventory.UnequipItem(new List<(EquippableItem, bool)>
             {
@@ -158,10 +181,33 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             
             if (IsEquipment)
             {
-                inventory.UnequipItem(new List<(EquippableItem, bool)>
+
+                bool IsInShop = inventory.isInShop;
+                // equip item
+                if (!IsInShop)
                 {
-                    (ItemManager.instance.GetItem(itemUI.ItemID) as EquippableItem, itemUI.IsOffHand)
-                });
+                    inventory.UnequipItem(new List<(EquippableItem, bool)>
+                    {
+                        (ItemManager.instance.GetItem(itemUI.ItemID) as EquippableItem, itemUI.IsOffHand)
+                    });
+                }
+                // buy item
+                else
+                {
+                    if (inventory.gold >= Price)
+                    {
+                        bool isItemAdded = inventory.AddToInventory(eventData.pointerDrag.GetComponent<ItemUI>().ItemPos, 1);
+                        if (isItemAdded)
+                        {
+                            inventory.gold -= Price;
+                            Debug.Log(name + " bought for " + Price + " gold.");
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("Not enough gold.");
+                    }
+                }
             }
 
             if (IsInventory)
@@ -169,7 +215,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
                 itemUI.ItemPos = itemUI.transform.GetSiblingIndex();
                             
                 Item item = ItemManager.instance.GetItem(itemUI.ItemID);
-                            
+
                 switch (item)
                 {
                     case EquippableItem:
