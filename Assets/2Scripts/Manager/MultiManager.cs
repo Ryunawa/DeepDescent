@@ -37,7 +37,7 @@ public class MultiManager : Singleton<MultiManager>
 	public UnityEvent lobbyCreated;
 	public UnityEvent lobbyJoined;
 	public UnityEvent kickedEvent;
-	public UnityEvent<bool> refreshUI;
+	public UnityEvent<bool, bool> refreshUI;
 	public UnityEvent CharacterChosen;
 	public UnityEvent init;
 	public NetworkObject playerNetworkObject;
@@ -88,6 +88,7 @@ public class MultiManager : Singleton<MultiManager>
 		_lobbyEventCallbacks.LobbyChanged += OnLobbyChanged;
 		_lobbyEventCallbacks.KickedFromLobby += OnKickedFromLobby;
 		_lobbyEventCallbacks.LobbyEventConnectionStateChanged += OnLobbyEventConnectionStateChanged;
+		_lobbyEventCallbacks.PlayerDataChanged += OnPlayerDataChanged;
 
 		init.Invoke();
 		
@@ -132,21 +133,25 @@ public class MultiManager : Singleton<MultiManager>
 			MultiManager.instance.JoinRelay(_lobby.Data["startGame"].Value);
 		}
 		
+		refreshUI.Invoke(true, false);
+	}
+
+	private void OnPlayerDataChanged(Dictionary<int,Dictionary<string,ChangedOrRemovedLobbyValue<PlayerDataObject>>> ctx)
+	{
+		Debug.Log("player Changed");
 		if (_IsOwnerOfLobby)
 		{
 			foreach (Player player in _lobby.Players)
 			{
 				if (player.Data["CharacterID"].Value == "-1")
 				{
-					Debug.Log("false");
-					refreshUI.Invoke(false);
+					refreshUI.Invoke(false, true);
 					return;
 				} 
 			}
 		}
 		
-		Debug.Log("True");
-		refreshUI.Invoke(true);
+		refreshUI.Invoke(true, true);
 	}
 	
 	/// <summary>
@@ -166,6 +171,7 @@ public class MultiManager : Singleton<MultiManager>
 					Player = GetPlayer()
 				};
 				_lobby = await LobbyService.Instance.JoinLobbyByCodeAsync(joinCode, joinLobbyByCodeOptions);
+				SubToLobbyEvents();
 				lobbyJoined.Invoke();
 			}
 			else
@@ -175,6 +181,7 @@ public class MultiManager : Singleton<MultiManager>
 					Player = GetPlayer()
 				};
 				_lobby = await LobbyService.Instance.JoinLobbyByIdAsync(joinCode, joinLobbyByIdOptions);
+				SubToLobbyEvents();
 				lobbyJoined.Invoke();
 			}
 			
@@ -182,9 +189,6 @@ public class MultiManager : Singleton<MultiManager>
 			{
 				MultiManager.instance.JoinRelay(_lobby.Data["startGame"].Value);
 			}
-
-			SubToLobbyEvents();
-
 		}
 		catch(LobbyServiceException e)
 		{
@@ -275,6 +279,7 @@ public class MultiManager : Singleton<MultiManager>
 	{
 		try
 		{
+			Debug.Log("Subbing To Lobby Events");
 			_lobbyEvents = await Lobbies.Instance.SubscribeToLobbyEventsAsync(_lobby.Id, _lobbyEventCallbacks);
 		}
 		catch(LobbyServiceException ex)
@@ -439,7 +444,15 @@ public class MultiManager : Singleton<MultiManager>
 			
 			string playerId = AuthenticationService.Instance.PlayerId;
 
-			await SendLobbyUpdate(playerId, options);
+			if (_lobby == null)
+			{
+				await SendLobbyUpdate(playerId, options);
+			}
+			else
+			{
+				_lobby = await LobbyService.Instance.UpdatePlayerAsync(_lobby.Id, playerId, options);
+				CharacterChosen.Invoke();
+			}
 		}
 		catch (LobbyServiceException e)
 		{
@@ -464,7 +477,7 @@ public class MultiManager : Singleton<MultiManager>
 			return;
 		}
 		
-		await LobbyService.Instance.UpdatePlayerAsync(_lobby.Id, playerId, options);
+		_lobby = await LobbyService.Instance.UpdatePlayerAsync(_lobby.Id, playerId, options);
 		CharacterChosen.Invoke();
 	}
 
@@ -563,8 +576,6 @@ public class MultiManager : Singleton<MultiManager>
 				Debug.LogError(e);
 				throw;
 			}
-			
-			
 		}
 	}
 

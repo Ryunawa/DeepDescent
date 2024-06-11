@@ -41,7 +41,7 @@ public class MainLobby : NetworkBehaviour
         RefreshUI(false);
     }
 
-    void RefreshUI(bool isAllReady)
+    void RefreshUI(bool isAllReady, bool changeButtonState = true)
     {
         foreach (Transform transformGo in parentUIObject.transform)
         {
@@ -54,6 +54,7 @@ public class MainLobby : NetworkBehaviour
             playerNameText.text = player.Data["Name"].Value;
         }
 
+        if (!changeButtonState) return;
         if (MultiManager.instance.IsLobbyHost())
         {
             playButton.interactable = isAllReady;
