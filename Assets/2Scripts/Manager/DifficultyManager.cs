@@ -47,6 +47,7 @@ namespace _2Scripts.Manager
         
         private EnemyTypes _enemyTypesStructToUse;
         private ResourceType _resourcesDropRateStructToUse;
+        private float _difficultyMultiplier;
         
         #endregion
         
@@ -101,7 +102,7 @@ namespace _2Scripts.Manager
         }
         
         /// <summary>
-        /// Adjust some stats of a enemy type depending on the number of players.
+        /// Adjust some stats of an enemy type depending on the number of players.
         /// </summary>
         /// <param name="pStatsToAdjust">struct of an enemy type's stats</param>
         /// <param name="pRate"></param>
@@ -160,8 +161,18 @@ namespace _2Scripts.Manager
                 OnEnemiesStatsUpdatedEventHandler?.Invoke(GetStructElementByIndex<EnemyStats>(_enemyTypesStructToUse, i).enemyPrefab, 
                                         GetStructElementByIndex<EnemyStats>(_enemyTypesStructToUse, i));
             }
-            
+
+            _difficultyMultiplier = multiplier;
             Debug.Log("Multiplicateur : " + multiplier);
+        }
+
+        /// <summary>
+        /// Return the difficulty multiplier apply to the enemy
+        /// </summary>
+        /// <returns></returns>
+        public float GetDifficultyMultiplier()
+        {
+            return _difficultyMultiplier;
         }
 
         // /!\ DEBUG ONLY /!\

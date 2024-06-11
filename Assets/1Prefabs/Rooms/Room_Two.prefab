@@ -720,6 +720,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7409211673300873129}
   - component: {fileID: -6709480607981328485}
+  - component: {fileID: 8764595728436208943}
   m_Layer: 0
   m_Name: Room_Two
   m_TagString: Untagged
@@ -764,6 +765,27 @@ MonoBehaviour:
   doorPrefab:
   - {fileID: 7091607008960014797, guid: 1d1db2d8b9acd3d41bd39ae29ffc9eb5, type: 3}
   - {fileID: 1806916446658767855, guid: e1fac5bff34d5bc4dbfcdeba9a138af2, type: 3}
+--- !u!114 &8764595728436208943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2938845186162145751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 0
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &3228910204782648262
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using _2Scripts.Manager;
 using Cinemachine;
 using UnityEngine;
 using Unity.Netcode;
