@@ -7,11 +7,9 @@ using UnityEngine;
 
 public class StatComponent : MonoBehaviour
 {
-    public float BaseArmour = 0.0f;
-    public float EquippedArmour = 0.0f;
+    public Stats CharacterStatPage;
 
-    public float DamageInflictedModifier = 1.0f;
-    public float DamageReceivedModifier = 1.0f;
+    private float _equippedArmour = 0.0f;
 
     public PlayerBehaviour PlayerBehaviour;
 
@@ -22,29 +20,29 @@ public class StatComponent : MonoBehaviour
 
     public float CalcDamageReceived(float damage)
     {
-        return damage * (100/(100 + (BaseArmour +  EquippedArmour))) * DamageReceivedModifier;
+        return damage * (100/(100 + (CharacterStatPage.BaseArmour +  _equippedArmour))) * CharacterStatPage.DamageReceivedModifier;
     }
 
     public float CalcDamageInflicted(float damage)
     {
-        return damage * DamageInflictedModifier;
+        return damage * CharacterStatPage.DamageInflictedModifier;
     }
 
     public void UpdateArmourValue(Inventory inventory)
     {
         if (inventory != null) 
         {
-            EquippedArmour = 0.0f;
-            EquippedArmour += inventory.OffHandItem ? inventory.OffHandItem.AttackValue : 0;
-            EquippedArmour += inventory.ChestArmor ? inventory.ChestArmor.ArmorValue : 0;
-            EquippedArmour += inventory.FeetArmor ? inventory.FeetArmor.ArmorValue : 0;
-            EquippedArmour += inventory.LegArmor ? inventory.LegArmor.ArmorValue : 0;
+            _equippedArmour = 0.0f;
+            _equippedArmour += inventory.OffHandItem ? inventory.OffHandItem.AttackValue : 0;
+            _equippedArmour += inventory.ChestArmor ? inventory.ChestArmor.ArmorValue : 0;
+            _equippedArmour += inventory.FeetArmor ? inventory.FeetArmor.ArmorValue : 0;
+            _equippedArmour += inventory.LegArmor ? inventory.LegArmor.ArmorValue : 0;
             
         }
     }
 
     [Button]
-    public void NiqueTamMère()
+    public void NiqueTamMere()
     {
         PlayerBehaviour.tst();
     }

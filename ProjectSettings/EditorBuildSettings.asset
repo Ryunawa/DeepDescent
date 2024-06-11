@@ -14,13 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/3Scenes/Level.unity
     guid: 5d86b973e0b04e04dbe8c46c4092dbaf
-  - enabled: 0
-    path: Assets/3Scenes/Loading.unity
-    guid: 1033a1f5bd685e14d9405629909e24e9
-  - enabled: 0
+  - enabled: 1
     path: Assets/3Scenes/CharacterSelection.unity
     guid: ff9ac7a4cbfc50349a0f55cf40790fae
   - enabled: 1
-    path: Assets/3Scenes/AI_Playground/Item_TestZone.unity
+    path: Assets/3Scenes/Jerome_Playground/Item_TestZone.unity
     guid: f162b6dda9e9bdb4e8ff92814bf5a2b4
   m_configObjects: {}

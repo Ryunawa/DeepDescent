@@ -61,6 +61,7 @@ namespace _2Scripts.Manager
         MainMenu,
         Level,
         SafeZone,
+        CharacterSelection,
         None
     }
 }

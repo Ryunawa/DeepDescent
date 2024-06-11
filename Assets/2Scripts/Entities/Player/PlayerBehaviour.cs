@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.Serialization;
 using NaughtyAttributes;
 
 namespace _2Scripts.Entities.Player
@@ -16,6 +18,9 @@ namespace _2Scripts.Entities.Player
         [SerializeField] private Transform _camTransform;
         [SerializeField] private bool _overrideNetwork = false;
         [SerializeField] private CinemachineVirtualCamera _virtualCamera;
+        [SerializeField] private List<GameObject> playerModels;
+        
+        public int gold;
 
         private CharacterController _characterController;
         private float _characterControllerOriginalStepOffset;
@@ -48,7 +53,11 @@ namespace _2Scripts.Entities.Player
             _characterControllerOriginalStepOffset = _characterController.stepOffset;
             _inputManager = InputManager.instance;
 
-
+            for (int i = 0; i < 4; i++)
+            {
+                playerModels[i].SetActive(i == MultiManager.instance.GetSelectedCharacterID());
+            }
+            
             if (!IsOwner)
             {
                 if (!_overrideNetwork)
@@ -86,34 +95,6 @@ namespace _2Scripts.Entities.Player
         Vector3 forward = _camTransform.forward;
         forward.y = 0;
         Vector3 move = forward.normalized * _inputManager.GetPlayerMovement().y + _camTransform.right * _inputManager.GetPlayerMovement().x;
-
-        RaycastHit hit;
-        if (Physics.SphereCast(_camTransform.position, 1.0f, _camTransform.TransformDirection(_camTransform.forward), out hit, 5.0f, 1 << 10))
-        {
-            _objectToAddToInventory = hit.collider.gameObject;
-            if (_objectToAddToInventory.TryGetComponent(out Object obj))
-                obj.GOText.SetActive(true);
-        }
-        else
-        {
-            if (_objectToAddToInventory)
-            {
-                if(_objectToAddToInventory.TryGetComponent(out Object obj))
-                    obj.GOText.SetActive(false);
-            }
-            _objectToAddToInventory = null;
-        }
-
-        if (_objectToAddToInventory)
-        {
-            if (_objectToAddToInventory.TryGetComponent(out Object obj))
-            {
-                if(obj.GOText.TryGetComponent(out RectTransform rectTransform))
-                    rectTransform.rotation = Quaternion.LookRotation(_objectToAddToInventory.transform.position - transform.position, Vector3.up);
-                if (_inputManager.PlayerUsed())
-                    obj.Interact(this);
-            }
-        }
         
         ySpeed += Physics.gravity.y * Time.fixedDeltaTime; 
         

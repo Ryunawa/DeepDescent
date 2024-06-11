@@ -9,8 +9,11 @@ namespace _2Scripts.Manager
     public class InventoryUIManager : Singleton<InventoryUIManager>
     {
         [SerializeField] private ItemUI ItemPrefab;
+        [SerializeField] private GameObject inventoryUI;
         [SerializeField] private GameObject inventoryRoot;
         [SerializeField] private GameObject inventoryBG;
+        [SerializeField] private GameObject shopRoot;
+        [SerializeField] private GameObject shopBG;
         [SerializeField] private GameObject inventoryMove;
         [SerializeField] private ItemDetailUI itemDetailUI;
         [Header("Slots")]
@@ -33,6 +36,7 @@ namespace _2Scripts.Manager
         
         private Inventory _inventory;
         private List<ItemUI> ListUI = new List<ItemUI>();
+        private List<ItemUI> ListShop = new List<ItemUI>();
         private bool _isOpened;
 
         public Inventory Inventory => _inventory;
@@ -50,9 +54,10 @@ namespace _2Scripts.Manager
             InputManager.instance.Inputs.Player.Inventory.started += context => ToggleInventory();
             
             _inventory = MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().inventory;
-            SetupInventory();
-            
-            gameObject.SetActive(false);
+            SetupInventory(inventoryRoot, inventoryBG, ListUI);
+            SetupInventory(shopRoot, shopBG, ListShop);
+
+            inventoryUI.SetActive(false);
         }
 
 
@@ -61,22 +66,23 @@ namespace _2Scripts.Manager
             Debug.Log("Toggle Inv");
 
             bool value = _isOpened = !_isOpened;
-            
-            gameObject.SetActive(value);
+
+            inventoryUI.SetActive(value);
             Cursor.visible = value;
         }
         
         
-        private void SetupInventory()
+        private void SetupInventory(GameObject inventoryRoot, GameObject inventoryBG, List<ItemUI> List)
         {
             for (int i = 0; i < _inventory.InventorySpace; i++)
             {
                 ItemUI item = Instantiate(ItemPrefab, inventoryRoot.transform);
                 Instantiate(ItemPrefab, inventoryBG.transform);
-                ListUI.Add(item);
+                List.Add(item);
             }
-            
-            DrawInventory();
+
+            if (List == ListShop) DrawInventoryShop();
+            else DrawInventory();
         }
 
         [Button]
@@ -102,6 +108,21 @@ namespace _2Scripts.Manager
             DrawEquipment(Rings[1], _inventory.RingsItem[1]);
             DrawEquipment(MainHand, _inventory.MainHandItem);
             DrawEquipment(OffHand, _inventory.OffHandItem);
+        }
+
+        public void DrawInventoryShop()
+        {
+            for (int i = 0; i < _inventory.InventorySpace; i++)
+            {
+                if (i < _inventory.InventoryItems.Count)
+                {
+                    ListShop[i].Setup(_inventory.InventoryItems[i].ID, _inventory.InventoryItems[i].Amount);
+                }
+                else
+                {
+                    ListShop[i].Clear();
+                }
+            }
         }
 
         private void DrawEquipment(ItemUI itemUI, Item item)

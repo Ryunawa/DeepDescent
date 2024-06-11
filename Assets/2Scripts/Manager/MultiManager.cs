@@ -37,7 +37,8 @@ public class MultiManager : Singleton<MultiManager>
 	public UnityEvent lobbyCreated;
 	public UnityEvent lobbyJoined;
 	public UnityEvent kickedEvent;
-	public UnityEvent refreshUI;
+	public UnityEvent<bool, bool> refreshUI;
+	public UnityEvent CharacterChosen;
 	public UnityEvent init;
 	public NetworkObject playerNetworkObject;
 	
@@ -87,15 +88,13 @@ public class MultiManager : Singleton<MultiManager>
 		_lobbyEventCallbacks.LobbyChanged += OnLobbyChanged;
 		_lobbyEventCallbacks.KickedFromLobby += OnKickedFromLobby;
 		_lobbyEventCallbacks.LobbyEventConnectionStateChanged += OnLobbyEventConnectionStateChanged;
+		_lobbyEventCallbacks.PlayerDataChanged += OnPlayerDataChanged;
 
 		init.Invoke();
 		
 		NetworkManager.Singleton.OnConnectionEvent += (manager, data) =>
 		{
 			Debug.Log("Client connected");
-			
-			
-			
 		};
 
 	}
@@ -134,7 +133,25 @@ public class MultiManager : Singleton<MultiManager>
 			MultiManager.instance.JoinRelay(_lobby.Data["startGame"].Value);
 		}
 		
-		refreshUI.Invoke();
+		refreshUI.Invoke(true, false);
+	}
+
+	private void OnPlayerDataChanged(Dictionary<int,Dictionary<string,ChangedOrRemovedLobbyValue<PlayerDataObject>>> ctx)
+	{
+		Debug.Log("player Changed");
+		if (_IsOwnerOfLobby)
+		{
+			foreach (Player player in _lobby.Players)
+			{
+				if (player.Data["CharacterID"].Value == "-1")
+				{
+					refreshUI.Invoke(false, true);
+					return;
+				} 
+			}
+		}
+		
+		refreshUI.Invoke(true, true);
 	}
 	
 	/// <summary>
@@ -154,6 +171,7 @@ public class MultiManager : Singleton<MultiManager>
 					Player = GetPlayer()
 				};
 				_lobby = await LobbyService.Instance.JoinLobbyByCodeAsync(joinCode, joinLobbyByCodeOptions);
+				SubToLobbyEvents();
 				lobbyJoined.Invoke();
 			}
 			else
@@ -163,6 +181,7 @@ public class MultiManager : Singleton<MultiManager>
 					Player = GetPlayer()
 				};
 				_lobby = await LobbyService.Instance.JoinLobbyByIdAsync(joinCode, joinLobbyByIdOptions);
+				SubToLobbyEvents();
 				lobbyJoined.Invoke();
 			}
 			
@@ -170,14 +189,12 @@ public class MultiManager : Singleton<MultiManager>
 			{
 				MultiManager.instance.JoinRelay(_lobby.Data["startGame"].Value);
 			}
-
-			SubToLobbyEvents();
-
 		}
 		catch(LobbyServiceException e)
 		{
 			Debug.Log(e);
 		}
+		Debug.Log("joined lobby");
 	}
 
 	/// <summary>
@@ -262,6 +279,7 @@ public class MultiManager : Singleton<MultiManager>
 	{
 		try
 		{
+			Debug.Log("Subbing To Lobby Events");
 			_lobbyEvents = await Lobbies.Instance.SubscribeToLobbyEventsAsync(_lobby.Id, _lobbyEventCallbacks);
 		}
 		catch(LobbyServiceException ex)
@@ -396,18 +414,96 @@ public class MultiManager : Singleton<MultiManager>
 			id: AuthenticationService.Instance.PlayerId,
 			data: new Dictionary<string, PlayerDataObject>
 			{
-				{ "Name", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, _playerName) }
+				{ "Name", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, _playerName) },
+				{ "CharacterID", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, "-1") },
+				{ "IsReady", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, "0") }
 			}
 		);
 	}
 
 	/// <summary>
-	/// Gets the localPlayer's GameObject (ie. the character)
+	/// Async method to changes player values in lobby
 	/// </summary>
-	/// <returns></returns>
+	/// <param name="characterID"></param>
+	/// <param name="isReady"></param>
+	public async void UpdatePlayer(int characterID, bool isReady)
+	{
+		try
+		{
+			UpdatePlayerOptions options = new UpdatePlayerOptions
+			{
+				Data = new Dictionary<string, PlayerDataObject>()
+				{
+					{
+						"CharacterID", new PlayerDataObject(
+							visibility: PlayerDataObject.VisibilityOptions.Member,
+							value: characterID.ToString())
+					}
+				}
+			};
+			
+			string playerId = AuthenticationService.Instance.PlayerId;
+
+			if (_lobby == null)
+			{
+				await SendLobbyUpdate(playerId, options);
+			}
+			else
+			{
+				_lobby = await LobbyService.Instance.UpdatePlayerAsync(_lobby.Id, playerId, options);
+				CharacterChosen.Invoke();
+			}
+		}
+		catch (LobbyServiceException e)
+		{
+			Debug.Log(e);
+		}
+	}
+
+	
+	/// <summary>
+	/// This will wait for a lobby to be sel before sending the update, it will request every 100 ms
+	/// </summary>
+	/// <param name="playerId"></param>
+	/// <param name="options"></param>
+	private async Task SendLobbyUpdate(string playerId, UpdatePlayerOptions options)
+	{
+		Debug.Log("Wait");
+		await Task.Delay(100);
+
+		if (_lobby == null)
+		{
+			SendLobbyUpdate(playerId, options);
+			return;
+		}
+		
+		_lobby = await LobbyService.Instance.UpdatePlayerAsync(_lobby.Id, playerId, options);
+		CharacterChosen.Invoke();
+	}
+
+	/// <summary>
+	/// Gives the ID of the selected character
+	/// </summary>
+	/// <returns>int</returns>
+	public int GetSelectedCharacterID()
+	{
+		Player player = instance.Lobby.Players.Find(x => x.Data["Name"].Value == instance.PlayerName);
+
+		return Convert.ToInt32(player.Data["CharacterID"].Value);
+	}
+
+	/// <summary>
+	/// Gets the localPlayer's GameObject (ie. the character) if not then returns Null
+	/// </summary>
+	/// <returns> GameObject </returns>
 	public GameObject GetPlayerGameObject()
 	{
-		return NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject().gameObject;
+		if (NetworkManager.Singleton.SpawnManager != null)
+		{
+			return NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject().gameObject;
+		}
+
+		return null;
 	}
 	
 	public List<GameObject> GetAllPlayerGameObjects()
@@ -480,8 +576,6 @@ public class MultiManager : Singleton<MultiManager>
 				Debug.LogError(e);
 				throw;
 			}
-			
-			
 		}
 	}
 
