@@ -5,9 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/3Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
     path: Assets/3Scenes/MainMenu.unity
     guid: b976b64941e3e3743a2af80a8601c370
@@ -17,7 +14,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/3Scenes/CharacterSelection.unity
     guid: ff9ac7a4cbfc50349a0f55cf40790fae
-  - enabled: 1
-    path: Assets/3Scenes/Jerome_Playground/Item_TestZone.unity
-    guid: f162b6dda9e9bdb4e8ff92814bf5a2b4
   m_configObjects: {}
