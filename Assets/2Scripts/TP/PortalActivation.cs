@@ -1,3 +1,4 @@
+using _2Scripts.Manager;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -30,8 +31,9 @@ public class PortalActivation : MonoBehaviour
         // visual effect
         particleActivation.SetActive(true);
         particleActivation.GetComponent<ParticleSystem>().Play();
-        // TODO: Teleportation
         GameFlowManager.instance.SetGameState(GameFlowManager.GameState.BossNotDiscovered);
+        // Teleportation
+        MultiManager.instance.nextLevelManager.GenerateNewDungeon();
     }
 
     private void OnTriggerEnter(Collider other)
