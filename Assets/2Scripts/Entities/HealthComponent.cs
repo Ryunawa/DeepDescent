@@ -6,7 +6,7 @@ using UnityEngine.Serialization;
 
 namespace _2Scripts.Entities
 {
-    public class HealthComponent : NetworkBehaviour
+	public class HealthComponent : NetworkBehaviour
 	{
 		[FormerlySerializedAs("MaxHealth")] [SerializeField] private float maxHealth = 100;
 
@@ -19,7 +19,6 @@ namespace _2Scripts.Entities
 		public UnityEvent<float> OnHealed;
 
 		private EnemyData _enemyData;
-		private StatComponent _statComponent;
 	
 		private void Awake()
 		{
@@ -33,7 +32,6 @@ namespace _2Scripts.Entities
 			_health.OnValueChanged += _CheckForDeath;
 
 			_enemyData = GetComponent<EnemyData>();
-			_statComponent = GetComponent<StatComponent>();
 		}
 
 		private void _CheckForDeath(float iPrevVal, float iCurVal)
@@ -66,18 +64,11 @@ namespace _2Scripts.Entities
 			if(pDamage <= 0 || _health.Value <= 0)
 				return;
 
-			float damageReceived = 0.0f;
-
-			if (_enemyData)
-			{
-				float effectiveArmor = _enemyData.enemyStats.armor * (1 - pArmorPenetration / 100);
-				float damageReductionFactor = 1 - effectiveArmor / 100;
-				damageReceived = pDamage * damageReductionFactor;
-			}
-			else
-				damageReceived = _statComponent.CalcDamageReceived(pDamage);
+			float effectiveArmor = _enemyData.enemyStats.armor * (1 - pArmorPenetration / 100);
+			float damageReductionFactor = 1 - effectiveArmor / 100;
+			float damage = pDamage * damageReductionFactor;
 		
-			_health.Value -= damageReceived;
+			_health.Value -= damage;
 			OnDamaged.Invoke(pDamage);
 		}
 
@@ -97,7 +88,7 @@ namespace _2Scripts.Entities
 		{
 			if(!IsServer) 
 			{
-				HealServerRpc(iHeal);
+				HealServerRPC(iHeal);
 				return;
 			}
 
@@ -113,11 +104,11 @@ namespace _2Scripts.Entities
 		[Rpc(SendTo.Server)]
 		private void TakeDamageServerRpc(float iDamage, float iArmorPenetration = 0)
 		{
-			TakeDamage(iDamage, iArmorPenetration);
+			TakeDamage(iDamage);
 		}
 
 		[Rpc(SendTo.Server, RequireOwnership = false)]
-		private void HealServerRpc(float iHeal)
+		private void HealServerRPC(float iHeal)
 		{
 			Heal(iHeal);
 		}

@@ -105,6 +105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3987045381332466938}
   - component: {fileID: -6355234629830083266}
+  - component: {fileID: -7607278652932799554}
   m_Layer: 0
   m_Name: Props_Goblin
   m_TagString: Untagged
@@ -220,6 +221,27 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 1010477128667781539}
   - {fileID: 5591924635614117811}
+--- !u!114 &-7607278652932799554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8384136562222545150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 0
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1001 &33018131301022247
 PrefabInstance:
   m_ObjectHideFlags: 0

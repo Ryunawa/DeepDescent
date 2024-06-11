@@ -1,5 +1,6 @@
 using _2Scripts.Manager;
 using NaughtyAttributes;
+using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -65,7 +66,7 @@ namespace _2Scripts.ProceduralGeneration
             numberOfRightRotation = newNumberOfRightRotation;
             this.gameObject.transform.rotation = Quaternion.AngleAxis(90f * newNumberOfRightRotation, Vector3.up);
 
-            createDoors();
+            CreateDoors();
         }
 
         public FaceState[] GetOriginalFaceStatesArray()
@@ -102,7 +103,7 @@ namespace _2Scripts.ProceduralGeneration
             }
         }
 
-        public void createDoors()
+        public void CreateDoors()
         {
             GameObject doorsParent = GameObject.Find("Doors");
             Vector3 pos = this.gameObject.transform.position;
@@ -111,12 +112,14 @@ namespace _2Scripts.ProceduralGeneration
             {
                 Vector3 doorNorth = pos + (Vector3.forward * SizeRoom / 2) + (Vector3.left * 0.6f);
                 GameObject instantiatedNorthDoor = Instantiate(doorPrefab[Random.Range(0, doorPrefab.Length)], doorNorth, Quaternion.AngleAxis(180, Vector3.up));
+                instantiatedNorthDoor.GetComponent<NetworkObject>().Spawn();
                 instantiatedNorthDoor.transform.SetParent(doorsParent.transform);
             }
             if (HasDoor(Directions.East))
             {
                 Vector3 doorEast = pos + (Vector3.right * SizeRoom / 2) + (Vector3.forward * 0.6f);
                 GameObject instantiatedEastDoor = Instantiate(doorPrefab[Random.Range(0, doorPrefab.Length)], doorEast, Quaternion.AngleAxis(-90, Vector3.up));
+                instantiatedEastDoor.GetComponent<NetworkObject>().Spawn();
                 instantiatedEastDoor.transform.SetParent(doorsParent.transform);
             }
         }

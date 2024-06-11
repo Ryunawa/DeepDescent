@@ -1,3 +1,4 @@
+using _2Scripts.Manager;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

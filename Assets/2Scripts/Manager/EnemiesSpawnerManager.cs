@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using _2Scripts.Entities;
 using _2Scripts.ProceduralGeneration;
 using _2Scripts.Struct;
@@ -34,17 +35,23 @@ namespace _2Scripts.Manager
         [SerializeField] private float spawnIntervalInSecond;
 
         [SerializeField] private GameObject spawnParticle;
+        [SerializeField] private GameObject spawnedEnemyFolder;
 
         private EnemyTypes _enemiesList;
         private int _currentEnemiesCount;
         private int _currLevel = 1; // Depend on the game manager
+        private LevelGenerator _levelGenerator;
         
         #endregion
 
 
-        void Start()
+        async void Start()
         {
-            LevelGenerator.instance.dungeonGeneratedEvent.AddListener(() =>
+            while (!MultiManager.instance.levelGenerator)
+            {
+                await Task.Delay(200);
+            }
+            MultiManager.instance.levelGenerator.dungeonGeneratedEvent.AddListener(() =>
             {
                 if (NetworkManager.Singleton.IsServer)
                 {
@@ -87,15 +94,15 @@ namespace _2Scripts.Manager
         private (Room,List<GameObject>) GetRandomRoomToSpawnIn()
         {
             (Room,List<GameObject>) randomRoom;
-            List<(Room, List<GameObject>)> roomsTuple = LevelGenerator.instance.GetAllEnemySpawnPoints();
+            List<(Room, List<GameObject>)> roomsTuple = MultiManager.instance.levelGenerator.GetAllEnemySpawnPoints();
             int roomIndex;
             
             do
             {
                 int randomInt = Random.Range(0, roomsTuple.Count);
                 randomRoom = roomsTuple[randomInt];
-                roomIndex = LevelGenerator.instance.GetIndexOfRoom(randomRoom.Item1);
-            } while (LevelGenerator.instance.IsRoomEmpty(roomIndex));
+                roomIndex = MultiManager.instance.levelGenerator.GetIndexOfRoom(randomRoom.Item1);
+            } while (MultiManager.instance.levelGenerator.IsRoomEmpty(roomIndex));
             
             return randomRoom;
         }
@@ -122,6 +129,7 @@ namespace _2Scripts.Manager
                     GameObject newEnemy = Instantiate(objectToSpawn.enemyPrefab, new Vector3(spawningPosition.x, -1, spawningPosition.z),
                         quaternion.identity);
                     newEnemy.GetComponent<NetworkObject>().Spawn();
+                    newEnemy.transform.SetParent(spawnedEnemyFolder.transform);
                     
                     EnemyData newEnemyData = newEnemy.GetComponent<EnemyData>();
                     newEnemyData.enemyStats = objectToSpawn;
@@ -158,6 +166,20 @@ namespace _2Scripts.Manager
             OnEnemiesSpawnedOrKilledEventHandler?.Invoke(penemyKilled.roomSpawnedInID, -1);
         }
 
+        /// <summary>
+        /// Stop the spawn and clear all the left enemies
+        /// </summary>
+        public void StopSpawning()
+        {
+            StopAllCoroutines();
+            foreach (var networkObjectChild in spawnedEnemyFolder.GetComponentsInChildren<NetworkObject>())
+            {
+                if(networkObjectChild.gameObject != spawnedEnemyFolder)
+                    networkObjectChild.Despawn();
+            }
+            Debug.Log("All enemies left removed");
+            _currLevel++;
+        }
         
         // /!\ DEBUG ONLY /!\
         [Button]
