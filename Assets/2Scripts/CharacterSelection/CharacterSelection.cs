@@ -42,6 +42,7 @@ public class CharacterSelection : MonoBehaviour
 
     public void Ready()
     {
+        PlayerPrefs.SetInt("selectedCharacter", selectedCharacter);
         SceneManager.instance.ActivateLoadingScreen();
         MultiManager.instance.UpdatePlayer(selectedCharacter, true);
 
