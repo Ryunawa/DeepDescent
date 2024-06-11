@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.Serialization;
 using NaughtyAttributes;
 
 namespace _2Scripts.Entities.Player
@@ -16,6 +18,9 @@ namespace _2Scripts.Entities.Player
         [SerializeField] private Transform _camTransform;
         [SerializeField] private bool _overrideNetwork = false;
         [SerializeField] private CinemachineVirtualCamera _virtualCamera;
+        [SerializeField] private List<GameObject> playerModels;
+        
+        public int gold;
 
         private CharacterController _characterController;
         private float _characterControllerOriginalStepOffset;
@@ -48,7 +53,11 @@ namespace _2Scripts.Entities.Player
             _characterControllerOriginalStepOffset = _characterController.stepOffset;
             _inputManager = InputManager.instance;
 
-
+            for (int i = 0; i < 4; i++)
+            {
+                playerModels[i].SetActive(i == MultiManager.instance.GetSelectedCharacterID());
+            }
+            
             if (!IsOwner)
             {
                 if (!_overrideNetwork)

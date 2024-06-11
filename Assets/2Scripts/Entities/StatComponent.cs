@@ -42,7 +42,7 @@ public class StatComponent : MonoBehaviour
     }
 
     [Button]
-    public void NiqueTamMère()
+    public void NiqueTamMere()
     {
         PlayerBehaviour.tst();
     }

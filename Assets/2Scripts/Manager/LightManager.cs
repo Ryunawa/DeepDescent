@@ -11,27 +11,28 @@ namespace _2Scripts.Manager
         [SerializeField] private float lightDistance;
         [SerializeField] private int checkIntervalMS;
         [SerializeField] private GameObject player;
-        private List<GameObject> lights = new List<GameObject>();
+        private List<GameObject> _lights = new List<GameObject>();
 
 
         public void AddToLightsList(GameObject gameObjectLight)
         {
-            if (!lights.Contains(gameObjectLight))
+            if (!_lights.Contains(gameObjectLight))
             {
-                lights.Add(gameObjectLight);
+                _lights.Add(gameObjectLight);
             }
         }
         
         private void Start()
         {
-            player = MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().gameObject;
+            if (!MultiManager.instance.GetPlayerGameObject()) return;
             
+            player = MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().gameObject;
             CheckForPlayer();
         }
 
         private async Task CheckForPlayer()
         {
-            foreach (var gameObjectLight in lights)
+            foreach (var gameObjectLight in _lights)
             {
                 gameObjectLight.SetActive(
                     Vector3.Distance(gameObjectLight.transform.position, player.transform.position) < lightDistance);

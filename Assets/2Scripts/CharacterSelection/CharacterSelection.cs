@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+using _2Scripts.Manager;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnitySceneManager = UnityEngine.SceneManagement;
+using SceneManager = _2Scripts.Manager.SceneManager;
 
 public class CharacterSelection : MonoBehaviour
 {
@@ -13,6 +13,7 @@ public class CharacterSelection : MonoBehaviour
     private void Start()
     {
         SetCharacterNameUI();
+        SceneManager.instance.DeactivateLoadingScreen();
     }
 
     public void NextCharacter()
@@ -39,10 +40,12 @@ public class CharacterSelection : MonoBehaviour
         characterName.text = modifiedName;
     }
 
-    public void StartGame()
+    public void Ready()
     {
-        // To change
         PlayerPrefs.SetInt("selectedCharacter", selectedCharacter);
-        SceneManager.LoadScene(1, LoadSceneMode.Single);
+        SceneManager.instance.ActivateLoadingScreen();
+        MultiManager.instance.UpdatePlayer(selectedCharacter, true);
+
+        UnitySceneManager.SceneManager.UnloadSceneAsync(Scenes.CharacterSelection.ToString());
     }
 }

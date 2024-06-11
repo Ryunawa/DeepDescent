@@ -1,3 +1,4 @@
+using _2Scripts.Manager;
 using TMPro;
 using Unity.Netcode;
 using Unity.Services.Lobbies;
@@ -22,24 +23,25 @@ public class MainLobby : NetworkBehaviour
         MultiManager.instance.lobbyJoined.AddListener(ShowUI);
         MultiManager.instance.refreshUI.AddListener(RefreshUI);
         MultiManager.instance.kickedEvent.AddListener(ReturnToLobbyList);
+        MultiManager.instance.CharacterChosen.AddListener(OnCharacterChosen);
     }
 
     private void ShowUI()
     {
-        foreach (var UIObject in uiToDeactivate)
+        foreach (var uiObject in uiToDeactivate)
         {
-            UIObject.SetActive(false);
+            uiObject.SetActive(false);
         }
 
         lobbyUI.SetActive(true);
         lobbyName.text = MultiManager.instance.Lobby.Name;
         
-        playButton.interactable = MultiManager.instance.IsLobbyHost();
+        playButton.interactable = false;
         
-        RefreshUI();
+        RefreshUI(false);
     }
 
-    void RefreshUI()
+    void RefreshUI(bool isAllReady, bool changeButtonState = true)
     {
         foreach (Transform transformGo in parentUIObject.transform)
         {
@@ -51,12 +53,29 @@ public class MainLobby : NetworkBehaviour
             var playerNameText = Instantiate(playerPrefab, parentUIObject.transform).GetComponentInChildren<TMP_Text>();
             playerNameText.text = player.Data["Name"].Value;
         }
+
+        if (!changeButtonState) return;
+        if (MultiManager.instance.IsLobbyHost())
+        {
+            playButton.interactable = isAllReady;
+        }
+
+        if (MultiManager.instance.Lobby.Players.Count == 1)
+        {
+            playButton.interactable = true;
+        }
     }
 
     private void ReturnToLobbyList()
     {
         lobbyUI.SetActive(false);
         uiToDeactivate[0].gameObject.SetActive(true);
+    }
+
+    private void OnCharacterChosen()
+    {
+        SceneManager.instance.DeactivateLoadingScreen();
+        transform.root.gameObject.SetActive(true);
     }
     
 }
