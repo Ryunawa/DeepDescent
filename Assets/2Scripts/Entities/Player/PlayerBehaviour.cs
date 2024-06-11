@@ -1,9 +1,9 @@
+using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.Serialization;
 using NaughtyAttributes;
-using UnityEngine.Serialization;
 
 namespace _2Scripts.Entities.Player
 {
