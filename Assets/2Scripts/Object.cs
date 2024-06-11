@@ -50,10 +50,6 @@ public class Object : NetworkBehaviour, IInteractable
     {
         NetworkObject networkObject = gameObject.GetComponent<NetworkObject>();
 
-        networkObject.Despawn();
-        if (gameObject)
-        {
-            Destroy(gameObject);
-        }
+        networkObject.Despawn(true);
     }
 }

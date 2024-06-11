@@ -1,12 +1,14 @@
+using _2Scripts.Entities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements.Experimental;
 
-public class AIController : MonoBehaviour, IController
+public class AIController : NetworkBehaviour, IController
 {
     [Header("Movement Settings")]
     [SerializeField]
@@ -37,6 +39,9 @@ public class AIController : MonoBehaviour, IController
     private float timeBeforeAttack = 2f; // attack speed in seconds
     [SerializeField]
     private bool _isSwinging;
+    [SerializeField]
+    private bool _isBoss;
+
 
     [Header("Patrol")]
     [SerializeField] private Transform[] waypoints; // patrol points
@@ -48,6 +53,7 @@ public class AIController : MonoBehaviour, IController
     // Components
     private NavMeshAgent navMeshAgent;
     private Animator animator;
+    private HealthComponent healthComponent;
 
     // Other variables...
     private Vector3 playerLastPosition = Vector3.zero;
@@ -79,6 +85,9 @@ void Start()
         navMeshAgent.isStopped = false;
         navMeshAgent.speed = speedWalk;
         if(waypoints.Length > 0) navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
+
+        healthComponent = GetComponent<HealthComponent>();
+        healthComponent.OnDeath.AddListener(HandleDeath);
 
         // start attack coroutine
         StartCoroutine(AttackLoop());
@@ -452,6 +461,30 @@ void Start()
                 yield return null;
             }
         }
+    }
+
+    // Death function
+    private void HandleDeath()
+    {
+        if (_isBoss)
+        {
+            //GameFlowManager.Instance.SetGameState(GameFlowManager.GameState.BossDefeated);
+        }
+        // reward
+
+        //Unsubscribe first
+        healthComponent.OnDeath.RemoveAllListeners();
+
+        //Despawn
+        DespawnNetworkObjectRpc();
+    }
+
+    [Rpc(SendTo.Server, RequireOwnership = false)]
+    private void DespawnNetworkObjectRpc()
+    {
+        NetworkObject networkObject = gameObject.GetComponent<NetworkObject>();
+
+        networkObject.Despawn(true);
     }
 
 }

@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using _2Scripts.Entities;
+using _2Scripts.Struct;
 
 public class Infight : MonoBehaviour
 {
@@ -36,13 +38,26 @@ public class Infight : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") && _swinging && _canInflictDamage)
+        if (_swinging && _canInflictDamage)
         {
-            // TODO: Inflict damage
-            Debug.Log("DAMAGE");
+            if (other.gameObject.CompareTag("Player"))
+            {
+                if (other.TryGetComponent(out HealthComponent healthComponent) && TryGetComponent(out EnemyData data))
+                {
+                    healthComponent.TakeDamage(data.damageInflicted);
+                }
+                Debug.Log("DAMAGE");
 
-            // Start the cooldown coroutine
-            StartCoroutine(DamageCooldown());
+                // Start the cooldown coroutine
+                StartCoroutine(DamageCooldown());
+            }
+            else
+            {
+                if (other.TryGetComponent(out HealthComponent healthComponent) && TryGetComponent(out Inventory inventory))
+                {
+                    healthComponent.TakeDamage(inventory.MainHandItem.AttackValue);
+                }
+            }
         }
     }
 
