@@ -327,13 +327,11 @@ public class Inventory : NetworkBehaviour
                 // left hand - shield
                 if (OffSlot)
                 {
-                    Debug.Log("(\"------------------- add shield");
                     visibleItems.EquipLeftHand(weapon.Name);
                 }
                 // right hand - weapon
                 else
                 {
-                    Debug.Log("------------------- add sword");
                     visibleItems.EquipRightHand(weapon.Name);
                 }
                 break;
