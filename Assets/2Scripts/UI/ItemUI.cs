@@ -17,9 +17,11 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     [SerializeField] private Image Border;
     [SerializeField] private TextMeshProUGUI Quantity;
     [SerializeField] private bool IsEquipment;
-    [SerializeField] private bool IsInventory;
+    [SerializeField] private bool isInventory;
     [SerializeField] private bool IsDrop;
     [SerializeField] private bool IsOffHand;
+    [SerializeField] private bool isShop;
+    [SerializeField] private bool isInventoryShop;
     [SerializeField] private int Price;
     [SerializeField] private float sellMultiplicator = 0.9f;
 
@@ -33,7 +35,25 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     int clicked = 0;
     float clicktime = 0;
     float clickdelay = 0.5f;
-    
+
+    public bool IsShop
+    {
+        get => isShop;
+        set => isShop = value;
+    }
+
+    public bool IsInventory
+    {
+        get => isInventory;
+        set => isInventory = value;
+    }
+
+    public bool IsInventoryShop
+    {
+        get => isInventoryShop;
+        set => isInventoryShop = value;
+    }
+
     public void Setup(int itemID, int quantity)
     {
         ItemID = itemID;
@@ -43,7 +63,6 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
         if (Quantity != null) Quantity.text = ItemManager.instance.GetItem(ItemID).Stackable ? quantity.ToString() : "";
         Image.color = Color.white;
-
     }
 
     public void Clear()
@@ -56,13 +75,22 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if ( IsDrop) return;
-        
-        
+        ItemUI draggedItemUI = eventData.pointerDrag.GetComponent<ItemUI>();
+        if (IsDrop || !draggedItemUI.IsInventory && !draggedItemUI.IsShop && !draggedItemUI.IsEquipment || draggedItemUI.Price <= 0) return;
+
         _isGrabbed = true;
         ItemPos = transform.GetSiblingIndex();
         parentAfterDrag = transform.parent;
-        transform.SetParent(InventoryUIManager.instance.InventoryMove.transform);
+
+        if (draggedItemUI.isInventoryShop || draggedItemUI.IsShop)
+        {
+            Debug.Log("ouii oui baguette");
+            transform.SetParent(InventoryUIManager.instance.ShopMove.transform);
+        }
+        else
+        {
+            transform.SetParent(InventoryUIManager.instance.InventoryMove.transform);
+        }
         Image.raycastTarget = false;
         Border.raycastTarget = false;
         Border.transform.parent.GetComponent<Image>().raycastTarget = false;
@@ -70,16 +98,18 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (IsDrop) return;
-        
+        ItemUI draggedItemUI = eventData.pointerDrag.GetComponent<ItemUI>();
+        if (IsDrop || !draggedItemUI.IsInventory && !draggedItemUI.IsShop && !draggedItemUI.IsEquipment || draggedItemUI.Price <= 0) return;
+
         transform.position = Input.mousePosition;
         InventoryUIManager.instance.ItemDetailUI.ToggleUI(false);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (IsDrop) return;
-        
+        ItemUI draggedItemUI = eventData.pointerDrag.GetComponent<ItemUI>();
+        if (IsDrop || !draggedItemUI.IsInventory && !draggedItemUI.IsShop && !draggedItemUI.IsEquipment || draggedItemUI.Price <= 0) return;
+
         _isGrabbed = false;
         transform.SetParent(parentAfterDrag);
         transform.SetSiblingIndex(ItemPos);
@@ -91,52 +121,78 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     public void OnDrop(PointerEventData eventData)
     {
         Inventory inventory = InventoryUIManager.instance.Inventory;
-        if (eventData.pointerDrag.GetComponent<ItemUI>().ItemID == -1) return;
+        ItemUI draggedItemUI = eventData.pointerDrag.GetComponent<ItemUI>();
 
-        bool IsInShop = inventory.isInShop;
+        if (draggedItemUI.ItemID == -1) return;
 
-        // Drag item on the drop pannel
+        // Drag item on the drop panel
         if (IsDrop)
         {
-            if (eventData.pointerDrag.GetComponent<ItemUI>().IsEquipment) return;
+            if (draggedItemUI.IsEquipment) return;
 
-            if (!IsInShop)
+            if (!draggedItemUI.isShop && !draggedItemUI.IsInventoryShop)
             {
-                inventory.DropFromInventory(eventData.pointerDrag.GetComponent<ItemUI>().ItemPos);
+                inventory.DropFromInventory(draggedItemUI.ItemPos);
             }
-            else
+            // Check if dropped in sell from inventory
+            else if (!draggedItemUI.isShop && draggedItemUI.IsInventoryShop)
             {
+                Debug.Log("SELL.");
                 // gain gold for selling item
-                int sellPrice = Mathf.FloorToInt(Price * sellMultiplicator);
+                int sellPrice = Mathf.FloorToInt(draggedItemUI.Price * draggedItemUI.sellMultiplicator);
                 inventory.gold += sellPrice;
-                Debug.Log(name + " sold for " + sellPrice + " gold.");
-                // remove item
-                inventory.RemoveFromInventory(eventData.pointerDrag.GetComponent<ItemUI>().ItemPos);
+                Debug.Log(draggedItemUI.name + " sold for " + sellPrice + " gold.");
+                inventory.RemoveFromInventory(draggedItemUI.ItemPos);
+                InventoryUIManager.instance.DrawInventoryShop();
             }
 
             InventoryUIManager.instance.DrawInventory();
+
             return;
         }
-        
+
         // Equip item from inventory to equipment
-        if (IsEquipment && !eventData.pointerDrag.GetComponent<ItemUI>().IsEquipment)
+        if (IsEquipment && !draggedItemUI.IsEquipment && !draggedItemUI.isShop)
         {
-            inventory.EquipFromInventory(eventData.pointerDrag.GetComponent<ItemUI>().ItemPos, IsOffHand);
+            inventory.EquipFromInventory(draggedItemUI.ItemPos, IsOffHand);
             InventoryUIManager.instance.DrawInventory();
             return;
         }
 
-        // Desequip item from equipment to inventory
-        if (IsInventory && !eventData.pointerDrag.GetComponent<ItemUI>().IsInventory && !IsInShop)
+        // Unequip item from equipment to inventory
+        if (IsInventory && !draggedItemUI.IsInventory && !draggedItemUI.isShop)
         {
-            inventory.UnequipItem(new List<(EquippableItem, bool)>
-            {
-                (ItemManager.instance.GetItem(eventData.pointerDrag.GetComponent<ItemUI>().ItemID) as EquippableItem, eventData.pointerDrag.GetComponent<ItemUI>().IsOffHand)
+            inventory.UnequipItem(new List<(EquippableItem, bool)> {
+                (ItemManager.instance.GetItem(draggedItemUI.ItemID) as EquippableItem, draggedItemUI.IsOffHand)
             });
             InventoryUIManager.instance.DrawInventory();
         }
-        
+
+        // Buying item from shop
+        if (IsInventory && !draggedItemUI.IsInventory && draggedItemUI.isShop)
+        {
+            Debug.Log("BYING.");
+            if (inventory.gold >= draggedItemUI.Price)
+            {
+                bool isItemAdded = inventory.AddToInventory(draggedItemUI.ItemID, 1);
+                if (isItemAdded)
+                {
+                    inventory.gold -= draggedItemUI.Price;
+                    Debug.Log(draggedItemUI.name + " bought for " + draggedItemUI.Price + " gold.");
+                    InventoryUIManager.instance.DrawInventoryShop();
+                }
+                else
+                {
+                    Debug.Log("Can't add Item.");
+                }
+            }
+            else
+            {
+                Debug.Log("Not enough gold.");
+            }
+        }
     }
+
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -181,16 +237,15 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             
             if (IsEquipment)
             {
-
-                bool IsInShop = inventory.isInShop;
                 // equip item
-                if (!IsInShop)
+                if (!isShop)
                 {
                     inventory.UnequipItem(new List<(EquippableItem, bool)>
                     {
                         (ItemManager.instance.GetItem(itemUI.ItemID) as EquippableItem, itemUI.IsOffHand)
                     });
                 }
+                /*
                 // buy item
                 else
                 {
@@ -208,6 +263,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
                         Debug.Log("Not enough gold.");
                     }
                 }
+                */
             }
 
             if (IsInventory)

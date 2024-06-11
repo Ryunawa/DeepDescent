@@ -520,6 +520,7 @@ MonoBehaviour:
   shopRoot: {fileID: 3451654951965954000}
   shopBG: {fileID: 5808705254964282530}
   inventoryMove: {fileID: 2279758992074468851}
+  shopMove: {fileID: 7192388269514385482}
   itemDetailUI: {fileID: 3158100212937865666}
   Head: {fileID: 4241555009270685004}
   Chest: {fileID: 436140434449462749}
@@ -530,6 +531,7 @@ MonoBehaviour:
   - {fileID: 900710390579719993}
   MainHand: {fileID: 6729427370496253513}
   OffHand: {fileID: 2169497897669134220}
+  ListShop: []
 --- !u!1 &412009188013301664
 GameObject:
   m_ObjectHideFlags: 0
@@ -4267,7 +4269,7 @@ GameObject:
   - component: {fileID: 7775949164058564767}
   - component: {fileID: 6083603996830639372}
   m_Layer: 5
-  m_Name: InventoryMove
+  m_Name: ShopMove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

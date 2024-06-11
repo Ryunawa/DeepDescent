@@ -75,6 +75,8 @@ public class ShopSystem : MonoBehaviour
             if (itemUI != null)
             {
                 itemUI.Setup(item.ID, 1);
+                itemUI.IsShop = true;
+                itemUI.IsInventory = false;
             }
             else
             {

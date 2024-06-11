@@ -141,9 +141,12 @@ MonoBehaviour:
   Border: {fileID: 7312085739138402213}
   Quantity: {fileID: 4224017791262643467}
   IsEquipment: 0
-  IsInventory: 1
+  isInventory: 1
   IsDrop: 0
   IsOffHand: 0
+  isShop: 0
+  Price: 0
+  sellMultiplicator: 0.9
 --- !u!1 &5281722948024648478
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,7 +24,6 @@ namespace _2Scripts.Manager
             InitializeItemLists();
         }
 
-
         private void InitializeItemLists()
         {
             if (weaponList == null || armorList == null || potionList == null || parchmentList == null)
@@ -56,7 +55,6 @@ namespace _2Scripts.Manager
                         break;
                 }
             }
-
         }
 
         public Item GetItem(int id)

@@ -31,24 +31,5 @@ public class ShopUI : MonoBehaviour
         armorSection.SetActive(sectionToShow == armorSection);
         potionSection.SetActive(sectionToShow == potionSection);
         parchmentSection.SetActive(sectionToShow == parchmentSection);
-
-        // Log the active section
-        if (sectionToShow == weaponSection)
-        {
-            Debug.Log("Weapon Section is now active.");
-        }
-        else if (sectionToShow == armorSection)
-        {
-            Debug.Log("Armor Section is now active.");
-        }
-        else if (sectionToShow == potionSection)
-        {
-            Debug.Log("Potion Section is now active.");
-        }
-        else if (sectionToShow == parchmentSection)
-        {
-            Debug.Log("Parchment Section is now active.");
-        }
-
     }
 }

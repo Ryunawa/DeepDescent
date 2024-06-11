@@ -2,7 +2,10 @@ using System.Collections.Generic;
 using _2Scripts.Entities.Player;
 using _2Scripts.Enum;
 using NaughtyAttributes;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using static UnityEditor.Progress;
 
 namespace _2Scripts.Manager
 {
@@ -15,6 +18,7 @@ namespace _2Scripts.Manager
         [SerializeField] private GameObject shopRoot;
         [SerializeField] private GameObject shopBG;
         [SerializeField] private GameObject inventoryMove;
+        [SerializeField] private GameObject shopMove;
         [SerializeField] private ItemDetailUI itemDetailUI;
         [Header("Slots")]
         [SerializeField] private ItemUI Head;
@@ -36,7 +40,7 @@ namespace _2Scripts.Manager
         
         private Inventory _inventory;
         private List<ItemUI> ListUI = new List<ItemUI>();
-        private List<ItemUI> ListShop = new List<ItemUI>();
+        public List<ItemUI> ListShop = new List<ItemUI>();
         private bool _isOpened;
 
         public Inventory Inventory => _inventory;
@@ -49,6 +53,12 @@ namespace _2Scripts.Manager
             set => inventoryMove = value;
         }
 
+        public GameObject ShopMove
+        {
+            get => shopMove;
+            set => shopMove = value;
+        }
+
         private void Start()
         {
             InputManager.instance.Inputs.Player.Inventory.started += context => ToggleInventory();
@@ -59,6 +69,7 @@ namespace _2Scripts.Manager
 
             inventoryUI.SetActive(false);
         }
+
 
 
         private void ToggleInventory()
@@ -77,7 +88,9 @@ namespace _2Scripts.Manager
             for (int i = 0; i < _inventory.InventorySpace; i++)
             {
                 ItemUI item = Instantiate(ItemPrefab, inventoryRoot.transform);
-                Instantiate(ItemPrefab, inventoryBG.transform);
+                ItemUI itemBG = Instantiate(ItemPrefab, inventoryBG.transform);
+                if (List == ListShop) item.IsInventoryShop = true;
+                itemBG.IsInventory = false;
                 List.Add(item);
             }
 

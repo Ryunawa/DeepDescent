@@ -16,7 +16,6 @@ namespace _2Scripts.Entities.Player
         [SerializeField] private Transform _camTransform;
         [SerializeField] private bool _overrideNetwork = false;
         [SerializeField] private CinemachineVirtualCamera _virtualCamera;
-        public int gold;
 
         private CharacterController _characterController;
         private float _characterControllerOriginalStepOffset;

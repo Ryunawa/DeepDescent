@@ -11,7 +11,6 @@ public class Object : NetworkBehaviour, IInteractable
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("touché");
         if (other.CompareTag("Player"))
         {
             _playerInRange = other.GetComponent<PlayerBehaviour>();

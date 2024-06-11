@@ -100,18 +100,18 @@ public class Inventory : NetworkBehaviour
             {
                 newInventoryObject.Amount =- 1;
                 InventoryItems[itemPos] = newInventoryObject;
-                Debug.Log($"[Inventory::DropFromInventory()] - Dropped item at pos {itemPos}. Remaning item {InventoryItems[itemPos].Amount}");
+                Debug.Log($"[Inventory::DropFromInventory() | SellItem] - Dropped/Sold item at pos {itemPos}. Remaning item {InventoryItems[itemPos].Amount}");
             }
             else
             {
                 InventoryItems.RemoveAt(itemPos);
-                Debug.Log($"[Inventory::DropFromInventory()] - Dropped item at pos {itemPos}.No remaining item.");
+                Debug.Log($"[Inventory::DropFromInventory() | SellItem] - Dropped/Sold item at pos {itemPos}.No remaining item.");
             }
             DeactivateItemVisibilityInventory(ItemManager.instance.GetItem(newInventoryObject.ID));
             SaveSystem.Save();
             return;
         }
-        Debug.Log($"[Inventory::DropFromInventory()] - Tried to drop item from inventory that was out of bound: InventoryItems.Count({InventoryItems.Count + 1}) <= InventorySpace({InventorySpace})");
+        Debug.Log($"[Inventory::DropFromInventory() | SellItem] - Tried to drop/sell item from inventory that was out of bound: InventoryItems.Count({InventoryItems.Count + 1}) <= InventorySpace({InventorySpace})");
         
         SaveSystem.Save();
     }
