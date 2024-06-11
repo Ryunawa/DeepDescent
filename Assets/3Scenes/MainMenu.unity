@@ -6464,6 +6464,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   playerNetworkObject: {fileID: 0}
+  levelGenerator: {fileID: 0}
 --- !u!1 &5390214132947259521
 GameObject:
   m_ObjectHideFlags: 0

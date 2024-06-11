@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3406144067999084200}
   - component: {fileID: -7922587242533911064}
+  - component: {fileID: -7400944473777294263}
   m_Layer: 0
   m_Name: Room_Zero
   m_TagString: Untagged
@@ -46,9 +47,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomType: 0
   originalFaceStatesArray: 00000000000000000000000000000000
-  _generation: 0
+  generation: 0
   numberOfRightRotation: 0
   ID: 0
   doorPrefab:
   - {fileID: 114226, guid: f7f8afc7225502240bc7b70a9419c566, type: 3}
   - {fileID: 128464, guid: 30cbf2b140e7ff04cac9897c5ab79430, type: 3}
+--- !u!114 &-7400944473777294263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 732238230619133457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 0
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1

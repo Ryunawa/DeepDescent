@@ -3,12 +3,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using _2Scripts.Entities.Player;
 using _2Scripts.Manager;
+using Unity.Netcode;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace _2Scripts.ProceduralGeneration
 {
-    public class LevelGenerator : Singleton<LevelGenerator>
+    public class LevelGenerator : NetworkBehaviour
     {
         // Prefabs
         [Header("Rooms")]
@@ -29,24 +32,32 @@ namespace _2Scripts.ProceduralGeneration
         [SerializeField] private int dungeonSize = 5;
         [SerializeField] private bool IsOneRoomType;
     
-        public UnityEvent dungeonGeneratedEvent = new UnityEvent();
+        [FormerlySerializedAs("_generatedDungeonParent")]
+        [Space(1f)]
+        [Header("Folders")]
+        [SerializeField] private GameObject generatedDungeonParent;
+        [SerializeField] private GameObject roomsParent;
+
+        public GameObject roomsParent1 => roomsParent;
+        public GameObject doorsParent1 => doorsParent;
+        public GameObject propsParent1 => propsParent;
+        public GameObject generatedDungeonParent1 => generatedDungeonParent;
+
+        [SerializeField] private GameObject doorsParent;
+        [SerializeField] private GameObject propsParent;
+        
+        public UnityEvent dungeonGeneratedEvent = new ();
 
         private static int _staticDungeonSize;
         private int _roomNumber = 1;
 
         private bool _lateUpdateOnlyOnce = false;
     
-        // folder
-        private GameObject generatedDungeonParent;
 
-        public GameObject generatedDungeonParent1 => generatedDungeonParent;
 
-        private GameObject roomsParent;
-        private GameObject doorsParent;
-        private GameObject propsParent;
 
         // Start is called before the first frame update
-        async void Start()
+        void Start()
         {
             if(MultiManager.instance.IsLobbyHost())
                 StartGeneration();
@@ -54,17 +65,6 @@ namespace _2Scripts.ProceduralGeneration
 
         public async void StartGeneration()
         {
-            // create folders
-            generatedDungeonParent = new GameObject("GeneratedDungeon");
-            roomsParent = new GameObject("Rooms");
-            doorsParent = new GameObject("Doors");
-            propsParent = new GameObject("Props");
-
-            roomsParent.transform.SetParent(generatedDungeonParent.transform);
-            doorsParent.transform.SetParent(generatedDungeonParent.transform);
-            propsParent.transform.SetParent(generatedDungeonParent.transform);
-
-
             _staticDungeonSize = dungeonSize;
             // Random.InitState((int)DateTime.Now.Ticks);
 
@@ -77,7 +77,7 @@ namespace _2Scripts.ProceduralGeneration
             Room startRoom = InstantiateRoom(RoomType.Four, GetPosition(centerIndex), Quaternion.identity).GetComponent<Room>();
             startRoom.transform.SetParent(roomsParent.transform);
             startRoom.SizeRoom = _roomSize;
-            startRoom.createDoors();
+            startRoom.CreateDoors();
             startRoom.Generation = 1;
 
             // create props
@@ -89,8 +89,7 @@ namespace _2Scripts.ProceduralGeneration
                 instantiatedProps.transform.SetParent(propsParent.transform);
                 startRoom.RoomProps = instantiatedProps.GetComponentInChildren<RoomProps>();
             }
-
-
+            
             dungeon[centerIndex] = startRoom;
 
             _roomNumber = 0;
@@ -99,11 +98,15 @@ namespace _2Scripts.ProceduralGeneration
             Debug.Log("GenerationFinished");
             DynamicNavMesh.UpdateNavMesh();
 
-            _lateUpdateOnlyOnce = true;
-        
-            MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().TeleportPlayer(GetPosition(centerIndex) + Vector3.up * 5);
+            TeleportHostAndClientRpc(GetPosition(centerIndex));
         }
 
+        [Rpc(SendTo.ClientsAndHost)]
+        private void TeleportHostAndClientRpc(Vector3 pPosition)
+        {
+            _lateUpdateOnlyOnce = true;
+            MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().TeleportPlayer( pPosition + Vector3.up * 5);
+        }
         
         private void LateUpdate()
         {
@@ -120,8 +123,7 @@ namespace _2Scripts.ProceduralGeneration
                 
             SceneManager.instance.DeactivateLoadingScreen();
         }
-    
-
+        
         private async Task DoGen(int startDepth)
         {
             if (startDepth == _staticDungeonSize)
@@ -132,8 +134,7 @@ namespace _2Scripts.ProceduralGeneration
             Room[] roomsToGenNeighbours = GetRoomFromGeneration(startDepth);
         
             startDepth++;
-        
-        
+            
             foreach (Room room in roomsToGenNeighbours)
             { 
                 _roomNumber++;
@@ -147,8 +148,6 @@ namespace _2Scripts.ProceduralGeneration
             }
         
             await DoGen(startDepth);
-        
-        
         }
 
         public int GetIndexOfRoom(Room room)
@@ -160,23 +159,22 @@ namespace _2Scripts.ProceduralGeneration
                     return i;
                 }
             }
-
             return -1;
         }
 
         private Room[] GetRoomFromGeneration(int genNumber)
         {
-            List<Room> roomsOfgivenGen = new List<Room>(); 
+            List<Room> roomsOfGivenGen = new List<Room>(); 
 
-            foreach (Room Room in dungeon)
+            foreach (Room room in dungeon)
             {
-                if (Room != null && Room.Generation == genNumber)
+                if (room != null && room.Generation == genNumber)
                 {
-                    roomsOfgivenGen.Add(Room);
+                    roomsOfGivenGen.Add(room);
                 }
             }
 
-            return roomsOfgivenGen.ToArray();
+            return roomsOfGivenGen.ToArray();
         } 
 
         private Dictionary<Directions, Room> GetNeighbouringRooms(int roomIndex)
@@ -228,7 +226,7 @@ namespace _2Scripts.ProceduralGeneration
                 // room has a door?
                 bool hasDoorOpposite = neighbourRoom.HasDoor(oppositeDirection);
 
-                // if has door : door, if not no door
+                // if it has door : door, if not no door
                 return hasDoorOpposite;
             }
             else
@@ -359,7 +357,7 @@ namespace _2Scripts.ProceduralGeneration
 
         private bool ArraysAreEqual(bool[] array1, FaceState[] array2)
         {
-            // same lenght?
+            // same length?
             if (array1.Length != array2.Length)
             {
                 return false;
@@ -384,7 +382,7 @@ namespace _2Scripts.ProceduralGeneration
 
 
 
-        // select a room type to construct --> will depends on the door next to it
+        // select a room type to construct --> will depend on the door next to it
         private RoomType ChooseRoomType(bool[] doorsNeeded)
         {
             // how many doors needed?
@@ -439,6 +437,7 @@ namespace _2Scripts.ProceduralGeneration
             };
     
             GameObject roomInstance = Instantiate(roomPrefab, position, rotation);
+            roomInstance.GetComponent<NetworkObject>().Spawn();
             return roomInstance;
         }
 
@@ -463,6 +462,7 @@ namespace _2Scripts.ProceduralGeneration
 
                 // rotate
                 GameObject roomInstance = Instantiate(propsPrefab, position, rotation);
+                roomInstance.GetComponent<NetworkObject>().Spawn();
                 return roomInstance;
             }
             else

@@ -1,19 +1,78 @@
-using _2Scripts.ProceduralGeneration;
+using System;
+using System.Collections;
+using System.Threading.Tasks;
+using NaughtyAttributes;
+using Unity.Netcode;
+using UnityEngine;
 
 namespace _2Scripts.Manager
 {
-    public class NextLevelManager : Singleton<NextLevelManager>
+    public class NextLevelManager : NetworkBehaviour
     {
+        private void Start()
+        {
+            StartCoroutine(Delay());
+        }
+
+
+        /// <summary>
+        /// Generate a new dungeon and clear the previous one
+        /// </summary>
         public void GenerateNewDungeon()
         {
-           // TODO: Show loading screen for players while dungeon generate (show loading screen from scene manager)
-           SceneManager.instance.ActivateLoadingScreen();
+           // Show loading screen for players while dungeon generate (show loading screen from scene manager)
+           ShowLoadingScreenClientRpc();
            
-           // TODO: Remove All the previous generated room (props too)
-           Destroy(LevelGenerator.instance.generatedDungeonParent1);
+           // Stop the spawner
+           EnemiesSpawnerManager.instance.StopSpawning();
            
-           // TODO: Generate dungeon with the given seed
-           LevelGenerator.instance.StartGeneration();
+           // Remove All the previous generated room (props too)
+           ClearPreviousDungeon();
+           
+           // Generate dungeon with the given seed
+           MultiManager.instance.levelGenerator.StartGeneration();
+        }
+
+        [Rpc(SendTo.ClientsAndHost)]
+        private void ShowLoadingScreenClientRpc()
+        {
+            SceneManager.instance.ActivateLoadingScreen();
+        }
+        
+        private async void ClearPreviousDungeon()
+        {
+            foreach (var networkObjectChild in MultiManager.instance.levelGenerator.roomsParent1.GetComponentsInChildren<NetworkObject>())
+            {
+                if(networkObjectChild.gameObject != MultiManager.instance.levelGenerator.roomsParent1)
+                    networkObjectChild.Despawn();
+            }
+            foreach (var networkObjectChild in MultiManager.instance.levelGenerator.propsParent1.GetComponentsInChildren<NetworkObject>())
+            {
+                if(networkObjectChild.gameObject != MultiManager.instance.levelGenerator.propsParent1)
+                    networkObjectChild.Despawn();
+            }
+            foreach (var networkObjectChild in MultiManager.instance.levelGenerator.doorsParent1.GetComponentsInChildren<NetworkObject>())
+            {
+                if(networkObjectChild.gameObject != MultiManager.instance.levelGenerator.doorsParent1)
+                    networkObjectChild.Despawn();
+            }
+            await Task.CompletedTask;
+            Debug.Log("All dungeon elements clear");
+        }
+
+        IEnumerator Delay()
+        {
+            yield return new WaitForSeconds(20);
+            GenerateNewDungeon();
+
+        }
+        
+        // DEBUG ONLY
+        [Button]
+        public void DEBUG_GoToNextLevel()
+        {
+            if(MultiManager.instance.IsLobbyHost())
+                GenerateNewDungeon();
         }
     }
 }

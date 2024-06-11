@@ -47,6 +47,7 @@ namespace _2Scripts.Manager
         
         private EnemyTypes _enemyTypesStructToUse;
         private ResourceType _resourcesDropRateStructToUse;
+        private float _difficultyMultiplier;
         
         #endregion
         
@@ -160,8 +161,18 @@ namespace _2Scripts.Manager
                 OnEnemiesStatsUpdatedEventHandler?.Invoke(GetStructElementByIndex<EnemyStats>(_enemyTypesStructToUse, i).enemyPrefab, 
                                         GetStructElementByIndex<EnemyStats>(_enemyTypesStructToUse, i));
             }
-            
+
+            _difficultyMultiplier = multiplier;
             Debug.Log("Multiplicateur : " + multiplier);
+        }
+
+        /// <summary>
+        /// Return the difficulty multiplier apply to the enemy
+        /// </summary>
+        /// <returns></returns>
+        public float GetDifficultyMultiplier()
+        {
+            return _difficultyMultiplier;
         }
 
         // /!\ DEBUG ONLY /!\
