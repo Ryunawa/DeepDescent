@@ -9,12 +9,6 @@ namespace _2Scripts.Manager
 {
     public class NextLevelManager : NetworkBehaviour
     {
-        private void Start()
-        {
-            StartCoroutine(Delay());
-        }
-
-
         /// <summary>
         /// Generate a new dungeon and clear the previous one
         /// </summary>
@@ -58,13 +52,6 @@ namespace _2Scripts.Manager
             }
             await Task.CompletedTask;
             Debug.Log("All dungeon elements clear");
-        }
-
-        IEnumerator Delay()
-        {
-            yield return new WaitForSeconds(20);
-            GenerateNewDungeon();
-
         }
         
         // DEBUG ONLY
