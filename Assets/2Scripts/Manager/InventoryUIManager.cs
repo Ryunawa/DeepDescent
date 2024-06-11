@@ -74,8 +74,6 @@ namespace _2Scripts.Manager
 
         private void ToggleInventory()
         {
-            Debug.Log("Toggle Inv");
-
             bool value = _isOpened = !_isOpened;
 
             inventoryUI.SetActive(value);

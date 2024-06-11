@@ -84,7 +84,6 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
         if (draggedItemUI.isInventoryShop || draggedItemUI.IsShop)
         {
-            Debug.Log("ouii oui baguette");
             transform.SetParent(InventoryUIManager.instance.ShopMove.transform);
         }
         else
@@ -137,11 +136,12 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             // Check if dropped in sell from inventory
             else if (!draggedItemUI.isShop && draggedItemUI.IsInventoryShop)
             {
-                Debug.Log("SELL.");
                 // gain gold for selling item
                 int sellPrice = Mathf.FloorToInt(draggedItemUI.Price * draggedItemUI.sellMultiplicator);
                 inventory.gold += sellPrice;
+
                 Debug.Log(draggedItemUI.name + " sold for " + sellPrice + " gold.");
+
                 inventory.RemoveFromInventory(draggedItemUI.ItemPos);
                 InventoryUIManager.instance.DrawInventoryShop();
             }
@@ -171,24 +171,25 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         // Buying item from shop
         if (IsInventory && !draggedItemUI.IsInventory && draggedItemUI.isShop)
         {
-            Debug.Log("BYING.");
             if (inventory.gold >= draggedItemUI.Price)
             {
                 bool isItemAdded = inventory.AddToInventory(draggedItemUI.ItemID, 1);
                 if (isItemAdded)
                 {
                     inventory.gold -= draggedItemUI.Price;
+
                     Debug.Log(draggedItemUI.name + " bought for " + draggedItemUI.Price + " gold.");
+
                     InventoryUIManager.instance.DrawInventoryShop();
                 }
                 else
                 {
-                    Debug.Log("Can't add Item.");
+                    Debug.LogWarning("Can't add Item.");
                 }
             }
             else
             {
-                Debug.Log("Not enough gold.");
+                Debug.LogWarning("Not enough gold.");
             }
         }
     }
@@ -245,25 +246,6 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
                         (ItemManager.instance.GetItem(itemUI.ItemID) as EquippableItem, itemUI.IsOffHand)
                     });
                 }
-                /*
-                // buy item
-                else
-                {
-                    if (inventory.gold >= Price)
-                    {
-                        bool isItemAdded = inventory.AddToInventory(eventData.pointerDrag.GetComponent<ItemUI>().ItemPos, 1);
-                        if (isItemAdded)
-                        {
-                            inventory.gold -= Price;
-                            Debug.Log(name + " bought for " + Price + " gold.");
-                        }
-                    }
-                    else
-                    {
-                        Debug.Log("Not enough gold.");
-                    }
-                }
-                */
             }
 
             if (IsInventory)
