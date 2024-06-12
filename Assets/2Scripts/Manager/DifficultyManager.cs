@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using _2Scripts.Enum;
 using _2Scripts.Struct;
 using NaughtyAttributes;
@@ -50,7 +49,16 @@ namespace _2Scripts.Manager
         private float _difficultyMultiplier;
         
         #endregion
-        
+
+        private void OnEnable()
+        {
+            GameFlowManager.instance.OnNextLevelEvent.AddListener(UpdateDifficultyOverTime);
+        }
+        private void OnDisable()
+        {
+            GameFlowManager.instance.OnNextLevelEvent.RemoveListener(UpdateDifficultyOverTime);
+        }
+
         /// <summary>
         /// Must be called by the game manager or whatever start the game.
         /// Adjust difficulty depending on the parameters.
@@ -147,9 +155,9 @@ namespace _2Scripts.Manager
         /// Increase few stats for the difficulty over the time.
         /// </summary>
         /// <param name="pTimer"></param>
-        public void UpdateDifficultyOverTime(Stopwatch pTimer)
+        private void UpdateDifficultyOverTime(Timer.Timer pTimer)
         {
-            double elapsedTimeMinutes = pTimer.Elapsed.TotalMinutes;
+            double elapsedTimeMinutes = pTimer.GetStopWatchObject().Elapsed.TotalMinutes;
             float multiplier = 1 + (float)(Math.Log(1 + elapsedTimeMinutes / timeInterval) * baseTimeRate);
             
             _enemyTypesStructToUse.enemyType1 = AdjustEnemyStats(_enemyTypesStructToUse.enemyType1, multiplier);
@@ -180,15 +188,6 @@ namespace _2Scripts.Manager
         public void DEBUG_SetEasyStatsForEnemies()
         {
             AdjustDifficultyParameters(1, DifficultyMode.Easy);
-        }
-        
-        // /!\ DEBUG ONLY /!\
-        [Button]
-        private void DEBUG_UpdateDifficulty()
-        {
-            Debug.Log("===============================================");
-            Debug.Log("Temps écoulé : " + timer.GetTimerElapsedTime());
-            UpdateDifficultyOverTime(timer._timer);
         }
         
         // /!\ DEBUG ONLY /!\

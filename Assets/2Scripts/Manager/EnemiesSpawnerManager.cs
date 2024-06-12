@@ -10,6 +10,7 @@ using NaughtyAttributes;
 using UnityEngine;
 using Unity.Mathematics;
 using Unity.Netcode;
+using UnityEngine.Serialization;
 using static _2Scripts.Helpers.StructureAccessMethods;
 using Random = UnityEngine.Random;
 
@@ -40,11 +41,10 @@ namespace _2Scripts.Manager
 
         private EnemyTypes _enemiesList;
         private int _currentEnemiesCount;
-        private int _currLevel = 1;
-
-        public int currLevel => _currLevel;
 
         private LevelGenerator _levelGenerator;
+
+        public bool bShouldSpawn;
         
         #endregion
 
@@ -59,7 +59,11 @@ namespace _2Scripts.Manager
             {
                 if (NetworkManager.Singleton.IsServer)
                 {
-                    DifficultyManager.instance.AdjustDifficultyParameters(MultiManager.instance.GetAllPlayerGameObjects().Count);
+                    if(GameFlowManager.instance.currLevel == 1)
+                        DifficultyManager.instance.AdjustDifficultyParameters(MultiManager.instance.GetAllPlayerGameObjects().Count);
+
+                    if (MultiManager.instance.levelGenerator.spawnShop)
+                        return;
                     _enemiesList = DifficultyManager.instance.GetEnemiesStatsToUse();
                     StartCoroutine(SpawnEnemies());
                 }
@@ -72,7 +76,7 @@ namespace _2Scripts.Manager
         /// <returns></returns>
         private EnemyStats ChooseEnemyToSpawn()
         {
-            int index = Math.Min(_currLevel, spawnableEnemiesPrefabsByLevel.Count);
+            int index = Math.Min(GameFlowManager.instance.currLevel, spawnableEnemiesPrefabsByLevel.Count);
             LevelData currSpawnableEnemiesPrefabs = spawnableEnemiesPrefabsByLevel[index - 1];
 
             foreach (var spawnableEnemyPrefab in currSpawnableEnemiesPrefabs.enemyPrefabsSpawnable)
@@ -182,7 +186,6 @@ namespace _2Scripts.Manager
                     networkObjectChild.Despawn();
             }
             Debug.Log("All enemies left removed");
-            _currLevel++;
         }
         
         // /!\ DEBUG ONLY /!\

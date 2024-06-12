@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 using NaughtyAttributes;
 using UnityEngine;
@@ -7,7 +6,7 @@ namespace _2Scripts.Timer
 {
     public class Timer : MonoBehaviour
     {
-        public Stopwatch _timer;
+        private Stopwatch _timer;
 
         private void Start()
         {
@@ -36,7 +35,7 @@ namespace _2Scripts.Timer
         /// <summary>
         /// Reset the timer value to 0.
         /// </summary>
-        private void ResetTimer()
+        public void ResetTimer()
         {
             _timer.Reset();
         }
@@ -50,6 +49,15 @@ namespace _2Scripts.Timer
             int minute = Mathf.FloorToInt((float)_timer.Elapsed.TotalSeconds / 60);
             int seconds = Mathf.FloorToInt((float)_timer.Elapsed.TotalSeconds % 60);
             return $"{minute:00}:{seconds:00}";
+        }
+
+        /// <summary>
+        /// Return the timer object (type Stopwatch)
+        /// </summary>
+        /// <returns></returns>
+        public Stopwatch GetStopWatchObject()
+        {
+            return _timer;
         }
     }
 }

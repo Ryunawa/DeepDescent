@@ -1,66 +1,69 @@
+using System.Collections.Generic;
+using _2Scripts.Entities.Player;
 using _2Scripts.Manager;
 using NaughtyAttributes;
 using UnityEngine;
-using System.Collections.Generic;
-using _2Scripts.Entities.Player;
 
-public class PortalActivation : MonoBehaviour
+namespace _2Scripts.TP
 {
-    private bool isPlayerInRange = false;
-    private HashSet<PlayerBehaviour> nearbyPlayers = new HashSet<PlayerBehaviour>();
-    [SerializeField] private GameObject particleActivation;
-
-    void Update()
+    public class PortalActivation : MonoBehaviour
     {
-        if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
+        private bool isPlayerInRange = false;
+        private HashSet<PlayerBehaviour> nearbyPlayers = new HashSet<PlayerBehaviour>();
+        [SerializeField] private GameObject particleActivation;
+
+        void Update()
         {
-            if (GameFlowManager.instance.CurrentState == GameFlowManager.GameState.BossDefeated)
+            if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
             {
-                ActivatePortal();
-            }
-        }
-    }
-
-    [Button]
-    void DebugDefeatBoss()
-    {
-        GameFlowManager.instance.SetGameState(GameFlowManager.GameState.BossDefeated);
-        // visual effect
-        particleActivation.SetActive(true);
-        particleActivation.GetComponent<ParticleSystem>().Play();
-    }
-
-    private void ActivatePortal()
-    {
-        GameFlowManager.instance.SetGameState(GameFlowManager.GameState.BossNotDiscovered);
-        // Teleportation
-        MultiManager.instance.nextLevelManager.GenerateNewDungeon();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            PlayerBehaviour playerInRange = other.GetComponent<PlayerBehaviour>();
-            if (playerInRange != null)
-            {
-                nearbyPlayers.Add(playerInRange); // add player to the collection
-                isPlayerInRange = true;
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            PlayerBehaviour playerInRange = other.GetComponent<PlayerBehaviour>();
-            if (playerInRange != null && nearbyPlayers.Contains(playerInRange))
-            {
-                nearbyPlayers.Remove(playerInRange); // remove player from the collection
-                if (nearbyPlayers.Count == 0)
+                if (GameFlowManager.instance.CurrentState == GameFlowManager.GameState.BossDefeated)
                 {
-                    isPlayerInRange = false;
+                    ActivatePortal();
+                }
+            }
+        }
+
+        [Button]
+        void DebugDefeatBoss()
+        {
+            GameFlowManager.instance.SetGameState(GameFlowManager.GameState.BossDefeated);
+            // visual effect
+            particleActivation.SetActive(true);
+            particleActivation.GetComponent<ParticleSystem>().Play();
+        }
+
+        private void ActivatePortal()
+        {
+            GameFlowManager.instance.SetGameState(GameFlowManager.GameState.BossNotDiscovered);
+            // Teleportation
+            GameFlowManager.instance.LoadNextLevel();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                PlayerBehaviour playerInRange = other.GetComponent<PlayerBehaviour>();
+                if (playerInRange != null)
+                {
+                    nearbyPlayers.Add(playerInRange); // add player to the collection
+                    isPlayerInRange = true;
+                }
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                PlayerBehaviour playerInRange = other.GetComponent<PlayerBehaviour>();
+                if (playerInRange != null && nearbyPlayers.Contains(playerInRange))
+                {
+                    nearbyPlayers.Remove(playerInRange); // remove player from the collection
+                    if (nearbyPlayers.Count == 0)
+                    {
+                        isPlayerInRange = false;
+                    }
                 }
             }
         }
