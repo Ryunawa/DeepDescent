@@ -4673,9 +4673,11 @@ MonoBehaviour:
   Border: {fileID: 0}
   Quantity: {fileID: 0}
   IsEquipment: 0
-  IsInventory: 0
+  isInventory: 0
   IsDrop: 1
   IsOffHand: 0
+  isShop: 0
+  isInventoryShop: 0
   Price: 0
   sellMultiplicator: 0.9
 --- !u!1 &8163368476836614298
@@ -5043,9 +5045,11 @@ MonoBehaviour:
   Border: {fileID: 0}
   Quantity: {fileID: 0}
   IsEquipment: 0
-  IsInventory: 0
+  isInventory: 0
   IsDrop: 1
   IsOffHand: 0
+  isShop: 0
+  isInventoryShop: 0
   Price: 0
   sellMultiplicator: 0.9
 --- !u!1 &8632996285890367565
@@ -5197,7 +5201,7 @@ GameObject:
   - component: {fileID: 5504766098070638668}
   - component: {fileID: 54774032495213509}
   m_Layer: 5
-  m_Name: Shop (1)
+  m_Name: ShopZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
