@@ -507,9 +507,14 @@ MonoBehaviour:
   ItemPrefab: {fileID: 3875617415449761621, guid: 2ef9ee2a307a27644a38ceef8a7dd2a7,
     type: 3}
   inventoryUI: {fileID: 3185045222109188510}
+  shopUI: {fileID: 7748307338453079040}
   inventoryRoot: {fileID: 7730911075738568613}
   inventoryBG: {fileID: 7624498993673515975}
   shopRoot: {fileID: 6757644133901360359}
+  weaponUIParent: {fileID: 104597038853384836}
+  armorUIParent: {fileID: 4834529107374626861}
+  potionUIParent: {fileID: 501639531835784635}
+  parchmentUIParent: {fileID: 1181757188692285624}
   shopBG: {fileID: 5182570498436011801}
   inventoryMove: {fileID: 5873232587908050133}
   shopMove: {fileID: 439214071032202151}

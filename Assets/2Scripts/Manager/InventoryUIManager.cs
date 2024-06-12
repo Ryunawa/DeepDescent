@@ -13,10 +13,15 @@ namespace _2Scripts.Manager
     public class InventoryUIManager : Singleton<InventoryUIManager>
     {
         [SerializeField] private ItemUI ItemPrefab;
-        [SerializeField] private GameObject inventoryUI;
+        public GameObject inventoryUI;
+        public GameObject shopUI;
         [SerializeField] private GameObject inventoryRoot;
         [SerializeField] private GameObject inventoryBG;
-        [SerializeField] private GameObject shopRoot;
+        public GameObject shopRoot;
+        public Transform weaponUIParent;
+        public Transform armorUIParent;
+        public Transform potionUIParent;
+        public Transform parchmentUIParent;
         [SerializeField] private GameObject shopBG;
         [SerializeField] private GameObject inventoryMove;
         [SerializeField] private GameObject shopMove;
@@ -87,10 +92,15 @@ namespace _2Scripts.Manager
 
         private void ToggleInventory()
         {
-            bool value = _isOpened = !_isOpened;
+            // if shop is not open
+            if (shopUI.activeSelf == false)
+            {
+                bool value = _isOpened = !_isOpened;
 
-            inventoryUI.SetActive(value);
-            Cursor.visible = value;
+                inventoryUI.SetActive(value);
+                itemDetailUI.gameObject.SetActive(false);
+                Cursor.visible = value;
+            }
         }
         
         

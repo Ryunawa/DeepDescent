@@ -14,43 +14,12 @@ public class ShopSystem : MonoBehaviour
     private HashSet<PlayerBehaviour> nearbyPlayers = new HashSet<PlayerBehaviour>();
 
     [SerializeField] private GameObject itemUIPrefab; // Prefab for ItemUI
-    private GameObject shopUI;
-    private Transform weaponUIParent;
-    private Transform armorUIParent;
-    private Transform potionUIParent;
-    private Transform parchmentUIParent;
 
     private void Start()
     {
-        getReferences();
         InitializeShop();
     }
 
-    private void getReferences()
-    {
-        InventoryUIManager inventoryUIManager = FindObjectOfType<InventoryUIManager>();
-
-        if (inventoryUIManager == null)
-        {
-            Debug.LogError("InventoryUIManager instance is not found.");
-            return;
-        }
-
-        Transform invUITransform = inventoryUIManager.transform;
-        shopUI = invUITransform.GetChild(0).gameObject; // first child of "InvUI" become "shopUI"
-
-        Transform shopPanel = shopUI.transform.Find("ShopPanel/Shop/Image/ShopZone/BuyZone");
-        if (shopPanel == null || shopPanel.childCount < 4)
-        {
-            Debug.LogError("ShopPanel structure is not as expected.");
-            return;
-        }
-
-        weaponUIParent = shopPanel.GetChild(0);
-        armorUIParent = shopPanel.GetChild(1);
-        potionUIParent = shopPanel.GetChild(2);
-        parchmentUIParent = shopPanel.GetChild(3);
-    }
     private void InitializeShop()
     {
         ItemManager itemManager = ItemManager.instance;
@@ -68,16 +37,16 @@ public class ShopSystem : MonoBehaviour
         }
 
         // Fill weapon UI
-        CreateAndSetupItemUI(itemManager.weaponList.Items, weaponUIParent);
+        CreateAndSetupItemUI(itemManager.weaponList.Items, InventoryUIManager.instance.weaponUIParent);
 
         // Fill armor UI
-        CreateAndSetupItemUI(itemManager.armorList.Items, armorUIParent);
+        CreateAndSetupItemUI(itemManager.armorList.Items, InventoryUIManager.instance.armorUIParent);
 
         // Fill potion UI
-        CreateAndSetupItemUI(itemManager.potionList.Items, potionUIParent);
+        CreateAndSetupItemUI(itemManager.potionList.Items, InventoryUIManager.instance.potionUIParent);
 
         // Fill parchment UI
-        CreateAndSetupItemUI(itemManager.parchmentList.Items, parchmentUIParent);
+        CreateAndSetupItemUI(itemManager.parchmentList.Items, InventoryUIManager.instance.parchmentUIParent);
     }
 
     private void CreateAndSetupItemUI(List<Item> items, Transform parent)
@@ -115,7 +84,7 @@ public class ShopSystem : MonoBehaviour
             {
                 OpenShop(player);
             }
-            else if (Input.GetKeyDown(closeShopKey))
+            else if (Input.GetKeyDown(closeShopKey) || Input.GetKeyDown(openShopKey))
             {
                 CloseShop(player);
             }
@@ -125,8 +94,10 @@ public class ShopSystem : MonoBehaviour
     public void OpenShop(PlayerBehaviour player)
     {
         Inventory inventory = InventoryUIManager.instance.Inventory;
+        GameObject inventoryUI = InventoryUIManager.instance.inventoryUI;
+        GameObject shopUI = InventoryUIManager.instance.shopUI;
 
-        if (activeShopUIs.ContainsKey(player) || !inventory) return;
+        if (activeShopUIs.ContainsKey(player) || !inventory || inventoryUI.activeSelf == true) return;
 
         InventoryUIManager.instance.DrawInventoryShop();
         inventory.isInShop = true;
@@ -141,7 +112,7 @@ public class ShopSystem : MonoBehaviour
         if (activeShopUIs.ContainsKey(player) && inventory)
         {
             inventory.isInShop = false;
-            shopUI.SetActive(false);
+            InventoryUIManager.instance.shopUI.SetActive(false);
             activeShopUIs.Remove(player);
         }
     }
