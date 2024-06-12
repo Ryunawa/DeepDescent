@@ -1,3 +1,4 @@
+using _2Scripts.Entities.Player;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,9 +9,17 @@ public class ParchmentItem : ConsumableItem
     [Header("Parchment Specific")]
     public GameObject SpellToSpawn;
     public float ParchmentCooldown;
-    public override bool Use()
+    public override bool Use(GameObject GameObjectOwner)
     {
-        throw new System.NotImplementedException();
+        if (GameObjectOwner)
+        {
+            if (GameObjectOwner.TryGetComponent(out PlayerBehaviour player))
+            {
+                
+                return true;
+            }
+        }
+        return false;
     }
 
     public override string GetStats()

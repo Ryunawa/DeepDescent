@@ -1,3 +1,4 @@
+using _2Scripts.UI;
 using NaughtyAttributes;
 using Unity.Netcode;
 using UnityEngine;
@@ -20,6 +21,8 @@ namespace _2Scripts.Entities
 
 		private EnemyData _enemyData;
 	
+		private StatComponent _statComponent;
+
 		private void Awake()
 		{
 			if(OnDeath == null)
@@ -32,7 +35,8 @@ namespace _2Scripts.Entities
 			_health.OnValueChanged += _CheckForDeath;
 
 			_enemyData = GetComponent<EnemyData>();
-		}
+            _statComponent = GetComponent<StatComponent>();
+        }
 
 		private void _CheckForDeath(float iPrevVal, float iCurVal)
 		{
@@ -64,12 +68,24 @@ namespace _2Scripts.Entities
 			if(pDamage <= 0 || _health.Value <= 0)
 				return;
 
-			float effectiveArmor = _enemyData.enemyStats.armor * (1 - pArmorPenetration / 100);
-			float damageReductionFactor = 1 - effectiveArmor / 100;
-			float damage = pDamage * damageReductionFactor;
-		
+			float damage = 0;
+
+			if (_statComponent)
+			{
+				damage = _statComponent.CalcDamageReceived(pDamage);
+			}
+			else
+			{
+                float effectiveArmor = _enemyData.enemyStats.armor * (1 - pArmorPenetration / 100);
+                float damageReductionFactor = 1 - effectiveArmor / 100;
+				damage = pDamage * damageReductionFactor;
+            }
+
 			_health.Value -= damage;
-			OnDamaged.Invoke(pDamage);
+
+			HUD.instance.SetHp(_health.Value / maxHealth);
+
+            OnDamaged.Invoke(pDamage);
 		}
 
 		[Button]
@@ -98,7 +114,10 @@ namespace _2Scripts.Entities
 			}
 
 			_health.Value = Mathf.Min((int)_health.Value + (int) iHeal, maxHealth);
-			OnHealed.Invoke(iHeal);
+
+            HUD.instance.SetHp(_health.Value / maxHealth);
+
+            OnHealed.Invoke(iHeal);
 		}
 
 		[Rpc(SendTo.Server)]
