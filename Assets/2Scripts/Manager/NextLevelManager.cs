@@ -18,15 +18,15 @@ namespace _2Scripts.Manager
            // Stop the spawner
            EnemiesSpawnerManager.instance.StopSpawning();
            
-           if(EnemiesSpawnerManager.instance.currLevel % 4 != 0)
-               // Remove All the previous generated room (props too)
-               ClearPreviousDungeon();
-           else
-            // TODO: add the scene to load in the brackets
-            //SceneManager.instance.LoadScene();
+           // Remove All the previous generated room (props too)
+           ClearPreviousDungeon();
            
            // Generate dungeon with the given seed
-           MultiManager.instance.levelGenerator.StartGeneration();
+           if(EnemiesSpawnerManager.instance.currLevel % 4 != 0) 
+               MultiManager.instance.levelGenerator.StartGeneration();
+           // TODO: add the scene to load in the brackets
+           //else
+           //  SceneManager.instance.LoadScene();
         }
 
         [Rpc(SendTo.ClientsAndHost)]

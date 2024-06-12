@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using _2Scripts.Entities;
+using _2Scripts.Entities.AI;
 using _2Scripts.ProceduralGeneration;
 using _2Scripts.Struct;
 using NaughtyAttributes;

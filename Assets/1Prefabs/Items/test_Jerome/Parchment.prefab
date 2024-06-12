@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 4872985615211667191}
   - component: {fileID: 4979719360081589385}
   - component: {fileID: 8875438064058269854}
+  - component: {fileID: -9149584210607461371}
   m_Layer: 10
   m_Name: Parchment
   m_TagString: Untagged
@@ -152,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3758341319
+  GlobalObjectIdHash: 629156967
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -176,6 +177,24 @@ MonoBehaviour:
   ItemDetails: {fileID: 11400000, guid: 447942d8e9388d1438bc79634473375e, type: 2}
   amount: 1
   GOText: {fileID: 6601964578907772615}
+--- !u!114 &-9149584210607461371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6322848119279000183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0.8773585, g: 0.70318204, b: 0.11173906, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &6601964578907772615
 GameObject:
   m_ObjectHideFlags: 0
