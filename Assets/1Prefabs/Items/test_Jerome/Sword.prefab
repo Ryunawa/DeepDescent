@@ -287,6 +287,7 @@ GameObject:
   - component: {fileID: 4361877194446628334}
   - component: {fileID: 1672345503447011269}
   - component: {fileID: 207105875455061266}
+  - component: {fileID: -5121422036193001125}
   m_Layer: 10
   m_Name: Sword
   m_TagString: Untagged
@@ -344,7 +345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 980798376
+  GlobalObjectIdHash: 2545867970
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -368,3 +369,21 @@ MonoBehaviour:
   ItemDetails: {fileID: 11400000, guid: e7e4fe612603f9347abb2beb9bcca8d8, type: 2}
   amount: 1
   GOText: {fileID: 8578353768432963058}
+--- !u!114 &-5121422036193001125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8778570344472889581}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0.8773585, g: 0.70318204, b: 0.11173906, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

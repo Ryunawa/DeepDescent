@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2465018463716496520}
   - component: {fileID: 1491768256115833689}
   - component: {fileID: 947920365044308490}
+  - component: {fileID: 6514870829381978554}
   m_Layer: 10
   m_Name: Shield
   m_TagString: Untagged
@@ -69,7 +70,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1280063089
+  GlobalObjectIdHash: 3265892308
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -93,6 +94,24 @@ MonoBehaviour:
   ItemDetails: {fileID: 11400000, guid: 618c02ef3966bbf4e9ac18485b0419e2, type: 2}
   amount: 1
   GOText: {fileID: 1549592762387003524}
+--- !u!114 &6514870829381978554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364107923810573949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0.8773585, g: 0.70318204, b: 0.11173906, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &1549592762387003524
 GameObject:
   m_ObjectHideFlags: 0

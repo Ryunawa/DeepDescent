@@ -15,6 +15,7 @@ public class Object : NetworkBehaviour, IInteractable
         {
             _playerInRange = other.GetComponent<PlayerBehaviour>();
             GOText.SetActive(true);
+            GetComponent<Outline>().enabled = true;
         }
     }
 
@@ -26,6 +27,7 @@ public class Object : NetworkBehaviour, IInteractable
             {
                 GOText.SetActive(false);
                 _playerInRange = null;
+                GetComponent<Outline>().enabled = false;
             }
         }
     }
