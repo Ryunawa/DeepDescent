@@ -24,7 +24,21 @@ namespace _2Scripts.UI
         
         [SerializeField] private Image[] quickSlotsImages = new Image[3];
         [SerializeField] private TextMeshProUGUI[] quickSlotsQuantity = new TextMeshProUGUI[3];
-        
+
+        private void Start()
+        {
+            GameFlowManager.instance.OnNextLevelEvent.AddListener(arg0 =>
+            {
+                SetLevelNumber(GameFlowManager.instance.timer.GetTimerElapsedTime());
+                UpdateDifficultyColor();
+            });
+        }
+
+        private void Update()
+        {
+            SetTimer(GameFlowManager.instance.timer.GetTimerElapsedTime());
+        }
+
         public bool SetHp(float value)
         {
             if (value is > 1 or < 0)return false;
@@ -39,18 +53,18 @@ namespace _2Scripts.UI
             return true;
         }
 
-        public void SetTimer(string value)
+        private void SetTimer(string value)
         {
             _timerText.text = value;
         }
 
-        public void UpdateDifficultyColor()
+        private void UpdateDifficultyColor()
         {
             float colorSampleValue = (DifficultyManager.instance.GetDifficultyMultiplier()-1) / gameTime;
             difficultyImage.color = difficultyGradient.Evaluate(Mathf.Clamp(colorSampleValue, 0, 1));
         }
 
-        public void SetLevelNumber(string value)
+        private void SetLevelNumber(string value)
         {
             _levelText.text = value;
         }

@@ -1,4 +1,5 @@
 using _2Scripts.ProceduralGeneration;
+using _2Scripts.UI;
 using UnityEngine.Events;
 
 namespace _2Scripts.Manager
