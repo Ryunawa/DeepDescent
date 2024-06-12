@@ -69,7 +69,9 @@ namespace _2Scripts.Entities.Player
             }
 
             Debug.Log("PLayerBehaviour Done Start ");
-            //SwitchWeapon(true);
+
+            _inputManager.Inputs.Player.QuickSlot.performed += context => UseQuickSlot(context.ReadValue<float>());
+
         }
 
         private void Update()
@@ -150,6 +152,12 @@ namespace _2Scripts.Entities.Player
             _characterController.enabled = true;
         }
 
+        private void UseQuickSlot(float index)
+        {
+            if ( inventory.QuickSlots[(int)index].ID == -1)return;
+            ((ConsumableItem)ItemManager.instance.GetItem(inventory.QuickSlots[(int)index].ID)).Use();
+        }
+        
         void OnDrawGizmosSelected()
         {
             // Draw a yellow sphere at the transform's position

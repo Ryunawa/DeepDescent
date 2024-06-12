@@ -16,7 +16,8 @@ namespace _2Scripts.UI
         [SerializeField] private TextMeshProUGUI _timerText;
         [SerializeField] private TextMeshProUGUI _levelText;
         
-        [SerializeField] private Image[] quickSlotsImages = new Image[4];
+        [SerializeField] private Image[] quickSlotsImages = new Image[3];
+        [SerializeField] private TextMeshProUGUI[] quickSlotsQuantity = new TextMeshProUGUI[3];
         
         
         public bool SetHp(float value)
@@ -48,12 +49,24 @@ namespace _2Scripts.UI
             _levelText.text = value;
         }
 
-        public bool SetQuickSlotImage(Sprite image, int index)
+        public bool SetQuickSlot(Sprite image, int quantity, int index)
         {
-            if (index is > 4 or < 0)return false;
+            if (index is > 3 or < 0)return false;
 
+            quickSlotsImages[index].color = Color.white;
             quickSlotsImages[index].sprite = image;
+            quickSlotsQuantity[index].text = quantity.ToString();
             
+            return true;
+        }
+
+        public bool ClearQuickSlot(int index)
+        {
+            if (index is > 3 or < 0)return false;
+
+            quickSlotsImages[index].color = Color.clear;
+            quickSlotsQuantity[index].text = "";
+
             return true;
         }
         

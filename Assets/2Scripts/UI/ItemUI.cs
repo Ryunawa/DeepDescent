@@ -22,6 +22,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     [SerializeField] private bool IsOffHand;
     [SerializeField] private bool isShop;
     [SerializeField] private bool isInventoryShop;
+    [SerializeField] private bool isQuickSlot;
     [SerializeField] private int Price;
     [SerializeField] private float sellMultiplicator = 0.9f;
 
@@ -151,6 +152,21 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             return;
         }
 
+        //drag and drop to equip potion in quick slot
+        if (isQuickSlot && ItemManager.instance.GetItem(draggedItemUI.ItemID).GetType().BaseType == typeof(ConsumableItem))
+        {
+            int index = transform.GetSiblingIndex();
+            
+            inventory.EquipQuickSlot(index, draggedItemUI.ItemID);
+            InventoryUIManager.instance.DrawInventory();
+        }
+
+        if (draggedItemUI.isQuickSlot && isInventory)
+        {
+            inventory.UnEquipQuickSlot(draggedItemUI.ItemID);
+            InventoryUIManager.instance.DrawInventory();
+        }
+        
         // Equip item from inventory to equipment
         if (IsEquipment && !draggedItemUI.IsEquipment && !draggedItemUI.isShop)
         {
@@ -266,6 +282,13 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
                         break;
                 }
             }
+
+            //un-equip quick slot
+            if (isQuickSlot)
+            {
+                inventory.UnEquipQuickSlot(ItemID);
+            }
+            
             
             InventoryUIManager.instance.DrawInventory();
             InventoryUIManager.instance.ItemDetailUI.ToggleUI(false);
