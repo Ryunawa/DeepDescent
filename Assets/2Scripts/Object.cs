@@ -1,70 +1,73 @@
-using _2Scripts.Entities.Player;
 using System.Collections.Generic;
+using _2Scripts.Entities.Player;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Object : NetworkBehaviour, IInteractable
+namespace _2Scripts
 {
-    public Item ItemDetails;
-    public int amount;
-    public GameObject GOText;
-    private HashSet<PlayerBehaviour> nearbyPlayers = new HashSet<PlayerBehaviour>();
-
-    private void OnTriggerEnter(Collider other)
+    public class Object : NetworkBehaviour, IInteractable
     {
-        if (other.CompareTag("Player"))
-        {
-            PlayerBehaviour playerInRange = other.GetComponent<PlayerBehaviour>();
-            if (playerInRange != null)
-            {
-                nearbyPlayers.Add(playerInRange); // remove player from the collection
-                GOText.SetActive(true);
-                GetComponent<Outline>().enabled = true;
-            }
-        }
-    }
+        public Item ItemDetails;
+        public int amount;
+        public GameObject GOText;
+        private HashSet<PlayerBehaviour> nearbyPlayers = new HashSet<PlayerBehaviour>();
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
+        private void OnTriggerEnter(Collider other)
         {
-            PlayerBehaviour playerInRange = other.GetComponent<PlayerBehaviour>();
-            if (playerInRange != null && nearbyPlayers.Contains(playerInRange))
+            if (other.CompareTag("Player"))
             {
-                nearbyPlayers.Remove(playerInRange); // add player to the collection
-                if (nearbyPlayers.Count == 0)
+                PlayerBehaviour playerInRange = other.GetComponent<PlayerBehaviour>();
+                if (playerInRange != null)
                 {
-                    GOText.SetActive(false);
-                    GetComponent<Outline>().enabled = false;
+                    nearbyPlayers.Add(playerInRange); // remove player from the collection
+                    GOText.SetActive(true);
+                    GetComponent<Outline>().enabled = true;
                 }
             }
         }
-    }
 
-    private void Update()
-    {
-        foreach (var player in nearbyPlayers)
+        private void OnTriggerExit(Collider other)
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (other.CompareTag("Player"))
             {
-                Interact(player);
-                break;
+                PlayerBehaviour playerInRange = other.GetComponent<PlayerBehaviour>();
+                if (playerInRange != null && nearbyPlayers.Contains(playerInRange))
+                {
+                    nearbyPlayers.Remove(playerInRange); // add player to the collection
+                    if (nearbyPlayers.Count == 0)
+                    {
+                        GOText.SetActive(false);
+                        GetComponent<Outline>().enabled = false;
+                    }
+                }
             }
         }
-    }
 
-    public void Interact(PlayerBehaviour playerBehaviour)
-    {
-        // Pickup Object
-        bool isItemAdded = playerBehaviour.inventory.AddToInventory(ItemDetails.ID, amount);
-        if (isItemAdded) DespawnNetworkObjectRpc();
-    }
+        private void Update()
+        {
+            foreach (var player in nearbyPlayers)
+            {
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    Interact(player);
+                    break;
+                }
+            }
+        }
 
-    [Rpc(SendTo.Server, RequireOwnership = false)]
-    private void DespawnNetworkObjectRpc()
-    {
-        NetworkObject networkObject = gameObject.GetComponent<NetworkObject>();
+        public void Interact(PlayerBehaviour playerBehaviour)
+        {
+            // Pickup Object
+            bool isItemAdded = playerBehaviour.inventory.AddToInventory(ItemDetails.ID, amount);
+            if (isItemAdded) DespawnNetworkObjectRpc();
+        }
 
-        networkObject.Despawn(true);
+        [Rpc(SendTo.Server, RequireOwnership = false)]
+        private void DespawnNetworkObjectRpc()
+        {
+            NetworkObject networkObject = gameObject.GetComponent<NetworkObject>();
+
+            networkObject.Despawn(true);
+        }
     }
 }

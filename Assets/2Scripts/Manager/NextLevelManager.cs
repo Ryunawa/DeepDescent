@@ -21,12 +21,11 @@ namespace _2Scripts.Manager
            // Remove All the previous generated room (props too)
            ClearPreviousDungeon();
            
-           // Generate dungeon with the given seed
-           if(EnemiesSpawnerManager.instance.currLevel % 4 != 0) 
-               MultiManager.instance.levelGenerator.StartGeneration();
-           // TODO: add the scene to load in the brackets
-           //else
-           //  SceneManager.instance.LoadScene();
+           // Set bool depending on the current dungeon level
+           MultiManager.instance.levelGenerator.spawnShop = EnemiesSpawnerManager.instance.currLevel % 4 == 0;
+               
+           // Start the generation
+           MultiManager.instance.levelGenerator.StartGeneration();
         }
 
         [Rpc(SendTo.ClientsAndHost)]
