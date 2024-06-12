@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.17874685, g: 0.22381586, b: 0.3057245, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -575,6 +575,8 @@ MonoBehaviour:
   dungeon: []
   _props: []
   portalPrefab: {fileID: 0}
+  shopProps: {fileID: 0}
+  spawnShop: 0
   _roomSize: 0
   dungeonSize: 5
   IsOneRoomType: 0
@@ -869,6 +871,74 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d38404e13bb6664f85fb35f6eae552b, type: 3}
+--- !u!1001 &4355173096242212956
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3126608006148931566, guid: c9e1ec81fa579ce458fa1bf513896c0b,
+        type: 3}
+      propertyPath: m_Name
+      value: Props_SHOP
+      objectReference: {fileID: 0}
+    - target: {fileID: 4564784766459445288, guid: c9e1ec81fa579ce458fa1bf513896c0b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4564784766459445288, guid: c9e1ec81fa579ce458fa1bf513896c0b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4564784766459445288, guid: c9e1ec81fa579ce458fa1bf513896c0b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4564784766459445288, guid: c9e1ec81fa579ce458fa1bf513896c0b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4564784766459445288, guid: c9e1ec81fa579ce458fa1bf513896c0b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4564784766459445288, guid: c9e1ec81fa579ce458fa1bf513896c0b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4564784766459445288, guid: c9e1ec81fa579ce458fa1bf513896c0b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4564784766459445288, guid: c9e1ec81fa579ce458fa1bf513896c0b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4564784766459445288, guid: c9e1ec81fa579ce458fa1bf513896c0b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4564784766459445288, guid: c9e1ec81fa579ce458fa1bf513896c0b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c9e1ec81fa579ce458fa1bf513896c0b, type: 3}
 --- !u!1001 &4667255926480779507
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -885,7 +955,7 @@ PrefabInstance:
     - target: {fileID: 7711286722867014909, guid: a0112e71897e5414db37d63de6680102,
         type: 3}
       propertyPath: m_Name
-      value: Props_cemetery
+      value: Props_Cemetery
       objectReference: {fileID: 0}
     - target: {fileID: 7711286722867014909, guid: a0112e71897e5414db37d63de6680102,
         type: 3}
@@ -1526,3 +1596,4 @@ SceneRoots:
   - {fileID: 5194042947134134497}
   - {fileID: 1836835105762798140}
   - {fileID: 4667255926480779507}
+  - {fileID: 4355173096242212956}

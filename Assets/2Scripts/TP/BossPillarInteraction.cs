@@ -4,6 +4,7 @@ using UnityEngine;
 public class BossPillarInteraction : MonoBehaviour
 {
     private bool isPlayerInRange = false;
+    private int playersInRangeCount = 0;
     [SerializeField] private GameObject bossPrefab;
 
     void Update()
@@ -48,6 +49,7 @@ public class BossPillarInteraction : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            playersInRangeCount++;
             isPlayerInRange = true;
         }
     }
@@ -56,7 +58,12 @@ public class BossPillarInteraction : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerInRange = false;
+            playersInRangeCount--;
+
+            if (playersInRangeCount <= 0)
+            {
+                isPlayerInRange = false;
+            }
         }
     }
 }

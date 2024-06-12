@@ -1,36 +1,23 @@
 using _2Scripts.Manager;
-using NaughtyAttributes;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class PortalActivation : MonoBehaviour
+public class ExitDoor : MonoBehaviour
 {
     private bool isPlayerInRange = false;
     private int playersInRangeCount = 0;
-    [SerializeField] private GameObject particleActivation;
 
     void Update()
     {
         if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
         {
-            if (GameFlowManager.instance.CurrentState == GameFlowManager.GameState.BossDefeated)
-            {
-                ActivatePortal();
-            }
+            ActivateDoor();
         }
     }
 
-    [Button]
-    void DebugDefeatBoss()
+    private void ActivateDoor()
     {
-        GameFlowManager.instance.SetGameState(GameFlowManager.GameState.BossDefeated);
-        // visual effect
-        particleActivation.SetActive(true);
-        particleActivation.GetComponent<ParticleSystem>().Play();
-    }
-
-    private void ActivatePortal()
-    {
-        GameFlowManager.instance.SetGameState(GameFlowManager.GameState.BossNotDiscovered);
         // Teleportation
         MultiManager.instance.nextLevelManager.GenerateNewDungeon();
     }

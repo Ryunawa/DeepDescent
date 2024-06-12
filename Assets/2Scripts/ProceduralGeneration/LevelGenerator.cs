@@ -27,8 +27,10 @@ namespace _2Scripts.ProceduralGeneration
         [Header("Props")]
         [SerializeField] private GameObject[] _props;
         [SerializeField] private GameObject portalPrefab;
+        [SerializeField] private GameObject shopProps;
 
         [Header("Setting")]
+        public bool spawnShop;
         [SerializeField] private float _roomSize;
         [SerializeField] private int dungeonSize = 5;
         [SerializeField] private bool IsOneRoomType;
@@ -66,6 +68,13 @@ namespace _2Scripts.ProceduralGeneration
 
         public async void StartGeneration()
         {
+            if (spawnShop)
+            {
+                GenerateShopRoom();
+                DoWhenGenEnd();
+                return;
+            }
+
             _staticDungeonSize = dungeonSize;
             // Random.InitState((int)DateTime.Now.Ticks);
 
@@ -102,13 +111,51 @@ namespace _2Scripts.ProceduralGeneration
             TeleportHostAndClientRpc(GetPosition(centerIndex));
         }
 
+        private void GenerateShopRoom()
+        {
+            _staticDungeonSize = 1;
+            // Random.InitState((int)DateTime.Now.Ticks);
+
+            dungeon = new Room[_staticDungeonSize * _staticDungeonSize];
+
+            Random.InitState(35896);
+
+            //Generation n = 1 : center
+            int centerIndex = (_staticDungeonSize / 2) * (_staticDungeonSize + 1);
+            Room shopRoom = InstantiateRoom(RoomType.One, GetPosition(centerIndex), Quaternion.identity).GetComponent<Room>();
+            shopRoom.transform.SetParent(roomsParent.transform);
+            shopRoom.SizeRoom = _roomSize;
+            // shopRoom.CreateDoors();
+            shopRoom.Generation = 1;
+
+            // create props
+            GameObject instantiatedProps = InstantiateProps(RoomType.One, GetPosition(centerIndex));
+
+            // place it in their folder
+            if (instantiatedProps)
+            {
+                instantiatedProps.transform.SetParent(propsParent.transform);
+                shopRoom.RoomProps = instantiatedProps.GetComponentInChildren<RoomProps>();
+            }
+
+            dungeon[centerIndex] = shopRoom;
+
+            _roomNumber = 0;
+
+            Debug.Log("GenerationFinished");
+
+            TeleportHostAndClientRpc(GetPosition(centerIndex));
+        }
+
+
         [Rpc(SendTo.ClientsAndHost)]
         private void TeleportHostAndClientRpc(Vector3 pPosition)
         {
             _lateUpdateOnlyOnce = true;
             MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().TeleportPlayer( pPosition + Vector3.up * 5);
         }
-        
+
+
         private void LateUpdate()
         {
             if (_lateUpdateOnlyOnce)
@@ -121,7 +168,7 @@ namespace _2Scripts.ProceduralGeneration
         private void DoWhenGenEnd()
         {
             dungeonGeneratedEvent.Invoke();
-            PlacePortal();
+            if (!spawnShop) PlacePortal();
             SceneManager.instance.DeactivateLoadingScreen();
         }
         
@@ -451,15 +498,23 @@ namespace _2Scripts.ProceduralGeneration
                 return null;
             }
 
-            GameObject propsPrefab = _props[Random.Range(0, _props.Length)]; 
+            GameObject propsPrefab;
+
+            if (spawnShop) propsPrefab = shopProps;
+            else propsPrefab = _props[Random.Range(0, _props.Length)];
 
             // instantiation of the props
             if (propsPrefab != null)
             {
+                Quaternion rotation = Quaternion.identity;
+
                 // calcul random rotation
-                int numberOfRotation = Random.Range(0, 4);
-                float rotatedSide = 90 * numberOfRotation;
-                Quaternion rotation = Quaternion.Euler(0, rotatedSide, 0);
+                if (!spawnShop)
+                {
+                    int numberOfRotation = Random.Range(0, 4);
+                    float rotatedSide = 90 * numberOfRotation;
+                    rotation = Quaternion.Euler(0, rotatedSide, 0);
+                }
 
                 // rotate
                 GameObject roomInstance = Instantiate(propsPrefab, position, rotation);

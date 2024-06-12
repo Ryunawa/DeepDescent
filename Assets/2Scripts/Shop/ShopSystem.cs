@@ -12,6 +12,8 @@ public class ShopSystem : MonoBehaviour
     public KeyCode closeShopKey = KeyCode.Escape;
     private bool isNearShop = false;
     private PlayerBehaviour currentPlayer;
+    private int playersInRangeCount = 0;
+    private HashSet<PlayerBehaviour> nearbyPlayers = new HashSet<PlayerBehaviour>();
 
     [SerializeField] private GameObject itemUIPrefab; // Prefab for ItemUI
     [SerializeField] private GameObject shopUI;
@@ -127,9 +129,10 @@ public class ShopSystem : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            currentPlayer = other.GetComponentInChildren<PlayerBehaviour>();
+            PlayerBehaviour currentPlayer = other.GetComponentInChildren<PlayerBehaviour>();
             if (currentPlayer != null)
             {
+                nearbyPlayers.Add(currentPlayer); // add player to the collection
                 isNearShop = true;
                 Debug.Log("Press " + openShopKey.ToString() + " to open shop.");
             }
@@ -142,10 +145,17 @@ public class ShopSystem : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") && currentPlayer != null)
+        if (other.CompareTag("Player"))
         {
-            isNearShop = false;
-            currentPlayer = null;
+            PlayerBehaviour currentPlayer = other.GetComponentInChildren<PlayerBehaviour>();
+            if (currentPlayer != null && nearbyPlayers.Contains(currentPlayer))
+            {
+                nearbyPlayers.Remove(currentPlayer); // remove player of the collection
+                if (nearbyPlayers.Count == 0)
+                {
+                    isNearShop = false;
+                }
+            }
         }
     }
 }
