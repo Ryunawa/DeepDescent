@@ -2,6 +2,7 @@ using Cinemachine;
 using UnityEngine;
 using System.Collections.Generic;
 using _2Scripts.Entities.Player;
+using _2Scripts.Entities.AI;
 
 public class BossPillarInteraction : MonoBehaviour
 {
@@ -40,8 +41,8 @@ public class BossPillarInteraction : MonoBehaviour
         // Boss is coming
         Vector3 spawnPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z + 5);
         GameObject boss = Instantiate(bossPrefab, spawnPosition, Quaternion.identity);
-        // TODO -> tell that he is the boss
-        // boss.gameObject.GetComponent<AIController>.isBoss = true;
+        // tell that he is the boss>
+        boss.GetComponent<AIController>().isBoss = true;
         boss.transform.localScale *= 2; // make him bigger
 
         GameFlowManager.instance.SetGameState(GameFlowManager.GameState.BossInProgress);

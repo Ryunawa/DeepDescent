@@ -37,8 +37,7 @@ namespace _2Scripts.Entities.AI
         private float timeBeforeAttack = 2f; // attack speed in seconds
         [SerializeField]
         private bool _isSwinging;
-        [SerializeField]
-        private bool _isBoss;
+        public bool isBoss;
 
 
         [Header("Patrol")]
@@ -464,11 +463,12 @@ namespace _2Scripts.Entities.AI
         // Death function
         private void HandleDeath()
         {
-            if (_isBoss)
+            if (isBoss)
             {
-                //GameFlowManager.Instance.SetGameState(GameFlowManager.GameState.BossDefeated);
+                GameFlowManager.Instance.SetGameState(GameFlowManager.GameState.BossDefeated);
             }
-            // reward
+
+            // potential reward?
 
             //Unsubscribe first
             healthComponent.OnDeath.RemoveAllListeners();
