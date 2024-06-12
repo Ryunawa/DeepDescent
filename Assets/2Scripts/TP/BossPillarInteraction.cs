@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using _2Scripts.Entities.Player;
 using _2Scripts.Entities.AI;
+using _2Scripts.Manager;
 
 public class BossPillarInteraction : MonoBehaviour
 {

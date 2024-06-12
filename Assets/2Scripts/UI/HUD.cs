@@ -1,24 +1,29 @@
+using System;
+using _2Scripts.Manager;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace _2Scripts.UI
 {
     public class HUD : Singleton<HUD>
     {
+        [SerializeField] private float gameTime = 3;
+        
         [Header("Left")]
         [SerializeField] private Slider HP;
         [SerializeField] private Slider BlueBar;
         
         [Space,Header("Right")]
         [SerializeField] private Gradient difficultyGradient;
+        [SerializeField] private Image difficultyImage;
         [SerializeField] private TextMeshProUGUI _timerText;
         [SerializeField] private TextMeshProUGUI _levelText;
         
         [SerializeField] private Image[] quickSlotsImages = new Image[3];
         [SerializeField] private TextMeshProUGUI[] quickSlotsQuantity = new TextMeshProUGUI[3];
-        
         
         public bool SetHp(float value)
         {
@@ -39,9 +44,10 @@ namespace _2Scripts.UI
             _timerText.text = value;
         }
 
-        public void SetDifficultyColor(float value)
+        public void UpdateDifficultyColor()
         {
-            
+            float colorSampleValue = (DifficultyManager.instance.GetDifficultyMultiplier()-1) / gameTime;
+            difficultyImage.color = difficultyGradient.Evaluate(Mathf.Clamp(colorSampleValue, 0, 1));
         }
 
         public void SetLevelNumber(string value)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using _2Scripts.Manager;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
