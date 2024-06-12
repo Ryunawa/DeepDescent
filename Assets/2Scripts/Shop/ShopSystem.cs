@@ -14,17 +14,43 @@ public class ShopSystem : MonoBehaviour
     private HashSet<PlayerBehaviour> nearbyPlayers = new HashSet<PlayerBehaviour>();
 
     [SerializeField] private GameObject itemUIPrefab; // Prefab for ItemUI
-    [SerializeField] private GameObject shopUI;
-    [SerializeField] private Transform weaponUIParent;
-    [SerializeField] private Transform armorUIParent;
-    [SerializeField] private Transform potionUIParent;
-    [SerializeField] private Transform parchmentUIParent;
+    private GameObject shopUI;
+    private Transform weaponUIParent;
+    private Transform armorUIParent;
+    private Transform potionUIParent;
+    private Transform parchmentUIParent;
 
     private void Start()
     {
+        getReferences();
         InitializeShop();
     }
 
+    private void getReferences()
+    {
+        InventoryUIManager inventoryUIManager = FindObjectOfType<InventoryUIManager>();
+
+        if (inventoryUIManager == null)
+        {
+            Debug.LogError("InventoryUIManager instance is not found.");
+            return;
+        }
+
+        Transform invUITransform = inventoryUIManager.transform;
+        shopUI = invUITransform.GetChild(0).gameObject; // first child of "InvUI" become "shopUI"
+
+        Transform shopPanel = shopUI.transform.Find("ShopPanel/Shop/Image/ShopZone/BuyZone");
+        if (shopPanel == null || shopPanel.childCount < 4)
+        {
+            Debug.LogError("ShopPanel structure is not as expected.");
+            return;
+        }
+
+        weaponUIParent = shopPanel.GetChild(0);
+        armorUIParent = shopPanel.GetChild(1);
+        potionUIParent = shopPanel.GetChild(2);
+        parchmentUIParent = shopPanel.GetChild(3);
+    }
     private void InitializeShop()
     {
         ItemManager itemManager = ItemManager.instance;
@@ -38,12 +64,6 @@ public class ShopSystem : MonoBehaviour
         if (itemUIPrefab == null)
         {
             Debug.LogError("ItemUIPrefab is not assigned.");
-            return;
-        }
-
-        if (weaponUIParent == null || armorUIParent == null || potionUIParent == null || parchmentUIParent == null)
-        {
-            Debug.LogError("One or more UI Parent transforms are not assigned.");
             return;
         }
 
@@ -151,7 +171,8 @@ public class ShopSystem : MonoBehaviour
             PlayerBehaviour playerInRange = other.GetComponentInChildren<PlayerBehaviour>();
             if (playerInRange != null && nearbyPlayers.Contains(playerInRange))
             {
-                nearbyPlayers.Remove(playerInRange); // remove player from the collection
+                nearbyPlayers.Remove(playerInRange);
+                CloseShop(playerInRange);
                 if (nearbyPlayers.Count == 0)
                 {
                     isNearShop = false;
