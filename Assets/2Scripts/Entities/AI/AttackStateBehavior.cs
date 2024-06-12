@@ -1,3 +1,4 @@
+using _2Scripts.Entities.AI;
 using UnityEngine;
 
 public class AttackStateBehavior : StateMachineBehaviour
