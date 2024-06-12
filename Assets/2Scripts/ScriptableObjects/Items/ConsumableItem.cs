@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class ConsumableItem : Item
 {
-    public abstract bool Use();
+    public abstract bool Use(GameObject GameObjectOwner);
     public abstract string GetStats();
     
 }
