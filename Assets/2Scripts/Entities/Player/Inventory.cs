@@ -160,7 +160,7 @@ public class Inventory : NetworkBehaviour
             ConsumableItem realItem = ItemManager.instance.GetItem(newInventoryObject.ID) as ConsumableItem;
             if (realItem)
             {
-                realItem.Use();
+                realItem.Use(gameObject);
                 if (InventoryItems[itemPos].Amount > 1)
                 {
                     newInventoryObject.Amount = -1;
