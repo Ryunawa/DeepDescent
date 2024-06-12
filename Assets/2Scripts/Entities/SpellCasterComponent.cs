@@ -11,11 +11,11 @@ public class SpellCasterComponent : NetworkBehaviour
     private void CastSpell(GameObject Prefab)
     {
         _spellToCast = Prefab;
-        SpawnSpell();
+        SpawnSpellRpc();
     }
 
     [Rpc(SendTo.Server)]
-    public void SpawnSpell()
+    public void SpawnSpellRpc()
     {
         NetworkObject o = Instantiate(_spellToCast.GetComponent<NetworkObject>(), transform.position, Quaternion.identity);
         o.Spawn();

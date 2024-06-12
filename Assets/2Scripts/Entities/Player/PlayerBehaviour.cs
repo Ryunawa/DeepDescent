@@ -155,7 +155,7 @@ namespace _2Scripts.Entities.Player
         private void UseQuickSlot(float index)
         {
             if ( inventory.QuickSlots[(int)index].ID == -1)return;
-            ((ConsumableItem)ItemManager.instance.GetItem(inventory.QuickSlots[(int)index].ID)).Use();
+            ((ConsumableItem)ItemManager.instance.GetItem(inventory.QuickSlots[(int)index].ID)).Use(gameObject);
         }
         
         void OnDrawGizmosSelected()
