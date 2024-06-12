@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Threading.Tasks;
 using NaughtyAttributes;
 using Unity.Netcode;
@@ -20,8 +18,12 @@ namespace _2Scripts.Manager
            // Stop the spawner
            EnemiesSpawnerManager.instance.StopSpawning();
            
-           // Remove All the previous generated room (props too)
-           ClearPreviousDungeon();
+           if(EnemiesSpawnerManager.instance.currLevel % 4 != 0)
+               // Remove All the previous generated room (props too)
+               ClearPreviousDungeon();
+           else
+            // TODO: add the scene to load in the brackets
+            //SceneManager.instance.LoadScene();
            
            // Generate dungeon with the given seed
            MultiManager.instance.levelGenerator.StartGeneration();

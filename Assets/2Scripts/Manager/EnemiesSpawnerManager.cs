@@ -39,7 +39,10 @@ namespace _2Scripts.Manager
 
         private EnemyTypes _enemiesList;
         private int _currentEnemiesCount;
-        private int _currLevel = 1; // Depend on the game manager
+        private int _currLevel = 1;
+
+        public int currLevel => _currLevel;
+
         private LevelGenerator _levelGenerator;
         
         #endregion
