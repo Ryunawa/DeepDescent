@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3145029190
+  GlobalObjectIdHash: 616769591
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -86,6 +86,11 @@ MonoBehaviour:
   - {fileID: 289011377166552801, guid: df11e075dbd300b40b02da4537ee1871, type: 3}
   - {fileID: 56899907952853865, guid: 9b16dae3c6590ca4e8d7a29ae07172e4, type: 3}
   - {fileID: 129942298912834957, guid: a33344e61ae3eff4483d2da2e81fb20e, type: 3}
+  portalPrefab: {fileID: 7230005963957814681, guid: 0cd46cd0a0087b14a930a1eb12517c39,
+    type: 3}
+  shopProps: {fileID: 3126608006148931566, guid: c9e1ec81fa579ce458fa1bf513896c0b,
+    type: 3}
+  spawnShop: 0
   _roomSize: 25
   dungeonSize: 5
   IsOneRoomType: 0

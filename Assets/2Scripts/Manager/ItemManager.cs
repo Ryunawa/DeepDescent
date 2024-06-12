@@ -1,3 +1,5 @@
+using _2Scripts.Enum;
+using _2Scripts.ProceduralGeneration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,8 @@ namespace _2Scripts.Manager
     public class ItemManager : Singleton<ItemManager>
     {
         [SerializeField] public ItemList itemList;
+        [SerializeField] private int itemCount = 10;
+        [SerializeField] private List<ItemSpawnPoint> itemSpawnPoints;
 
         [SerializeField] public ItemList weaponList;
         [SerializeField] public ItemList armorList;
@@ -22,6 +26,11 @@ namespace _2Scripts.Manager
         {
             _itemsDictionary = itemList.Items.ToDictionary(x => x.ID, x=>x);
             InitializeItemLists();
+        }
+
+        public void StartSpawningItems()
+        {
+            SpawnItems(itemCount);
         }
 
         private void InitializeItemLists()
@@ -72,5 +81,77 @@ namespace _2Scripts.Manager
             itemList.FindItemFromID(id).ObjectPrefab.TryGetComponent(out NetworkObject networkObject);
             return networkObject;
         }
+
+        private void SpawnItems(int numberOfItems)
+        {
+            Debug.Log("Start SpawnItem");
+            float difficultyMultiplier = DifficultyManager.instance.GetDifficultyMultiplier();
+            List<Item> spawnableItems = itemList.Items;
+
+            LevelGenerator levelGenerator = FindObjectOfType<LevelGenerator>();
+            List<ItemSpawnPoint> itemSpawnPoints = levelGenerator.GetAllItemSpawnPoints();
+
+            int itemsSpawned = 0;
+            foreach (var spawnPoint in itemSpawnPoints)
+            {
+                if (itemsSpawned >= numberOfItems)
+                {
+                    break;
+                }
+
+                if (!spawnPoint.isOccupied)
+                {
+                    Item itemToSpawn = GetRandomItemBasedOnRarity(spawnableItems, difficultyMultiplier);
+                    if (itemToSpawn != null)
+                    {
+                        Vector3 spawnPosition = spawnPoint.transform.position;
+                        Quaternion randomRotation = Quaternion.Euler(0, UnityEngine.Random.Range(-180f, 180f), 0);
+                        Instantiate(itemToSpawn.ObjectPrefab, spawnPosition, randomRotation);
+
+                        spawnPoint.isOccupied = true;
+                        itemsSpawned++;
+                    }
+                }
+            }
+        }
+
+        private Item GetRandomItemBasedOnRarity(List<Item> items, float difficultyMultiplier)
+        {
+            float[] spawnChances = CalculateSpawnChances(difficultyMultiplier);
+            float randomWeight = UnityEngine.Random.Range(0f, 100f);
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                float itemWeight = spawnChances[(int)items[i].Rarity];
+                if (randomWeight < itemWeight)
+                {
+                    return items[i];
+                }
+                randomWeight -= itemWeight;
+            }
+
+            return null;
+        }
+
+        private float[] CalculateSpawnChances(float difficultyMultiplier)
+        {
+            float[] baseChances = { 60f, 24f, 10f, 5f, 1f }; // Base chances for Common, Uncommon, Rare, Epic, Legendary
+            float totalWeight = 0f;
+            float[] adjustedChances = new float[baseChances.Length];
+
+            for (int i = 0; i < baseChances.Length; i++)
+            {
+                adjustedChances[i] = baseChances[i] * Mathf.Pow(difficultyMultiplier, i);
+                totalWeight += adjustedChances[i];
+            }
+
+            for (int i = 0; i < adjustedChances.Length; i++)
+            {
+                adjustedChances[i] = (adjustedChances[i] / totalWeight) * 100f;
+            }
+
+            return adjustedChances;
+        }
+
     }
 }

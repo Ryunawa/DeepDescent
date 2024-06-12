@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using _2Scripts.Entities.Player;
 using _2Scripts.Manager;
 using Unity.Netcode;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Events;
@@ -107,6 +109,9 @@ namespace _2Scripts.ProceduralGeneration
             await DoGen(1);
             Debug.Log("GenerationFinished");
             DynamicNavMesh.UpdateNavMesh();
+
+            ItemManager itemManager = FindObjectOfType<ItemManager>();
+            itemManager.StartSpawningItems();
 
             TeleportHostAndClientRpc(GetPosition(centerIndex));
         }
@@ -693,6 +698,18 @@ namespace _2Scripts.ProceduralGeneration
             }
         }
 
+        public List<ItemSpawnPoint> GetAllItemSpawnPoints()
+{
+            List<ItemSpawnPoint> allSpawnPoints = new List<ItemSpawnPoint>();
+            foreach (var room in dungeon)
+            {
+                if (room != null)
+                {
+                    allSpawnPoints.AddRange(room.GetAllItemSpawnPoint());
+                }
+            }
+            return allSpawnPoints;
+        }
 
     }
 
