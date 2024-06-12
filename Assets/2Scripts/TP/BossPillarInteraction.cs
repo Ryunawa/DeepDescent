@@ -8,7 +8,7 @@ public class BossPillarInteraction : MonoBehaviour
 
     void Update()
     {
-        if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
+        if (isPlayerInRange && Input.GetKeyDown(KeyCode.E) && GameFlowManager.instance.CurrentState == GameFlowManager.GameState.BossNotDiscovered)
         {
             ActivatePillar();
         }

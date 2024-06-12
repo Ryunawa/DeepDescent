@@ -26,6 +26,7 @@ namespace _2Scripts.ProceduralGeneration
     
         [Header("Props")]
         [SerializeField] private GameObject[] _props;
+        [SerializeField] private GameObject portalPrefab;
 
         [Header("Setting")]
         [SerializeField] private float _roomSize;
@@ -120,7 +121,7 @@ namespace _2Scripts.ProceduralGeneration
         private void DoWhenGenEnd()
         {
             dungeonGeneratedEvent.Invoke();
-                
+            PlacePortal();
             SceneManager.instance.DeactivateLoadingScreen();
         }
         
@@ -619,6 +620,25 @@ namespace _2Scripts.ProceduralGeneration
 
             return roomAndSpawnPoints;
         }
+
+        private void PlacePortal()
+        {
+            for (int gen = _staticDungeonSize; gen > 0; gen--)
+            {
+                Room[] rooms = GetRoomFromGeneration(gen);
+                if (rooms.Length > 0)
+                {
+                    // Get a random room from this gen
+                    Room targetRoom = rooms[Random.Range(0, rooms.Length)];
+                    Vector3 portalPosition = targetRoom.transform.position;
+                    GameObject portal = Instantiate(portalPrefab, portalPosition, Quaternion.identity);
+                    portal.GetComponent<NetworkObject>().Spawn();
+                    break;
+                }
+            }
+        }
+
+
     }
 
     public enum Directions

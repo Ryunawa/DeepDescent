@@ -3,7 +3,19 @@ guid: bf22e93295c0d2845a44f1685ea41a42
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - roomZeroPrefab: {instanceID: 0}
+  - roomOnePrefab: {instanceID: 0}
+  - roomTwoPrefab: {instanceID: 0}
+  - roomTwoOppositePrefab: {instanceID: 0}
+  - roomThreePrefab: {instanceID: 0}
+  - roomFourPrefab: {instanceID: 0}
+  - portalPrefab: {fileID: 7230005963957814681, guid: 0cd46cd0a0087b14a930a1eb12517c39,
+      type: 3}
+  - generatedDungeonParent: {instanceID: 0}
+  - roomsParent: {instanceID: 0}
+  - doorsParent: {instanceID: 0}
+  - propsParent: {instanceID: 0}
   executionOrder: -2
   icon: {instanceID: 0}
   userData: 

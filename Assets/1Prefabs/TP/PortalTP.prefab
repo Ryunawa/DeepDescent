@@ -10,7 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1346407376599074379}
   - component: {fileID: 7066179048496492535}
+  - component: {fileID: 5856963385162113483}
   - component: {fileID: 1265007091238403510}
+  - component: {fileID: 2152935206142492720}
   m_Layer: 0
   m_Name: PortalTP
   m_TagString: Untagged
@@ -28,8 +30,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7156135892551548817}
   - {fileID: 4718782026709902505}
@@ -64,6 +66,20 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1.21
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5856963385162113483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7230005963957814681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58445b8bbd7204746a9e5c9bda59dc5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bossPrefab: {fileID: 3959042653490119952, guid: bf7079a114337a64f9c64f12fcf62083,
+    type: 3}
 --- !u!114 &1265007091238403510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,6 +93,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleActivation: {fileID: 1416841970759849867}
+--- !u!114 &2152935206142492720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7230005963957814681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 0
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &8686029535190603876
 GameObject:
   m_ObjectHideFlags: 0
@@ -269,7 +306,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 19813616, guid: e9ac2b65e98b5154597f339961c0f67a, type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 6
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 19905496, guid: e9ac2b65e98b5154597f339961c0f67a, type: 3}
       propertyPath: m_Materials.Array.size

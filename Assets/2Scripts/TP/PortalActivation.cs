@@ -22,15 +22,13 @@ public class PortalActivation : MonoBehaviour
     void DebugDefeatBoss()
     {
         GameFlowManager.instance.SetGameState(GameFlowManager.GameState.BossDefeated);
-        Debug.Log("clicked: " + GameFlowManager.GameState.BossDefeated);
+        // visual effect
+        particleActivation.SetActive(true);
+        particleActivation.GetComponent<ParticleSystem>().Play();
     }
 
     private void ActivatePortal()
     {
-        Debug.Log("Portal activated");
-        // visual effect
-        particleActivation.SetActive(true);
-        particleActivation.GetComponent<ParticleSystem>().Play();
         GameFlowManager.instance.SetGameState(GameFlowManager.GameState.BossNotDiscovered);
         // Teleportation
         MultiManager.instance.nextLevelManager.GenerateNewDungeon();
