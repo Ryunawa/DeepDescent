@@ -445,6 +445,12 @@ namespace _2Scripts.Manager
 					}
 				};
 			
+				
+				while (!(UnityServices.State == ServicesInitializationState.Initialized && AuthenticationService.Instance.IsSignedIn)) 
+				{ 
+					await Task.Delay(100);
+				}
+				
 				string playerId = AuthenticationService.Instance.PlayerId;
 
 				if (_lobby == null)

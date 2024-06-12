@@ -89,6 +89,15 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""QuickSlot"",
+                    ""type"": ""Button"",
+                    ""id"": ""7a1fe61d-95cc-4141-a779-aa4e44e70ba6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -212,6 +221,39 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
                     ""action"": ""Inventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c3692158-5bd2-4210-8fb7-76cc69ab70e0"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=0)"",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0f7adf8d-8b1b-44f4-911d-34fafe7c4350"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale"",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""806eb9bf-295c-401a-83e7-b37e57582480"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=2)"",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -239,6 +281,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_SwitchWeapon = m_Player.FindAction("SwitchWeapon", throwIfNotFound: true);
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
+        m_Player_QuickSlot = m_Player.FindAction("QuickSlot", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -307,6 +350,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_SwitchWeapon;
     private readonly InputAction m_Player_Inventory;
+    private readonly InputAction m_Player_QuickSlot;
     public struct PlayerActions
     {
         private @Inputs m_Wrapper;
@@ -318,6 +362,7 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @SwitchWeapon => m_Wrapper.m_Player_SwitchWeapon;
         public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
+        public InputAction @QuickSlot => m_Wrapper.m_Player_QuickSlot;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -348,6 +393,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Inventory.started += instance.OnInventory;
             @Inventory.performed += instance.OnInventory;
             @Inventory.canceled += instance.OnInventory;
+            @QuickSlot.started += instance.OnQuickSlot;
+            @QuickSlot.performed += instance.OnQuickSlot;
+            @QuickSlot.canceled += instance.OnQuickSlot;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -373,6 +421,9 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
             @Inventory.started -= instance.OnInventory;
             @Inventory.performed -= instance.OnInventory;
             @Inventory.canceled -= instance.OnInventory;
+            @QuickSlot.started -= instance.OnQuickSlot;
+            @QuickSlot.performed -= instance.OnQuickSlot;
+            @QuickSlot.canceled -= instance.OnQuickSlot;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -408,5 +459,6 @@ public partial class @Inputs: IInputActionCollection2, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnSwitchWeapon(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
+        void OnQuickSlot(InputAction.CallbackContext context);
     }
 }

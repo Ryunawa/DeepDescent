@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using _2Scripts.Entities.Player;
 using _2Scripts.Enum;
+using _2Scripts.UI;
 using NaughtyAttributes;
 using UnityEditor;
 using UnityEngine;
@@ -20,7 +21,8 @@ namespace _2Scripts.Manager
         [SerializeField] private GameObject inventoryMove;
         [SerializeField] private GameObject shopMove;
         [SerializeField] private ItemDetailUI itemDetailUI;
-        [Header("Slots")]
+        
+        [Space, Header("Slots")]
         [SerializeField] private ItemUI Head;
         [SerializeField] private ItemUI Chest;
         [SerializeField] private ItemUI Legs;
@@ -29,6 +31,10 @@ namespace _2Scripts.Manager
         [SerializeField] private ItemUI MainHand;
         [SerializeField] private ItemUI OffHand;
         
+        [Space, Header("Slots (but the fast ones)")]
+        [SerializeField] private ItemUI[] quickSlots = new ItemUI[3];
+
+
         public static readonly Dictionary<Rarity, Color32> Colors = new Dictionary<Rarity, Color32>()
         {
             {Rarity.Common, new Color32(255,255,255,255)},
@@ -62,10 +68,17 @@ namespace _2Scripts.Manager
         private void Start()
         {
             InputManager.instance.Inputs.Player.Inventory.started += context => ToggleInventory();
-            
+
             _inventory = MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().inventory;
+
+            for (var index = 0; index < _inventory.QuickSlots.Length; index++)
+            {
+                _inventory.QuickSlots[index] = new InventoryObject(-1, 0);
+            }
+            
             SetupInventory(inventoryRoot, inventoryBG, ListUI);
             SetupInventory(shopRoot, shopBG, ListShop);
+            
 
             inventoryUI.SetActive(false);
         }
@@ -119,6 +132,22 @@ namespace _2Scripts.Manager
             DrawEquipment(Rings[1], _inventory.RingsItem[1]);
             DrawEquipment(MainHand, _inventory.MainHandItem);
             DrawEquipment(OffHand, _inventory.OffHandItem);
+
+            for (var i = 0; i < _inventory.QuickSlots.Length; i++)
+            {
+                InventoryObject slot = _inventory.QuickSlots[i];
+
+                if (slot.ID == -1)
+                {
+                    quickSlots[i].Clear();
+                    HUD.instance.ClearQuickSlot(i);
+                }
+                else
+                {
+                    quickSlots[i].Setup(_inventory.QuickSlots[i].ID, _inventory.QuickSlots[i].Amount);
+                    HUD.instance.SetQuickSlot(ItemManager.instance.GetItem(_inventory.QuickSlots[i].ID).InventoryIcon,_inventory.QuickSlots[i].Amount,i);
+                }
+            }
         }
 
         public void DrawInventoryShop()

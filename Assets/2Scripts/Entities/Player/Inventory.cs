@@ -32,6 +32,9 @@ public class Inventory : NetworkBehaviour
     public ArmorItem FeetArmor;
     public ArmorItem[] RingsItem = new ArmorItem[2];
     public ArmorItem NecklaceItem;
+
+    public InventoryObject[] QuickSlots = new InventoryObject[3]; 
+    
     public int gold;
     public bool isInShop;
 
@@ -462,5 +465,17 @@ public class Inventory : NetworkBehaviour
                 visibleItems.RemoveVisibleScrap();
                 break;
         }
+    }
+    
+    public void EquipQuickSlot(int index, int itemID)
+    {
+        QuickSlots[index] = InventoryItems[InventoryItems.FindIndex(x=> x.ID == itemID)];
+        Debug.Log($"Item {itemID} equipped in slot number {index}");
+    }
+
+    public void UnEquipQuickSlot(int itemID)
+    {
+        QuickSlots[Array.FindIndex(QuickSlots, x => x.ID == itemID)] = new InventoryObject(-1,0);
+        Debug.Log($"Item {itemID} has been un-equipped from quick slots");
     }
 }
