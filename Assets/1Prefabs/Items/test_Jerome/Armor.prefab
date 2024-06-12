@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9148409580447119615}
   - component: {fileID: 430759176828258446}
   - component: {fileID: 5661988192913138698}
+  - component: {fileID: 3833993036907413658}
   m_Layer: 10
   m_Name: Armor
   m_TagString: Untagged
@@ -69,7 +70,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3568710037
+  GlobalObjectIdHash: 2228136794
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -93,6 +94,24 @@ MonoBehaviour:
   ItemDetails: {fileID: 11400000, guid: 8318c8cda8a49d94aa70db04a64e1a6d, type: 2}
   amount: 1
   GOText: {fileID: 9051244745979120837}
+--- !u!114 &3833993036907413658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285884523482912472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0.8773585, g: 0.70318204, b: 0.11173906, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &6613551521106426430
 GameObject:
   m_ObjectHideFlags: 0

@@ -268,6 +268,7 @@ GameObject:
   - component: {fileID: 1858955423450615366}
   - component: {fileID: 8178211369538270476}
   - component: {fileID: 7665564306801760520}
+  - component: {fileID: 6319617313745430610}
   m_Layer: 10
   m_Name: Potion
   m_TagString: Untagged
@@ -325,7 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4114465774
+  GlobalObjectIdHash: 48754485
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -349,3 +350,21 @@ MonoBehaviour:
   ItemDetails: {fileID: 11400000, guid: ed930c4ddce8bed49adbfda77e068471, type: 2}
   amount: 1
   GOText: {fileID: 582826026437708694}
+--- !u!114 &6319617313745430610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5744667273649279677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0.8773585, g: 0.70318204, b: 0.11173906, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
