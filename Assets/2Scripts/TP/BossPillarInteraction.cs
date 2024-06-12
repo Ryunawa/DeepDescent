@@ -1,10 +1,12 @@
 using Cinemachine;
 using UnityEngine;
+using System.Collections.Generic;
+using _2Scripts.Entities.Player;
 
 public class BossPillarInteraction : MonoBehaviour
 {
     private bool isPlayerInRange = false;
-    private int playersInRangeCount = 0;
+    private HashSet<PlayerBehaviour> nearbyPlayers = new HashSet<PlayerBehaviour>();
     [SerializeField] private GameObject bossPrefab;
 
     void Update()
@@ -20,7 +22,7 @@ public class BossPillarInteraction : MonoBehaviour
         CinemachineImpulseSource[] impulseSources = FindObjectsOfType<CinemachineImpulseSource>();
         foreach (CinemachineImpulseSource impulseSource in impulseSources)
         {
-            // impulsion parameters
+            // Impulsion parameters
             impulseSource.m_ImpulseDefinition.m_ImpulseShape = CinemachineImpulseDefinition.ImpulseShapes.Rumble;
             impulseSource.m_ImpulseDefinition.m_AmplitudeGain = 0.2f;
             impulseSource.m_ImpulseDefinition.m_FrequencyGain = 50.0f;
@@ -28,14 +30,14 @@ public class BossPillarInteraction : MonoBehaviour
             impulseSource.m_ImpulseDefinition.m_TimeEnvelope.m_DecayTime = 0.5f;
             impulseSource.m_ImpulseDefinition.m_ImpulseType = CinemachineImpulseDefinition.ImpulseTypes.Dissipating;
 
-            // velocity
+            // Velocity
             impulseSource.m_DefaultVelocity = Vector3.one * 0.1f;
 
-            // impulsion
+            // Impulsion
             impulseSource.GenerateImpulse(3f);
         }
 
-        // boss is coming
+        // Boss is coming
         Vector3 spawnPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z + 5);
         GameObject boss = Instantiate(bossPrefab, spawnPosition, Quaternion.identity);
         // TODO -> tell that he is the boss
@@ -49,8 +51,12 @@ public class BossPillarInteraction : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            playersInRangeCount++;
-            isPlayerInRange = true;
+            PlayerBehaviour playerInRange = other.GetComponent<PlayerBehaviour>();
+            if (playerInRange != null)
+            {
+                nearbyPlayers.Add(playerInRange); // add player to collection
+                isPlayerInRange = true;
+            }
         }
     }
 
@@ -58,11 +64,14 @@ public class BossPillarInteraction : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            playersInRangeCount--;
-
-            if (playersInRangeCount <= 0)
+            PlayerBehaviour playerInRange = other.GetComponent<PlayerBehaviour>();
+            if (playerInRange != null && nearbyPlayers.Contains(playerInRange))
             {
-                isPlayerInRange = false;
+                nearbyPlayers.Remove(playerInRange); // remove player from collection
+                if (nearbyPlayers.Count == 0)
+                {
+                    isPlayerInRange = false;
+                }
             }
         }
     }

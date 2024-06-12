@@ -1,11 +1,13 @@
 using _2Scripts.Manager;
 using NaughtyAttributes;
 using UnityEngine;
+using System.Collections.Generic;
+using _2Scripts.Entities.Player;
 
 public class PortalActivation : MonoBehaviour
 {
     private bool isPlayerInRange = false;
-    private int playersInRangeCount = 0;
+    private HashSet<PlayerBehaviour> nearbyPlayers = new HashSet<PlayerBehaviour>();
     [SerializeField] private GameObject particleActivation;
 
     void Update()
@@ -39,8 +41,12 @@ public class PortalActivation : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            playersInRangeCount++;
-            isPlayerInRange = true;
+            PlayerBehaviour playerInRange = other.GetComponent<PlayerBehaviour>();
+            if (playerInRange != null)
+            {
+                nearbyPlayers.Add(playerInRange); // add player to the collection
+                isPlayerInRange = true;
+            }
         }
     }
 
@@ -48,11 +54,14 @@ public class PortalActivation : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            playersInRangeCount--;
-
-            if (playersInRangeCount <= 0)
+            PlayerBehaviour playerInRange = other.GetComponent<PlayerBehaviour>();
+            if (playerInRange != null && nearbyPlayers.Contains(playerInRange))
             {
-                isPlayerInRange = false;
+                nearbyPlayers.Remove(playerInRange); // remove player from the collection
+                if (nearbyPlayers.Count == 0)
+                {
+                    isPlayerInRange = false;
+                }
             }
         }
     }

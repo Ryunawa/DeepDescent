@@ -11,8 +11,6 @@ public class ShopSystem : MonoBehaviour
     public KeyCode openShopKey = KeyCode.E;
     public KeyCode closeShopKey = KeyCode.Escape;
     private bool isNearShop = false;
-    private PlayerBehaviour currentPlayer;
-    private int playersInRangeCount = 0;
     private HashSet<PlayerBehaviour> nearbyPlayers = new HashSet<PlayerBehaviour>();
 
     [SerializeField] private GameObject itemUIPrefab; // Prefab for ItemUI
@@ -89,15 +87,18 @@ public class ShopSystem : MonoBehaviour
 
     void Update()
     {
-        if (!isNearShop || currentPlayer == null) return;
+        if (!isNearShop) return;
 
-        if (Input.GetKeyDown(openShopKey))
+        foreach (var player in nearbyPlayers)
         {
-            OpenShop(currentPlayer);
-        }
-        else if (Input.GetKeyDown(closeShopKey))
-        {
-            CloseShop(currentPlayer);
+            if (Input.GetKeyDown(openShopKey))
+            {
+                OpenShop(player);
+            }
+            else if (Input.GetKeyDown(closeShopKey))
+            {
+                CloseShop(player);
+            }
         }
     }
 
@@ -129,10 +130,10 @@ public class ShopSystem : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PlayerBehaviour currentPlayer = other.GetComponentInChildren<PlayerBehaviour>();
-            if (currentPlayer != null)
+            PlayerBehaviour playerInRange = other.GetComponentInChildren<PlayerBehaviour>();
+            if (playerInRange != null)
             {
-                nearbyPlayers.Add(currentPlayer); // add player to the collection
+                nearbyPlayers.Add(playerInRange); // add player to the collection
                 isNearShop = true;
                 Debug.Log("Press " + openShopKey.ToString() + " to open shop.");
             }
@@ -147,10 +148,10 @@ public class ShopSystem : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PlayerBehaviour currentPlayer = other.GetComponentInChildren<PlayerBehaviour>();
-            if (currentPlayer != null && nearbyPlayers.Contains(currentPlayer))
+            PlayerBehaviour playerInRange = other.GetComponentInChildren<PlayerBehaviour>();
+            if (playerInRange != null && nearbyPlayers.Contains(playerInRange))
             {
-                nearbyPlayers.Remove(currentPlayer); // remove player of the collection
+                nearbyPlayers.Remove(playerInRange); // remove player from the collection
                 if (nearbyPlayers.Count == 0)
                 {
                     isNearShop = false;

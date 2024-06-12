@@ -1,3 +1,4 @@
+using _2Scripts.Entities.Player;
 using _2Scripts.Manager;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using UnityEngine;
 public class ExitDoor : MonoBehaviour
 {
     private bool isPlayerInRange = false;
-    private int playersInRangeCount = 0;
+    private HashSet<PlayerBehaviour> nearbyPlayers = new HashSet<PlayerBehaviour>();
 
     void Update()
     {
@@ -26,8 +27,12 @@ public class ExitDoor : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            playersInRangeCount++;
-            isPlayerInRange = true;
+            PlayerBehaviour playerInRange = other.GetComponent<PlayerBehaviour>();
+            if (playerInRange != null)
+            {
+                nearbyPlayers.Add(playerInRange); // add player to the collection
+                isPlayerInRange = true;
+            }
         }
     }
 
@@ -35,11 +40,14 @@ public class ExitDoor : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            playersInRangeCount--;
-
-            if (playersInRangeCount <= 0)
+            PlayerBehaviour playerInRange = other.GetComponent<PlayerBehaviour>();
+            if (playerInRange != null && nearbyPlayers.Contains(playerInRange))
             {
-                isPlayerInRange = false;
+                nearbyPlayers.Remove(playerInRange); // remove player from the collection
+                if (nearbyPlayers.Count == 0)
+                {
+                    isPlayerInRange = false;
+                }
             }
         }
     }
