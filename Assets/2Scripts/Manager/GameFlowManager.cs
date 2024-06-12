@@ -18,12 +18,8 @@ namespace _2Scripts.Manager
 
         private void Start()
         {
-            timer = FindObjectOfType<Timer.Timer>();
-        }
-
-        private void OnEnable()
-        {
             MultiManager.instance.levelGenerator.dungeonGeneratedEvent.AddListener(StartGame);
+            timer = FindObjectOfType<Timer.Timer>();
         }
 
         public void SetGameState(GameState state)
