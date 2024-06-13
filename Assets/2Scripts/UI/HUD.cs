@@ -33,14 +33,14 @@ namespace _2Scripts.UI
             
             _gameFlowManager.OnNextLevelEvent.AddListener(arg0 =>
             {
-                SetLevelNumber(_gameFlowManager.timer.GetTimerElapsedTime());
+                SetLevelNumber(_gameFlowManager.Timer.GetTimerElapsedTime());
                 UpdateDifficultyColor();
             });
         }
 
         private void Update()
         {
-            SetTimer(GameFlowManager.instance.timer.GetTimerElapsedTime());
+            SetTimer(GameFlowManager.instance.Timer.GetTimerElapsedTime());
         }
 
         public bool SetHp(float value)

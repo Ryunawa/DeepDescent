@@ -32,7 +32,7 @@ namespace _2Scripts.Manager
            ClearPreviousDungeon();
            
            // Set bool depending on the current dungeon level
-           MultiManager.instance.levelGenerator.spawnShop = GameFlowManager.instance.currLevel % 4 == 0;
+           MultiManager.instance.levelGenerator.spawnShop = GameFlowManager.instance.CurrLevel % 4 == 0;
                
            // Start the generation
            MultiManager.instance.levelGenerator.StartGeneration();
