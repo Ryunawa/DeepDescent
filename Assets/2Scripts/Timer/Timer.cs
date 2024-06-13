@@ -10,7 +10,7 @@ namespace _2Scripts.Timer
 
         private void Start()
         {
-            StartTimer();
+            _timer = new Stopwatch();
         }
 
         /// <summary>
