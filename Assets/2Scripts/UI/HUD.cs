@@ -25,11 +25,15 @@ namespace _2Scripts.UI
         [SerializeField] private Image[] quickSlotsImages = new Image[3];
         [SerializeField] private TextMeshProUGUI[] quickSlotsQuantity = new TextMeshProUGUI[3];
 
+        private GameFlowManager _gameFlowManager;
+
         private void Start()
         {
-            GameFlowManager.instance.OnNextLevelEvent.AddListener(arg0 =>
+            _gameFlowManager = GameFlowManager.instance;
+            
+            _gameFlowManager.OnNextLevelEvent.AddListener(arg0 =>
             {
-                SetLevelNumber(GameFlowManager.instance.timer.GetTimerElapsedTime());
+                SetLevelNumber(_gameFlowManager.timer.GetTimerElapsedTime());
                 UpdateDifficultyColor();
             });
         }

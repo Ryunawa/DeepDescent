@@ -16,7 +16,7 @@ MonoImporter:
   - roomsParent: {instanceID: 0}
   - doorsParent: {instanceID: 0}
   - propsParent: {instanceID: 0}
-  executionOrder: -2
+  executionOrder: -50
   icon: {instanceID: 0}
   userData: 
   assetBundleName: 

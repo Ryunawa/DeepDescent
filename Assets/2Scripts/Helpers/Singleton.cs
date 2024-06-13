@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using _2Scripts.UI;
 using UnityEngine;
 
 public class Singleton<T> : MonoBehaviour
@@ -25,6 +26,11 @@ public class Singleton<T> : MonoBehaviour
 			if(_instance == null)
 				_instance = new GameObject(typeof(T).Name + " " + nameof(Singleton<T>)).AddComponent<T>();
 
+			if (typeof(T) == typeof(HUD))
+			{
+				Debug.Log("HUD CALL");
+			}
+			
 			return _instance;
 		}
 		private set
