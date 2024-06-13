@@ -35,18 +35,42 @@ namespace _2Scripts.Manager
         }
 
         /// <summary>
-    ///     Play a sound once
+        ///     Play a sound once
         /// </summary>
-        /// <param name="pName">The name associated to the sound to play</param>
-        public void PlaySfx(string pName)
+        /// <param name="pSoundName">The name associated to the sound to play</param>
+        public void PlaySfx(string pSoundName)
         {
-            Sound s = Array.Find(sfxSounds, x => x.name == pName);
+            Sound s = Array.Find(sfxSounds, x => x.name == pSoundName);
 
             if (s == null) 
                 return;
             
             sfxSource.clip = s.clip;
             sfxSource.PlayOneShot(s.clip);
+        }
+        
+        /// <summary>
+        ///     To play a spatial sound
+        /// </summary>
+        /// <param name="pSoundName">Name of the sound to play</param>
+        /// <param name="pScript">The origin from where to play the sound</param>
+        /// <param name="pMinDistance">Min distance where the sound is at his max volume</param>
+        /// <param name="pMaxDistance">Max distance where the sound can be heard</param>
+        public void PlaySfx(string pSoundName, Object pScript, float pMinDistance, float pMaxDistance)
+        {
+            Sound s = Array.Find(sfxSounds, x => x.name == pSoundName);
+
+            if (s == null) 
+                return;
+            
+            AudioSource objectAudioSource = pScript.GetComponent<AudioSource>() ?? pScript.gameObject.AddComponent<AudioSource>();
+            
+            objectAudioSource.clip = s.clip;
+            objectAudioSource.spatialBlend = 1;
+            objectAudioSource.minDistance = pMinDistance;
+            objectAudioSource.maxDistance = pMaxDistance;
+                
+            objectAudioSource.PlayOneShot(s.clip);
         }
 
         /// <summary>
@@ -93,7 +117,7 @@ namespace _2Scripts.Manager
         }
         
         /// <summary>
-        /// Load a audio setting depending on the name
+        /// Load an audio setting depending on the name
         /// </summary>
         /// <param name="pKeyName">value get from the saved parameter in the player preferences</param>
         /// <returns></returns>
