@@ -395,12 +395,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4257694910065797000}
+  - component: {fileID: 3165131760794215581}
   - component: {fileID: 1020828151107491644}
   - component: {fileID: 8255968155895199542}
   - component: {fileID: 7083750114982867120}
-  - component: {fileID: 3165131760794215581}
   m_Layer: 5
-  m_Name: InvUI
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -429,6 +429,48 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &3165131760794215581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895331382670999333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6a67715b1904bdf978e633ccf750aac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemPrefab: {fileID: 3875617415449761621, guid: 2ef9ee2a307a27644a38ceef8a7dd2a7,
+    type: 3}
+  inventoryUI: {fileID: 3185045222109188510}
+  shopUI: {fileID: 7748307338453079040}
+  inventoryRoot: {fileID: 7730911075738568613}
+  inventoryBG: {fileID: 7624498993673515975}
+  shopRoot: {fileID: 6757644133901360359}
+  weaponUIParent: {fileID: 104597038853384836}
+  armorUIParent: {fileID: 4834529107374626861}
+  potionUIParent: {fileID: 501639531835784635}
+  parchmentUIParent: {fileID: 1181757188692285624}
+  shopBG: {fileID: 5182570498436011801}
+  inventoryMove: {fileID: 5873232587908050133}
+  shopMove: {fileID: 439214071032202151}
+  itemDetailUI: {fileID: 4256251591605143841}
+  _hud: {fileID: 2405811609209024965}
+  Head: {fileID: 6988532606635465625}
+  Chest: {fileID: 7379364912087667537}
+  Legs: {fileID: 2084909207031821872}
+  Feet: {fileID: 2350107850820153917}
+  Rings:
+  - {fileID: 7202950178754289673}
+  - {fileID: 5274983146732773342}
+  MainHand: {fileID: 4751101477481389950}
+  OffHand: {fileID: 4107898642348872652}
+  quickSlots:
+  - {fileID: 4124961229714225011}
+  - {fileID: 2528796524203356049}
+  - {fileID: 832470968616279877}
+  ListShop: []
 --- !u!223 &1020828151107491644
 Canvas:
   m_ObjectHideFlags: 0
@@ -492,47 +534,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &3165131760794215581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 895331382670999333}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6a67715b1904bdf978e633ccf750aac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ItemPrefab: {fileID: 3875617415449761621, guid: 2ef9ee2a307a27644a38ceef8a7dd2a7,
-    type: 3}
-  inventoryUI: {fileID: 3185045222109188510}
-  shopUI: {fileID: 7748307338453079040}
-  inventoryRoot: {fileID: 7730911075738568613}
-  inventoryBG: {fileID: 7624498993673515975}
-  shopRoot: {fileID: 6757644133901360359}
-  weaponUIParent: {fileID: 104597038853384836}
-  armorUIParent: {fileID: 4834529107374626861}
-  potionUIParent: {fileID: 501639531835784635}
-  parchmentUIParent: {fileID: 1181757188692285624}
-  shopBG: {fileID: 5182570498436011801}
-  inventoryMove: {fileID: 5873232587908050133}
-  shopMove: {fileID: 439214071032202151}
-  itemDetailUI: {fileID: 4256251591605143841}
-  Head: {fileID: 6988532606635465625}
-  Chest: {fileID: 7379364912087667537}
-  Legs: {fileID: 2084909207031821872}
-  Feet: {fileID: 2350107850820153917}
-  Rings:
-  - {fileID: 7202950178754289673}
-  - {fileID: 5274983146732773342}
-  MainHand: {fileID: 4751101477481389950}
-  OffHand: {fileID: 4107898642348872652}
-  quickSlots:
-  - {fileID: 4124961229714225011}
-  - {fileID: 2528796524203356049}
-  - {fileID: 832470968616279877}
-  ListShop: []
 --- !u!1 &928450035511879148
 GameObject:
   m_ObjectHideFlags: 0
@@ -7047,6 +7048,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8038b9866e4ef924989c5b801b03e9b9, type: 3}
+--- !u!114 &2405811609209024965 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3341447541427238911, guid: 8038b9866e4ef924989c5b801b03e9b9,
+    type: 3}
+  m_PrefabInstance: {fileID: 1097783456235341370}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c685af0583c53ec4b8989a6834bcb76a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7522498718782206040 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7447076393896998498, guid: 8038b9866e4ef924989c5b801b03e9b9,

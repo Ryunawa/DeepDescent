@@ -16,7 +16,7 @@ namespace _2Scripts.TP
         {
             if (isPlayerInRange && Input.GetKeyDown(KeyCode.E))
             {
-                if (GameFlowManager.instance.CurrentState == GameFlowManager.GameState.BossDefeated)
+                if (GameManager.GetManager<GameFlowManager>().CurrentState == GameFlowManager.LevelState.BossDefeated)
                 {
                     ActivatePortal();
                 }
@@ -26,7 +26,7 @@ namespace _2Scripts.TP
         [Button]
         void DebugDefeatBoss()
         {
-            GameFlowManager.instance.SetGameState(GameFlowManager.GameState.BossDefeated);
+            GameManager.GetManager<GameFlowManager>().SetGameState(GameFlowManager.LevelState.BossDefeated);
             // visual effect
             particleActivation.SetActive(true);
             particleActivation.GetComponent<ParticleSystem>().Play();
@@ -34,9 +34,9 @@ namespace _2Scripts.TP
 
         private void ActivatePortal()
         {
-            GameFlowManager.instance.SetGameState(GameFlowManager.GameState.BossNotDiscovered);
+            GameManager.GetManager<GameFlowManager>().SetGameState(GameFlowManager.LevelState.BossNotDiscovered);
             // Teleportation
-            GameFlowManager.instance.LoadNextLevel();
+            GameManager.GetManager<GameFlowManager>().LoadNextLevel();
         }
 
         private void OnTriggerEnter(Collider other)

@@ -1,10 +1,11 @@
 using System;
 using _2Scripts.Audio;
+using _2Scripts.Interfaces;
 using UnityEngine;
 
 namespace _2Scripts.Manager
 {
-    public class AudioManager : Singleton<AudioManager>
+    public class AudioManager : GameManagerSync<AudioManager>
     {
         [SerializeField] private Sound[] musicSounds, sfxSounds;
         [SerializeField] private AudioSource musicSource, sfxSource;

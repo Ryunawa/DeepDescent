@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using _2Scripts.Interfaces;
 using _2Scripts.ProceduralGeneration;
 using NaughtyAttributes;
 using Unity.Netcode;
@@ -20,10 +21,8 @@ using DataObject = Unity.Services.Lobbies.Models.DataObject;
 
 namespace _2Scripts.Manager
 {
-	public class MultiManager : Singleton<MultiManager>
+	public class MultiManager : MonoBehaviour
 	{
-		[SerializeField] private Canvas mainMenu;
-		[SerializeField] private Camera mainMenuCam;
 		[SerializeField] private float heartBeatFrequency = 15f;
 
 		private string _playerName;
@@ -31,7 +30,7 @@ namespace _2Scripts.Manager
 		private bool _IsOwnerOfLobby = false;
 		private ILobbyEvents _lobbyEvents;
 		private LobbyEventCallbacks _lobbyEventCallbacks = new LobbyEventCallbacks();
-
+		
 		private string ServerIp;
 		private ushort ServerPort;
 
@@ -42,9 +41,6 @@ namespace _2Scripts.Manager
 		public UnityEvent CharacterChosen;
 		public UnityEvent init;
 		public NetworkObject playerNetworkObject;
-
-		public LevelGenerator levelGenerator;
-		public NextLevelManager nextLevelManager;
 	
 		public string PlayerName
 		{
@@ -57,9 +53,9 @@ namespace _2Scripts.Manager
 			get => _lobby;
 		}
 
-		protected override async void OnDestroy()
+		protected async void OnDestroy()
 		{
-			base.OnDestroy();
+			
 
 			if(_lobby != null)
 			{
@@ -71,7 +67,7 @@ namespace _2Scripts.Manager
 		{
 			return _IsOwnerOfLobby;
 		}
-
+		
 	
 		/// <summary>
 		/// This method initiates the unity services and authenticates the user. It also adds listeners for the lobby events
@@ -133,7 +129,7 @@ namespace _2Scripts.Manager
 
 			if (_lobby.Data["startGame"].Value != "0" && !_IsOwnerOfLobby)
 			{
-				MultiManager.instance.JoinRelay(_lobby.Data["startGame"].Value);
+				JoinRelay(_lobby.Data["startGame"].Value);
 			}
 		
 			refreshUI.Invoke(true, false);
@@ -190,7 +186,7 @@ namespace _2Scripts.Manager
 			
 				if (_lobby.Data["startGame"].Value != "0" && !_IsOwnerOfLobby)
 				{
-					MultiManager.instance.JoinRelay(_lobby.Data["startGame"].Value);
+					JoinRelay(_lobby.Data["startGame"].Value);
 				}
 			}
 			catch(LobbyServiceException e)
@@ -290,7 +286,7 @@ namespace _2Scripts.Manager
 				switch(ex.Reason)
 				{
 					case LobbyExceptionReason.AlreadySubscribedToLobby:
-						Debug.LogWarning($"Already subscribed to lobby[{MultiManager.instance.Lobby.Id}]. We did not need to try and subscribe again. Exception Message: {ex.Message}");
+						Debug.LogWarning($"Already subscribed to lobby[{Lobby.Id}]. We did not need to try and subscribe again. Exception Message: {ex.Message}");
 						break;
 					case LobbyExceptionReason.SubscriptionToLobbyLostWhileBusy:
 						Debug.LogError($"Subscription to lobby events was lost while it was busy trying to subscribe. Exception Message: {ex.Message}");
@@ -428,8 +424,8 @@ namespace _2Scripts.Manager
 		/// Async method to changes player values in lobby
 		/// </summary>
 		/// <param name="characterID"></param>
-		/// <param name="isReady"></param>
-		public async void UpdatePlayer(int characterID, bool isReady)
+		/// <param name="playerID"></param>
+		public async void UpdatePlayer(int characterID, string playerID)
 		{
 			try
 			{
@@ -444,22 +440,14 @@ namespace _2Scripts.Manager
 						}
 					}
 				};
-			
-				
-				while (!(UnityServices.State == ServicesInitializationState.Initialized && AuthenticationService.Instance.IsSignedIn)) 
-				{ 
-					await Task.Delay(100);
-				}
-				
-				string playerId = AuthenticationService.Instance.PlayerId;
 
 				if (_lobby == null)
 				{
-					await SendLobbyUpdate(playerId, options);
+					await SendLobbyUpdate(playerID, options);
 				}
 				else
 				{
-					_lobby = await LobbyService.Instance.UpdatePlayerAsync(_lobby.Id, playerId, options);
+					_lobby = await LobbyService.Instance.UpdatePlayerAsync(_lobby.Id, playerID, options);
 					CharacterChosen.Invoke();
 				}
 			}
@@ -496,7 +484,7 @@ namespace _2Scripts.Manager
 		/// <returns>int</returns>
 		public int GetSelectedCharacterID()
 		{
-			Player player = instance.Lobby.Players.Find(x => x.Data["Name"].Value == instance.PlayerName);
+			Player player = Lobby.Players.Find(x => x.Data["Name"].Value == PlayerName);
 
 			return Convert.ToInt32(player.Data["CharacterID"].Value);
 		}
@@ -544,9 +532,9 @@ namespace _2Scripts.Manager
 			
 				LoadGameScene();
 
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-				WaitForInstantiatedPlayerObject();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+// #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+// 				WaitForInstantiatedPlayerObject();
+// #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
 				return joinCode;
 
@@ -562,7 +550,7 @@ namespace _2Scripts.Manager
 		/// <summary>
 		/// Used by host to create and join Relay. This also updates lobby with Relay code
 		/// </summary>
-		private async void StartGame()
+		public async void StartGame()
 		{
 			if (_IsOwnerOfLobby)
 			{
@@ -599,11 +587,9 @@ namespace _2Scripts.Manager
 				RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
 				NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
 				NetworkManager.Singleton.StartClient();
-
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-				WaitForInstantiatedPlayerObject();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-			
+				
+				//WaitForInstantiatedPlayerObject();
+				
 				LoadGameScene();
 
 			}
@@ -615,51 +601,29 @@ namespace _2Scripts.Manager
 		
 		}
 
-		private async Task WaitForInstantiatedPlayerObject()
-		{
-			while (NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject() == null)
-			{
-				await Task.Delay(100);
-			}
-			playerNetworkObject = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
-
-			while (!FindObjectOfType<LevelGenerator>())
-			{
-				await Task.Delay(100);
-			}
-			levelGenerator = FindObjectOfType<LevelGenerator>();
-			
-			while (!FindObjectOfType<NextLevelManager>())
-			{
-				await Task.Delay(100);
-			}
-			nextLevelManager = FindObjectOfType<NextLevelManager>();
-			
-		}
+		// private async Task WaitForInstantiatedPlayerObject()
+		// {
+		// 	while (NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject() == null)
+		// 	{
+		// 		await Task.Delay(100);
+		// 	}
+		// 	playerNetworkObject = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
+		// }
 	
 		/// <summary>
 		/// This is used by host to change scenes for everyone joining including himself.
 		/// </summary>
 		private void LoadGameScene()
 		{
-			SceneManager.instance.Init();
+			GameManager.GetManager<SceneManager>().Init();
+			
 			if (_IsOwnerOfLobby)
 			{
-				Scenes sceneName;
-				if (PlayerPrefs.GetInt("Level", -1) == -1)
-				{
-					sceneName = Scenes.Level;
-				}
-				else
-				{
-					sceneName = Scenes.SafeZone;
-				}
-			
-				SceneManager.instance.LoadScene(sceneName);
+				GameManager.GetManager<SceneManager>().LoadScene(Scenes.Level);
 			}
 
-			SceneManager.instance.ActivateLoadingScreen();
-
+			GameManager.GetManager<SceneManager>().ActivateLoadingScreen();
+			UnityEngine.SceneManagement.SceneManager.sceneLoaded += (arg0, mode) => GameManager.instance.ChangeGameState(GameState.Generating); 
 		}
 	
 		public void SpawnNetworkObject(NetworkObject objectToSpawn, Vector3 position, Quaternion rotation)

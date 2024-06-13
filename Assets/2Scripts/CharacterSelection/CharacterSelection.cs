@@ -1,5 +1,6 @@
 using _2Scripts.Manager;
 using TMPro;
+using Unity.Services.Authentication;
 using UnityEngine;
 using UnitySceneManager = UnityEngine.SceneManagement;
 using SceneManager = _2Scripts.Manager.SceneManager;
@@ -13,7 +14,7 @@ public class CharacterSelection : MonoBehaviour
     private void Start()
     {
         SetCharacterNameUI();
-        SceneManager.instance.DeactivateLoadingScreen();
+        GameManager.GetManager<SceneManager>().DeactivateLoadingScreen();
     }
 
     public void NextCharacter()
@@ -43,8 +44,8 @@ public class CharacterSelection : MonoBehaviour
     public void Ready()
     {
         PlayerPrefs.SetInt("selectedCharacter", selectedCharacter);
-        SceneManager.instance.ActivateLoadingScreen();
-        MultiManager.instance.UpdatePlayer(selectedCharacter, true);
+        GameManager.GetManager<SceneManager>().ActivateLoadingScreen();
+        GameManager.GetManager<MultiManager>().UpdatePlayer(selectedCharacter, AuthenticationService.Instance.PlayerId);
 
         UnitySceneManager.SceneManager.UnloadSceneAsync(Scenes.CharacterSelection.ToString());
     }

@@ -466,7 +466,7 @@ namespace _2Scripts.Entities.AI
         {
             if (isBoss)
             {
-                GameFlowManager.Instance.SetGameState(GameFlowManager.GameState.BossDefeated);
+                GameFlowManager.Instance.SetGameState(GameFlowManager.LevelState.BossDefeated);
             }
 
             // potential reward?

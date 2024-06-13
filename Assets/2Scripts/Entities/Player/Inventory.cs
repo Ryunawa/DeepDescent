@@ -3,6 +3,7 @@ using _2Scripts.Save;
 using NaughtyAttributes;
 using System;
 using System.Collections.Generic;
+using _2Scripts.Interfaces;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -20,7 +21,7 @@ public struct InventoryObject
     }
 }
 
-public class Inventory : NetworkBehaviour
+public class Inventory : GameManagerSync<Inventory>
 {
     [Header("Options")]
     [SerializeField] private bool overrideWithSavedInventory;
@@ -49,11 +50,14 @@ public class Inventory : NetworkBehaviour
 
     public StatComponent stat;
 
-    private void Start()
+    protected override void OnGameManagerChangeState(GameState gameState)
     {
-        if (overrideWithSavedInventory)
+        if (gameState == GameState.InLevel)
         {
-            SaveSystem.LoadInventory();
+            if (overrideWithSavedInventory)
+            {
+                SaveSystem.LoadInventory();
+            }
         }
     }
 
@@ -61,7 +65,7 @@ public class Inventory : NetworkBehaviour
     {
         if (InventoryItems.Count + 1 <= InventorySpace)  // 0 is counted
         {
-            var item = ItemManager.instance.GetItem(itemID);
+            var item = GameManager.GetManager<ItemManager>().GetItem(itemID);
             if (item.Stackable)
             {
                 int indexOfItem = InventoryItems.FindIndex(x => x.ID == itemID);
@@ -84,7 +88,7 @@ public class Inventory : NetworkBehaviour
 
             ActivateItemVisibilityInventory(item);
             SaveSystem.Save();
-            InventoryUIManager.instance.DrawInventory();
+            GameManager.GetManager<InventoryUIManager>().DrawInventory();
             return true;
         }
         Debug.Log("[Inventory::AddToInventory()]; - Inventory is full");
@@ -110,7 +114,7 @@ public class Inventory : NetworkBehaviour
                 InventoryItems.RemoveAt(itemPos);
                 Debug.Log($"[Inventory::DropFromInventory() | SellItem] - Dropped/Sold item at pos {itemPos}.No remaining item.");
             }
-            DeactivateItemVisibilityInventory(ItemManager.instance.GetItem(newInventoryObject.ID));
+            DeactivateItemVisibilityInventory(GameManager.GetManager<ItemManager>().GetItem(newInventoryObject.ID));
             SaveSystem.Save();
             return;
         }
@@ -136,7 +140,7 @@ public class Inventory : NetworkBehaviour
                 InventoryItems.RemoveAt(itemPos);
                 Debug.Log($"[Inventory::DropFromInventory()] - Dropped item at pos {itemPos}.No remaining item.");
             }
-            DeactivateItemVisibilityInventory(ItemManager.instance.GetItem(newInventoryObject.ID));
+            DeactivateItemVisibilityInventory(GameManager.GetManager<ItemManager>().GetItem(newInventoryObject.ID));
             SaveSystem.Save();
             return;
         }
@@ -148,7 +152,7 @@ public class Inventory : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void SpawnInventoryItemsRpc(int id)
     {
-        NetworkObject o = Instantiate(ItemManager.instance.GetItemNetworkObject(id), transform.position, Quaternion.identity);
+        NetworkObject o = Instantiate(GameManager.GetManager<ItemManager>().GetItemNetworkObject(id), transform.position, Quaternion.identity);
         o.Spawn();
     }
 
@@ -157,7 +161,7 @@ public class Inventory : NetworkBehaviour
         if (InventoryItems.Count <= InventorySpace)
         {
             InventoryObject newInventoryObject = InventoryItems[itemPos];
-            ConsumableItem realItem = ItemManager.instance.GetItem(newInventoryObject.ID) as ConsumableItem;
+            ConsumableItem realItem = GameManager.GetManager<ItemManager>().GetItem(newInventoryObject.ID) as ConsumableItem;
             if (realItem)
             {
                 realItem.Use(gameObject);
@@ -172,7 +176,7 @@ public class Inventory : NetworkBehaviour
                     InventoryItems.RemoveAt(itemPos);
                     Debug.Log($"[Inventory::UseFromInventory()] - Used item at pos {itemPos}.No remaining item.");
                 }
-                DeactivateItemVisibilityInventory(ItemManager.instance.GetItem(newInventoryObject.ID));
+                DeactivateItemVisibilityInventory(GameManager.GetManager<ItemManager>().GetItem(newInventoryObject.ID));
                 SaveSystem.Save();
                 return;
             }
@@ -193,7 +197,7 @@ public class Inventory : NetworkBehaviour
         if (InventoryItems.Count <= InventorySpace)
         {
             InventoryObject newInventoryObject = InventoryItems[itemPos];
-            EquippableItem realItem = ItemManager.instance.GetItem(newInventoryObject.ID) as EquippableItem;
+            EquippableItem realItem = GameManager.GetManager<ItemManager>().GetItem(newInventoryObject.ID) as EquippableItem;
             if (realItem)
             {
                 (bool, List<EquippableItem>) result = realItem.Equip(this, OffSlot);
@@ -271,7 +275,7 @@ public class Inventory : NetworkBehaviour
 
     public void RemoveFromEquipment(InventoryObject item, bool offHand = false)
     {
-        switch (ItemManager.instance.GetItem(item.ID))
+        switch (GameManager.GetManager<ItemManager>().GetItem(item.ID))
         {
             case ArmorItem armorItem:
 
@@ -389,7 +393,7 @@ public class Inventory : NetworkBehaviour
         bool isOffHand = false;
         for (int i = 0; i < ids.Count; i++)
         {
-            EquippableItem item = ItemManager.instance.GetItem(ids[i]) as EquippableItem;
+            EquippableItem item = GameManager.GetManager<ItemManager>().GetItem(ids[i]) as EquippableItem;
             if (i == 5 || i ==7)
             {
                 isOffHand = true;

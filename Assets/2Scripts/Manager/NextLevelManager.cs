@@ -1,22 +1,26 @@
 using System;
 using System.Threading.Tasks;
+using _2Scripts.Interfaces;
 using Unity.Netcode;
 using UnityEngine;
 
 namespace _2Scripts.Manager
 {
-    public class NextLevelManager : NetworkBehaviour
+    public class NextLevelManager : GameManagerSync<NextLevelManager>
     {
-        private void OnEnable()
-        {
-            GameFlowManager.instance.OnNextLevelEvent.AddListener(GenerateNewDungeon);
-        }
-
         private void OnDisable()
         {
-            GameFlowManager.instance.OnNextLevelEvent.RemoveListener(GenerateNewDungeon);
+            GameManager.GetManager<GameFlowManager>().OnNextLevelEvent.RemoveListener(GenerateNewDungeon);
         }
 
+        protected override void OnGameManagerChangeState(GameState gameState)
+        {
+            if (gameState!= GameState.InLevel)return;
+            
+            GameManager.instance.nextLevelManager = this;
+            GameManager.GetManager<GameFlowManager>().OnNextLevelEvent.AddListener(GenerateNewDungeon);
+        }
+        
         /// <summary>
         /// Generate a new dungeon and clear the previous one
         /// </summary>
@@ -26,16 +30,16 @@ namespace _2Scripts.Manager
            ShowLoadingScreenClientRpc();
            
            // Stop the spawner
-           EnemiesSpawnerManager.instance.StopSpawning();
+           GameManager.GetManager<EnemiesSpawnerManager>().StopSpawning();
            
            // Remove All the previous generated room (props too)
            ClearPreviousDungeon();
            
            // Set bool depending on the current dungeon level
-           MultiManager.instance.levelGenerator.spawnShop = GameFlowManager.instance.currLevel % 4 == 0;
+           GameManager.instance.levelGenerator.spawnShop = GameManager.GetManager<GameFlowManager>().currLevel % 4 == 0;
                
            // Start the generation
-           MultiManager.instance.levelGenerator.StartGeneration();
+           GameManager.instance.levelGenerator.StartGeneration();
         }
 
         /// <summary>
@@ -44,7 +48,7 @@ namespace _2Scripts.Manager
         [Rpc(SendTo.ClientsAndHost)]
         private void ShowLoadingScreenClientRpc()
         {
-            SceneManager.instance.ActivateLoadingScreen();
+            GameManager.GetManager<SceneManager>().ActivateLoadingScreen();
         }
         
         /// <summary>
@@ -52,19 +56,19 @@ namespace _2Scripts.Manager
         /// </summary>
         private async void ClearPreviousDungeon()
         {
-            foreach (var networkObjectChild in MultiManager.instance.levelGenerator.roomsParent1.GetComponentsInChildren<NetworkObject>())
+            foreach (var networkObjectChild in GameManager.instance.levelGenerator.roomsParent1.GetComponentsInChildren<NetworkObject>())
             {
-                if(networkObjectChild.gameObject != MultiManager.instance.levelGenerator.roomsParent1)
+                if(networkObjectChild.gameObject != GameManager.instance.levelGenerator.roomsParent1)
                     networkObjectChild.Despawn();
             }
-            foreach (var networkObjectChild in MultiManager.instance.levelGenerator.propsParent1.GetComponentsInChildren<NetworkObject>())
+            foreach (var networkObjectChild in GameManager.instance.levelGenerator.propsParent1.GetComponentsInChildren<NetworkObject>())
             {
-                if(networkObjectChild.gameObject != MultiManager.instance.levelGenerator.propsParent1)
+                if(networkObjectChild.gameObject != GameManager.instance.levelGenerator.propsParent1)
                     networkObjectChild.Despawn();
             }
-            foreach (var networkObjectChild in MultiManager.instance.levelGenerator.doorsParent1.GetComponentsInChildren<NetworkObject>())
+            foreach (var networkObjectChild in GameManager.instance.levelGenerator.doorsParent1.GetComponentsInChildren<NetworkObject>())
             {
-                if(networkObjectChild.gameObject != MultiManager.instance.levelGenerator.doorsParent1)
+                if(networkObjectChild.gameObject != GameManager.instance.levelGenerator.doorsParent1)
                     networkObjectChild.Despawn();
             }
             await Task.CompletedTask;

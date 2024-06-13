@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using _2Scripts.Entities.Player;
 using _2Scripts.Enum;
+using _2Scripts.Interfaces;
 using _2Scripts.UI;
 using NaughtyAttributes;
 using UnityEditor;
@@ -10,7 +11,7 @@ using static UnityEditor.Progress;
 
 namespace _2Scripts.Manager
 {
-    public class InventoryUIManager : Singleton<InventoryUIManager>
+    public class InventoryUIManager : GameManagerSync<InventoryUIManager>
     {
         [SerializeField] private ItemUI ItemPrefab;
         public GameObject inventoryUI;
@@ -26,6 +27,7 @@ namespace _2Scripts.Manager
         [SerializeField] private GameObject inventoryMove;
         [SerializeField] private GameObject shopMove;
         [SerializeField] private ItemDetailUI itemDetailUI;
+        [SerializeField] private HUD _hud;
         
         [Space, Header("Slots")]
         [SerializeField] private ItemUI Head;
@@ -53,6 +55,12 @@ namespace _2Scripts.Manager
         private List<ItemUI> ListUI = new List<ItemUI>();
         public List<ItemUI> ListShop = new List<ItemUI>();
         private bool _isOpened;
+        
+        public HUD HUD
+        {
+            get => _hud;
+            set => _hud = value;
+        }
 
         public Inventory Inventory => _inventory;
 
@@ -69,25 +77,24 @@ namespace _2Scripts.Manager
             get => shopMove;
             set => shopMove = value;
         }
-
-        private void Start()
+        
+        protected override void OnGameManagerChangeState(GameState gameState)
         {
             InputManager.instance.Inputs.Player.Inventory.started += context => ToggleInventory();
-
-            _inventory = MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().inventory;
-
+            
+            _inventory = GameManager.GetManager<MultiManager>().GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().inventory;
+            
             for (var index = 0; index < _inventory.QuickSlots.Length; index++)
             {
                 _inventory.QuickSlots[index] = new InventoryObject(-1, 0);
             }
-            
+                        
             SetupInventory(inventoryRoot, inventoryBG, ListUI);
             SetupInventory(shopRoot, shopBG, ListShop);
+                        
             
-
             inventoryUI.SetActive(false);
         }
-
 
 
         private void ToggleInventory()
@@ -150,12 +157,12 @@ namespace _2Scripts.Manager
                 if (slot.ID == -1)
                 {
                     quickSlots[i].Clear();
-                    HUD.instance.ClearQuickSlot(i);
+                    _hud.ClearQuickSlot(i);
                 }
                 else
                 {
                     quickSlots[i].Setup(_inventory.QuickSlots[i].ID, _inventory.QuickSlots[i].Amount);
-                    HUD.instance.SetQuickSlot(ItemManager.instance.GetItem(_inventory.QuickSlots[i].ID).InventoryIcon,_inventory.QuickSlots[i].Amount,i);
+                    _hud.SetQuickSlot(GameManager.GetManager<ItemManager>().GetItem(_inventory.QuickSlots[i].ID).InventoryIcon,_inventory.QuickSlots[i].Amount,i);
                 }
             }
         }

@@ -1,3 +1,4 @@
+using _2Scripts.Interfaces;
 using _2Scripts.Manager;
 using _2Scripts.Struct;
 using NaughtyAttributes;
@@ -6,7 +7,7 @@ using UnityEngine;
 namespace _2Scripts.Entities
 {
     
-    public class EnemyData : MonoBehaviour
+    public class EnemyData : GameManagerSync<EnemyData> 
 
     {
         public int roomSpawnedInID;
@@ -18,14 +19,18 @@ namespace _2Scripts.Entities
             set => _enemyStats = value;
         }
 
-        private void OnEnable()
-        {
-            DifficultyManager.instance.OnEnemiesStatsUpdatedEventHandler += UpdateStatsOnNewLevel;
-        }
-
         private void OnDestroy()
         {
-            DifficultyManager.instance.OnEnemiesStatsUpdatedEventHandler -= UpdateStatsOnNewLevel;
+            GameManager.GetManager<DifficultyManager>().OnEnemiesStatsUpdatedEventHandler -= UpdateStatsOnNewLevel;
+        }
+        
+        protected override void OnGameManagerChangeState(GameState gameState)
+        {
+            if (gameState == GameState.Generating)
+            {
+                GameManager.GetManager<DifficultyManager>().OnEnemiesStatsUpdatedEventHandler += UpdateStatsOnNewLevel;
+            }
+            
         }
 
         /// <summary>

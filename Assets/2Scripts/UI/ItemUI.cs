@@ -58,11 +58,11 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     public void Setup(int itemID, int quantity)
     {
         ItemID = itemID;
-        Border.color = InventoryUIManager.Colors[ItemManager.instance.GetItem(itemID).Rarity];
-        Image.sprite = ItemManager.instance.GetItem(itemID).InventoryIcon;
-        Price = ItemManager.instance.GetItem(itemID).SellValue;
+        Border.color = InventoryUIManager.Colors[GameManager.GetManager<ItemManager>().GetItem(itemID).Rarity];
+        Image.sprite = GameManager.GetManager<ItemManager>().GetItem(itemID).InventoryIcon;
+        Price = GameManager.GetManager<ItemManager>().GetItem(itemID).SellValue;
 
-        if (Quantity != null) Quantity.text = ItemManager.instance.GetItem(ItemID).Stackable ? quantity.ToString() : "";
+        if (Quantity != null) Quantity.text = GameManager.GetManager<ItemManager>().GetItem(ItemID).Stackable ? quantity.ToString() : "";
         Image.color = Color.white;
     }
 
@@ -85,11 +85,11 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
         if (draggedItemUI.isInventoryShop || draggedItemUI.IsShop)
         {
-            transform.SetParent(InventoryUIManager.instance.ShopMove.transform);
+            transform.SetParent(GameManager.GetManager<InventoryUIManager>().ShopMove.transform);
         }
         else
         {
-            transform.SetParent(InventoryUIManager.instance.InventoryMove.transform);
+            transform.SetParent(GameManager.GetManager<InventoryUIManager>().InventoryMove.transform);
         }
         Image.raycastTarget = false;
         Border.raycastTarget = false;
@@ -102,7 +102,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         if (IsDrop || !draggedItemUI.IsInventory && !draggedItemUI.IsShop && !draggedItemUI.IsEquipment || draggedItemUI.Price <= 0) return;
 
         transform.position = Input.mousePosition;
-        InventoryUIManager.instance.ItemDetailUI.ToggleUI(false);
+        GameManager.GetManager<InventoryUIManager>().ItemDetailUI.ToggleUI(false);
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -120,7 +120,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     public void OnDrop(PointerEventData eventData)
     {
-        Inventory inventory = InventoryUIManager.instance.Inventory;
+        Inventory inventory = GameManager.GetManager<InventoryUIManager>().Inventory;
         ItemUI draggedItemUI = eventData.pointerDrag.GetComponent<ItemUI>();
 
         if (draggedItemUI.ItemID == -1) return;
@@ -144,34 +144,34 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
                 Debug.Log(draggedItemUI.name + " sold for " + sellPrice + " gold.");
 
                 inventory.RemoveFromInventory(draggedItemUI.ItemPos);
-                InventoryUIManager.instance.DrawInventoryShop();
+                GameManager.GetManager<InventoryUIManager>().DrawInventoryShop();
             }
 
-            InventoryUIManager.instance.DrawInventory();
+            GameManager.GetManager<InventoryUIManager>().DrawInventory();
 
             return;
         }
 
         //drag and drop to equip potion in quick slot
-        if (isQuickSlot && ItemManager.instance.GetItem(draggedItemUI.ItemID).GetType().BaseType == typeof(ConsumableItem))
+        if (isQuickSlot && GameManager.GetManager<ItemManager>().GetItem(draggedItemUI.ItemID).GetType().BaseType == typeof(ConsumableItem))
         {
             int index = transform.GetSiblingIndex();
             
             inventory.EquipQuickSlot(index, draggedItemUI.ItemID);
-            InventoryUIManager.instance.DrawInventory();
+            GameManager.GetManager<InventoryUIManager>().DrawInventory();
         }
 
         if (draggedItemUI.isQuickSlot && isInventory)
         {
             inventory.UnEquipQuickSlot(draggedItemUI.ItemID);
-            InventoryUIManager.instance.DrawInventory();
+            GameManager.GetManager<InventoryUIManager>().DrawInventory();
         }
         
         // Equip item from inventory to equipment
         if (IsEquipment && !draggedItemUI.IsEquipment && !draggedItemUI.isShop)
         {
             inventory.EquipFromInventory(draggedItemUI.ItemPos, IsOffHand);
-            InventoryUIManager.instance.DrawInventory();
+            GameManager.GetManager<InventoryUIManager>().DrawInventory();
             return;
         }
 
@@ -179,9 +179,9 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         if (IsInventory && !draggedItemUI.IsInventory && !draggedItemUI.isShop)
         {
             inventory.UnequipItem(new List<(EquippableItem, bool)> {
-                (ItemManager.instance.GetItem(draggedItemUI.ItemID) as EquippableItem, draggedItemUI.IsOffHand)
+                (GameManager.GetManager<ItemManager>().GetItem(draggedItemUI.ItemID) as EquippableItem, draggedItemUI.IsOffHand)
             });
-            InventoryUIManager.instance.DrawInventory();
+            GameManager.GetManager<InventoryUIManager>().DrawInventory();
         }
 
         // Buying item from shop
@@ -196,7 +196,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
                     Debug.Log(draggedItemUI.name + " bought for " + draggedItemUI.Price + " gold.");
 
-                    InventoryUIManager.instance.DrawInventoryShop();
+                    GameManager.GetManager<InventoryUIManager>().DrawInventoryShop();
                 }
                 else
                 {
@@ -219,10 +219,10 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
         if (itemUI.ItemID == -1) return;
         
-        Item item = ItemManager.instance.GetItem(itemUI.ItemID);
+        Item item = GameManager.GetManager<ItemManager>().GetItem(itemUI.ItemID);
         
-        InventoryUIManager.instance.ItemDetailUI.Setup(item);
-        InventoryUIManager.instance.ItemDetailUI.ToggleUI(true);
+        GameManager.GetManager<InventoryUIManager>().ItemDetailUI.Setup(item);
+        GameManager.GetManager<InventoryUIManager>().ItemDetailUI.ToggleUI(true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -233,7 +233,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         
         if (itemUI.ItemID == -1) return;
         
-        InventoryUIManager.instance.ItemDetailUI.ToggleUI(false);
+        GameManager.GetManager<InventoryUIManager>().ItemDetailUI.ToggleUI(false);
     }
     
     public void OnPointerDown(PointerEventData eventData)
@@ -248,7 +248,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             clicked = 0;
             clicktime = 0;
 
-            Inventory inventory = InventoryUIManager.instance.Inventory;
+            Inventory inventory = GameManager.GetManager<InventoryUIManager>().Inventory;
             ItemUI itemUI = eventData.pointerEnter.gameObject.GetComponentInParent<ItemUI>();
             if (itemUI.ItemID == -1 ) return;
             
@@ -259,7 +259,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
                 {
                     inventory.UnequipItem(new List<(EquippableItem, bool)>
                     {
-                        (ItemManager.instance.GetItem(itemUI.ItemID) as EquippableItem, itemUI.IsOffHand)
+                        (GameManager.GetManager<ItemManager>().GetItem(itemUI.ItemID) as EquippableItem, itemUI.IsOffHand)
                     });
                 }
             }
@@ -268,7 +268,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             {
                 itemUI.ItemPos = itemUI.transform.GetSiblingIndex();
                             
-                Item item = ItemManager.instance.GetItem(itemUI.ItemID);
+                Item item = GameManager.GetManager<ItemManager>().GetItem(itemUI.ItemID);
 
                 switch (item)
                 {
@@ -290,8 +290,8 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             }
             
             
-            InventoryUIManager.instance.DrawInventory();
-            InventoryUIManager.instance.ItemDetailUI.ToggleUI(false);
+            GameManager.GetManager<InventoryUIManager>().DrawInventory();
+            GameManager.GetManager<InventoryUIManager>().ItemDetailUI.ToggleUI(false);
 
         }
         else if (clicked > 2 || Time.time - clicktime > 1) clicked = 0;

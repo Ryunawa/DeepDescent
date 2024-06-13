@@ -3,13 +3,14 @@ using _2Scripts.ProceduralGeneration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _2Scripts.Interfaces;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace _2Scripts.Manager
 {
-    public class ItemManager : Singleton<ItemManager>
+    public class ItemManager : GameManagerSync<ItemManager>
     {
         [SerializeField] public ItemList itemList;
         [SerializeField] private int itemCount = 10;
@@ -22,8 +23,9 @@ namespace _2Scripts.Manager
 
         private Dictionary<int, Item> _itemsDictionary;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             _itemsDictionary = itemList.Items.ToDictionary(x => x.ID, x=>x);
             InitializeItemLists();
         }
@@ -85,7 +87,7 @@ namespace _2Scripts.Manager
         private void SpawnItems(int numberOfItems)
         {
             Debug.Log("Start SpawnItem");
-            float difficultyMultiplier = DifficultyManager.instance.GetDifficultyMultiplier();
+            float difficultyMultiplier = GameManager.GetManager<DifficultyManager>().GetDifficultyMultiplier();
             List<Item> spawnableItems = itemList.Items;
 
             LevelGenerator levelGenerator = FindObjectOfType<LevelGenerator>();

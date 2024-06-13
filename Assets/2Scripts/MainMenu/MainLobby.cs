@@ -1,29 +1,37 @@
+using _2Scripts.Interfaces;
 using _2Scripts.Manager;
 using TMPro;
 using Unity.Netcode;
-using Unity.Services.Lobbies;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class MainLobby : NetworkBehaviour
+public class MainLobby : GameManagerSync<MainLobby>
 {
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject parentUIObject;
     [SerializeField] private GameObject lobbyUI;
     [SerializeField] private GameObject[] uiToDeactivate;
     [SerializeField] private TMP_Text lobbyName;
+    [FormerlySerializedAs("playButton")] [SerializeField] private Button actualPlayButton;
     [SerializeField] private Button playButton;
+    [SerializeField] private Button createButton;
 
-    
-    void Start()
+    private MultiManager multiManager;
+
+    protected override void OnGameManagerChangeState(GameState gameState)
     {
-        MultiManager.instance.lobbyCreated.AddListener(ShowUI);
-        MultiManager.instance.lobbyJoined.AddListener(ShowUI);
-        MultiManager.instance.refreshUI.AddListener(RefreshUI);
-        MultiManager.instance.kickedEvent.AddListener(ReturnToLobbyList);
-        MultiManager.instance.CharacterChosen.AddListener(OnCharacterChosen);
+        multiManager = GameManager.GetManager<MultiManager>();
+        
+        multiManager.lobbyCreated.AddListener(ShowUI);
+        multiManager.lobbyJoined.AddListener(ShowUI);
+        multiManager.refreshUI.AddListener(RefreshUI);
+        multiManager.kickedEvent.AddListener(ReturnToLobbyList);
+        multiManager.CharacterChosen.AddListener(OnCharacterChosen);
+        playButton.onClick.AddListener(GameManager.GetManager<MultiManager>().Init);
+        createButton.onClick.AddListener(GameManager.GetManager<MultiManager>().CreateLobby);
+        actualPlayButton.onClick.AddListener(GameManager.GetManager<MultiManager>().StartGame);
     }
 
     private void ShowUI()
@@ -34,9 +42,9 @@ public class MainLobby : NetworkBehaviour
         }
 
         lobbyUI.SetActive(true);
-        lobbyName.text = MultiManager.instance.Lobby.Name;
+        lobbyName.text = multiManager.Lobby.Name;
         
-        playButton.interactable = false;
+        actualPlayButton.interactable = false;
         
         RefreshUI(false);
     }
@@ -48,21 +56,21 @@ public class MainLobby : NetworkBehaviour
             Destroy(transformGo.gameObject);
         }
         
-        foreach (var player in MultiManager.instance.Lobby.Players)
+        foreach (var player in multiManager.Lobby.Players)
         {
             var playerNameText = Instantiate(playerPrefab, parentUIObject.transform).GetComponentInChildren<TMP_Text>();
             playerNameText.text = player.Data["Name"].Value;
         }
 
         if (!changeButtonState) return;
-        if (MultiManager.instance.IsLobbyHost())
+        if (multiManager.IsLobbyHost())
         {
-            playButton.interactable = isAllReady;
+            actualPlayButton.interactable = isAllReady;
         }
 
-        if (MultiManager.instance.Lobby.Players.Count == 1)
+        if (multiManager.Lobby.Players.Count == 1)
         {
-            playButton.interactable = true;
+            actualPlayButton.interactable = true;
         }
     }
 
@@ -74,8 +82,7 @@ public class MainLobby : NetworkBehaviour
 
     private void OnCharacterChosen()
     {
-        SceneManager.instance.DeactivateLoadingScreen();
+        GameManager.GetManager<SceneManager>().DeactivateLoadingScreen();
         transform.root.gameObject.SetActive(true);
     }
-    
 }

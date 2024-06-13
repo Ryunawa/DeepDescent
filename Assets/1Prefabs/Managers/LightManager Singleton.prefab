@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5798552983175245003
+--- !u!1 &5143186317500875256
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8547379944666776397}
-  - component: {fileID: 435953192250352224}
+  - component: {fileID: 9160907508443376292}
+  - component: {fileID: 7023750009406412669}
   m_Layer: 0
-  m_Name: ItemManager
+  m_Name: LightManager Singleton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8547379944666776397
+--- !u!4 &9160907508443376292
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5798552983175245003}
+  m_GameObject: {fileID: 5143186317500875256}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -32,22 +32,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &435953192250352224
+--- !u!114 &7023750009406412669
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5798552983175245003}
+  m_GameObject: {fileID: 5143186317500875256}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e47a16b4c1924bd4b928cbdd8f9d5ef3, type: 3}
+  m_Script: {fileID: 11500000, guid: 96363012e70d449c946a76e380ad1a2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemList: {fileID: 11400000, guid: 9955bbdfc35aa654eabe5762843da012, type: 2}
-  itemCount: 10
-  itemSpawnPoints: []
-  weaponList: {fileID: 11400000, guid: bbcb656dfed990444bd88ebcee39bbc3, type: 2}
-  armorList: {fileID: 11400000, guid: 688bc97c35fb8834b88e8a5ec12f669c, type: 2}
-  potionList: {fileID: 11400000, guid: ea60ba94b8c61f345bcd2287e0258a6a, type: 2}
-  parchmentList: {fileID: 11400000, guid: 8beac4ff4ef77a04b9ccd4bdd208ed6f, type: 2}
+  lightDistance: 25
+  checkIntervalMS: 1000
+  player: {fileID: 0}

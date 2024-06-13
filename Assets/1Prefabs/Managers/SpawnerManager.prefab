@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 3071932430965317333}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 622.0397, y: 284.77005, z: -1.096297}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -55,4 +55,5 @@ MonoBehaviour:
   maxEnemiesPerRoom: 5
   spawnIntervalInSecond: 6
   spawnParticle: {fileID: 152438, guid: 9d82e1be9de81be4dbc15c60c39dd6ff, type: 3}
-  enemyManager: {fileID: 0}
+  spawnedEnemyFolder: {fileID: 0}
+  bShouldSpawn: 0

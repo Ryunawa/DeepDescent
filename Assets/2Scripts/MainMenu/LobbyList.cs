@@ -1,3 +1,4 @@
+using _2Scripts.Interfaces;
 using _2Scripts.Manager;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
@@ -10,23 +11,26 @@ public class LobbyList : MonoBehaviour
     [SerializeField] private Button btn;
     [SerializeField] private LobbyButton prefab;
     [SerializeField] private GameObject parentMenu;
+
+    private MultiManager _multiManager;
     
     private void Start()
     {
-        MultiManager.instance.init.AddListener(RefreshUI);
+        _multiManager = GameManager.GetManager<MultiManager>();
+        _multiManager.init.AddListener(RefreshUI);
     }
 
     public void ButtonSelected(LobbyButton lobbyButton)
     {
         btn.onClick.RemoveAllListeners();
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-        btn.onClick.AddListener(() => MultiManager.instance.JoinLobby(lobbyButton.GetLobbyId()));
+        btn.onClick.AddListener(() => _multiManager.JoinLobby(lobbyButton.GetLobbyId()));
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
     }
 
     public void SelectPlayer()
     {
-        SceneManager.instance.ActivateLoadingScreen();
+        GameManager.GetManager<SceneManager>().ActivateLoadingScreen();
         transform.root.gameObject.SetActive(false);
         
         UnityEngine.SceneManagement.SceneManager.LoadScene(Scenes.CharacterSelection.ToString(), LoadSceneMode.Additive);
@@ -54,6 +58,6 @@ public class LobbyList : MonoBehaviour
     public async void RefreshUI()
     {
         Debug.Log("Refresh");
-        CreateListOfLobbiesInMenu(await MultiManager.instance.GetAllLobbies());
+        CreateListOfLobbiesInMenu(await _multiManager.GetAllLobbies());
     }
 }

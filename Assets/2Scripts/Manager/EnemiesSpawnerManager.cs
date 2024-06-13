@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using _2Scripts.Entities;
 using _2Scripts.Entities.AI;
+using _2Scripts.Interfaces;
 using _2Scripts.ProceduralGeneration;
 using _2Scripts.Struct;
 using NaughtyAttributes;
@@ -22,7 +23,7 @@ namespace _2Scripts.Manager
         public List<GameObject> enemyPrefabsSpawnable;
     }
     
-    public class EnemiesSpawnerManager : Singleton<EnemiesSpawnerManager>
+    public class EnemiesSpawnerManager : GameManagerSync<EnemiesSpawnerManager>
     {
         public EventHandler<int> OnEnemiesSpawnedOrKilledEventHandler;
 
@@ -48,26 +49,20 @@ namespace _2Scripts.Manager
         
         #endregion
 
-
-        async void Start()
+        protected override void OnGameManagerChangeState(GameState gameState)
         {
-            while (!MultiManager.instance.levelGenerator)
+            if (gameState!= GameState.InLevel)return;
+            
+            if (NetworkManager.Singleton.IsServer)
             {
-                await Task.Delay(200);
+                if(GameManager.GetManager<GameFlowManager>().currLevel == 1)
+                    GameManager.GetManager<DifficultyManager>().AdjustDifficultyParameters(GameManager.GetManager<MultiManager>().GetAllPlayerGameObjects().Count);
+                                                
+                if (GameManager.instance.levelGenerator.spawnShop)
+                    return;
+                _enemiesList = GameManager.GetManager<DifficultyManager>().GetEnemiesStatsToUse();
+                StartCoroutine(SpawnEnemies());
             }
-            MultiManager.instance.levelGenerator.dungeonGeneratedEvent.AddListener(() =>
-            {
-                if (NetworkManager.Singleton.IsServer)
-                {
-                    if(GameFlowManager.instance.currLevel == 1)
-                        DifficultyManager.instance.AdjustDifficultyParameters(MultiManager.instance.GetAllPlayerGameObjects().Count);
-
-                    if (MultiManager.instance.levelGenerator.spawnShop)
-                        return;
-                    _enemiesList = DifficultyManager.instance.GetEnemiesStatsToUse();
-                    StartCoroutine(SpawnEnemies());
-                }
-            });
         }
 
         /// <summary>
@@ -76,7 +71,7 @@ namespace _2Scripts.Manager
         /// <returns></returns>
         private EnemyStats ChooseEnemyToSpawn()
         {
-            int index = Math.Min(GameFlowManager.instance.currLevel, spawnableEnemiesPrefabsByLevel.Count);
+            int index = Math.Min(GameManager.GetManager<GameFlowManager>().currLevel, spawnableEnemiesPrefabsByLevel.Count);
             LevelData currSpawnableEnemiesPrefabs = spawnableEnemiesPrefabsByLevel[index - 1];
 
             foreach (var spawnableEnemyPrefab in currSpawnableEnemiesPrefabs.enemyPrefabsSpawnable)
@@ -102,15 +97,15 @@ namespace _2Scripts.Manager
         private (Room,List<GameObject>) GetRandomRoomToSpawnIn()
         {
             (Room,List<GameObject>) randomRoom;
-            List<(Room, List<GameObject>)> roomsTuple = MultiManager.instance.levelGenerator.GetAllEnemySpawnPoints();
+            List<(Room, List<GameObject>)> roomsTuple = GameManager.instance.levelGenerator.GetAllEnemySpawnPoints();
             int roomIndex;
             
             do
             {
                 int randomInt = Random.Range(0, roomsTuple.Count);
                 randomRoom = roomsTuple[randomInt];
-                roomIndex = MultiManager.instance.levelGenerator.GetIndexOfRoom(randomRoom.Item1);
-            } while (MultiManager.instance.levelGenerator.IsRoomEmpty(roomIndex));
+                roomIndex = GameManager.instance.levelGenerator.GetIndexOfRoom(randomRoom.Item1);
+            } while (GameManager.instance.levelGenerator.IsRoomEmpty(roomIndex));
             
             return randomRoom;
         }
@@ -192,8 +187,8 @@ namespace _2Scripts.Manager
         [Button]
         private void DEBUG_StartSpawn()
         {
-            DifficultyManager.instance.DEBUG_SetEasyStatsForEnemies();
-            _enemiesList = DifficultyManager.instance.GetEnemiesStatsToUse();
+            GameManager.GetManager<DifficultyManager>().DEBUG_SetEasyStatsForEnemies();
+            _enemiesList = GameManager.GetManager<DifficultyManager>().GetEnemiesStatsToUse();
             StartCoroutine(SpawnEnemies());
         }
         // /!\ DEBUG ONLY /!\

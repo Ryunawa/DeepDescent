@@ -1,14 +1,15 @@
+using _2Scripts.Interfaces;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace _2Scripts.Manager
 {
-    public class SceneManager : Singleton<SceneManager>
+    public class SceneManager : GameManagerSync<SceneManager>
     {
         public void Init()
         {
-            if (MultiManager.instance.IsLobbyHost())
+            if (GameManager.GetManager<MultiManager>().IsLobbyHost())
             {
                 NetworkManager.Singleton.SceneManager.SetClientSynchronizationMode(LoadSceneMode.Additive);
             }
@@ -60,7 +61,6 @@ namespace _2Scripts.Manager
     {
         MainMenu,
         Level,
-        SafeZone,
         CharacterSelection,
         None
     }

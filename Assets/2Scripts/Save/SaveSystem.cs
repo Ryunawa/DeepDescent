@@ -40,8 +40,9 @@ namespace _2Scripts.Save
         
         public static void Save()
         {
+            
             XmlSerializer serializer = new XmlSerializer(typeof(SaveData));
-            Inventory inventory = MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<Inventory>();
+            Inventory inventory = GameManager.GetManager<MultiManager>().GetPlayerGameObject().GetComponentInChildren<Inventory>();
 
             SaveData data = new SaveData(inventory.InventoryItems, inventory.GetEquipmentIds());
 
@@ -56,8 +57,8 @@ namespace _2Scripts.Save
         {
             if (!CheckForSave()) return;
             
-            MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<Inventory>().InventoryItems = GetSavedGameData().inventory;
-            MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<Inventory>().SetEquipment(GetSavedGameData().equipment);
+            GameManager.GetManager<MultiManager>().GetPlayerGameObject().GetComponentInChildren<Inventory>().InventoryItems = GetSavedGameData().inventory;
+            GameManager.GetManager<MultiManager>().GetPlayerGameObject().GetComponentInChildren<Inventory>().SetEquipment(GetSavedGameData().equipment);
             Debug.Log("Loaded Inventory");
         }
         

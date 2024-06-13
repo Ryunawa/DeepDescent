@@ -21,6 +21,6 @@ public class MainMenuUsername : MonoBehaviour
 
     public void SetUsername()
     {
-        MultiManager.instance.PlayerName = inputField.text;
+        GameManager.GetManager<MultiManager>().PlayerName = inputField.text;
     }
 }

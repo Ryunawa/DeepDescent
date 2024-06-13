@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2509913218432192734
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1496907404484506475}
+  - component: {fileID: 8334649584711766696}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1496907404484506475
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2509913218432192734}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.0578198, y: 1.4579982, z: -0.9526297}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8334649584711766696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2509913218432192734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79d6f497e4224994e924582322090134, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  multiManagerPrefab: {fileID: 1843229823627844517, guid: 86fe4e420015a7947a2b0a9c87ab6530,
+    type: 3}
+  inventoryUIManagerPrefab: {fileID: 895331382670999333, guid: a1d968599afd05c47bb56a757104644f,
+    type: 3}
+  gameFlowManagerPrefab: {fileID: 8838857298718365415, guid: a98889f56181f93408c26131be2f55f4,
+    type: 3}
+  itemManagerPrefab: {fileID: 5798552983175245003, guid: 17a85d375d9bf7f46a4f519377cbd4de,
+    type: 3}
+  sceneManagerPrefab: {fileID: 892196966234554403, guid: a391d8ecd872f0b4f99cb91390bb20c4,
+    type: 3}
+  difficultyManagerPrefab: {fileID: 3898088850932888483, guid: 01ec7c7644f588d43a94dbc0d2630a8b,
+    type: 3}
+  nextLevelManagerPrefab: {fileID: 0}
+  lightManagerPrefab: {fileID: 5143186317500875256, guid: e62ebc94e6f479c4da5a050362b5d501,
+    type: 3}
+  enemiesSpawnerManagerPrefab: {fileID: 3071932430965317333, guid: 8d2e40b9ff3b60c4781cbf29ad49db4e,
+    type: 3}
+  audioManagerPrefab: {fileID: 8837794741868511713, guid: 9530bac34b0c8a049b0981abfb39f2fe,
+    type: 3}

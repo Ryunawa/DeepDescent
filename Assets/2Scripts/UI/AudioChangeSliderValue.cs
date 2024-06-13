@@ -18,42 +18,42 @@ namespace _2Scripts.UI
 
         private void OnDisable()
         {
-            AudioManager.instance.SaveAudioSettings();
+            GameManager.GetManager<AudioManager>().SaveAudioSettings();
         }
 
         public void ToggleMusic()
         {
-            AudioManager.instance.ToggleMusic();
+            GameManager.GetManager<AudioManager>().ToggleMusic();
         }
 
         public void ToggleSfx()
         {
-            AudioManager.instance.ToggleSfx();
+            GameManager.GetManager<AudioManager>().ToggleSfx();
         }
 
         public void MusicVolume()
         {
-            AudioManager.instance.MusicVolume(MusicSlider.value);
+            GameManager.GetManager<AudioManager>().MusicVolume(MusicSlider.value);
             musicSliderValueText.text = $"{MusicSlider.value * 100 :0}%";
 
         }
 
         public void SfxVolume()
         {
-            AudioManager.instance.SfxVolume(SfxSlider.value);
+            GameManager.GetManager<AudioManager>().SfxVolume(SfxSlider.value);
             sfxSliderValueText.text = $"{SfxSlider.value * 100 :0}%";
         }
 
         private void SetLoadedVolumeValue()
         {
-            float musicVolumeValue = AudioManager.instance.LoadAudioSetting("musicVolume");
-            float sfxVolumeValue = AudioManager.instance.LoadAudioSetting("sfxVolume");
+            float musicVolumeValue = GameManager.GetManager<AudioManager>().LoadAudioSetting("musicVolume");
+            float sfxVolumeValue = GameManager.GetManager<AudioManager>().LoadAudioSetting("sfxVolume");
             
-            AudioManager.instance.MusicVolume(musicVolumeValue);
+            GameManager.GetManager<AudioManager>().MusicVolume(musicVolumeValue);
             MusicSlider.value = musicVolumeValue;
             musicSliderValueText.text = $"{musicVolumeValue * 100 :0}%";
             
-            AudioManager.instance.SfxVolume(sfxVolumeValue);
+            GameManager.GetManager<AudioManager>().SfxVolume(sfxVolumeValue);
             SfxSlider.value = sfxVolumeValue;
             sfxSliderValueText.text = $"{sfxVolumeValue * 100 :0}%";
         }

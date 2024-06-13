@@ -1,5 +1,6 @@
 using System;
 using _2Scripts.Enum;
+using _2Scripts.Interfaces;
 using _2Scripts.Struct;
 using NaughtyAttributes;
 using UnityEngine;
@@ -8,7 +9,7 @@ using static _2Scripts.Helpers.StructureAccessMethods;
 
 namespace _2Scripts.Manager
 {
-    public class DifficultyManager: Singleton<DifficultyManager>
+    public class DifficultyManager: GameManagerSync<DifficultyManager>
     {
         public EventHandler<EnemyStats> OnEnemiesStatsUpdatedEventHandler;
         
@@ -49,14 +50,18 @@ namespace _2Scripts.Manager
         private float _difficultyMultiplier;
         
         #endregion
-
-        private void OnEnable()
-        {
-            GameFlowManager.instance.OnNextLevelEvent.AddListener(UpdateDifficultyOverTime);
-        }
+        
         private void OnDisable()
         {
-            GameFlowManager.instance.OnNextLevelEvent.RemoveListener(UpdateDifficultyOverTime);
+            GameManager.GetManager<GameFlowManager>().OnNextLevelEvent.RemoveListener(UpdateDifficultyOverTime);
+        }
+        
+        protected override void OnGameManagerChangeState(GameState gameState)
+        {
+            if (gameState!=GameState.InLevel) return;
+            
+            GameManager.GetManager<GameFlowManager>().OnNextLevelEvent.AddListener(UpdateDifficultyOverTime);
+            
         }
 
         /// <summary>

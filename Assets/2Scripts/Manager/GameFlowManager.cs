@@ -1,51 +1,60 @@
+using _2Scripts.Interfaces;
 using _2Scripts.ProceduralGeneration;
 using _2Scripts.UI;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace _2Scripts.Manager
 {
-    public class GameFlowManager : Singleton<GameFlowManager>
+    public class GameFlowManager : GameManagerSync<GameFlowManager>
     {
-        public static GameFlowManager Instance { get; private set; }
+    public static GameFlowManager Instance { get; private set; }
 
-        public UnityEvent<Timer.Timer> OnNextLevelEvent;
-        
-        public enum GameState { BossNotDiscovered, BossInProgress, BossDefeated }
-        public GameState CurrentState { get; private set; } = GameState.BossNotDiscovered;
+    public UnityEvent<Timer.Timer> OnNextLevelEvent;
 
-        public Timer.Timer timer { get; private set; }
+    public enum LevelState
+    {
+        BossNotDiscovered,
+        BossInProgress,
+        BossDefeated
+    }
 
-        public int currLevel { get; private set; }
+    public LevelState CurrentState { get; private set; } = LevelState.BossNotDiscovered;
 
-        private void Start()
+    public Timer.Timer timer { get; private set; }
+
+    public int currLevel { get; private set; }
+
+    protected override void OnGameManagerChangeState(GameState gameState)
+    {
+        GameManager.instance.levelGenerator.dungeonGeneratedEvent.AddListener(StartGame);
+        timer = FindObjectOfType<Timer.Timer>();
+    }
+
+    public void SetGameState(LevelState state)
+    {
+        CurrentState = state;
+    }
+
+    private void StartGame()
+    {
+        if (GameManager.instance.levelGenerator.spawnShop)
         {
-            MultiManager.instance.levelGenerator.dungeonGeneratedEvent.AddListener(StartGame);
-            timer = FindObjectOfType<Timer.Timer>();
+            return;
         }
 
-        public void SetGameState(GameState state)
-        {
-            CurrentState = state;
-        }
-        
-        private void StartGame()
-        {
-            if (MultiManager.instance.levelGenerator.spawnShop)
-            {
-                return;
-            }
-            timer.StartTimer();
-        }
-        
-        /// <summary>
-        /// Call this to load the next level
-        /// </summary>
-        public void LoadNextLevel()
-        {
-            timer.StopTimer();
-            OnNextLevelEvent?.Invoke(timer);
-            currLevel++;
-        }
-    
+        timer.StartTimer();
+    }
+
+    /// <summary>
+    /// Call this to load the next level
+    /// </summary>
+    public void LoadNextLevel()
+    {
+        timer.StopTimer();
+        OnNextLevelEvent?.Invoke(timer);
+        currLevel++;
+    }
+
     }
 }

@@ -1,6 +1,9 @@
 using _2Scripts.Entities.Player;
 
-public interface IInteractable
+namespace _2Scripts.Interfaces
 {
-    void Interact(PlayerBehaviour playerBehaviour);
+    public interface IInteractable
+    {
+        void Interact(PlayerBehaviour playerBehaviour);
+    }
 }

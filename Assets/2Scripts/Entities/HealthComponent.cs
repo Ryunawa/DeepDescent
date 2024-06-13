@@ -1,3 +1,6 @@
+using System.Threading.Tasks;
+using _2Scripts.Interfaces;
+using _2Scripts.Manager;
 using _2Scripts.UI;
 using NaughtyAttributes;
 using Unity.Netcode;
@@ -7,7 +10,7 @@ using UnityEngine.Serialization;
 
 namespace _2Scripts.Entities
 {
-	public class HealthComponent : NetworkBehaviour
+	public class HealthComponent : GameManagerSync<HealthComponent>
 	{
 		[FormerlySerializedAs("MaxHealth")] [SerializeField] private float maxHealth = 100;
 
@@ -22,6 +25,8 @@ namespace _2Scripts.Entities
 		private EnemyData _enemyData;
 	
 		private StatComponent _statComponent;
+
+		private HUD _hud;
 
 		private void Awake()
 		{
@@ -47,14 +52,23 @@ namespace _2Scripts.Entities
 		}
 
 		// Start is called before the first frame update
-		void Start()
+		protected override void OnGameManagerChangeState(GameState gameState)
 		{
+			if (gameState != GameState.InLevel) return;
+			
+			Debug.Log("start Health");
 			if (_enemyData)
 			{
 				maxHealth = _enemyData.enemyStats.health;
 				Heal(_enemyData.enemyStats.health);
 			}
+			else
+			{
+				_hud = GameManager.GetManager<InventoryUIManager>().HUD;
+			}
+
 			Heal(maxHealth);
+			
 		}
 
 		public void TakeDamage(float pDamage, float pArmorPenetration = 0)
@@ -83,7 +97,7 @@ namespace _2Scripts.Entities
 
 			_health.Value -= damage;
 
-			HUD.instance.SetHp(_health.Value / maxHealth);
+			_hud.SetHp(_health.Value / maxHealth);
 
             OnDamaged.Invoke(pDamage);
 		}
@@ -115,7 +129,7 @@ namespace _2Scripts.Entities
 
 			_health.Value = Mathf.Min((int)_health.Value + (int) iHeal, maxHealth);
 
-            HUD.instance.SetHp(_health.Value / maxHealth);
+			_hud.SetHp(_health.Value / maxHealth);
 
             OnHealed.Invoke(iHeal);
 		}

@@ -54,7 +54,7 @@ namespace _2Scripts.Entities.Player
 
             for (int i = 0; i < 4; i++)
             {
-                playerModels[i].SetActive(i == MultiManager.instance.GetSelectedCharacterID());
+                playerModels[i].SetActive(i == GameManager.GetManager<MultiManager>().GetSelectedCharacterID());
             }
             
             if (!IsOwner)
@@ -71,7 +71,6 @@ namespace _2Scripts.Entities.Player
             Debug.Log("PLayerBehaviour Done Start ");
 
             _inputManager.Inputs.Player.QuickSlot.performed += context => UseQuickSlot(context.ReadValue<float>());
-
         }
 
         private void Update()
@@ -155,7 +154,7 @@ namespace _2Scripts.Entities.Player
         private void UseQuickSlot(float index)
         {
             if ( inventory.QuickSlots[(int)index].ID == -1)return;
-            ((ConsumableItem)ItemManager.instance.GetItem(inventory.QuickSlots[(int)index].ID)).Use(gameObject);
+            ((ConsumableItem)GameManager.GetManager<ItemManager>().GetItem(inventory.QuickSlots[(int)index].ID)).Use(gameObject);
         }
         
         void OnDrawGizmosSelected()

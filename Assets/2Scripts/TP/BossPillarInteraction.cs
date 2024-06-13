@@ -13,7 +13,7 @@ public class BossPillarInteraction : MonoBehaviour
 
     void Update()
     {
-        if (isPlayerInRange && Input.GetKeyDown(KeyCode.E) && GameFlowManager.instance.CurrentState == GameFlowManager.GameState.BossNotDiscovered)
+        if (isPlayerInRange && Input.GetKeyDown(KeyCode.E) && GameManager.GetManager<GameFlowManager>().CurrentState == GameFlowManager.LevelState.BossNotDiscovered)
         {
             ActivatePillar();
         }
@@ -46,7 +46,7 @@ public class BossPillarInteraction : MonoBehaviour
         boss.GetComponent<AIController>().isBoss = true;
         boss.transform.localScale *= 2; // make him bigger
 
-        GameFlowManager.instance.SetGameState(GameFlowManager.GameState.BossInProgress);
+        GameManager.GetManager<GameFlowManager>().SetGameState(GameFlowManager.LevelState.BossInProgress);
     }
 
     private void OnTriggerEnter(Collider other)

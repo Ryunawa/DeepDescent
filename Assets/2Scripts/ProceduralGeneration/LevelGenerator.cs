@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using _2Scripts.Entities.Player;
+using _2Scripts.Interfaces;
 using _2Scripts.Manager;
 using Unity.Netcode;
 using Unity.VisualScripting;
@@ -10,10 +12,11 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace _2Scripts.ProceduralGeneration
 {
-    public class LevelGenerator : NetworkBehaviour
+    public class LevelGenerator : GameManagerSync<LevelGenerator>
     {
         // Prefabs
         [Header("Rooms")]
@@ -57,15 +60,42 @@ namespace _2Scripts.ProceduralGeneration
         private int _roomNumber = 1;
 
         private bool _lateUpdateOnlyOnce = false;
-    
 
+        private MultiManager _multiManager;
 
-
-        // Start is called before the first frame update
-        void Start()
+        private void Awake()
         {
-            if(MultiManager.instance.IsLobbyHost())
-                StartGeneration();
+            GameManager.instance.levelGenerator = this;
+        }
+
+        protected override void Start()
+        {
+            base.Start();
+            
+            OnGameManagerChangeState(GameManager.GameState);
+        }
+
+        protected override void OnGameManagerChangeState(GameState gameState)
+        {
+            switch (gameState)
+            {
+                case GameState.Generating:
+                {
+                    _multiManager = GameManager.GetManager<MultiManager>();
+                            
+                    if(_multiManager.IsLobbyHost())
+                        StartGeneration();
+                    break;
+                }
+                case GameState.InLevel:
+                {
+                    dungeonGeneratedEvent.Invoke();
+                    if (!spawnShop) PlacePortal();
+                    GameManager.GetManager<SceneManager>().DeactivateLoadingScreen();
+                    GameManager.GetManager<InventoryUIManager>().gameObject.SetActive(true);
+                    break;
+                }
+            }
         }
 
         public async void StartGeneration()
@@ -73,7 +103,7 @@ namespace _2Scripts.ProceduralGeneration
             if (spawnShop)
             {
                 GenerateShopRoom();
-                DoWhenGenEnd();
+                GameManager.instance.ChangeGameState(GameState.InLevel);
                 return;
             }
 
@@ -110,9 +140,11 @@ namespace _2Scripts.ProceduralGeneration
             Debug.Log("GenerationFinished");
             DynamicNavMesh.UpdateNavMesh();
 
-            ItemManager itemManager = FindObjectOfType<ItemManager>();
-            itemManager.StartSpawningItems();
+            
+            GameManager.GetManager<ItemManager>().StartSpawningItems();
 
+            GameManager.instance.ChangeGameState(GameState.InLevel);
+            
             TeleportHostAndClientRpc(GetPosition(centerIndex));
         }
 
@@ -157,24 +189,7 @@ namespace _2Scripts.ProceduralGeneration
         private void TeleportHostAndClientRpc(Vector3 pPosition)
         {
             _lateUpdateOnlyOnce = true;
-            MultiManager.instance.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().TeleportPlayer( pPosition + Vector3.up * 5);
-        }
-
-
-        private void LateUpdate()
-        {
-            if (_lateUpdateOnlyOnce)
-            {
-                _lateUpdateOnlyOnce = !_lateUpdateOnlyOnce;
-                DoWhenGenEnd();
-            }
-        }
-    
-        private void DoWhenGenEnd()
-        {
-            dungeonGeneratedEvent.Invoke();
-            if (!spawnShop) PlacePortal();
-            SceneManager.instance.DeactivateLoadingScreen();
+            _multiManager.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().TeleportPlayer( pPosition + Vector3.up * 5);
         }
         
         private async Task DoGen(int startDepth)
@@ -673,7 +688,7 @@ namespace _2Scripts.ProceduralGeneration
         {
             List<(Room, List<GameObject>)> roomAndSpawnPoints = new List<(Room, List<GameObject>)>();
 
-            foreach (GameObject player in MultiManager.instance.GetAllPlayerGameObjects())
+            foreach (GameObject player in _multiManager.GetAllPlayerGameObjects())
             {
                 roomAndSpawnPoints.AddRange(GetEnemySpawnPoints(player.GetComponentInChildren<PlayerBehaviour>().gameObject));
             }

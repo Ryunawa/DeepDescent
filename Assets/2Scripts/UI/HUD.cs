@@ -1,4 +1,5 @@
 using System;
+using _2Scripts.Interfaces;
 using _2Scripts.Manager;
 using TMPro;
 using UnityEngine;
@@ -8,7 +9,7 @@ using UnityEngine.UI;
 
 namespace _2Scripts.UI
 {
-    public class HUD : Singleton<HUD>
+    public class HUD : GameManagerSync<HUD>
     {
         [SerializeField] private float gameTime = 3;
         
@@ -27,9 +28,11 @@ namespace _2Scripts.UI
 
         private GameFlowManager _gameFlowManager;
 
-        private void Start()
+        protected override void OnGameManagerChangeState(GameState gameState)
         {
-            _gameFlowManager = GameFlowManager.instance;
+            if (gameState != GameState.InLevel) return;
+            Debug.Log("Hud start");
+            _gameFlowManager = GameManager.GetManager<GameFlowManager>();
             
             _gameFlowManager.OnNextLevelEvent.AddListener(arg0 =>
             {
@@ -40,7 +43,8 @@ namespace _2Scripts.UI
 
         private void Update()
         {
-            SetTimer(GameFlowManager.instance.timer.GetTimerElapsedTime());
+            if (_gameFlowManager)
+                SetTimer(_gameFlowManager.timer.GetTimerElapsedTime());
         }
 
         public bool SetHp(float value)
@@ -64,7 +68,7 @@ namespace _2Scripts.UI
 
         private void UpdateDifficultyColor()
         {
-            float colorSampleValue = (DifficultyManager.instance.GetDifficultyMultiplier()-1) / gameTime;
+            float colorSampleValue = (GameManager.GetManager<DifficultyManager>().GetDifficultyMultiplier()-1) / gameTime;
             difficultyImage.color = difficultyGradient.Evaluate(Mathf.Clamp(colorSampleValue, 0, 1));
         }
 

@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 3898088850932888483}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 622.0397, y: 284.77005, z: -1.096297}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -53,7 +53,7 @@ MonoBehaviour:
       spawnRate: 0.25
       health: 1
       damageDealt: 1
-      damageTaken: 1
+      armor: 0
     enemyType2:
       id: 2
       enemyPrefab: {fileID: 3959042653490119952, guid: 4a260646042892b4a8873521cc3c1b8c,
@@ -61,7 +61,7 @@ MonoBehaviour:
       spawnRate: 0.25
       health: 2
       damageDealt: 2
-      damageTaken: 2
+      armor: 0
     enemyType3:
       id: 3
       enemyPrefab: {fileID: 3959042653490119952, guid: 8e122492e8d7c754ab1efdff6faaf459,
@@ -69,7 +69,7 @@ MonoBehaviour:
       spawnRate: 0.25
       health: 3
       damageDealt: 3
-      damageTaken: 3
+      armor: 0
     enemyType4:
       id: 4
       enemyPrefab: {fileID: 3959042653490119952, guid: bf7079a114337a64f9c64f12fcf62083,
@@ -77,7 +77,7 @@ MonoBehaviour:
       spawnRate: 0.25
       health: 4
       damageDealt: 4
-      damageTaken: 4
+      armor: 0
   normalDifficultyEnemyStats:
     enemyType1:
       id: 1
@@ -86,7 +86,7 @@ MonoBehaviour:
       spawnRate: 0.25
       health: 0
       damageDealt: 0
-      damageTaken: 0
+      armor: 0
     enemyType2:
       id: 2
       enemyPrefab: {fileID: 3959042653490119952, guid: 4a260646042892b4a8873521cc3c1b8c,
@@ -94,7 +94,7 @@ MonoBehaviour:
       spawnRate: 0.25
       health: 0
       damageDealt: 0
-      damageTaken: 0
+      armor: 0
     enemyType3:
       id: 3
       enemyPrefab: {fileID: 3959042653490119952, guid: 8e122492e8d7c754ab1efdff6faaf459,
@@ -102,7 +102,7 @@ MonoBehaviour:
       spawnRate: 0.25
       health: 0
       damageDealt: 0
-      damageTaken: 0
+      armor: 0
     enemyType4:
       id: 4
       enemyPrefab: {fileID: 3959042653490119952, guid: bf7079a114337a64f9c64f12fcf62083,
@@ -110,7 +110,7 @@ MonoBehaviour:
       spawnRate: 0.25
       health: 0
       damageDealt: 0
-      damageTaken: 0
+      armor: 0
   hardDifficultyEnemyStats:
     enemyType1:
       id: 1
@@ -119,7 +119,7 @@ MonoBehaviour:
       spawnRate: 0.25
       health: 0
       damageDealt: 0
-      damageTaken: 0
+      armor: 0
     enemyType2:
       id: 2
       enemyPrefab: {fileID: 3959042653490119952, guid: 4a260646042892b4a8873521cc3c1b8c,
@@ -127,7 +127,7 @@ MonoBehaviour:
       spawnRate: 0.25
       health: 0
       damageDealt: 0
-      damageTaken: 0
+      armor: 0
     enemyType3:
       id: 3
       enemyPrefab: {fileID: 3959042653490119952, guid: 8e122492e8d7c754ab1efdff6faaf459,
@@ -135,7 +135,7 @@ MonoBehaviour:
       spawnRate: 0.25
       health: 0
       damageDealt: 0
-      damageTaken: 0
+      armor: 0
     enemyType4:
       id: 4
       enemyPrefab: {fileID: 3959042653490119952, guid: bf7079a114337a64f9c64f12fcf62083,
@@ -143,7 +143,7 @@ MonoBehaviour:
       spawnRate: 0.25
       health: 0
       damageDealt: 0
-      damageTaken: 0
+      armor: 0
   easyDifficultyResourceStats:
     crystalDropRate:
       prefab: {fileID: 0}

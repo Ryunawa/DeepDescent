@@ -1,13 +1,14 @@
 using _2Scripts.Manager;
 using NaughtyAttributes;
 using System.Collections.Generic;
+using _2Scripts.Interfaces;
 using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace _2Scripts.ProceduralGeneration
 {
-    public class Room : MonoBehaviour
+    public class Room : GameManagerSync<Room>
     {
         [SerializeField] private RoomType roomType;
         //Ordered : North, East, South, West
@@ -43,9 +44,10 @@ namespace _2Scripts.ProceduralGeneration
             set => generation = value;
         }
 
-        private void OnEnable()
+        protected override void OnGameManagerChangeState(GameState gameState)
         {
-            EnemiesSpawnerManager.instance.OnEnemiesSpawnedOrKilledEventHandler += UpdateSpawnedNumber;
+            if (gameState!=GameState.InLevel)return;
+            GameManager.GetManager<EnemiesSpawnerManager>().OnEnemiesSpawnedOrKilledEventHandler += UpdateSpawnedNumber;
         }
 
         private void UpdateSpawnedNumber(object receiver, int value)
