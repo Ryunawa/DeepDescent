@@ -191,6 +191,7 @@ namespace _2Scripts.Entities.Player
 
         private void UseQuickSlot(float index)
         {
+            Debug.Log("Use Quickslot");
             if ( inventory.QuickSlots[(int)index].ID == -1)return;
             ((ConsumableItem)ItemManager.instance.GetItem(inventory.QuickSlots[(int)index].ID)).Use(gameObject);
         }

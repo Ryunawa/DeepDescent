@@ -8,7 +8,7 @@ public class SpellCasterComponent : NetworkBehaviour
 {
 
     GameObject _spellToCast;
-    private void CastSpell(GameObject Prefab)
+    public void CastSpell(GameObject Prefab)
     {
         _spellToCast = Prefab;
         SpawnSpellRpc();
@@ -17,7 +17,8 @@ public class SpellCasterComponent : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void SpawnSpellRpc()
     {
-        NetworkObject o = Instantiate(_spellToCast.GetComponent<NetworkObject>(), transform.position, Quaternion.identity);
+        NetworkObject o = Instantiate(_spellToCast.GetComponent<NetworkObject>(), transform.position + new Vector3(0.0f, 1.0f,0.0f), Quaternion.identity);
         o.Spawn();
+        o.GetComponent<Projectile>().projectileDirection = gameObject.transform.forward.normalized;
     }
 }
