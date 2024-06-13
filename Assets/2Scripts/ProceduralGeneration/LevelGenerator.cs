@@ -72,10 +72,14 @@ namespace _2Scripts.ProceduralGeneration
         {
             if (spawnShop)
             {
+                // Play Music
+                AudioManager.instance.PlayMusic("SafeAreaMusic", 0.1f);
                 GenerateShopRoom();
                 DoWhenGenEnd();
                 return;
             }
+            // Play Music
+            AudioManager.instance.PlayMusic("InsideTheDungeonMusic", 0.01f);
 
             _staticDungeonSize = dungeonSize;
             // Random.InitState((int)DateTime.Now.Ticks);

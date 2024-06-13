@@ -21,6 +21,9 @@ public class BossPillarInteraction : MonoBehaviour
 
     private void ActivatePillar()
     {
+        // Play Music
+        AudioManager.instance.PlayMusic("BossMusic", 0.1f);
+
         CinemachineImpulseSource[] impulseSources = FindObjectsOfType<CinemachineImpulseSource>();
         foreach (CinemachineImpulseSource impulseSource in impulseSources)
         {

@@ -19,6 +19,9 @@ public class MainLobby : NetworkBehaviour
     
     void Start()
     {
+        // Play Music
+        AudioManager.instance.PlayMusic("MenuMusic", 0.1f);
+
         MultiManager.instance.lobbyCreated.AddListener(ShowUI);
         MultiManager.instance.lobbyJoined.AddListener(ShowUI);
         MultiManager.instance.refreshUI.AddListener(RefreshUI);

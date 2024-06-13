@@ -27,7 +27,7 @@ public class DoorController : MonoBehaviour
     public void OpenDoor()
     {
         // play sound
-        AudioManager.instance.PlaySfx("DoorOpen");
+        AudioManager.instance.PlaySfx("DoorOpen", this, 1, 5);
         animator.Play("DoorOpen", 0, 0.0f);
         DynamicNavMesh.UpdateNavMesh();
     }
@@ -35,7 +35,7 @@ public class DoorController : MonoBehaviour
     public void CloseDoor()
     {
         // play sound
-        AudioManager.instance.PlaySfx("DoorClose");
+        AudioManager.instance.PlaySfx("DoorClose", this, 1, 5);
         animator.Play("DoorClose", 0, 0.0f);
         DynamicNavMesh.UpdateNavMesh();
         StartCoroutine(CloseDoorDelayed());

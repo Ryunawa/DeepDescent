@@ -17,7 +17,7 @@ namespace _2Scripts.Manager
         /// Play a music (will loop if the sound is set to loop)
         /// </summary>
         /// <param name="pName">The name associated to the music to play</param>
-        public void PlayMusic(string pName)
+        public void PlayMusic(string pName, float volume = 0.1f)
         {
             Sound s = Array.Find(musicSounds, x => x.name == pName);
 
@@ -26,6 +26,7 @@ namespace _2Scripts.Manager
 
             AudioClip clip = s.clips[random.Next(s.clips.Length)];
             musicSource.clip = clip;
+            musicSource.volume = volume;
             musicSource.Play();
         }
 
@@ -41,7 +42,7 @@ namespace _2Scripts.Manager
         /// Play a sound once
         /// </summary>
         /// <param name="pSoundName">The name associated to the sound to play</param>
-        public void PlaySfx(string pSoundName)
+        public void PlaySfx(string pSoundName, float volume = 0.5f)
         {
             Sound s = Array.Find(sfxSounds, x => x.name == pSoundName);
 
@@ -52,7 +53,7 @@ namespace _2Scripts.Manager
             }
 
             AudioClip clip = s.clips[random.Next(s.clips.Length)];
-            sfxSource.PlayOneShot(clip);
+            sfxSource.PlayOneShot(clip, volume);
         }
 
         /// <summary>
@@ -66,7 +67,7 @@ namespace _2Scripts.Manager
         /// Footstep sounds: minDistance = 1, maxDistance = 5
         /// Weapon sounds: minDistance = 2, maxDistance = 10
         /// Explosions: minDistance = 5, maxDistance = 50
-        public void PlaySfx(string pSoundName, MonoBehaviour pScript, float pMinDistance, float pMaxDistance)
+        public void PlaySfx(string pSoundName, MonoBehaviour pScript, float pMinDistance, float pMaxDistance, float volume = 0.5f)
         {
             Sound s = Array.Find(sfxSounds, x => x.name == pSoundName);
 
@@ -81,7 +82,7 @@ namespace _2Scripts.Manager
             objectAudioSource.minDistance = pMinDistance;
             objectAudioSource.maxDistance = pMaxDistance;
 
-            objectAudioSource.PlayOneShot(clip);
+            objectAudioSource.PlayOneShot(clip, volume);
         }
 
         /// <summary>
