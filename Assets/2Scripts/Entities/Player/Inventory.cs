@@ -7,6 +7,7 @@ using _2Scripts.Interfaces;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 [Serializable]
 public struct InventoryObject
@@ -140,6 +141,9 @@ public class Inventory : GameManagerSync<Inventory>
                 InventoryItems.RemoveAt(itemPos);
                 Debug.Log($"[Inventory::DropFromInventory()] - Dropped item at pos {itemPos}.No remaining item.");
             }
+            // play sound
+            GameManager.GetManager<AudioManager>().PlaySfx("ItemDrop", this, 1, 5);
+
             DeactivateItemVisibilityInventory(GameManager.GetManager<ItemManager>().GetItem(newInventoryObject.ID));
             SaveSystem.Save();
             return;
@@ -176,6 +180,9 @@ public class Inventory : GameManagerSync<Inventory>
                     InventoryItems.RemoveAt(itemPos);
                     Debug.Log($"[Inventory::UseFromInventory()] - Used item at pos {itemPos}.No remaining item.");
                 }
+                // play sound
+                GameManager.GetManager<AudioManager>().PlaySfx("UsePotion", this, 1, 5);
+
                 DeactivateItemVisibilityInventory(GameManager.GetManager<ItemManager>().GetItem(newInventoryObject.ID));
                 SaveSystem.Save();
                 return;
@@ -221,6 +228,9 @@ public class Inventory : GameManagerSync<Inventory>
                         AddFromEquipment(realItem, OffSlot);
                         Debug.Log($"[Inventory::EquipFromInventory()] - Equipped new item at pos {itemPos}.");
                     }
+
+                    // play sound
+                    GameManager.GetManager<AudioManager>().PlaySfx("EquipItem", this, 1, 5);
                 }
                 else
                 {

@@ -19,6 +19,7 @@ public class CharacterSelection : MonoBehaviour
 
     public void NextCharacter()
     {
+        AudioManager.instance.PlaySfx("UINormalBtn");
         characters[selectedCharacter].SetActive(false);
         selectedCharacter = (selectedCharacter + 1) % characters.Length;
         SetCharacterNameUI();
@@ -27,6 +28,7 @@ public class CharacterSelection : MonoBehaviour
 
     public void PreviousCharacter()
     {
+        AudioManager.instance.PlaySfx("UINormalBtn");
         characters[selectedCharacter].SetActive(false);
         selectedCharacter--;
         if (selectedCharacter < 0) selectedCharacter += characters.Length;
@@ -36,6 +38,7 @@ public class CharacterSelection : MonoBehaviour
 
     private void SetCharacterNameUI()
     {
+        AudioManager.instance.PlaySfx("UINormalBtn");
         string originalName = characters[selectedCharacter].gameObject.name;
         string modifiedName = originalName.Replace("_", " - ");
         characterName.text = modifiedName;
@@ -43,6 +46,7 @@ public class CharacterSelection : MonoBehaviour
 
     public void Ready()
     {
+        AudioManager.instance.PlaySfx("UIValidationBtn");
         PlayerPrefs.SetInt("selectedCharacter", selectedCharacter);
         GameManager.GetManager<SceneManager>().ActivateLoadingScreen();
         GameManager.GetManager<MultiManager>().UpdatePlayer(selectedCharacter, AuthenticationService.Instance.PlayerId);

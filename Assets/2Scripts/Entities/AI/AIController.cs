@@ -87,6 +87,9 @@ namespace _2Scripts.Entities.AI
             healthComponent = GetComponent<HealthComponent>();
             healthComponent.OnDeath.AddListener(HandleDeath);
 
+            // play sound
+            GameManager.GetManager<AudioManager>().PlaySfx("MonsterSpawn", this, 1, 5);
+
             // start attack coroutine
             StartCoroutine(AttackLoop());
         }
@@ -464,9 +467,14 @@ namespace _2Scripts.Entities.AI
         // Death function
         private void HandleDeath()
         {
+            // play sound
+            GameManager.GetManager<AudioManager>().PlaySfx("MonsterDie", this, 1, 5);
+
             if (isBoss)
             {
-                GameFlowManager.Instance.SetGameState(GameFlowManager.LevelState.BossDefeated);
+                // play sound
+                GameManager.GetManager<AudioManager>().PlaySfx("BossSlain");
+                GameManager.GetManager<GameFlowManager>().SetGameState(GameFlowManager.LevelState.BossDefeated);
             }
 
             // potential reward?

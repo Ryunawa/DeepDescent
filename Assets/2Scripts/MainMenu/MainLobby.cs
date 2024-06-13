@@ -22,6 +22,9 @@ public class MainLobby : GameManagerSync<MainLobby>
 
     protected override void OnGameManagerChangeState(GameState gameState)
     {
+        // Play Music
+        GameManager.GetManager<AudioManager>().PlayMusic("MenuMusic", 0.1f);
+        
         multiManager = GameManager.GetManager<MultiManager>();
         
         multiManager.lobbyCreated.AddListener(ShowUI);
@@ -85,4 +88,5 @@ public class MainLobby : GameManagerSync<MainLobby>
         GameManager.GetManager<SceneManager>().DeactivateLoadingScreen();
         transform.root.gameObject.SetActive(true);
     }
+    
 }

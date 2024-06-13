@@ -20,7 +20,7 @@ namespace _2Scripts.Manager
             GameManager.instance.nextLevelManager = this;
             GameManager.GetManager<GameFlowManager>().OnNextLevelEvent.AddListener(GenerateNewDungeon);
         }
-        
+
         /// <summary>
         /// Generate a new dungeon and clear the previous one
         /// </summary>
@@ -36,7 +36,7 @@ namespace _2Scripts.Manager
            ClearPreviousDungeon();
            
            // Set bool depending on the current dungeon level
-           GameManager.instance.levelGenerator.spawnShop = GameManager.GetManager<GameFlowManager>().currLevel % 4 == 0;
+           GameManager.instance.levelGenerator.spawnShop = GameManager.GetManager<GameFlowManager>().CurrLevel % 4 == 0;
                
            // Start the generation
            GameManager.instance.levelGenerator.StartGeneration();

@@ -37,13 +37,6 @@ public class StatComponent : MonoBehaviour
             _equippedArmour += inventory.ChestArmor ? inventory.ChestArmor.ArmorValue : 0;
             _equippedArmour += inventory.FeetArmor ? inventory.FeetArmor.ArmorValue : 0;
             _equippedArmour += inventory.LegArmor ? inventory.LegArmor.ArmorValue : 0;
-            
         }
-    }
-
-    [Button]
-    public void NiqueTamMere()
-    {
-        PlayerBehaviour.tst();
     }
 }

@@ -55,7 +55,7 @@ AudioSource:
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -172,7 +172,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -183,7 +183,7 @@ AudioSource:
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -304,15 +304,143 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSounds:
   - name: MenuMusic
-    clip: {fileID: 8300000, guid: b9e74e6fc4c7d0e4e958996fa4e8f6bc, type: 3}
+    clips:
+    - {fileID: 8300000, guid: c911753952870614e93e177715c1afe5, type: 3}
   - name: SafeAreaMusic
-    clip: {fileID: 8300000, guid: f535b05e6a8764c4a936e4f9dce2bf29, type: 3}
+    clips:
+    - {fileID: 8300000, guid: 44c08577b4831264998ef3342b921297, type: 3}
   - name: InsideTheDungeonMusic
-    clip: {fileID: 8300000, guid: 3ef76e8970f474f429073750dab2a322, type: 3}
+    clips:
+    - {fileID: 8300000, guid: c17188b9570dcf341b66f9ea0354c2a7, type: 3}
   - name: BattleMusic
-    clip: {fileID: 8300000, guid: 51fc5b2a1e9dca74fa66fcea4419b189, type: 3}
+    clips:
+    - {fileID: 8300000, guid: 6e2ac63e4c359c24aa89a88da0928f3c, type: 3}
   - name: BossMusic
-    clip: {fileID: 8300000, guid: 9fae13eb8238e9f46aec61281ca0a42c, type: 3}
-  sfxSounds: []
+    clips:
+    - {fileID: 8300000, guid: 2de5dac7e4434ba48b1b87bbee674d6c, type: 3}
+  sfxSounds:
+  - name: UINormalBtn
+    clips:
+    - {fileID: 8300000, guid: 68bd42c77fed80548ade987decf1c2f4, type: 3}
+  - name: UIValidationBtn
+    clips:
+    - {fileID: 8300000, guid: 9ad102ba325291947b89dacba6b311c5, type: 3}
+  - name: Pause
+    clips:
+    - {fileID: 8300000, guid: eb6c4f08395e81f4b9e426afe5dc4330, type: 3}
+  - name: DoorClose
+    clips:
+    - {fileID: 8300000, guid: 4db3da219c3ba86469bbfa3a6dd117e6, type: 3}
+  - name: DoorOpen
+    clips:
+    - {fileID: 8300000, guid: 8526baaf23a966642b51d5dba1d062c2, type: 3}
+  - name: TimerUpdate
+    clips:
+    - {fileID: 8300000, guid: 8676a6ade277fd145a84efb426a77426, type: 3}
+    - {fileID: 8300000, guid: 3013260745f35dc4997f0aeab9d22a99, type: 3}
+    - {fileID: 8300000, guid: ad19b4b992570924b924ec5ccd9739f9, type: 3}
+  - name: TpActivated
+    clips:
+    - {fileID: 8300000, guid: 9cf05d382766c6b4784ce6c1e7b47ccb, type: 3}
+  - name: DwarfDeath
+    clips:
+    - {fileID: 8300000, guid: 4ae0414616ef1264bb72d3ae6fa9c8a6, type: 3}
+    - {fileID: 8300000, guid: 534f9b03181febc469e17ad3bcd34fa1, type: 3}
+  - name: DwarfJump
+    clips:
+    - {fileID: 8300000, guid: bdf8fdd74b9213d49a6f3270411a4d88, type: 3}
+    - {fileID: 8300000, guid: de075e6b388c01b4db5aa64f418785d4, type: 3}
+  - name: ArcherDeath
+    clips:
+    - {fileID: 8300000, guid: 1f01846fd259fb146b026c859e942386, type: 3}
+  - name: ArcherJump
+    clips:
+    - {fileID: 8300000, guid: c6aec977ad5ed314281720c939a3eaad, type: 3}
+    - {fileID: 8300000, guid: 31d39eadc2d104c47878831cc9fea8c6, type: 3}
+  - name: GoblinDeath
+    clips:
+    - {fileID: 8300000, guid: 1fa81a6a1e69b7444818bf8298282ca2, type: 3}
+    - {fileID: 8300000, guid: e54f44dd199a130409dabe000df31ecb, type: 3}
+  - name: GoblinJump
+    clips:
+    - {fileID: 8300000, guid: 1014c8ae38751364fbc19074ad576c83, type: 3}
+    - {fileID: 8300000, guid: 5007a3ae3127f4e4992d67fdae22cf56, type: 3}
+  - name: WitchDeath
+    clips:
+    - {fileID: 8300000, guid: 57d115e1443772d4e8162182b28f9f57, type: 3}
+    - {fileID: 8300000, guid: 0dd643bd88b605d44b9a62a1bf8bac64, type: 3}
+  - name: WitchJump
+    clips:
+    - {fileID: 8300000, guid: 2a4f4ca95e82b3c489feb70465f02f3f, type: 3}
+    - {fileID: 8300000, guid: 2abaa942d2d583b4ebba01a84bc4f7a6, type: 3}
+  - name: ItemDrop
+    clips:
+    - {fileID: 8300000, guid: a88ebe814856ec94aa09812fefb2c19e, type: 3}
+    - {fileID: 8300000, guid: 2a97a2d32be5a114ab45ac6e95883307, type: 3}
+    - {fileID: 8300000, guid: 062fe984fa96133489d4b1c455fa1cb3, type: 3}
+    - {fileID: 8300000, guid: d3e9226687896aa48ade7836d0383b6b, type: 3}
+    - {fileID: 8300000, guid: 85fdf6469223ecd4888454994959b7cf, type: 3}
+    - {fileID: 8300000, guid: b82dbacf4af42614b93401c8da353f3e, type: 3}
+  - name: PickupItem
+    clips:
+    - {fileID: 8300000, guid: a40279b4e80154b4d9a01359f9194135, type: 3}
+    - {fileID: 8300000, guid: bd77ad43efcbaa94e99cce7da56ece4d, type: 3}
+  - name: EquipItem
+    clips:
+    - {fileID: 8300000, guid: fcad10b5634b7ff499f34262916fa5a1, type: 3}
+    - {fileID: 8300000, guid: f1c796865d5a00b48b9193a487d339f7, type: 3}
+  - name: UsePotion
+    clips:
+    - {fileID: 8300000, guid: 57b7e245d2aa073478229e482666d67b, type: 3}
+    - {fileID: 8300000, guid: dcc2ecb2e5f30b546b53504f59a89fdb, type: 3}
+  - name: BossSpawning
+    clips:
+    - {fileID: 8300000, guid: 80944739239c6fc429310202b6a38d7c, type: 3}
+  - name: EnterShop
+    clips:
+    - {fileID: 8300000, guid: e67e88f4c96ed5a4b875da60ff4246e3, type: 3}
+  - name: SellBuy
+    clips:
+    - {fileID: 8300000, guid: 5089909eb6dfeaa46be7937c2708c2e0, type: 3}
+  - name: FireBallCollide
+    clips:
+    - {fileID: 8300000, guid: a2d539da213ad474e9940f6729e2e0f3, type: 3}
+  - name: FireBallWhoosh
+    clips:
+    - {fileID: 8300000, guid: e2b89f238e6fbca44987e1bc1b5bacf5, type: 3}
+    - {fileID: 8300000, guid: 79588409f44ea3947addd3d3f395f330, type: 3}
+  - name: MagicSpell
+    clips:
+    - {fileID: 8300000, guid: d16e595e32295644cb3c73c46ad52ca2, type: 3}
+    - {fileID: 8300000, guid: 487466a864135cf4c88e5585ae0c7ee7, type: 3}
+  - name: MagicWoosh
+    clips:
+    - {fileID: 8300000, guid: c5474e8339dc9d743a7d8052e547b54c, type: 3}
+    - {fileID: 8300000, guid: 57eb73880e05376409f3da0317b2c836, type: 3}
+  - name: MonsterHit
+    clips:
+    - {fileID: 8300000, guid: 4db7f672455e68f4586c9a83b780de80, type: 3}
+    - {fileID: 8300000, guid: 7e33f7f72c51ad447a25dd31d0499545, type: 3}
+  - name: MonsterTakeHit
+    clips:
+    - {fileID: 8300000, guid: f470eb11fe1aaef48b2142bc74c1de56, type: 3}
+  - name: MonsterDie
+    clips:
+    - {fileID: 8300000, guid: d75dfca32802e5f4a83614182a69370d, type: 3}
+  - name: MonsterSpawn
+    clips:
+    - {fileID: 8300000, guid: 74f41e33ab3184c478ccdb5ad04f348b, type: 3}
+  - name: BossSpawn
+    clips:
+    - {fileID: 8300000, guid: 80944739239c6fc429310202b6a38d7c, type: 3}
+  - name: BossSlain
+    clips:
+    - {fileID: 8300000, guid: 178cf7de44711f540b90f9eaa59bff4f, type: 3}
+  - name: MaleSigh
+    clips:
+    - {fileID: 8300000, guid: 3469007d577ac22469aabb5340f8b943, type: 3}
+  - name: FemaleSigh
+    clips:
+    - {fileID: 8300000, guid: 3ac77aa3ef0c28a419118aefd1cd75a9, type: 3}
   musicSource: {fileID: 5790782807701466028}
   sfxSource: {fileID: 2922250723814831833}

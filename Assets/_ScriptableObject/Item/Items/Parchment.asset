@@ -22,5 +22,6 @@ MonoBehaviour:
   InventoryIcon: {fileID: 21300000, guid: b891a2cc80c288a4a8fc1a6ec6384310, type: 3}
   ObjectPrefab: {fileID: 6322848119279000183, guid: 9e194a259109d174bad62fec2758e67f,
     type: 3}
-  SpellToSpawn: {fileID: 133446, guid: 72766e0bd6c1cde4eb35ec04e1325561, type: 3}
+  SpellToSpawn: {fileID: 7308431643095106308, guid: 016112e59dccd3c409838e47f272a2ec,
+    type: 3}
   ParchmentCooldown: 10

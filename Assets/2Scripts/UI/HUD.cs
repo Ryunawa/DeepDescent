@@ -36,7 +36,7 @@ namespace _2Scripts.UI
             
             _gameFlowManager.OnNextLevelEvent.AddListener(arg0 =>
             {
-                SetLevelNumber(_gameFlowManager.timer.GetTimerElapsedTime());
+                SetLevelNumber(_gameFlowManager.Timer.GetTimerElapsedTime());
                 UpdateDifficultyColor();
             });
         }
@@ -44,7 +44,7 @@ namespace _2Scripts.UI
         private void Update()
         {
             if (_gameFlowManager)
-                SetTimer(_gameFlowManager.timer.GetTimerElapsedTime());
+                SetTimer(_gameFlowManager.Timer.GetTimerElapsedTime());
         }
 
         public bool SetHp(float value)
