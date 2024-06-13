@@ -11,11 +11,12 @@ public class ParchmentItem : ConsumableItem
     public float ParchmentCooldown;
     public override bool Use(GameObject GameObjectOwner)
     {
+        Debug.Log("Trying to use parchment");
         if (GameObjectOwner)
         {
-            if (GameObjectOwner.TryGetComponent(out PlayerBehaviour player))
+            if (GameObjectOwner.TryGetComponent(out SpellCasterComponent spellcasterComp))
             {
-                
+                spellcasterComp.CastSpell(SpellToSpawn);
                 return true;
             }
         }
