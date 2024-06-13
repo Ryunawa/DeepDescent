@@ -1,5 +1,3 @@
-using _2Scripts.ProceduralGeneration;
-using _2Scripts.UI;
 using UnityEngine.Events;
 
 namespace _2Scripts.Manager
@@ -13,14 +11,14 @@ namespace _2Scripts.Manager
         public enum GameState { BossNotDiscovered, BossInProgress, BossDefeated }
         public GameState CurrentState { get; private set; } = GameState.BossNotDiscovered;
 
-        public Timer.Timer timer { get; private set; }
+        public Timer.Timer Timer { get; private set; }
 
-        public int currLevel { get; private set; }
+        public int CurrLevel { get; private set; } = 1;
 
         private void Start()
         {
             MultiManager.instance.levelGenerator.dungeonGeneratedEvent.AddListener(StartGame);
-            timer = FindObjectOfType<Timer.Timer>();
+            Timer = FindObjectOfType<Timer.Timer>();
         }
 
         public void SetGameState(GameState state)
@@ -34,7 +32,7 @@ namespace _2Scripts.Manager
             {
                 return;
             }
-            timer.StartTimer();
+            Timer.StartTimer();
         }
         
         /// <summary>
@@ -42,9 +40,9 @@ namespace _2Scripts.Manager
         /// </summary>
         public void LoadNextLevel()
         {
-            timer.StopTimer();
-            OnNextLevelEvent?.Invoke(timer);
-            currLevel++;
+            Timer.StopTimer();
+            OnNextLevelEvent?.Invoke(Timer);
+            CurrLevel++;
         }
     
     }
