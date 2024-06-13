@@ -103,13 +103,13 @@ namespace _2Scripts.ProceduralGeneration
             if (spawnShop)
             {
                 // Play Music
-                AudioManager.instance.PlayMusic("SafeAreaMusic", 0.1f);
+                GameManager.GetManager<AudioManager>().PlayMusic("SafeAreaMusic", 0.1f);
                 GenerateShopRoom();
                 GameManager.instance.ChangeGameState(GameState.InLevel);
                 return;
             }
             // Play Music
-            AudioManager.instance.PlayMusic("InsideTheDungeonMusic", 0.01f);
+            GameManager.GetManager<AudioManager>().PlayMusic("InsideTheDungeonMusic", 0.01f);
 
             _staticDungeonSize = dungeonSize;
             // Random.InitState((int)DateTime.Now.Ticks);

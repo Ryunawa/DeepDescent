@@ -55,7 +55,7 @@ namespace _2Scripts.Manager
             
             if (NetworkManager.Singleton.IsServer)
             {
-                if(GameManager.GetManager<GameFlowManager>().currLevel == 1)
+                if(GameManager.GetManager<GameFlowManager>().CurrLevel == 1)
                     GameManager.GetManager<DifficultyManager>().AdjustDifficultyParameters(GameManager.GetManager<MultiManager>().GetAllPlayerGameObjects().Count);
                                                 
                 if (GameManager.instance.levelGenerator.spawnShop)
@@ -71,7 +71,7 @@ namespace _2Scripts.Manager
         /// <returns></returns>
         private EnemyStats ChooseEnemyToSpawn()
         {
-            int index = Math.Min(GameManager.GetManager<GameFlowManager>().currLevel, spawnableEnemiesPrefabsByLevel.Count);
+            int index = Math.Min(GameManager.GetManager<GameFlowManager>().CurrLevel, spawnableEnemiesPrefabsByLevel.Count);
             LevelData currSpawnableEnemiesPrefabs = spawnableEnemiesPrefabsByLevel[index - 1];
 
             foreach (var spawnableEnemyPrefab in currSpawnableEnemiesPrefabs.enemyPrefabsSpawnable)

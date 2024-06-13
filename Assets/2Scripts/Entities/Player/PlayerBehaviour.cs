@@ -55,7 +55,7 @@ namespace _2Scripts.Entities.Player
             _characterControllerOriginalStepOffset = _characterController.stepOffset;
             _inputManager = InputManager.instance;
 
-            characterID = MultiManager.instance.GetSelectedCharacterID();
+            characterID = GameManager.GetManager<MultiManager>().GetSelectedCharacterID();
 
             for (int i = 0; i < 4; i++)
             {
@@ -110,16 +110,16 @@ namespace _2Scripts.Entities.Player
                         switch (characterID)
                         {
                             case 0:
-                                AudioManager.instance.PlaySfx("ArcherJump", this, 1, 5);
+                                GameManager.GetManager<AudioManager>().PlaySfx("ArcherJump", this, 1, 5);
                                 break;
                             case 1:
-                                AudioManager.instance.PlaySfx("DwarfJump", this, 1, 5);
+                                GameManager.GetManager<AudioManager>().PlaySfx("DwarfJump", this, 1, 5);
                                 break;
                             case 2:
-                                AudioManager.instance.PlaySfx("WitchJump", this, 1, 5);
+                                GameManager.GetManager<AudioManager>().PlaySfx("WitchJump", this, 1, 5);
                                 break;
                             case 3:
-                                AudioManager.instance.PlaySfx("GoblinJump", this, 1, 5);
+                                GameManager.GetManager<AudioManager>().PlaySfx("GoblinJump", this, 1, 5);
                                 break;
                         }
                         ySpeed = jumpHeight;
@@ -160,16 +160,16 @@ namespace _2Scripts.Entities.Player
             switch (characterID)
             {
                 case 0:
-                    AudioManager.instance.PlaySfx("ArcherDeath", this, 2, 10);
+                    GameManager.GetManager<AudioManager>().PlaySfx("ArcherDeath", this, 2, 10);
                     break;
                 case 1:
-                    AudioManager.instance.PlaySfx("DwarfDeath", this, 2, 10);
+                    GameManager.GetManager<AudioManager>().PlaySfx("DwarfDeath", this, 2, 10);
                     break;
                 case 2:
-                    AudioManager.instance.PlaySfx("WitchDeath", this, 2, 10);
+                    GameManager.GetManager<AudioManager>().PlaySfx("WitchDeath", this, 2, 10);
                     break;
                 case 3:
-                    AudioManager.instance.PlaySfx("GoblinDeath", this, 2, 10);
+                    GameManager.GetManager<AudioManager>().PlaySfx("GoblinDeath", this, 2, 10);
                     break;
             }
             transform.Rotate(transform.right, 90.0f);

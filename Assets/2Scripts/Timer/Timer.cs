@@ -13,7 +13,7 @@ namespace _2Scripts.Timer
         {
             _timer = new Stopwatch();
             // play sound
-            AudioManager.instance.PlaySfx("TimerUpdate");
+            GameManager.GetManager<AudioManager>().PlaySfx("TimerUpdate");
         }
 
         /// <summary>
