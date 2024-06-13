@@ -157,6 +157,9 @@ namespace _2Scripts.Manager
         /// <param name="pTimer"></param>
         private void UpdateDifficultyOverTime(Timer.Timer pTimer)
         {
+            // play sound
+            AudioManager.instance.PlaySfx("TimerUpdate");
+
             double elapsedTimeMinutes = pTimer.GetStopWatchObject().Elapsed.TotalMinutes;
             float multiplier = 1 + (float)(Math.Log(1 + elapsedTimeMinutes / timeInterval) * baseTimeRate);
             

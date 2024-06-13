@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 [Serializable]
 public struct InventoryObject
@@ -136,7 +137,11 @@ public class Inventory : NetworkBehaviour
                 InventoryItems.RemoveAt(itemPos);
                 Debug.Log($"[Inventory::DropFromInventory()] - Dropped item at pos {itemPos}.No remaining item.");
             }
+            // play sound
+            AudioManager.instance.PlaySfx("ItemDrop", this, 1, 5);
+
             DeactivateItemVisibilityInventory(ItemManager.instance.GetItem(newInventoryObject.ID));
+
             SaveSystem.Save();
             return;
         }
@@ -172,7 +177,11 @@ public class Inventory : NetworkBehaviour
                     InventoryItems.RemoveAt(itemPos);
                     Debug.Log($"[Inventory::UseFromInventory()] - Used item at pos {itemPos}.No remaining item.");
                 }
+                // play sound
+                AudioManager.instance.PlaySfx("UsePotion", this, 1, 5);
+
                 DeactivateItemVisibilityInventory(ItemManager.instance.GetItem(newInventoryObject.ID));
+
                 SaveSystem.Save();
                 return;
             }
@@ -217,6 +226,9 @@ public class Inventory : NetworkBehaviour
                         AddFromEquipment(realItem, OffSlot);
                         Debug.Log($"[Inventory::EquipFromInventory()] - Equipped new item at pos {itemPos}.");
                     }
+
+                    // play sound
+                    AudioManager.instance.PlaySfx("EquipItem", this, 1, 5);
                 }
                 else
                 {

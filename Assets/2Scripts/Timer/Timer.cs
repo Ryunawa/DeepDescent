@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using _2Scripts.Manager;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ namespace _2Scripts.Timer
         private void Start()
         {
             _timer = new Stopwatch();
+            // play sound
+            AudioManager.instance.PlaySfx("TimerUpdate");
         }
 
         /// <summary>

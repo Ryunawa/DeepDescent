@@ -1,9 +1,11 @@
+using _2Scripts.Manager;
 using _2Scripts.UI;
 using NaughtyAttributes;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using UnityEngine.TextCore.Text;
 
 namespace _2Scripts.Entities
 {
@@ -23,7 +25,10 @@ namespace _2Scripts.Entities
 	
 		private StatComponent _statComponent;
 
-		private void Awake()
+        private int characterID;
+
+
+        private void Awake()
 		{
 			if(OnDeath == null)
 				OnDeath = new UnityEvent();
@@ -55,7 +60,8 @@ namespace _2Scripts.Entities
 				Heal(_enemyData.enemyStats.health);
 			}
 			Heal(maxHealth);
-		}
+            characterID = MultiManager.instance.GetSelectedCharacterID();
+        }
 
 		public void TakeDamage(float pDamage, float pArmorPenetration = 0)
 		{
@@ -81,7 +87,14 @@ namespace _2Scripts.Entities
 				damage = pDamage * damageReductionFactor;
             }
 
-			_health.Value -= damage;
+            // play sound
+            if (gameObject.layer == LayerMask.NameToLayer("Enemy"))
+            {
+                AudioManager.instance.PlaySfx("MonsterDie", this, 1, 5);
+            }
+
+
+            _health.Value -= damage;
 
 			HUD.instance.SetHp(_health.Value / maxHealth);
 
@@ -113,7 +126,21 @@ namespace _2Scripts.Entities
 				return;
 			}
 
-			_health.Value = Mathf.Min((int)_health.Value + (int) iHeal, maxHealth);
+            // play sound
+            if (gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
+                switch (characterID)
+                {
+                    case 0 | 2:
+                        AudioManager.instance.PlaySfx("FemaleSigh", this, 1, 5);
+                        break;
+                    case 1 | 3:
+                        AudioManager.instance.PlaySfx("MaleSigh", this, 1, 5);
+                        break;
+                }
+            }
+
+            _health.Value = Mathf.Min((int)_health.Value + (int) iHeal, maxHealth);
 
             HUD.instance.SetHp(_health.Value / maxHealth);
 

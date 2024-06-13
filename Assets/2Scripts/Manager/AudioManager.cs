@@ -11,6 +11,8 @@ namespace _2Scripts.Manager
 
         private const string MusicValueSettingName = "musicVolume", SfxValueSettingName = "sfxVolume";
 
+        private System.Random random = new System.Random();
+
         /// <summary>
         /// Play a music (will loop if the sound is set to loop)
         /// </summary>
@@ -19,10 +21,11 @@ namespace _2Scripts.Manager
         {
             Sound s = Array.Find(musicSounds, x => x.name == pName);
 
-            if (s == null) 
+            if (s == null || s.clips.Length == 0)
                 return;
-            
-            musicSource.clip = s.clip;
+
+            AudioClip clip = s.clips[random.Next(s.clips.Length)];
+            musicSource.clip = clip;
             musicSource.Play();
         }
 
@@ -35,42 +38,50 @@ namespace _2Scripts.Manager
         }
 
         /// <summary>
-        ///     Play a sound once
+        /// Play a sound once
         /// </summary>
         /// <param name="pSoundName">The name associated to the sound to play</param>
         public void PlaySfx(string pSoundName)
         {
             Sound s = Array.Find(sfxSounds, x => x.name == pSoundName);
 
-            if (s == null) 
+            if (s == null || s.clips.Length == 0)
+            {
+                Debug.LogWarning("no sounds in list or sound '" + pSoundName + "' has not been found.");
                 return;
-            
-            sfxSource.clip = s.clip;
-            sfxSource.PlayOneShot(s.clip);
+            }
+
+            AudioClip clip = s.clips[random.Next(s.clips.Length)];
+            sfxSource.PlayOneShot(clip);
         }
-        
+
         /// <summary>
-        ///     To play a spatial sound
+        /// To play a spatial sound
         /// </summary>
         /// <param name="pSoundName">Name of the sound to play</param>
         /// <param name="pScript">The origin from where to play the sound</param>
         /// <param name="pMinDistance">Min distance where the sound is at his max volume</param>
         /// <param name="pMaxDistance">Max distance where the sound can be heard</param>
-        public void PlaySfx(string pSoundName, Object pScript, float pMinDistance, float pMaxDistance)
+        /// EXEMPLE
+        /// Footstep sounds: minDistance = 1, maxDistance = 5
+        /// Weapon sounds: minDistance = 2, maxDistance = 10
+        /// Explosions: minDistance = 5, maxDistance = 50
+        public void PlaySfx(string pSoundName, MonoBehaviour pScript, float pMinDistance, float pMaxDistance)
         {
             Sound s = Array.Find(sfxSounds, x => x.name == pSoundName);
 
-            if (s == null) 
+            if (s == null || s.clips.Length == 0)
                 return;
-            
+
+            AudioClip clip = s.clips[random.Next(s.clips.Length)];
             AudioSource objectAudioSource = pScript.GetComponent<AudioSource>() ?? pScript.gameObject.AddComponent<AudioSource>();
-            
-            objectAudioSource.clip = s.clip;
+
+            objectAudioSource.clip = clip;
             objectAudioSource.spatialBlend = 1;
             objectAudioSource.minDistance = pMinDistance;
             objectAudioSource.maxDistance = pMaxDistance;
-                
-            objectAudioSource.PlayOneShot(s.clip);
+
+            objectAudioSource.PlayOneShot(clip);
         }
 
         /// <summary>
@@ -80,7 +91,7 @@ namespace _2Scripts.Manager
         {
             musicSource.mute = !musicSource.mute;
         }
-        
+
         /// <summary>
         /// Useful to toggle on/off the sound volume
         /// </summary>
@@ -97,7 +108,7 @@ namespace _2Scripts.Manager
         {
             musicSource.volume = pVolume;
         }
-        
+
         /// <summary>
         /// Allow to increase or decrease the sound volume
         /// </summary>
@@ -115,11 +126,12 @@ namespace _2Scripts.Manager
             PlayerPrefs.SetFloat(MusicValueSettingName, musicSource.volume);
             PlayerPrefs.SetFloat(SfxValueSettingName, sfxSource.volume);
         }
-        
+
         /// <summary>
         /// Load an audio setting depending on the name
         /// </summary>
-        /// <param name="pKeyName">value get from the saved parameter in the player preferences</param>
+        /// <param name="pKeyName">value get from the saved parameter in the player preferences</
+
         /// <returns></returns>
         public float LoadAudioSetting(string pKeyName)
         {

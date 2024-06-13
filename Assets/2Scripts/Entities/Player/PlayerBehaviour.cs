@@ -24,7 +24,10 @@ namespace _2Scripts.Entities.Player
         private CharacterController _characterController;
         private float _characterControllerOriginalStepOffset;
         private InputManager _inputManager;
-        
+
+        private int characterID = 0;
+
+
         private GameObject _objectToAddToInventory;
         
         private float ySpeed;
@@ -51,6 +54,8 @@ namespace _2Scripts.Entities.Player
             _characterController = GetComponent<CharacterController>();
             _characterControllerOriginalStepOffset = _characterController.stepOffset;
             _inputManager = InputManager.instance;
+
+            characterID = MultiManager.instance.GetSelectedCharacterID();
 
             for (int i = 0; i < 4; i++)
             {
@@ -97,12 +102,29 @@ namespace _2Scripts.Entities.Player
         forward.y = 0;
         Vector3 move = forward.normalized * _inputManager.GetPlayerMovement().y + _camTransform.right * _inputManager.GetPlayerMovement().x;
         
-        ySpeed += Physics.gravity.y * Time.fixedDeltaTime; 
-        
+        ySpeed += Physics.gravity.y * Time.fixedDeltaTime;
+
         switch (_characterController.isGrounded)
         {
             case true when _inputManager.PlayerJumped():
-                ySpeed = jumpHeight;
+                    {
+                        switch (characterID)
+                        {
+                            case 0:
+                                AudioManager.instance.PlaySfx("ArcherJump", this, 1, 5);
+                                break;
+                            case 1:
+                                AudioManager.instance.PlaySfx("DwarfJump", this, 1, 5);
+                                break;
+                            case 2:
+                                AudioManager.instance.PlaySfx("WitchJump", this, 1, 5);
+                                break;
+                            case 3:
+                                AudioManager.instance.PlaySfx("GoblinJump", this, 1, 5);
+                                break;
+                        }
+                        ySpeed = jumpHeight;
+                    }
                 break;
             case true :
                 ySpeed = -0.5f;
@@ -136,6 +158,21 @@ namespace _2Scripts.Entities.Player
                 ModifyDeathValue(true);
             }
 
+            switch (characterID)
+            {
+                case 0:
+                    AudioManager.instance.PlaySfx("ArcherDeath", this, 2, 10);
+                    break;
+                case 1:
+                    AudioManager.instance.PlaySfx("DwarfDeath", this, 2, 10);
+                    break;
+                case 2:
+                    AudioManager.instance.PlaySfx("WitchDeath", this, 2, 10);
+                    break;
+                case 3:
+                    AudioManager.instance.PlaySfx("GoblinDeath", this, 2, 10);
+                    break;
+            }
             transform.Rotate(transform.right, 90.0f);
         }
 
