@@ -103,6 +103,7 @@ namespace _2Scripts.ProceduralGeneration
         private void ChangeStateClientRpc()
         {
             Debug.Log("CALLED CHANGE STATE FROM RPC");
+            SubToGameManagerEvent();
             GameManager.instance.ChangeGameState(GameState.InLevel);
         }
 
@@ -115,7 +116,7 @@ namespace _2Scripts.ProceduralGeneration
                 GameManager.GetManager<AudioManager>().PlayMusic("SafeAreaMusic", 0.1f);
                 GenerateShopRoom();
                 
-                SubToGameManagerEvent();
+                
                 ChangeStateClientRpc();
                 
                 return;
@@ -159,7 +160,7 @@ namespace _2Scripts.ProceduralGeneration
             
             GameManager.GetManager<ItemManager>().StartSpawningItems();
 
-            SubToGameManagerEvent();
+            
             ChangeStateClientRpc();
             
             TeleportHostAndClientRpc(GetPosition(centerIndex));
