@@ -36,7 +36,11 @@ namespace _2Scripts.Entities
 
 		private void _CheckForDeath(float iPrevVal, float iCurVal)
 		{
-			if (iPrevVal > 0 && iCurVal <= 0)
+            if (_hud)
+            {
+                _hud.SetHp(_health.Value / maxHealth);
+            }
+            if (iPrevVal > 0 && iCurVal <= 0)
 			{
 				Debug.Log($"{gameObject.name} Die");
 				OnDeath.Invoke();
@@ -127,12 +131,6 @@ namespace _2Scripts.Entities
 
 
             _health.Value -= damage;
-
-            if (_hud)
-            {
-                _hud.SetHp(_health.Value / maxHealth);
-            }
-
             OnDamaged.Invoke(pDamage);
 		}
 		public void Heal(float iHeal)
@@ -163,11 +161,6 @@ namespace _2Scripts.Entities
             }
 
             _health.Value = Mathf.Min((int)_health.Value + (int) iHeal, maxHealth);
-
-			if (_hud)
-			{
-                _hud.SetHp(_health.Value / maxHealth);
-            }
 
             OnHealed.Invoke(iHeal);
 		}
