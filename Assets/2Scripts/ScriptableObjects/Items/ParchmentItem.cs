@@ -1,4 +1,5 @@
 using _2Scripts.Entities.Player;
+using _2Scripts.Manager;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +17,7 @@ public class ParchmentItem : ConsumableItem
         {
             if (GameObjectOwner.TryGetComponent(out SpellCasterComponent spellcasterComp))
             {
-                spellcasterComp.SpawnSpellRpc(ID);
+                spellcasterComp.SpawnSpellRpc(ID, GameManager.GetManager<MultiManager>().PlayerName);
                 return true;
             }
         }
