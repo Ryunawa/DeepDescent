@@ -2181,8 +2181,8 @@ GameObject:
   - component: {fileID: 6560489301098289846}
   - component: {fileID: 7479527025773236740}
   - component: {fileID: 2664729893333764347}
-  - component: {fileID: 4123103312939607119}
   - component: {fileID: -8515664152495936704}
+  - component: {fileID: 4123103312939607119}
   - component: {fileID: -4435357719316504908}
   - component: {fileID: -8703055347366504262}
   m_Layer: 8
@@ -2294,6 +2294,27 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &-8515664152495936704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3959042653490119952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 2899145567
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &4123103312939607119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2322,29 +2343,9 @@ MonoBehaviour:
   attackRange: 1.5
   timeBeforeAttack: 2
   _isSwinging: 0
+  isBoss: 0
   waypoints: []
   stopChance: 0.5
---- !u!114 &-8515664152495936704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3959042653490119952}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2899145567
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!114 &-4435357719316504908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2358,13 +2359,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomSpawnedInID: 0
-  enemyStats:
-    id: 0
-    enemyPrefab: {fileID: 0}
-    spawnRate: 0
-    health: 0
-    damageDealt: 0
-    damageTaken: 0
+  damageToInflict: 0
+  armorPenetration: 0
+  damageInflicted: 0
 --- !u!114 &-8703055347366504262
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -20,17 +20,19 @@ namespace _2Scripts.Manager
     [Serializable]
     public class LevelData
     {
-        public List<GameObject> enemyPrefabsSpawnable;
+        public List<MeshInfo> enemyMeshInfos; // List of enemy mesh indices and health values for this level
     }
-    
+
     public class EnemiesSpawnerManager : GameManagerSync<EnemiesSpawnerManager>
     {
+        private static EnemiesSpawnerManager instance; // Static instance variable
+
         public EventHandler<int> OnEnemiesSpawnedOrKilledEventHandler;
 
         #region Variables
 
         public bool bSpawnInMultiplayer;
-        
+
         [SerializeField] private List<LevelData> spawnableEnemiesPrefabsByLevel;
         [SerializeField] private int maxEnemiesPerLevel = 5;
         [SerializeField] private int maxEnemiesPerRoom = 3;
@@ -40,24 +42,51 @@ namespace _2Scripts.Manager
         [SerializeField] private GameObject spawnParticle;
         [SerializeField] private GameObject spawnedEnemyFolder;
 
+        [SerializeField] private GameObject enemyPrefab; // Add this field if it's missing
+
         private EnemyTypes _enemiesList;
         private int _currentEnemiesCount;
 
         private LevelGenerator _levelGenerator;
 
         public bool bShouldSpawn;
-        
+
         #endregion
+
+        protected override void Start()
+        {
+            base.Start();
+
+            if (instance != null && instance != this)
+            {
+                Debug.LogWarning("Multiple instances of EnemiesSpawnerManager detected. Destroying duplicate.");
+                Destroy(this.gameObject);
+                return;
+            }
+            else
+            {
+                instance = this;
+            }
+
+            if (spawnedEnemyFolder == null)
+            {
+                spawnedEnemyFolder = GameObject.FindWithTag("SpawnedEnemies");
+                if (spawnedEnemyFolder == null)
+                {
+                    Debug.LogError("No GameObject with tag 'SpawnedEnemies' found. Please ensure there is a GameObject with this tag in the scene.");
+                }
+            }
+        }
 
         protected override void OnGameManagerChangeState(GameState gameState)
         {
-            if (gameState!= GameState.InLevel)return;
-            
+            if (gameState != GameState.InLevel) return;
+
             if (NetworkManager.Singleton.IsServer)
             {
-                if(GameManager.GetManager<GameFlowManager>().CurrLevel == 1)
+                if (GameManager.GetManager<GameFlowManager>().CurrLevel == 1)
                     GameManager.GetManager<DifficultyManager>().AdjustDifficultyParameters(GameManager.GetManager<MultiManager>().GetAllPlayerGameObjects().Count);
-                                                
+
                 if (GameManager.instance.levelGenerator.spawnShop)
                     return;
                 _enemiesList = GameManager.GetManager<DifficultyManager>().GetEnemiesStatsToUse();
@@ -66,52 +95,41 @@ namespace _2Scripts.Manager
         }
 
         /// <summary>
-        /// Return the enemy to spawn depending on his spawn rate
+        /// Return the enemy mesh info to spawn depending on its spawn rate
         /// </summary>
         /// <returns></returns>
-        private EnemyStats ChooseEnemyToSpawn()
+        private MeshInfo ChooseEnemyMeshInfo()
         {
             int index = Math.Min(GameManager.GetManager<GameFlowManager>().CurrLevel, spawnableEnemiesPrefabsByLevel.Count);
             LevelData currSpawnableEnemiesPrefabs = spawnableEnemiesPrefabsByLevel[index - 1];
 
-            foreach (var spawnableEnemyPrefab in currSpawnableEnemiesPrefabs.enemyPrefabsSpawnable)
-            {
-                for (int i = 0; i < GetNumberOfElementsInStruct(_enemiesList); i++)
-                {
-                    if (GetStructElementByIndex<EnemyStats>(_enemiesList, i).enemyPrefab == spawnableEnemyPrefab)
-                    {
-                        if (Random.value < GetStructElementByIndex<EnemyStats>(_enemiesList, i).spawnRate)
-                        {
-                            return GetStructElementByIndex<EnemyStats>(_enemiesList, i);
-                        }
-                    }
-                }
-            }
-            return (GetStructElementByIndex<EnemyStats>(_enemiesList, 0));
+            List<MeshInfo> meshInfos = currSpawnableEnemiesPrefabs.enemyMeshInfos;
+            MeshInfo chosenMeshInfo = meshInfos[Random.Range(0, meshInfos.Count)];
+            return chosenMeshInfo;
         }
 
         /// <summary>
         /// Return the position of a random room to use to spawn the enemy
         /// </summary>
         /// <returns></returns>
-        private (Room,List<GameObject>) GetRandomRoomToSpawnIn()
+        private (Room, List<GameObject>) GetRandomRoomToSpawnIn()
         {
-            (Room,List<GameObject>) randomRoom;
+            (Room, List<GameObject>) randomRoom;
             List<(Room, List<GameObject>)> roomsTuple = GameManager.instance.levelGenerator.GetAllEnemySpawnPoints();
             int roomIndex;
-            
+
             do
             {
                 int randomInt = Random.Range(0, roomsTuple.Count);
                 randomRoom = roomsTuple[randomInt];
                 roomIndex = GameManager.instance.levelGenerator.GetIndexOfRoom(randomRoom.Item1);
             } while (GameManager.instance.levelGenerator.IsRoomEmpty(roomIndex));
-            
+
             return randomRoom;
         }
 
         /// <summary>
-        /// Spawn an enemy with an interval between two spawn
+        /// Spawn an enemy with an interval between two spawns
         /// </summary>
         /// <returns></returns>
         IEnumerator SpawnEnemies()
@@ -122,22 +140,35 @@ namespace _2Scripts.Manager
 
                 if (_currentEnemiesCount < maxEnemiesPerLevel)
                 {
-                    EnemyStats objectToSpawn = ChooseEnemyToSpawn();
-                    (Room,List<GameObject>) roomToSpawnIn = GetRandomRoomToSpawnIn();
+                    MeshInfo meshInfoToActivate = ChooseEnemyMeshInfo();
+                    (Room, List<GameObject>) roomToSpawnIn = GetRandomRoomToSpawnIn();
                     Vector3 spawningPosition = roomToSpawnIn.Item2[Random.Range(0, roomToSpawnIn.Item2.Count)].transform.position;
 
                     OnEnemiesSpawnedOrKilledEventHandler?.Invoke(roomToSpawnIn.Item1, 1);
-                    
-                    
-                    GameObject newEnemy = Instantiate(objectToSpawn.enemyPrefab, new Vector3(spawningPosition.x, -1, spawningPosition.z),
-                        quaternion.identity);
+
+                    GameObject newEnemy = Instantiate(enemyPrefab, new Vector3(spawningPosition.x, -1, spawningPosition.z), quaternion.identity);
                     newEnemy.GetComponent<NetworkObject>().Spawn();
                     newEnemy.transform.SetParent(spawnedEnemyFolder.transform);
-                    
-                    EnemyData newEnemyData = newEnemy.GetComponent<EnemyData>();
-                    newEnemyData.enemyStats = objectToSpawn;
-                    newEnemyData.roomSpawnedInID = roomToSpawnIn.Item1.ID;
-                    
+
+                    // Activate the appropriate mesh
+                    for (int i = 0; i < newEnemy.transform.childCount; i++)
+                    {
+                        Transform child = newEnemy.transform.GetChild(i);
+                        child.gameObject.SetActive(i == meshInfoToActivate.index);
+                    }
+
+                    // Set the health component
+                    HealthComponent healthComponent = newEnemy.GetComponent<HealthComponent>();
+                    if (healthComponent != null)
+                    {
+                        healthComponent.SetMaxHealth(meshInfoToActivate.health);
+                        healthComponent.Heal(meshInfoToActivate.health); // Start with full health
+                    }
+                    else
+                    {
+                        Debug.LogError("HealthComponent is missing on the spawned enemy.");
+                    }
+
                     newEnemy.GetComponent<AIController>().enabled = false;
                     Vector3 newEnemyPosition = newEnemy.transform.position;
                     StartCoroutine(StartSpawnAnim(newEnemyPosition, newEnemy));
@@ -149,17 +180,14 @@ namespace _2Scripts.Manager
         IEnumerator StartSpawnAnim(Vector3 pEnemyPosition, GameObject pEnemyGameObject)
         {
             yield return new WaitForSeconds(0.2f);
-            GameObject newParticle = Instantiate(spawnParticle, new Vector3(pEnemyPosition.x, 0.2f, pEnemyPosition.z - 0.5f),
-                quaternion.identity);
-                        
+            GameObject newParticle = Instantiate(spawnParticle, new Vector3(pEnemyPosition.x, 0.2f, pEnemyPosition.z - 0.5f), quaternion.identity);
             newParticle.transform.localScale *= 2.5f;
-                        
+
             yield return new WaitForSeconds(pEnemyGameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length + 0.25f);
-                        
             Destroy(newParticle);
             pEnemyGameObject.GetComponent<AIController>().enabled = true;
         }
-        
+
         /// <summary>
         /// Decrement the total enemies number 
         /// </summary>
@@ -177,12 +205,12 @@ namespace _2Scripts.Manager
             StopAllCoroutines();
             foreach (var networkObjectChild in spawnedEnemyFolder.GetComponentsInChildren<NetworkObject>())
             {
-                if(networkObjectChild.gameObject != spawnedEnemyFolder)
+                if (networkObjectChild.gameObject != spawnedEnemyFolder)
                     networkObjectChild.Despawn();
             }
             Debug.Log("All enemies left removed");
         }
-        
+
         // /!\ DEBUG ONLY /!\
         [Button]
         private void DEBUG_StartSpawn()
@@ -198,6 +226,4 @@ namespace _2Scripts.Manager
             StopCoroutine(SpawnEnemies());
         }
     }
-
 }
-

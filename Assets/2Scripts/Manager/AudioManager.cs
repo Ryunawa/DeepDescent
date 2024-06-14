@@ -73,18 +73,29 @@ namespace _2Scripts.Manager
             Sound s = Array.Find(sfxSounds, x => x.name == pSoundName);
 
             if (s == null || s.clips.Length == 0)
+            {
+                Debug.LogWarning($"Sound {pSoundName} not found or has no clips.");
                 return;
+            }
 
-            AudioClip clip = s.clips[random.Next(s.clips.Length)];
-            AudioSource objectAudioSource = pScript.GetComponent<AudioSource>() ?? pScript.gameObject.AddComponent<AudioSource>();
+            AudioClip clip = s.clips[UnityEngine.Random.Range(0, s.clips.Length)];
+            AudioSource objectAudioSource = pScript.GetComponent<AudioSource>();
+
+            if (objectAudioSource == null)
+            {
+                Debug.Log($"No AudioSource found on {pScript.gameObject.name}. Adding one.");
+                objectAudioSource = pScript.gameObject.AddComponent<AudioSource>();
+            }
 
             objectAudioSource.clip = clip;
             objectAudioSource.spatialBlend = 1;
             objectAudioSource.minDistance = pMinDistance;
             objectAudioSource.maxDistance = pMaxDistance;
 
+            Debug.Log($"Playing sound {pSoundName} on {pScript.gameObject.name}");
             objectAudioSource.PlayOneShot(clip, volume);
         }
+
 
         /// <summary>
         /// Useful to toggle on/off the music volume

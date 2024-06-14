@@ -1,12 +1,18 @@
+using System;
+using System.Collections.Generic;
 
 namespace _2Scripts.Struct
 {
-    [System.Serializable]
+    [Serializable]
     public struct EnemyTypes
     {
-        public EnemyStats enemyType1;
-        public EnemyStats enemyType2;
-        public EnemyStats enemyType3;
-        public EnemyStats enemyType4;
+        public List<MeshInfo> meshInfos; // List of mesh info containing indices and health values
+    }
+
+    [Serializable]
+    public struct MeshInfo
+    {
+        public int index; // The index of the mesh
+        public float health; // The health of the enemy
     }
 }

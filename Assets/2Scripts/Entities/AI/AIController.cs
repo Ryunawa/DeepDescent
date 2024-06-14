@@ -11,7 +11,7 @@ namespace _2Scripts.Entities.AI
     {
         [Header("Movement Settings")]
         [SerializeField]
-        private float distanceAcceptation = 2f; // distance where we can considere the IA managed to go to his goal
+        private float distanceAcceptation = 2f; // distance where we can consider the IA managed to go to his goal
         [SerializeField]
         private float startWaitTime = 4; // wait time before the AI starts moving between each action
         [SerializeField]
@@ -40,7 +40,6 @@ namespace _2Scripts.Entities.AI
         private bool _isSwinging;
         public bool isBoss;
 
-
         [Header("Patrol")]
         [SerializeField] private Transform[] waypoints; // patrol points
         private int m_CurrentWaypointIndex;
@@ -58,11 +57,10 @@ namespace _2Scripts.Entities.AI
         private Vector3 m_PlayerPosition;
         private float m_WaitTime;
         private float m_TimeToRotate;
-        private bool m_PlayerDetected; // player has been seeing
+        private bool m_PlayerDetected; // player has been seen
         private bool m_PlayerNear; // player close to the AI
         private bool m_IsPatrol;
         private bool m_CanAttackPlayer;
-
 
         void Start()
         {
@@ -82,9 +80,22 @@ namespace _2Scripts.Entities.AI
             navMeshAgent.stoppingDistance = attackRange - 0.5f;
             navMeshAgent.isStopped = false;
             navMeshAgent.speed = speedWalk;
-            if(waypoints.Length > 0) navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
+
+            if (waypoints != null && waypoints.Length > 0)
+            {
+                navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
+            }
+            else
+            {
+                Debug.LogWarning("Waypoints array is either null or empty.");
+            }
 
             healthComponent = GetComponent<HealthComponent>();
+            if (healthComponent == null)
+            {
+                Debug.LogError($"HealthComponent not found on {gameObject.name}. Adding HealthComponent dynamically.");
+                healthComponent = gameObject.AddComponent<HealthComponent>();
+            }
             healthComponent.OnDeath.AddListener(HandleDeath);
 
             // play sound
@@ -149,7 +160,15 @@ namespace _2Scripts.Entities.AI
                     ActivateMovements(speedWalk);
                     m_TimeToRotate = timeToRotate;
                     m_WaitTime = startWaitTime;
-                    navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
+
+                    if (waypoints != null && waypoints.Length > 0)
+                    {
+                        navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Waypoints array is either null or empty.");
+                    }
                 }
                 else
                 {
@@ -164,7 +183,6 @@ namespace _2Scripts.Entities.AI
             }
         }
 
-    
         // patrolling points by points
         private void PatrollingPointsByPoints()
         {
@@ -187,11 +205,19 @@ namespace _2Scripts.Entities.AI
             {
                 m_PlayerNear = false;
                 playerLastPosition = Vector3.zero;
-                navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
 
-                if(navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+                if (waypoints != null && waypoints.Length > 0)
                 {
-                    if(m_WaitTime <= 0)
+                    navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
+                }
+                else
+                {
+                    Debug.LogWarning("Waypoints array is either null or empty.");
+                }
+
+                if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+                {
+                    if (m_WaitTime <= 0)
                     {
                         // move to the next waypoint
                         NextPoint();
@@ -225,7 +251,7 @@ namespace _2Scripts.Entities.AI
             // if ia close to its destination and finished his journey
             if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < distanceAcceptation)
             {
-                if(!didAlreadyWait)
+                if (!didAlreadyWait)
                 {
                     float percentage = UnityEngine.Random.value;
                     if (percentage <= stopChance)
@@ -243,29 +269,25 @@ namespace _2Scripts.Entities.AI
                 {
                     NewRandomPointPatrolling();
                 }
-
             }
         }
 
         private IEnumerator StartWaiting(float waitTime)
         {
-            // Debug.LogWarning("waiting... " +  waitTime);
             isWaiting = true;
             yield return new WaitForSeconds(waitTime);
             isWaiting = false;
         }
 
-
         private Vector3 GetRandomAccessiblePoint()
         {
             int[] distances = { 30, 20, 10, 5 }; // distances to try to find a point
-            bool pointFound = false;
 
             foreach (int distance in distances)
             {
                 int failedAttempts = 0;
 
-                for (int i = 0; i < 2; i++) // test 2 times for each distances
+                for (int i = 0; i < 2; i++) // test 2 times for each distance
                 {
                     Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * distance;
                     randomDirection += transform.position;
@@ -275,7 +297,7 @@ namespace _2Scripts.Entities.AI
                     if (NavMesh.SamplePosition(randomDirection, out hit, distance, NavMesh.AllAreas))
                     {
                         randomPoint = hit.position;
-                    
+
                         // is the point accessible? by trying to raycast it
                         RaycastHit raycastHit;
                         if (Physics.Raycast(transform.position, randomPoint - transform.position, out raycastHit, distance))
@@ -290,21 +312,13 @@ namespace _2Scripts.Entities.AI
                         }
                         else
                         {
-                            pointFound = true;
                             return randomPoint; // return the point if has been found
                         }
                     }
                 }
             }
-            // no valid point
-            if (!pointFound)
-            {
-                //Debug.LogWarning("No points found in all distances, just gonna wait then...");
-            }
-
             return Vector3.zero;
         }
-
 
         public event Action<bool> OnSwingStateChanged;
 
@@ -326,12 +340,11 @@ namespace _2Scripts.Entities.AI
             OnSwingStateChanged?.Invoke(_isSwinging);
         }
 
-
         // set the character state to "move" with a given speed
         private void ActivateMovements(float speed)
         {
             navMeshAgent.isStopped = false;
-            navMeshAgent.speed = speed ;
+            navMeshAgent.speed = speed;
         }
 
         // stop the character
@@ -344,21 +357,37 @@ namespace _2Scripts.Entities.AI
         // move to the next waypoint
         public void NextPoint()
         {
-            m_CurrentWaypointIndex = (m_CurrentWaypointIndex + 1) % waypoints.Length;
-            navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
+            if (waypoints != null && waypoints.Length > 0)
+            {
+                m_CurrentWaypointIndex = (m_CurrentWaypointIndex + 1) % waypoints.Length;
+                navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
+            }
+            else
+            {
+                Debug.LogWarning("Waypoints array is either null or empty.");
+            }
         }
 
         // move towards the player
         private void MoveToPlayer(Vector3 player)
         {
             navMeshAgent.SetDestination(player);
-            if(Vector3.Distance(transform.position, player) <= 0.3)
+            if (Vector3.Distance(transform.position, player) <= 0.3)
             {
-                if(m_WaitTime <= 0)
+                if (m_WaitTime <= 0)
                 {
                     m_PlayerNear = false;
                     ActivateMovements(speedWalk);
-                    navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
+
+                    if (waypoints != null && waypoints.Length > 0)
+                    {
+                        navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Waypoints array is either null or empty.");
+                    }
+
                     m_WaitTime = startWaitTime;
                     m_TimeToRotate = timeToRotate;
                 }
@@ -397,7 +426,7 @@ namespace _2Scripts.Entities.AI
         {
             Collider[] playersInRange = Physics.OverlapSphere(transform.position, viewDistance, playerMask);
 
-            for(int i = 0; i < playersInRange.Length; i++)
+            for (int i = 0; i < playersInRange.Length; i++)
             {
                 Transform player = playersInRange[i].transform;
                 Vector3 dirToPlayer = (player.position - transform.position).normalized;
@@ -434,7 +463,7 @@ namespace _2Scripts.Entities.AI
                 }
 
                 // player too far
-                if(Vector3.Distance(transform.position, player.position) > viewAngle)
+                if (Vector3.Distance(transform.position, player.position) > viewAngle)
                 {
                     m_PlayerDetected = false;
                 }
@@ -493,6 +522,5 @@ namespace _2Scripts.Entities.AI
 
             networkObject.Despawn(true);
         }
-
     }
 }

@@ -103,6 +103,7 @@ namespace _2Scripts.ProceduralGeneration
         {
             if (spawnShop)
             {
+                Debug.LogWarning("this is a shop");
                 // Play Music
                 GameManager.GetManager<AudioManager>().PlayMusic("SafeAreaMusic", 0.1f);
                 GenerateShopRoom();
@@ -247,26 +248,26 @@ namespace _2Scripts.ProceduralGeneration
             }
 
             return roomsOfGivenGen.ToArray();
-        } 
+        }
 
         private Dictionary<Directions, Room> GetNeighbouringRooms(int roomIndex)
         {
             Dictionary<Directions, Room> rooms = new Dictionary<Directions, Room>()
             {
-                { Directions.North , null},
-                { Directions.East , null},
-                { Directions.South , null},
-                { Directions.West , null}
+                { Directions.North, null },
+                { Directions.East, null },
+                { Directions.South, null },
+                { Directions.West, null }
             };
 
             // east
-            if ((roomIndex + 1) % dungeonSize != 0)
+            if ((roomIndex + 1) % dungeonSize != 0 && roomIndex + 1 < dungeon.Length)
             {
                 rooms[Directions.East] = dungeon[roomIndex + 1];
             }
 
             // west
-            if (roomIndex % dungeonSize != 0)
+            if (roomIndex % dungeonSize != 0 && roomIndex - 1 >= 0)
             {
                 rooms[Directions.West] = dungeon[roomIndex - 1];
             }
@@ -285,6 +286,7 @@ namespace _2Scripts.ProceduralGeneration
 
             return rooms;
         }
+
 
         private bool DoesNeighbouringRoomNeedDoor(Directions direction, Dictionary<Directions, Room> neighbouringRooms, int actualRoomIndex)
         {
