@@ -8,7 +8,6 @@ namespace _2Scripts.Manager
 {
     public class GameFlowManager : GameManagerSync<GameFlowManager>
     {
-        public static GameFlowManager Instance { get; private set; }
 
     public UnityEvent<Timer.Timer> OnNextLevelEvent;
 

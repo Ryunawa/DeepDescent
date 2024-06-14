@@ -59,8 +59,6 @@ namespace _2Scripts.ProceduralGeneration
         private static int _staticDungeonSize;
         private int _roomNumber = 1;
 
-        private bool _lateUpdateOnlyOnce = false;
-
         private MultiManager _multiManager;
 
         private void Awake()
@@ -89,6 +87,9 @@ namespace _2Scripts.ProceduralGeneration
                 }
                 case GameState.InLevel:
                 {
+                    
+                    //TODO : check if server --> call clientRPC GameManager.instance.ChangeGameState(GameState.InLevel);
+                    
                     dungeonGeneratedEvent.Invoke();
                     if (!spawnShop) PlacePortal();
                     GameManager.GetManager<SceneManager>().DeactivateLoadingScreen();
@@ -192,7 +193,6 @@ namespace _2Scripts.ProceduralGeneration
         [Rpc(SendTo.ClientsAndHost)]
         private void TeleportHostAndClientRpc(Vector3 pPosition)
         {
-            _lateUpdateOnlyOnce = true;
             _multiManager.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().TeleportPlayer( pPosition + Vector3.up * 5);
         }
         
