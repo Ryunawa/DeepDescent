@@ -21,7 +21,6 @@ public class Projectile : NetworkBehaviour
                 {
                     if (despawnOnDeath)
                     {
-                        Debug.Log("Die");
                         NetworkObject.Despawn(true);
                     }
                 }

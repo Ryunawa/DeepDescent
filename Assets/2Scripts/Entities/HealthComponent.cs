@@ -54,6 +54,7 @@ namespace _2Scripts.Entities
 		{
 			if (iPrevVal > 0 && iCurVal <= 0)
 			{
+				Debug.Log($"{gameObject.name} Die");
 				OnDeath.Invoke();
 			}
 		}
@@ -88,7 +89,6 @@ namespace _2Scripts.Entities
 
 		public void TakeDamage(float pDamage, float pArmorPenetration = 0)
 		{
-			Debug.Log($"Current HP = {_health.Value}");
 			if(!IsServer)
 			{
 				TakeDamageServerRpc(pDamage);
@@ -131,8 +131,6 @@ namespace _2Scripts.Entities
             {
                 _hud.SetHp(_health.Value / maxHealth);
             }
-
-            Debug.Log($"HP after damage = {_health.Value}");
 
             OnDamaged.Invoke(pDamage);
 		}
