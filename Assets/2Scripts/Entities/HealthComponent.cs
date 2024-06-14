@@ -1,10 +1,12 @@
 using System.Threading.Tasks;
+using _2Scripts.Entities.Player;
 using _2Scripts.Helpers;
 using _2Scripts.Interfaces;
 using _2Scripts.Manager;
 using _2Scripts.UI;
 using NaughtyAttributes;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -69,15 +71,24 @@ namespace _2Scripts.Entities
 			}
 			else
 			{
-				_hud = GameManager.GetManager<InventoryUIManager>().HUD;
+				if (TryGetComponent(out PlayerBehaviour _))
+					_hud = GameManager.GetManager<InventoryUIManager>().HUD;
 			}
 
 			Heal(maxHealth);
             characterID = GameManager.GetManager<MultiManager>().GetSelectedCharacterID();
         }
 
+		protected override void Start()
+		{
+			base.Start();
+			OnGameManagerChangeState(GameManager.GameState);
+		}
+
+
 		public void TakeDamage(float pDamage, float pArmorPenetration = 0)
 		{
+			Debug.Log($"Current HP = {_health.Value}");
 			if(!IsServer)
 			{
 				TakeDamageServerRpc(pDamage);
@@ -95,9 +106,16 @@ namespace _2Scripts.Entities
 			}
 			else
 			{
-                float effectiveArmor = _enemyData.enemyStats.armor * (1 - pArmorPenetration / 100);
-                float damageReductionFactor = 1 - effectiveArmor / 100;
-				damage = pDamage * damageReductionFactor;
+				if (_enemyData)
+				{
+                    float effectiveArmor = _enemyData.enemyStats.armor * (1 - pArmorPenetration / 100);
+                    float damageReductionFactor = 1 - effectiveArmor / 100;
+                    damage = pDamage * damageReductionFactor;
+				}
+				else
+				{
+					damage = pDamage;
+				}
             }
 
             // play sound
@@ -110,6 +128,8 @@ namespace _2Scripts.Entities
             _health.Value -= damage;
 
 			_hud.SetHp(_health.Value / maxHealth);
+
+            Debug.Log($"HP after damage = {_health.Value}");
 
             OnDamaged.Invoke(pDamage);
 		}
