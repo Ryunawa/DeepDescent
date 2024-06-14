@@ -184,6 +184,11 @@ namespace _2Scripts.Entities
 			Heal(iHeal);
 		}
 
+		public void SetMaxHealth(float newMaxHealth)
+		{
+			maxHealth = newMaxHealth;
+			_health.Value = newMaxHealth;
+		}
 
 		public float GetHealth()
 		{
