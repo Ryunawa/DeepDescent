@@ -10,6 +10,7 @@ public class Projectile : NetworkBehaviour
     public float projectileMovementSpeed = 1.0f;
     public float projectileDamage = 1.0f;
     public bool despawnOnDeath = false;
+    public ParticleSystem vfx;
     [DoNotSerialize] public Vector3 projectileDirection = Vector3.zero;
     private HealthComponent ownHealthComponent;
     private void Start()
@@ -30,11 +31,14 @@ public class Projectile : NetworkBehaviour
         {
             rb.isKinematic = true;
         }
+        Starco
     }
 
     private void FixedUpdate()
     {
-        transform.position = (projectileMovementSpeed * projectileDirection * Time.fixedDeltaTime) + transform.position ;
+        if (!IsServer)
+            return;
+        transform.position = (projectileDirection * (projectileMovementSpeed * Time.fixedDeltaTime)) + transform.position ;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -69,5 +73,9 @@ public class Projectile : NetworkBehaviour
         }
     }
     
-
+    private IEnumerator ShowVFX()
+    {
+        yield return new WaitForEndOfFrame();
+        vfx.Play(true);
+    }
 }

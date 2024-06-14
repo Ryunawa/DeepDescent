@@ -50,7 +50,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 1
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -4902,7 +4902,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 1
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -9746,7 +9746,7 @@ PrefabInstance:
     - target: {fileID: 2962349039048327619, guid: 84fe8fa6019501c4da76f5b8fdf01682,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2724670710
+      value: 354934975
       objectReference: {fileID: 0}
     - target: {fileID: 3090629861896308313, guid: 84fe8fa6019501c4da76f5b8fdf01682,
         type: 3}
@@ -9886,6 +9886,7 @@ MonoBehaviour:
   projectileMovementSpeed: 5
   projectileDamage: 1
   despawnOnDeath: 1
+  vfx: {fileID: 6292385797573103470}
   projectileDirection: {x: 0, y: 0, z: 0}
 --- !u!114 &6742390409386907968
 MonoBehaviour:
