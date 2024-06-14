@@ -90,7 +90,12 @@ namespace _2Scripts.ProceduralGeneration
                     if (!spawnShop) PlacePortal();
                     GameManager.GetManager<SceneManager>().DeactivateLoadingScreen();
                     GameManager.GetManager<InventoryUIManager>().gameObject.SetActive(true);
-                    ChangeStateClientRpc();
+
+                    if (_multiManager.IsLobbyHost())
+                    {
+                        ChangeStateClientRpc();
+                    }
+                    
                     break;
                 }
             }

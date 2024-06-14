@@ -57,9 +57,14 @@ namespace _2Scripts.Entities.Player
 
             characterID = GameManager.GetManager<MultiManager>().GetSelectedCharacterID();
 
-            for (int i = 0; i < 4; i++)
+            if (IsOwner)
             {
-                playerModels[i].SetActive(i == GameManager.GetManager<MultiManager>().GetSelectedCharacterID());
+                for (int i = 0; i < 4; i++)
+                {
+                    playerModels[i].SetActive(i == GameManager.GetManager<MultiManager>().GetSelectedCharacterID());
+                }
+
+                _inputManager.Inputs.Player.QuickSlot.performed += context => UseQuickSlot(context.ReadValue<float>());
             }
             
             if (!IsOwner)
@@ -74,8 +79,6 @@ namespace _2Scripts.Entities.Player
             }
 
             Debug.Log("PLayerBehaviour Done Start ");
-
-            _inputManager.Inputs.Player.QuickSlot.performed += context => UseQuickSlot(context.ReadValue<float>());
         }
 
         private void Update()

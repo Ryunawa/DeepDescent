@@ -8,36 +8,46 @@ namespace _2Scripts.UI
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class Loading : MonoBehaviour
     {
-        private int state = 0;
-        private TextMeshProUGUI text;
+        private int _state;
+        private TextMeshProUGUI _text;
 
-        private void Start()
+        private void OnEnable()
         {
-            TryGetComponent(out text);
+            TryGetComponent(out _text);
             StartCoroutine(LoadingText());
         }
-        
+
+        private void OnDisable()
+        {
+            StopAllCoroutines();
+        }
+
         private IEnumerator LoadingText()
         {
+            while (!_text)
+            {
+                TryGetComponent(out _text);
+            }
+            
             while (true)
             {
-                switch (state)
+                switch (_state)
                 {
                     default:
-                        text.text = " Loading    ";
+                        _text.text = " Loading    ";
                         break;
                     case 0:
-                        text.text = " Loading .  ";
+                        _text.text = " Loading .  ";
                         break;
                     case 1:
-                        text.text = " Loading .. ";
+                        _text.text = " Loading .. ";
                         break;
                     case 2:
-                        text.text = " Loading ...";
+                        _text.text = " Loading ...";
                         break;
                 }
 
-                state = (state + 1) % 4;
+                _state = (_state + 1) % 4;
 
                 yield return new WaitForSeconds(1);
             }

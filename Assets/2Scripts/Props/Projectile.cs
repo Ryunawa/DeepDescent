@@ -9,11 +9,33 @@ public class Projectile : NetworkBehaviour
 {
     public float projectileMovementSpeed = 1.0f;
     public float projectileDamage = 1.0f;
+    public bool despawnOnDeath = false;
     [DoNotSerialize] public Vector3 projectileDirection = Vector3.zero;
-    // Update is called once per frame
-    void Update()
+    private HealthComponent ownHealthComponent;
+    private void Start()
     {
-        transform.position =  (projectileMovementSpeed * projectileDirection) + transform.position;
+        if (TryGetComponent(out ownHealthComponent))
+        {
+            ownHealthComponent.OnDeath.AddListener(
+                () =>
+                {
+                    if (despawnOnDeath)
+                    {
+                        Debug.Log("Die");
+                        NetworkObject.Despawn();
+                    }
+                }
+            );
+        }
+        if (TryGetComponent(out Rigidbody rb))
+        {
+            rb.isKinematic = true;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        transform.position = (projectileMovementSpeed * projectileDirection * Time.fixedDeltaTime) + transform.position ;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -23,10 +45,28 @@ public class Projectile : NetworkBehaviour
         if (other.TryGetComponent(out HealthComponent healthComponent))
         {
             healthComponent.TakeDamage(projectileDamage);
-            if (TryGetComponent(out HealthComponent ownHealthComponent))
-            {
-                ownHealthComponent.TakeDamage(1.0f);
-            }
+        }
+
+        if (TryGetComponent(out HealthComponent ownHealthComponent))
+        {
+            ownHealthComponent.TakeDamage(1.0f);
         }
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Player")) 
+            return;
+        if (collision.collider.TryGetComponent(out HealthComponent healthComponent))
+        {
+            healthComponent.TakeDamage(projectileDamage);
+        }
+
+        if (ownHealthComponent)
+        {
+            ownHealthComponent.TakeDamage(1.0f);
+        }
+    }
+    
+
 }
