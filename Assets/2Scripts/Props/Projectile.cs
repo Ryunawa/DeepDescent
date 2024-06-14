@@ -57,22 +57,6 @@ public class Projectile : NetworkBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.collider.CompareTag("Player")) 
-            return;
-        if (collision.collider.TryGetComponent(out HealthComponent healthComponent))
-        {
-            healthComponent.TakeDamage(projectileDamage);
-        }
-
-        if (ownHealthComponent)
-        {
-            Debug.Log($"Collider = {gameObject.name}");
-            ownHealthComponent.TakeDamage(1.0f);
-        }
-    }
-    
     private IEnumerator ShowVFX()
     {
         yield return new WaitForEndOfFrame();

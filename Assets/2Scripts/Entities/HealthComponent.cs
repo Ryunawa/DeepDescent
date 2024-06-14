@@ -44,7 +44,11 @@ namespace _2Scripts.Entities
 			if (OnHealed == null)
 				OnHealed = new UnityEvent<float>();
 
-			_health.OnValueChanged += _CheckForDeath;
+			if (IsServer)
+			{
+                _health.OnValueChanged += _CheckForDeath;
+            }
+			
 
 			_enemyData = GetComponent<EnemyData>();
             _statComponent = GetComponent<StatComponent>();
