@@ -75,7 +75,7 @@ namespace _2Scripts.Entities
             if (OnHealed == null)
                 OnHealed = new UnityEvent<float>();
 
-            if (IsServer)
+            if (!IsClient)
             {
                 _health.OnValueChanged += _CheckForDeath;
             }

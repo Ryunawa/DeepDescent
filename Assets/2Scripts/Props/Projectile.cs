@@ -22,7 +22,9 @@ public class Projectile : NetworkBehaviour
                 {
                     if (despawnOnDeath)
                     {
-                        NetworkObject.Despawn(true);
+                        TryGetComponent(out Unity.Netcode.NetworkObject networkObject);
+                        
+                        networkObject.Despawn(true);
                     }
                 }
             );
@@ -50,7 +52,7 @@ public class Projectile : NetworkBehaviour
             healthComponent.TakeDamage(projectileDamage);
         }
 
-        if (TryGetComponent(out HealthComponent ownHealthComponent))
+        if (ownHealthComponent)
         {
             Debug.Log($"Collider = {gameObject.name}");
             ownHealthComponent.TakeDamage(1.0f);
