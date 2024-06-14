@@ -13,6 +13,6 @@ public class SpellCasterComponent : NetworkBehaviour
         Debug.Log($"Spawned from object {GameManager.GetManager<ItemManager>().GetItem(id).Name} by {name}");
         o.GetComponent<Projectile>().projectileDirection = gameObject.transform.forward.normalized;
         o.Spawn();
-        o.ChangeOwnership(NetworkManager.ServerClientId);
+        //o.ChangeOwnership(NetworkManager.ServerClientId);
     }
 }

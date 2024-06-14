@@ -31,7 +31,7 @@ public class Projectile : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") || !IsServer)
+        if (other.CompareTag("Player") || !IsServer || projectileLife <= 0)
             return;
         if (other.TryGetComponent(out HealthComponent healthComponent))
         {
@@ -42,7 +42,7 @@ public class Projectile : NetworkBehaviour
 
         if (projectileLife <= 0)
             if (TryGetComponent(out NetworkObject networkObject))
-                networkObject.Despawn(true);
+                    networkObject.Despawn(true);
     }
 
     private IEnumerator ShowVFX()
