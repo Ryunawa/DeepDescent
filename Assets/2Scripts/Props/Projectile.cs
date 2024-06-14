@@ -31,14 +31,14 @@ public class Projectile : NetworkBehaviour
         {
             rb.isKinematic = true;
         }
-        Starco
+        StartCoroutine(ShowVFX());
     }
 
     private void FixedUpdate()
     {
         if (!IsServer)
             return;
-        transform.position = (projectileDirection * (projectileMovementSpeed * Time.fixedDeltaTime)) + transform.position ;
+        transform.position = projectileDirection * projectileMovementSpeed + transform.position ;
     }
 
     private void OnTriggerEnter(Collider other)
