@@ -56,7 +56,9 @@ namespace _2Scripts.Manager
         private List<ItemUI> ListUI = new List<ItemUI>();
         public List<ItemUI> ListShop = new List<ItemUI>();
         private bool _isOpened;
-        
+
+        public bool IsOpened => _isOpened;
+
         public HUD HUD
         {
             get => _hud;
