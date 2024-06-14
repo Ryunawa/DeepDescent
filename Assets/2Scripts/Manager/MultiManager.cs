@@ -129,10 +129,24 @@ namespace _2Scripts.Manager
 
 			if (_lobby.Data["startGame"].Value != "0" && !_IsOwnerOfLobby)
 			{
-				JoinRelay(_lobby.Data["startGame"].Value);
+				if (GetSelectedCharacterID() != -1)
+				{
+					JoinRelay(_lobby.Data["startGame"].Value);
+				}
+				else
+				{
+					StartCoroutine(WaitForCharacterChosen(_lobby.Data["startGame"].Value));
+				}
 			}
 		
 			refreshUI.Invoke(true, false);
+		}
+
+		private IEnumerator WaitForCharacterChosen(string code)
+		{
+			yield return new WaitUntil(()=>GetSelectedCharacterID() != -1);
+			 JoinRelay(code);
+
 		}
 
 		private void OnPlayerDataChanged(Dictionary<int,Dictionary<string,ChangedOrRemovedLobbyValue<PlayerDataObject>>> ctx)
