@@ -65,8 +65,11 @@ namespace _2Scripts.ProceduralGeneration
         protected override void Start()
         {
             base.Start();
-            
-            OnGameManagerChangeState(GameManager.GameState);
+
+            if (GameManager.GameState == GameState.Generating)
+            {
+                OnGameManagerChangeState(GameManager.GameState);
+            }
         }
 
         protected override void OnGameManagerChangeState(GameState gameState)
