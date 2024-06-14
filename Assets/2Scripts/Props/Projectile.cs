@@ -9,26 +9,12 @@ public class Projectile : NetworkBehaviour
 {
     public float projectileMovementSpeed = 1.0f;
     public float projectileDamage = 1.0f;
+    public float projectileLife = 1.0f;
     public bool despawnOnDeath = false;
     public ParticleSystem vfx;
     [DoNotSerialize] public Vector3 projectileDirection = Vector3.zero;
-    private HealthComponent ownHealthComponent;
     private void Start()
     {
-        if (TryGetComponent(out ownHealthComponent))
-        {
-            ownHealthComponent.OnDeath.AddListener(
-                () =>
-                {
-                    if (despawnOnDeath)
-                    {
-                        TryGetComponent(out Unity.Netcode.NetworkObject networkObject);
-                        
-                        networkObject.Despawn(true);
-                    }
-                }
-            );
-        }
         if (TryGetComponent(out Rigidbody rb))
         {
             rb.isKinematic = true;
@@ -45,18 +31,18 @@ public class Projectile : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") || !IsOwner)
+        if (other.CompareTag("Player") || !IsServer)
             return;
         if (other.TryGetComponent(out HealthComponent healthComponent))
         {
             healthComponent.TakeDamage(projectileDamage);
         }
 
-        if (ownHealthComponent)
-        {
-            Debug.Log($"Collider = {gameObject.name}");
-            ownHealthComponent.TakeDamage(1.0f);
-        }
+        projectileLife--;
+
+        if (projectileLife <= 0)
+            if (TryGetComponent(out NetworkObject networkObject))
+                networkObject.Despawn(true);
     }
 
     private IEnumerator ShowVFX()

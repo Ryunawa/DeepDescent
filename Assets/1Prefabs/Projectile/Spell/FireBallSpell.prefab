@@ -9845,10 +9845,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8442775795403847343, guid: 84fe8fa6019501c4da76f5b8fdf01682,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6742390409386907968}
-    - targetCorrespondingSourceObject: {fileID: 8442775795403847343, guid: 84fe8fa6019501c4da76f5b8fdf01682,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1931507558003540051}
     - targetCorrespondingSourceObject: {fileID: 8442775795403847343, guid: 84fe8fa6019501c4da76f5b8fdf01682,
         type: 3}
@@ -9885,31 +9881,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileMovementSpeed: 0.2
   projectileDamage: 1
+  projectileLife: 1
   despawnOnDeath: 1
   vfx: {fileID: 6292385797573103470}
   projectileDirection: {x: 0, y: 0, z: 0}
---- !u!114 &6742390409386907968
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7308431643095106308}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86a2c49eb2b56b94b98e0d89e64aaf4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 1
-  OnDeath:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDamaged:
-    m_PersistentCalls:
-      m_Calls: []
-  OnHealed:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!135 &1931507558003540051
 SphereCollider:
   m_ObjectHideFlags: 0
