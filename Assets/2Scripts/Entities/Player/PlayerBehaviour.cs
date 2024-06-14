@@ -46,19 +46,19 @@ namespace _2Scripts.Entities.Player
 
         private void Start()
         {
-            _health = GetComponent<HealthComponent>();
-
-            _health.OnDeath.AddListener(OnDie);
-            _health.OnDamaged.AddListener(OnDamaged);
-
-            _characterController = GetComponent<CharacterController>();
-            _characterControllerOriginalStepOffset = _characterController.stepOffset;
-            _inputManager = InputManager.instance;
-
-            characterID = GameManager.GetManager<MultiManager>().GetSelectedCharacterID();
-
             if (IsOwner)
             {
+                _health = GetComponent<HealthComponent>();
+
+                _health.OnDeath.AddListener(OnDie);
+                _health.OnDamaged.AddListener(OnDamaged);
+
+                _characterController = GetComponent<CharacterController>();
+                _characterControllerOriginalStepOffset = _characterController.stepOffset;
+                _inputManager = InputManager.instance;
+
+                characterID = GameManager.GetManager<MultiManager>().GetSelectedCharacterID();
+
                 for (int i = 0; i < 4; i++)
                 {
                     playerModels[i].SetActive(i == GameManager.GetManager<MultiManager>().GetSelectedCharacterID());

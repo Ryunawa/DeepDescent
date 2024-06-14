@@ -16,7 +16,7 @@ public class ParchmentItem : ConsumableItem
         {
             if (GameObjectOwner.TryGetComponent(out SpellCasterComponent spellcasterComp))
             {
-                spellcasterComp.CastSpell(SpellToSpawn);
+                spellcasterComp.SpawnSpellRpc(ID);
                 return true;
             }
         }
