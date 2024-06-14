@@ -487,9 +487,9 @@ public class Inventory : GameManagerSync<Inventory>
         Debug.Log($"Item {itemID} equipped in slot number {index}");
     }
 
-    public void UnEquipQuickSlot(int itemID)
+    public void UnEquipQuickSlot(int slotIndex)
     {
-        QuickSlots[Array.FindIndex(QuickSlots, x => x.ID == itemID)] = new InventoryObject(-1,0);
-        Debug.Log($"Item {itemID} has been un-equipped from quick slots");
+        QuickSlots[slotIndex] = new InventoryObject(-1,0);
+        Debug.Log($"Item {slotIndex} has been un-equipped from quick slots");
     }
 }

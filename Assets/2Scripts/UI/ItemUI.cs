@@ -163,7 +163,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
         if (draggedItemUI.isQuickSlot && isInventory)
         {
-            inventory.UnEquipQuickSlot(draggedItemUI.ItemID);
+            inventory.UnEquipQuickSlot(draggedItemUI.transform.GetSiblingIndex());
             GameManager.GetManager<InventoryUIManager>().DrawInventory();
         }
         
@@ -286,7 +286,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             //un-equip quick slot
             if (isQuickSlot)
             {
-                inventory.UnEquipQuickSlot(ItemID);
+                inventory.UnEquipQuickSlot(transform.GetSiblingIndex());
             }
             
             
