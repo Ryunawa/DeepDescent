@@ -49,6 +49,7 @@ public class Projectile : NetworkBehaviour
 
         if (TryGetComponent(out HealthComponent ownHealthComponent))
         {
+            Debug.Log($"Collider = {gameObject.name}");
             ownHealthComponent.TakeDamage(1.0f);
         }
     }
@@ -64,6 +65,7 @@ public class Projectile : NetworkBehaviour
 
         if (ownHealthComponent)
         {
+            Debug.Log($"Collider = {gameObject.name}");
             ownHealthComponent.TakeDamage(1.0f);
         }
     }
