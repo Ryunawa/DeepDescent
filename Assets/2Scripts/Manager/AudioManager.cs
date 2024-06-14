@@ -1,6 +1,6 @@
 using System;
 using _2Scripts.Audio;
-using _2Scripts.Interfaces;
+using _2Scripts.Helpers;
 using UnityEngine;
 
 namespace _2Scripts.Manager

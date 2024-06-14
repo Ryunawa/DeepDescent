@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using _2Scripts.Enum;
-using _2Scripts.Interfaces;
+using _2Scripts.Helpers;
 using _2Scripts.Struct;
 using NaughtyAttributes;
 using UnityEngine;

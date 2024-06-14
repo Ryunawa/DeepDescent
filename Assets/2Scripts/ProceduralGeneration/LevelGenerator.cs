@@ -1,14 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using _2Scripts.Entities.Player;
-using _2Scripts.Interfaces;
+using _2Scripts.Helpers;
 using _2Scripts.Manager;
 using Unity.Netcode;
-using Unity.VisualScripting;
-using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -94,9 +90,17 @@ namespace _2Scripts.ProceduralGeneration
                     if (!spawnShop) PlacePortal();
                     GameManager.GetManager<SceneManager>().DeactivateLoadingScreen();
                     GameManager.GetManager<InventoryUIManager>().gameObject.SetActive(true);
+                    ChangeStateClientRpc();
                     break;
                 }
             }
+        }
+
+        [Rpc(SendTo.NotServer)]
+        private void ChangeStateClientRpc()
+        {
+            Debug.Log("CALLED CHANGE STATE FROM RPC");
+            GameManager.instance.ChangeGameState(GameState.InLevel);
         }
 
         public async void StartGeneration()

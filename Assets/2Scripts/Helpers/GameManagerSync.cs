@@ -1,10 +1,7 @@
-using System;
 using _2Scripts.Manager;
 using Unity.Netcode;
-using UnityEngine;
-using UnityEngine.EventSystems;
 
-namespace _2Scripts.Interfaces
+namespace _2Scripts.Helpers
 {
     public abstract class GameManagerSync<T> : NetworkBehaviour where T : NetworkBehaviour
     {
