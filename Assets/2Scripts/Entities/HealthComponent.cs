@@ -34,26 +34,6 @@ namespace _2Scripts.Entities
 		
         private int characterID;
 
-
-        private void Awake()
-		{
-			if(OnDeath == null)
-				OnDeath = new UnityEvent();
-			if(OnDamaged == null)
-				OnDamaged = new UnityEvent<float>();
-			if (OnHealed == null)
-				OnHealed = new UnityEvent<float>();
-
-			if (IsServer)
-			{
-                _health.OnValueChanged += _CheckForDeath;
-            }
-			
-
-			_enemyData = GetComponent<EnemyData>();
-            _statComponent = GetComponent<StatComponent>();
-        }
-
 		private void _CheckForDeath(float iPrevVal, float iCurVal)
 		{
 			if (iPrevVal > 0 && iCurVal <= 0)
@@ -87,7 +67,24 @@ namespace _2Scripts.Entities
 		protected override void Start()
 		{
 			base.Start();
-			OnGameManagerChangeState(GameManager.GameState);
+
+            if (OnDeath == null)
+                OnDeath = new UnityEvent();
+            if (OnDamaged == null)
+                OnDamaged = new UnityEvent<float>();
+            if (OnHealed == null)
+                OnHealed = new UnityEvent<float>();
+
+            if (IsServer)
+            {
+                _health.OnValueChanged += _CheckForDeath;
+            }
+
+
+            _enemyData = GetComponent<EnemyData>();
+            _statComponent = GetComponent<StatComponent>();
+
+            OnGameManagerChangeState(GameManager.GameState);
 		}
 
 
