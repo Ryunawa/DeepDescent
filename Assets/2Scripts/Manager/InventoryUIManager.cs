@@ -81,6 +81,8 @@ namespace _2Scripts.Manager
         
         protected override void OnGameManagerChangeState(GameState gameState)
         {
+            if (gameState != GameState.InLevel)return;
+            
             InputManager.instance.Inputs.Player.Inventory.started += context => ToggleInventory();
             
             _inventory = GameManager.GetManager<MultiManager>().GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().inventory;

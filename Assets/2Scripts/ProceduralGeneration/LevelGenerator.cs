@@ -83,25 +83,17 @@ namespace _2Scripts.ProceduralGeneration
                 }
                 case GameState.InLevel:
                 {
-                    
-                    //TODO : check if server --> call clientRPC GameManager.instance.ChangeGameState(GameState.InLevel);
-                    
                     dungeonGeneratedEvent.Invoke();
                     if (!spawnShop) PlacePortal();
                     GameManager.GetManager<SceneManager>().DeactivateLoadingScreen();
                     GameManager.GetManager<InventoryUIManager>().gameObject.SetActive(true);
-
-                    if (_multiManager.IsLobbyHost())
-                    {
-                        ChangeStateClientRpc();
-                    }
                     
                     break;
                 }
             }
         }
 
-        [Rpc(SendTo.NotServer)]
+        [Rpc(SendTo.ClientsAndHost)]
         private void ChangeStateClientRpc()
         {
             Debug.Log("CALLED CHANGE STATE FROM RPC");
@@ -116,7 +108,9 @@ namespace _2Scripts.ProceduralGeneration
                 // Play Music
                 GameManager.GetManager<AudioManager>().PlayMusic("SafeAreaMusic", 0.1f);
                 GenerateShopRoom();
-                GameManager.instance.ChangeGameState(GameState.InLevel);
+                
+                ChangeStateClientRpc();
+                
                 return;
             }
             // Play Music
@@ -158,7 +152,7 @@ namespace _2Scripts.ProceduralGeneration
             
             GameManager.GetManager<ItemManager>().StartSpawningItems();
 
-            GameManager.instance.ChangeGameState(GameState.InLevel);
+            ChangeStateClientRpc();
             
             TeleportHostAndClientRpc(GetPosition(centerIndex));
         }
