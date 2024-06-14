@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using _2Scripts.Helpers;
 using _2Scripts.Manager;
 using Cinemachine;
 using UnityEngine;
@@ -9,7 +10,7 @@ using NaughtyAttributes;
 namespace _2Scripts.Entities.Player
 {
     [RequireComponent(typeof(CharacterController))]
-    public class PlayerBehaviour : NetworkBehaviour
+    public class PlayerBehaviour : GameManagerSync<PlayerBehaviour>
     {
         [SerializeField] private Vector2 camSens = new(100, 100);
         [SerializeField] private float playerSpeed = 2.0f;
@@ -44,8 +45,10 @@ namespace _2Scripts.Entities.Player
         public Inventory inventory;
         public StatComponent stat;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
+            
             if (IsOwner)
             {
                 _health = GetComponent<HealthComponent>();
@@ -58,11 +61,6 @@ namespace _2Scripts.Entities.Player
                 _inputManager = InputManager.instance;
 
                 characterID = GameManager.GetManager<MultiManager>().GetSelectedCharacterID();
-
-                for (int i = 0; i < 4; i++)
-                {
-                    playerModels[i].SetActive(i == GameManager.GetManager<MultiManager>().GetSelectedCharacterID());
-                }
 
                 _inputManager.Inputs.Player.QuickSlot.performed += context => UseQuickSlot(context.ReadValue<float>());
             }
@@ -79,6 +77,23 @@ namespace _2Scripts.Entities.Player
             }
 
             Debug.Log("PLayerBehaviour Done Start ");
+        }
+
+
+        protected override void OnGameManagerChangeState(GameState gameState)
+        {
+            if (gameState != GameState.InLevel) return;
+            UpdateCharRpc(characterID);
+        }
+
+
+        [Rpc(SendTo.ClientsAndHost)]
+        private void UpdateCharRpc(int id)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                playerModels[i].SetActive(i == id);
+            }
         }
 
         private void Update()
