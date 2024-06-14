@@ -89,11 +89,6 @@ namespace _2Scripts.Entities.Player
             }
         }
 
-        public void tst()
-        {
-            _health.InflictDamageTest();
-        }
-
     private void FixedUpdate()
     {
         if (_isDead.Value)
