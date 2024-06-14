@@ -64,11 +64,14 @@ namespace _2Scripts.ProceduralGeneration
 
         protected override void Start()
         {
-            base.Start();
-
+            
             if (GameManager.GameState == GameState.Generating)
             {
                 OnGameManagerChangeState(GameManager.GameState);
+            }
+            else
+            {
+                base.Start();
             }
         }
 
@@ -112,6 +115,7 @@ namespace _2Scripts.ProceduralGeneration
                 GameManager.GetManager<AudioManager>().PlayMusic("SafeAreaMusic", 0.1f);
                 GenerateShopRoom();
                 
+                SubToGameManagerEvent();
                 ChangeStateClientRpc();
                 
                 return;
@@ -155,6 +159,7 @@ namespace _2Scripts.ProceduralGeneration
             
             GameManager.GetManager<ItemManager>().StartSpawningItems();
 
+            SubToGameManagerEvent();
             ChangeStateClientRpc();
             
             TeleportHostAndClientRpc(GetPosition(centerIndex));

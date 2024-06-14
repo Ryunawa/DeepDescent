@@ -10,6 +10,11 @@ namespace _2Scripts.Helpers
             GameManager.stateChanged.AddListener(OnGameManagerChangeState);
         }
 
+        protected void SubToGameManagerEvent()
+        {
+            GameManager.stateChanged.AddListener(OnGameManagerChangeState);
+        }
+
         protected virtual void OnGameManagerChangeState(GameState gameState){}
     }
 }
