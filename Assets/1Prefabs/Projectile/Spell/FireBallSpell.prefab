@@ -9746,7 +9746,7 @@ PrefabInstance:
     - target: {fileID: 2962349039048327619, guid: 84fe8fa6019501c4da76f5b8fdf01682,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 354934975
+      value: 2724670710
       objectReference: {fileID: 0}
     - target: {fileID: 3090629861896308313, guid: 84fe8fa6019501c4da76f5b8fdf01682,
         type: 3}
@@ -9821,7 +9821,7 @@ PrefabInstance:
     - target: {fileID: 8622122686040950725, guid: 84fe8fa6019501c4da76f5b8fdf01682,
         type: 3}
       propertyPath: Interpolate
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 656937751946291408, guid: 84fe8fa6019501c4da76f5b8fdf01682, type: 3}
@@ -9883,7 +9883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acdaaf2ec66853c48a9000244338c695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileMovementSpeed: 5
+  projectileMovementSpeed: 0.2
   projectileDamage: 1
   despawnOnDeath: 1
   vfx: {fileID: 6292385797573103470}

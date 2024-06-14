@@ -43,7 +43,7 @@ public class Projectile : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") || !IsOwner)
             return;
         if (other.TryGetComponent(out HealthComponent healthComponent))
         {
