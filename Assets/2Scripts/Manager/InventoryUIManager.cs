@@ -87,7 +87,7 @@ namespace _2Scripts.Manager
             
             InputManager.instance.Inputs.Player.Inventory.started += context => ToggleInventory();
             
-            _inventory = GameManager.GetManager<MultiManager>().GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().inventory;
+            _inventory = GameManager.GetPlayerComponent<PlayerBehaviour>().inventory;
             
             for (var index = 0; index < _inventory.QuickSlots.Length; index++)
             {

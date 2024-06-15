@@ -63,6 +63,8 @@ namespace _2Scripts.Entities.Player
                 characterID = GameManager.GetManager<MultiManager>().GetSelectedCharacterID();
 
                 _inputManager.Inputs.Player.QuickSlot.performed += context => UseQuickSlot(context.ReadValue<float>());
+
+                GameManager.playerBehaviour = this;
             }
             
             if (!IsOwner)

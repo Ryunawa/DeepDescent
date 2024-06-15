@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using _2Scripts.Entities.Player;
 using _2Scripts.ProceduralGeneration;
 using UnityEngine;
 using UnityEngine.Events;
@@ -34,7 +35,8 @@ namespace _2Scripts.Manager
 
         public LevelGenerator levelGenerator;
         public NextLevelManager nextLevelManager;
-
+        public static PlayerBehaviour playerBehaviour;
+        
         #endregion
         
 
@@ -63,6 +65,11 @@ namespace _2Scripts.Manager
            stateChanged.AddListener(arg0 => Debug.Log($"Changed GameState to {arg0}"));
         }
 
+        /// <summary>
+        /// Used to change game state, edit the needed Managers list according to your needs
+        /// </summary>
+        /// <param name="gameState"></param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public void ChangeGameState(GameState gameState)
         {
             List<ManagerType> neededManagers;
@@ -152,9 +159,24 @@ namespace _2Scripts.Manager
             yield return true;
         }
 
+        /// <summary>
+        /// Gets the manager of the type given 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static T GetManager<T>() where T : class
         {
              return _managersAndPrefabs.First(x => x.ManagerMonoBehaviour is T).ManagerMonoBehaviour as T;
+        }
+        
+        /// <summary>
+        /// Get the component in the local player 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T GetPlayerComponent<T>() where T : class
+        {
+            return playerBehaviour.GetComponentInChildren<T>();
         }
     }
 
