@@ -1,3 +1,4 @@
+using _2Scripts.Entities;
 using _2Scripts.Entities.Player;
 using NaughtyAttributes;
 using System.Collections;
@@ -38,5 +39,11 @@ public class StatComponent : MonoBehaviour
             _equippedArmour += inventory.FeetArmor ? inventory.FeetArmor.ArmorValue : 0;
             _equippedArmour += inventory.LegArmor ? inventory.LegArmor.ArmorValue : 0;
         }
+    }
+
+    [Button]
+    public void InflictDamage()
+    {
+        GetComponent<HealthComponent>().TakeDamage(10.0f);
     }
 }
