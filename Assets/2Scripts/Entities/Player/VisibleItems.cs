@@ -22,8 +22,9 @@ public class VisibleItems : NetworkBehaviour
 
     private int armorIndex = 0;
 
+    [Rpc(SendTo.ClientsAndHost)]
     // Activates a random non-visible scrap
-    public void AddVisibleScrap()
+    public void AddVisibleScrapRpc()
     {
         List<GameObject> invisibleScraps = scraps.FindAll(scrap => !scrap.activeSelf);
         if (invisibleScraps.Count > 0)
@@ -33,8 +34,9 @@ public class VisibleItems : NetworkBehaviour
         }
     }
 
+    [Rpc(SendTo.ClientsAndHost)]
     // Deactivates a random visible scrap
-    public void RemoveVisibleScrap()
+    public void RemoveVisibleScrapRpc()
     {
         List<GameObject> visibleScraps = scraps.FindAll(scrap => scrap.activeSelf);
         if (visibleScraps.Count > 0)
@@ -44,8 +46,9 @@ public class VisibleItems : NetworkBehaviour
         }
     }
 
+    [Rpc(SendTo.ClientsAndHost)]
     // Activates a random non-visible sword
-    public void AddVisibleSword()
+    public void AddVisibleSwordRpc()
     {
         List<GameObject> invisibleSwords = swords.FindAll(sword => !sword.activeSelf);
         if (invisibleSwords.Count > 0)
@@ -55,8 +58,9 @@ public class VisibleItems : NetworkBehaviour
         }
     }
 
+    [Rpc(SendTo.ClientsAndHost)]
     // Deactivates a random visible sword
-    public void RemoveVisibleSword()
+    public void RemoveVisibleSwordRpc()
     {
         List<GameObject> visibleSwords = swords.FindAll(sword => sword.activeSelf);
         if (visibleSwords.Count > 0)
@@ -66,8 +70,9 @@ public class VisibleItems : NetworkBehaviour
         }
     }
 
+    [Rpc(SendTo.ClientsAndHost)]
     // Activates the shield
-    public void AddVisibleShield()
+    public void AddVisibleShieldRpc()
     {
         if (!shield.activeSelf)
         {
@@ -75,8 +80,9 @@ public class VisibleItems : NetworkBehaviour
         }
     }
 
+    [Rpc(SendTo.ClientsAndHost)]
     // Deactivates the shield
-    public void RemoveVisibleShield()
+    public void RemoveVisibleShieldRpc()
     {
         if (shield.activeSelf)
         {
@@ -84,8 +90,9 @@ public class VisibleItems : NetworkBehaviour
         }
     }
 
+    [Rpc(SendTo.ClientsAndHost)]
     // Activates the spellBook
-    public void AddVisibleSpellBook()
+    public void AddVisibleSpellBookRpc()
     {
         if (!spellBook.activeSelf)
         {
@@ -93,8 +100,9 @@ public class VisibleItems : NetworkBehaviour
         }
     }
 
+    [Rpc(SendTo.ClientsAndHost)]
     // Deactivates the spellBook
-    public void RemoveVisibleSpellBook()
+    public void RemoveVisibleSpellBookRpc()
     {
         if (spellBook.activeSelf)
         {
@@ -102,8 +110,9 @@ public class VisibleItems : NetworkBehaviour
         }
     }
 
+    [Rpc(SendTo.ClientsAndHost)]
     // Activates the potion
-    public void AddVisiblePotions()
+    public void AddVisiblePotionsRpc()
     {
         if (!potion.activeSelf)
         {
@@ -111,8 +120,9 @@ public class VisibleItems : NetworkBehaviour
         }
     }
 
+    [Rpc(SendTo.ClientsAndHost)]
     // Deactivates the potion
-    public void RemoveVisiblePotions()
+    public void RemoveVisiblePotionsRpc()
     {
         if (potion.activeSelf)
         {
@@ -120,8 +130,9 @@ public class VisibleItems : NetworkBehaviour
         }
     }
 
+    [Rpc(SendTo.ClientsAndHost)]
     // Activates the next armor in order
-    public void AddVisibleArmor()
+    public void AddVisibleArmorRpc()
     {
         if (armorIndex < armors.Count && !armors[armorIndex].activeSelf)
         {
@@ -130,8 +141,9 @@ public class VisibleItems : NetworkBehaviour
         }
     }
 
+    [Rpc(SendTo.ClientsAndHost)]
     // Deactivates the previous armor in order
-    public void RemoveVisibleArmor()
+    public void RemoveVisibleArmorRpc()
     {
         if (armorIndex > 0)
         {
@@ -157,7 +169,7 @@ public class VisibleItems : NetworkBehaviour
             {
                 if (equippedWeapon != null)
                 {
-                    UnequipRightHand();
+                    UnequipRightHandRpc();
                 }
 
                 equippedWeapon = weaponToEquip;
@@ -172,8 +184,9 @@ public class VisibleItems : NetworkBehaviour
 
 
 
+    [Rpc(SendTo.ClientsAndHost)]
     // Equips a specified shield
-    public void EquipLeftHand(string itemName)
+    public void EquipLeftHandRpc(string itemName)
     {
         // Replace spaces with underscores
         string formattedItemName = itemName.Replace(" ", "_");
@@ -185,7 +198,7 @@ public class VisibleItems : NetworkBehaviour
             {
                 if (equippedShield != null)
                 {
-                    UnequipLeftHand();
+                    UnequipLeftHandRpc();
                 }
 
                 equippedShield = weaponToEquip;
@@ -198,8 +211,9 @@ public class VisibleItems : NetworkBehaviour
         }
     }
 
+    [Rpc(SendTo.ClientsAndHost)]
     // Unequips the currently equipped weapon
-    public void UnequipRightHand()
+    public void UnequipRightHandRpc()
     {
         if (equippedWeapon != null)
         {
@@ -208,8 +222,9 @@ public class VisibleItems : NetworkBehaviour
         }
     }
 
+    [Rpc(SendTo.ClientsAndHost)]
     // Unequips the currently equipped shield
-    public void UnequipLeftHand()
+    public void UnequipLeftHandRpc()
     {
         if (equippedShield != null)
         {

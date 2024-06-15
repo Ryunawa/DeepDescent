@@ -338,13 +338,13 @@ public class Inventory : GameManagerSync<Inventory>
         switch (item)
         {
             case ArmorItem:
-                visibleItems.AddVisibleArmor();
+                visibleItems.AddVisibleArmorRpc();
                 break;
             case WeaponItem weapon:
                 // left hand - shield
                 if (OffSlot)
                 {
-                    visibleItems.EquipLeftHand(weapon.Name);
+                    visibleItems.EquipLeftHandRpc(weapon.Name);
                 }
                 // right hand - weapon
                 else
@@ -363,18 +363,18 @@ public class Inventory : GameManagerSync<Inventory>
         switch (item)
         {
             case ArmorItem:
-                visibleItems.RemoveVisibleArmor();
+                visibleItems.RemoveVisibleArmorRpc();
                 break;
             case WeaponItem weapon:
                 // left hand - shield
                 if (OffSlot)
                 {
-                    visibleItems.UnequipLeftHand();
+                    visibleItems.UnequipLeftHandRpc();
                 }
                 // right hand - weapon
                 else
                 {
-                    visibleItems.UnequipRightHand();
+                    visibleItems.UnequipRightHandRpc();
                 }
                 break;
             default:
@@ -424,28 +424,28 @@ public class Inventory : GameManagerSync<Inventory>
         switch (item)
         {
             case ArmorItem:
-                visibleItems.AddVisibleArmor();
+                visibleItems.AddVisibleArmorRpc();
                 break;
             case WeaponItem weapon:
                 // left hand - shield
                 if (weapon.WeaponType == WeaponType.SHIELD)
                 {
-                    visibleItems.AddVisibleShield();
+                    visibleItems.AddVisibleShieldRpc();
                 }
                 // right hand - weapon
                 else
                 {
-                    visibleItems.AddVisibleSword();
+                    visibleItems.AddVisibleSwordRpc();
                 }
                 break;
             case ParchmentItem:
-                visibleItems.AddVisibleSpellBook();
+                visibleItems.AddVisibleSpellBookRpc();
                 break;
             case PotionItem:
-                visibleItems.AddVisiblePotions();
+                visibleItems.AddVisiblePotionsRpc();
                 break;
             default: // scrap
-                visibleItems.AddVisibleScrap();
+                visibleItems.AddVisibleScrapRpc();
                 break;
         }
     }
@@ -455,28 +455,28 @@ public class Inventory : GameManagerSync<Inventory>
         switch (item)
         {
             case ArmorItem _:
-                visibleItems.RemoveVisibleArmor();
+                visibleItems.RemoveVisibleArmorRpc();
                 break;
             case WeaponItem weapon:
                 // left hand - shield
                 if (weapon.WeaponType == WeaponType.SHIELD)
                 {
-                    visibleItems.RemoveVisibleShield();
+                    visibleItems.RemoveVisibleShieldRpc();
                 }
                 // right hand - weapon
                 else
                 {
-                    visibleItems.RemoveVisibleSword();
+                    visibleItems.RemoveVisibleSwordRpc();
                 }
                 break;
             case ParchmentItem _:
-                visibleItems.RemoveVisibleSpellBook();
+                visibleItems.RemoveVisibleSpellBookRpc();
                 break;
             case PotionItem _:
-                visibleItems.RemoveVisiblePotions();
+                visibleItems.RemoveVisiblePotionsRpc();
                 break;
             default: // scrap
-                visibleItems.RemoveVisibleScrap();
+                visibleItems.RemoveVisibleScrapRpc();
                 break;
         }
     }
