@@ -550,8 +550,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 992ed26a64d70614dbecd8ec7c783615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StatsList: {fileID: 11400000, guid: c680823ed642ce74699eac800c8dc607, type: 2}
   CharacterStatPage: {fileID: 0}
-  PlayerBehaviour: {fileID: 0}
 --- !u!114 &6492776355917080642
 MonoBehaviour:
   m_ObjectHideFlags: 0
