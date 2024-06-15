@@ -25,7 +25,7 @@ namespace _2Scripts.Entities.Player
         private CharacterController _characterController;
         private float _characterControllerOriginalStepOffset;
         private InputManager _inputManager;
-
+        private bool _isAttacking;
         private int characterID = 0;
 
 
@@ -66,6 +66,7 @@ namespace _2Scripts.Entities.Player
                 characterID = GameManager.GetManager<MultiManager>().GetSelectedCharacterID();
 
                 _inputManager.Inputs.Player.QuickSlot.performed += context => UseQuickSlot(context.ReadValue<float>());
+                _inputManager.Inputs.Player.Attack.performed += context => Attack();
 
                 GameManager.playerBehaviour = this;
             }
@@ -83,7 +84,7 @@ namespace _2Scripts.Entities.Player
 
             Debug.Log("PLayerBehaviour Done Start ");
         }
-
+        
 
         protected override void OnGameManagerChangeState(GameState gameState)
         {
@@ -212,6 +213,22 @@ namespace _2Scripts.Entities.Player
             Debug.Log("Use Quickslot");
             if ( inventory.QuickSlots[(int)index].ID == -1)return;
             ((ConsumableItem)GameManager.GetManager<ItemManager>().GetItem(inventory.QuickSlots[(int)index].ID)).Use(gameObject);
+        }
+        
+        private void Attack()
+        {
+            //if (_isAttacking) return;
+
+            Debug.Log("ATTACK");
+            
+            _isAttacking = true;
+            animator.SetFloat("Weapon", (float)WeaponType.SWORD);
+            animator.SetTrigger("IsAttacking");
+        }
+        
+        public void ResetIsAttacking()
+        {
+            _isAttacking = false;
         }
         
         void OnDrawGizmosSelected()

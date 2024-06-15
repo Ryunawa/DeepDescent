@@ -607,6 +607,7 @@ GameObject:
   - component: {fileID: 422474}
   - component: {fileID: 9547916}
   - component: {fileID: 6605660695944163774}
+  - component: {fileID: 7113682877829418460}
   m_Layer: 0
   m_Name: Character_Hero
   m_TagString: Untagged
@@ -669,6 +670,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TransitionStateInfoList: []
   m_Animator: {fileID: 9547916}
+--- !u!114 &7113682877829418460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad5f63a515e851c4186dd526896b0ddc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &133228
 GameObject:
   m_ObjectHideFlags: 0

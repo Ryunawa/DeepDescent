@@ -31,12 +31,12 @@ public class InputManager : Singleton<InputManager>
 
 	private void Start()
 	{
-		_inputs.Player.Fire.performed += (InputAction) =>
+		_inputs.Player.Attack.performed += (InputAction) =>
 		{
 			_isHoldingShoot = true;
 		};
 
-		_inputs.Player.Fire.canceled += (InputAction) =>
+		_inputs.Player.Attack.canceled += (InputAction) =>
 		{
 			_isHoldingShoot = false;
 		};
@@ -67,23 +67,18 @@ public class InputManager : Singleton<InputManager>
 		return _inputs.Player.Use.triggered;
 	}
 
-	public bool PlayerFired()
+	public bool PlayerAttacked()
 	{
-		return _inputs.Player.Fire.triggered;
+		return _inputs.Player.Attack.triggered;
 	}
 
 	public bool PlayerHoldDownFire()
 	{
-		return _inputs.Player.Fire.IsInProgress();
+		return _inputs.Player.Attack.IsInProgress();
 	}
 
 	public bool PlayerCancelFire()
 	{
-		return _inputs.Player.Fire.WasReleasedThisFrame();
-	}
-
-	public float PlayerSwitchWeapon()
-	{
-		return _inputs.Player.SwitchWeapon.ReadValue<float>();
+		return _inputs.Player.Attack.WasReleasedThisFrame();
 	}
 }

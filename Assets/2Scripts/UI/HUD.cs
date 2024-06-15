@@ -50,8 +50,7 @@ namespace _2Scripts.UI
             if (_gameFlowManager)
                 SetTimer(_gameFlowManager.Timer.GetTimerElapsedTime());
         }
-
-        // [Rpc(SendTo.ClientsAndHost)]
+        
         public bool SetHp()
         {
            HP.value = GameManager.playerBehaviour.Health.GetHealth() / GameManager.playerBehaviour.Health.MaxHealth;
