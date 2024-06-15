@@ -349,7 +349,7 @@ public class Inventory : GameManagerSync<Inventory>
                 // right hand - weapon
                 else
                 {
-                    visibleItems.EquipRightHand(weapon.Name);
+                    visibleItems.EquipRightHandRpc(weapon.Name);
                 }
                 break;
             default:

@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class VisibleItems : MonoBehaviour
+public class VisibleItems : NetworkBehaviour
 {
     [Header("Inventory")]
     public List<GameObject> scraps;
@@ -142,8 +143,9 @@ public class VisibleItems : MonoBehaviour
         }
     }
 
+    [Rpc(SendTo.ClientsAndHost)]
     // Equips a specified weapon
-    public void EquipRightHand(string itemName)
+    public void EquipRightHandRpc(string itemName)
     {
         // Replace spaces with underscores
         string formattedItemName = itemName.Replace(" ", "_");
