@@ -64,7 +64,10 @@ public class Infight : MonoBehaviour
         }
         else if (((PlayerBehaviour)controller).IsAttacking)
         {
-            collidedHealthComponent.TakeDamage(GameManager.playerBehaviour.inventory.MainHandItem.AttackValue);
+            if (collidedHealthComponent != ((PlayerBehaviour)controller).Health)
+            {
+                collidedHealthComponent.TakeDamage(GameManager.playerBehaviour.inventory.MainHandItem.AttackValue);
+            }
         }
     }
 
