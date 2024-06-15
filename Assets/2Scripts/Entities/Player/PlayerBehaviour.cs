@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using _2Scripts.Helpers;
 using _2Scripts.Manager;
@@ -10,7 +11,7 @@ using NaughtyAttributes;
 namespace _2Scripts.Entities.Player
 {
     [RequireComponent(typeof(CharacterController))]
-    public class PlayerBehaviour : GameManagerSync<PlayerBehaviour>
+    public class PlayerBehaviour : GameManagerSync<PlayerBehaviour>, IController
     {
         [SerializeField] private Vector2 camSens = new(100, 100);
         [SerializeField] private float playerSpeed = 2.0f;
@@ -36,6 +37,7 @@ namespace _2Scripts.Entities.Player
         private HealthComponent _health;
 
         public HealthComponent Health => _health;
+        public bool IsAttacking => _isAttacking;
 
         [SerializeField] private NetworkVariable<bool> _isDead = new NetworkVariable<bool>();
         
@@ -239,5 +241,7 @@ namespace _2Scripts.Entities.Player
             Gizmos.DrawRay(_camTransform.position, _camTransform.TransformDirection(_camTransform.forward));
             //Gizmos.DrawSphere(transform.position, 1);
         }
+
+        public event Action<bool> OnSwingStateChanged;
     }
 }
