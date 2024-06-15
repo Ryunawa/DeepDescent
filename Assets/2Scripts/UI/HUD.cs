@@ -1,4 +1,5 @@
 using System;
+using _2Scripts.Entities;
 using _2Scripts.Helpers;
 using _2Scripts.Interfaces;
 using _2Scripts.Manager;
@@ -28,6 +29,8 @@ namespace _2Scripts.UI
         [SerializeField] private TextMeshProUGUI[] quickSlotsQuantity = new TextMeshProUGUI[3];
 
         private GameFlowManager _gameFlowManager;
+        
+        
 
         protected override void OnGameManagerChangeState(GameState gameState)
         {
@@ -48,10 +51,10 @@ namespace _2Scripts.UI
                 SetTimer(_gameFlowManager.Timer.GetTimerElapsedTime());
         }
 
-        public bool SetHp(float value)
+        public bool SetHp()
         {
-            if (value is > 1 or < 0)return false;
-            HP.value = value;
+           GameManager.GetManager<MultiManager>().GetPlayerGameObject().TryGetComponent(out HealthComponent healthComponent);
+           HP.value = healthComponent.GetHealth() / healthComponent.MaxHealth;
             return true;
         }
         

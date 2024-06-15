@@ -34,7 +34,9 @@ namespace _2Scripts.Entities
 		
         private int characterID;
 
-		private void _CheckForDeath(float iPrevVal, float iCurVal)
+        public float MaxHealth => maxHealth;
+
+        private void _CheckForDeath(float iPrevVal, float iCurVal)
 		{
 			if (iPrevVal > 0 && iCurVal <= 0)
 			{
@@ -130,7 +132,7 @@ namespace _2Scripts.Entities
 
             if (_hud)
             {
-                _hud.SetHp(_health.Value / maxHealth);
+                _hud.SetHp();
             }
 
             OnDamaged.Invoke(pDamage);
@@ -166,7 +168,7 @@ namespace _2Scripts.Entities
 
 			if (_hud)
 			{
-                _hud.SetHp(_health.Value / maxHealth);
+                _hud.SetHp();
             }
 
             OnHealed.Invoke(iHeal);
