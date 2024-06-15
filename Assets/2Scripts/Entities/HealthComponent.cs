@@ -132,7 +132,7 @@ namespace _2Scripts.Entities
 
             if (_hud)
             {
-                _hud.SetHp();
+                _hud.SetHp(this);
             }
 
             OnDamaged.Invoke(pDamage);
@@ -168,7 +168,7 @@ namespace _2Scripts.Entities
 
 			if (_hud)
 			{
-                _hud.SetHp();
+                _hud.SetHp(this);
             }
 
             OnHealed.Invoke(iHeal);

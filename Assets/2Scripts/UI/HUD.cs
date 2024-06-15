@@ -29,16 +29,12 @@ namespace _2Scripts.UI
         [SerializeField] private TextMeshProUGUI[] quickSlotsQuantity = new TextMeshProUGUI[3];
 
         private GameFlowManager _gameFlowManager;
-
-        private HealthComponent _healthComponent;
+        
         
 
         protected override void OnGameManagerChangeState(GameState gameState)
         {
-            
             if (gameState != GameState.InLevel) return;
-            
-            _healthComponent = GameManager.GetPlayerComponent<HealthComponent>();
             
             Debug.Log("Hud start");
             _gameFlowManager = GameManager.GetManager<GameFlowManager>();
@@ -56,9 +52,9 @@ namespace _2Scripts.UI
                 SetTimer(_gameFlowManager.Timer.GetTimerElapsedTime());
         }
 
-        public bool SetHp()
+        public bool SetHp(HealthComponent healthComponent)
         {
-           HP.value = _healthComponent.GetHealth() / _healthComponent.MaxHealth;
+           HP.value = healthComponent.GetHealth() / healthComponent.MaxHealth;
             return true;
         }
         
