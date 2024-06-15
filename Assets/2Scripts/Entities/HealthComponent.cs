@@ -29,8 +29,6 @@ namespace _2Scripts.Entities
 		private EnemyData _enemyData;
 	
 		private StatComponent _statComponent;
-
-		private HUD _hud;
 		
         private int characterID;
 
@@ -38,6 +36,11 @@ namespace _2Scripts.Entities
 
         private void _CheckForDeath(float iPrevVal, float iCurVal)
 		{
+			if (this == GameManager.playerBehaviour.Health)
+			{
+				GameManager.GetManager<InventoryUIManager>().HUD.SetHp();
+			}
+			
 			if (iPrevVal > 0 && iCurVal <= 0)
 			{
 				Debug.Log($"{gameObject.name} Die");
@@ -56,11 +59,6 @@ namespace _2Scripts.Entities
 				maxHealth = _enemyData.enemyStats.health;
 				Heal(_enemyData.enemyStats.health);
 			}
-			else
-			{
-				if (TryGetComponent(out PlayerBehaviour _) && IsOwner)
-					_hud = GameManager.GetManager<InventoryUIManager>().HUD;
-			}
 
 			Heal(maxHealth);
             characterID = GameManager.GetManager<MultiManager>().GetSelectedCharacterID();
@@ -76,17 +74,16 @@ namespace _2Scripts.Entities
                 OnDamaged = new UnityEvent<float>();
             if (OnHealed == null)
                 OnHealed = new UnityEvent<float>();
-
-            if (!IsClient)
-            {
-                _health.OnValueChanged += _CheckForDeath;
-            }
+            
+            
+			_health.OnValueChanged += _CheckForDeath;
+            
 
 
             _enemyData = GetComponent<EnemyData>();
             _statComponent = GetComponent<StatComponent>();
 
-            OnGameManagerChangeState(GameManager.GameState);
+            //OnGameManagerChangeState(GameManager.GameState);
 		}
 
 
@@ -130,10 +127,10 @@ namespace _2Scripts.Entities
 
             _health.Value -= damage;
 
-            if (_hud)
-            {
-                _hud.SetHp(this);
-            }
+            // if (_hud)
+            // {
+            //     _hud.SetHp();
+            // }
 
             OnDamaged.Invoke(pDamage);
 		}
@@ -166,10 +163,10 @@ namespace _2Scripts.Entities
 
             _health.Value = Mathf.Min((int)_health.Value + (int) iHeal, maxHealth);
 
-			if (_hud)
-			{
-                _hud.SetHp(this);
-            }
+			// if (_hud)
+			// {
+   //              _hud.SetHp();
+   //          }
 
             OnHealed.Invoke(iHeal);
 		}

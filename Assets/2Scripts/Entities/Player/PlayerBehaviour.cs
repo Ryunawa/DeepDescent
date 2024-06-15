@@ -34,6 +34,9 @@ namespace _2Scripts.Entities.Player
         private float ySpeed;
 
         private HealthComponent _health;
+
+        public HealthComponent Health => _health;
+
         [SerializeField] private NetworkVariable<bool> _isDead = new NetworkVariable<bool>();
         
         public NetworkVariable<bool> IsDead
