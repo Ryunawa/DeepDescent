@@ -95,6 +95,7 @@ namespace _2Scripts.Entities.Player
             for (int i = 0; i < 4; i++)
             {
                 playerModels[i].SetActive(i == id);
+                stat.SetStats(i);
             }
         }
 

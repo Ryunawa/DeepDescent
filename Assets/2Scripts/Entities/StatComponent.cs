@@ -8,15 +8,13 @@ using UnityEngine;
 
 public class StatComponent : MonoBehaviour
 {
+    public StatsList StatsList;
     public Stats CharacterStatPage;
 
     private float _equippedArmour = 0.0f;
-
-    public PlayerBehaviour PlayerBehaviour;
-
-    private void Start()
+    public void SetStats(int index)
     {
-        PlayerBehaviour = GetComponent<PlayerBehaviour>();
+        CharacterStatPage = StatsList.Stats[index];
     }
 
     public float CalcDamageReceived(float damage)
