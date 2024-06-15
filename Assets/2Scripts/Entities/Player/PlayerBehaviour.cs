@@ -217,7 +217,7 @@ namespace _2Scripts.Entities.Player
         
         private void Attack()
         {
-            //if (_isAttacking) return;
+            if (_isAttacking) return;
 
             Debug.Log("ATTACK");
             
