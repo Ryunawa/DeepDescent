@@ -12,6 +12,7 @@ public class Projectile : NetworkBehaviour
     public float projectileLife = 1.0f;
     public bool despawnOnDeath = false;
     public ParticleSystem vfx;
+    public GameObject mesh;
     [DoNotSerialize] public Vector3 projectileDirection = Vector3.zero;
     private void Start()
     {
@@ -19,7 +20,7 @@ public class Projectile : NetworkBehaviour
         {
             rb.isKinematic = true;
         }
-        StartCoroutine(ShowVFX());
+        StartCoroutine(ShowVFXOrMesh());
     }
 
     private void FixedUpdate()
@@ -45,9 +46,12 @@ public class Projectile : NetworkBehaviour
                     networkObject.Despawn(true);
     }
 
-    private IEnumerator ShowVFX()
+    private IEnumerator ShowVFXOrMesh()
     {
         yield return new WaitForEndOfFrame();
-        vfx.Play(true);
+        if (vfx)
+            vfx.Play(true);
+        if (mesh)
+            mesh.SetActive(true);
     }
 }
