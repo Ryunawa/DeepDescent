@@ -8,14 +8,15 @@ public enum WeaponType
     SWORD,
     AXE,
     DAGGERS,
-    MAGIC_STAFF,
+    MAGIC,
     SHIELD
 }
 
 [CreateAssetMenu(fileName = "New Weapon Item", menuName = "ScriptableObjects/Item/Create New Weapon Item")]
 public class WeaponItem : EquippableItem
 {
-    [Header("Weapon Specific")]
+    [Header("Weapon Specific")] 
+    public GameObject SpellToSpawn;
     public WeaponType WeaponType;
     public int AttackValue;
     public float AttackSpeed;

@@ -2,17 +2,41 @@ using _2Scripts.Manager;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class SpellCasterComponent : NetworkBehaviour
 {
+    [SerializeField] private List<GameManager> projectile = new ();
+
+    public Vector3 positionToCastFrom;
+    
     [Rpc(SendTo.Server)]
-    public void SpawnSpellRpc(int id, string name)
+    public void SpawnSpellRpc(int id, bool isFromStaff = false, bool isFromCrossbow = false)
     {
-        NetworkObject o = Instantiate(((ParchmentItem)GameManager.GetManager<ItemManager>().GetItem(id)).SpellToSpawn.GetComponent<NetworkObject>(), transform.position + new Vector3(0.0f, 1.0f, 0.0f), Quaternion.identity);
-        Debug.Log($"Spawned from object {GameManager.GetManager<ItemManager>().GetItem(id).Name} by {name}");
+        Vector3 pos;
+        GameObject spell;
+        if (isFromStaff)
+        {
+            spell = ((WeaponItem)GameManager.GetManager<ItemManager>().GetItem(id)).SpellToSpawn;
+            pos = GameManager.playerBehaviour.HandPosition.position;
+
+        }
+        else if(isFromCrossbow)
+        {
+            spell = ((WeaponItem)GameManager.GetManager<ItemManager>().GetItem(id)).SpellToSpawn;
+            pos = positionToCastFrom;
+        }
+        else 
+        {
+            spell = ((ParchmentItem)GameManager.GetManager<ItemManager>().GetItem(id)).SpellToSpawn;
+            pos = transform.position + Vector3.up;
+        }
+        
+        
+        NetworkObject o = Instantiate(spell.GetComponent<NetworkObject>(), pos, Quaternion.identity);
         o.GetComponent<Projectile>().projectileDirection = gameObject.transform.forward.normalized;
         o.Spawn();
-        //o.ChangeOwnership(NetworkManager.ServerClientId);
     }
 }

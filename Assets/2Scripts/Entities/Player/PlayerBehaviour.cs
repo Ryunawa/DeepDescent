@@ -24,6 +24,10 @@ namespace _2Scripts.Entities.Player
         [SerializeField] private CinemachineVirtualCamera _virtualCamera;
         [SerializeField] private List<GameObject> playerModels;
 
+        [SerializeField] private Transform handPosition;
+
+        public Transform HandPosition => handPosition;
+
         private CharacterController _characterController;
         private float _characterControllerOriginalStepOffset;
         private InputManager _inputManager;
@@ -103,6 +107,7 @@ namespace _2Scripts.Entities.Player
             {
                 playerModels[i].SetActive(i == id);
                 stat.SetStats(i);
+                animator.SetFloat("Class", i);
             }
         }
 
@@ -227,12 +232,43 @@ namespace _2Scripts.Entities.Player
         private void Attack()
         {
             if (_isAttacking) return;
-
-            Debug.Log("ATTACK");
             
             _isAttacking = true;
-            animator.SetFloat("Weapon", (float)WeaponType.SWORD);
-            animator.SetTrigger("IsAttacking");
+            
+            switch (inventory.MainHandItem.WeaponType)
+            {
+                case WeaponType.BOW:
+                    
+                    animator.SetTrigger("IsAttacking");
+                    animator.SetFloat("Weapon", (float)WeaponType.BOW);
+                    
+                    break;
+                case WeaponType.SWORD:
+                    
+                    animator.SetFloat("Weapon", (float)WeaponType.SWORD);
+                    animator.SetTrigger("IsAttacking");
+                    
+                    break;
+                case WeaponType.AXE:
+                    
+                    animator.SetFloat("Weapon", (float)WeaponType.SWORD);
+                    animator.SetTrigger("IsAttacking");
+                    
+                    break;
+                case WeaponType.DAGGERS:
+                    
+                    animator.SetFloat("Weapon", (float)WeaponType.DAGGERS);
+                    animator.SetTrigger("IsAttacking");
+                    
+                    break;
+                case WeaponType.MAGIC:
+                    
+                    animator.SetFloat("Weapon", (float)WeaponType.MAGIC);
+                    animator.SetTrigger("IsAttacking");
+                    
+                    break;
+            }
+            
         }
         
         public void ResetIsAttacking()
