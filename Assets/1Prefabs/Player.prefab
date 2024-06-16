@@ -4141,7 +4141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad5f63a515e851c4186dd526896b0ddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 0}
+  _animator: {fileID: 2890879977184978321}
   boltOrigin: {fileID: 7419769741928561957}
 --- !u!1 &8342484737646254325 stripped
 GameObject:

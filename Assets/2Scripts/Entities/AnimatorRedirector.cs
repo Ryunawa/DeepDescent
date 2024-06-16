@@ -23,7 +23,9 @@ public class AnimatorRedirector : MonoBehaviour
 
     public void CastSpell()
     {
-        GameManager.GetPlayerComponent<SpellCasterComponent>().positionToCastFrom = boltOrigin.position;
+        if (boltOrigin)
+            GameManager.GetPlayerComponent<SpellCasterComponent>().positionToCastFrom = boltOrigin.position;
+        
         PlayerBehaviour playerBehaviour = GameManager.playerBehaviour;
         _spellCasterComponent.SpawnSpellRpc(playerBehaviour.inventory.MainHandItem.ID, true);
     }

@@ -107,7 +107,7 @@ namespace _2Scripts.Entities.Player
             {
                 playerModels[i].SetActive(i == id);
                 stat.SetStats(i);
-                animator.SetFloat("Class", i);
+                animator.SetFloat("Class", id);
             }
         }
 
