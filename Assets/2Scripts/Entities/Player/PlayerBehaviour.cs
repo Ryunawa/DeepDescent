@@ -7,6 +7,7 @@ using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.Serialization;
 using NaughtyAttributes;
+using Unity.VisualScripting;
 
 namespace _2Scripts.Entities.Player
 {
@@ -30,7 +31,7 @@ namespace _2Scripts.Entities.Player
         private int characterID = 0;
 
 
-        private GameObject _objectToAddToInventory;
+        [DoNotSerialize] public GameObject ObjectToAddToInventory;
         
         private float ySpeed;
 
@@ -159,7 +160,13 @@ namespace _2Scripts.Entities.Player
 
 
         _characterController.Move((move * playerSpeed + Vector3.up * ySpeed)*Time.fixedDeltaTime);
-    
+
+            if (ObjectToAddToInventory && _inputManager.PlayerUsed())
+            {
+                if (ObjectToAddToInventory.TryGetComponent(out Object obj))
+                    obj.Interact();
+            }
+
         transform.rotation = Quaternion.Euler(0, _camTransform.eulerAngles.y, 0);
         
         animator.SetFloat("XAxis", _inputManager.GetPlayerMovement().x);

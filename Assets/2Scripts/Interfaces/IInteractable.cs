@@ -4,6 +4,6 @@ namespace _2Scripts.Interfaces
 {
     public interface IInteractable
     {
-        void Interact(PlayerBehaviour playerBehaviour);
+        void Interact();
     }
 }

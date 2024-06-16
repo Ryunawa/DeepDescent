@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using _2Scripts.Entities.Player;
 using _2Scripts.Interfaces;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace _2Scripts
@@ -11,55 +12,20 @@ namespace _2Scripts
         public Item ItemDetails;
         public int amount;
         public GameObject GOText;
-        private HashSet<PlayerBehaviour> nearbyPlayers = new HashSet<PlayerBehaviour>();
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.CompareTag("Player"))
-            {
-                PlayerBehaviour playerInRange = other.GetComponent<PlayerBehaviour>();
-                if (playerInRange != null)
-                {
-                    nearbyPlayers.Add(playerInRange); // remove player from the collection
-                    GOText.SetActive(true);
-                    GetComponent<Outline>().enabled = true;
-                }
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (other.CompareTag("Player"))
-            {
-                PlayerBehaviour playerInRange = other.GetComponent<PlayerBehaviour>();
-                if (playerInRange != null && nearbyPlayers.Contains(playerInRange))
-                {
-                    nearbyPlayers.Remove(playerInRange); // add player to the collection
-                    if (nearbyPlayers.Count == 0)
-                    {
-                        GOText.SetActive(false);
-                        GetComponent<Outline>().enabled = false;
-                    }
-                }
-            }
-        }
+        [DoNotSerialize] public PlayerBehaviour playerBehaviourInspecting;
 
         private void Update()
         {
-            foreach (var player in nearbyPlayers)
-            {
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                    Interact(player);
-                    break;
-                }
-            }
+            if (!GOText.activeSelf || !playerBehaviourInspecting)
+                return;
+
+            GOText.transform.rotation = Quaternion.LookRotation(transform.position - playerBehaviourInspecting.transform.position, Vector3.up);
         }
 
-        public void Interact(PlayerBehaviour playerBehaviour)
+        public void Interact()
         {
             // Pickup Object
-            bool isItemAdded = playerBehaviour.inventory.AddToInventory(ItemDetails.ID, amount);
+            bool isItemAdded = playerBehaviourInspecting.inventory.AddToInventory(ItemDetails.ID, amount);
             if (isItemAdded) DespawnNetworkObjectRpc();
         }
 
