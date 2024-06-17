@@ -19,10 +19,12 @@ namespace _2Scripts.Entities.Player
         [SerializeField] private float jumpHeight = 1.0f;
         [SerializeField] private float airControl = 0;
         [SerializeField] private Animator animator;
+        [SerializeField] private Animator animatorFPS;
         [SerializeField] private Transform _camTransform;
         [SerializeField] private bool _overrideNetwork = false;
         [SerializeField] private CinemachineVirtualCamera _virtualCamera;
         [SerializeField] private List<GameObject> playerModels;
+        [SerializeField] private List<GameObject> playerModelsFPS;
 
         [SerializeField] private Transform handPosition;
 
@@ -97,6 +99,15 @@ namespace _2Scripts.Entities.Player
         {
             if (gameState != GameState.InLevel) return;
             UpdateCharRpc(characterID);
+            if (IsOwner)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    playerModelsFPS[i].SetActive(i == characterID);
+                    playerModels[i].SetActive(false);
+                    animatorFPS.SetFloat("Class", characterID);
+                }
+            }
         }
 
 
@@ -173,6 +184,11 @@ namespace _2Scripts.Entities.Player
             }
 
         transform.rotation = Quaternion.Euler(0, _camTransform.eulerAngles.y, 0);
+
+        if (IsOwner)
+        {
+            animatorFPS.SetBool("IsRuning", _inputManager.GetPlayerMovement().magnitude > 0);
+        }
         
         animator.SetFloat("XAxis", _inputManager.GetPlayerMovement().x);
         animator.SetFloat("YAxis", _inputManager.GetPlayerMovement().y);
@@ -242,11 +258,15 @@ namespace _2Scripts.Entities.Player
                     animator.SetTrigger("IsAttacking");
                     animator.SetFloat("Weapon", (float)WeaponType.BOW);
                     
+                    animatorFPS.SetTrigger("IsAttacking");
+                    
                     break;
                 case WeaponType.SWORD:
                     
                     animator.SetFloat("Weapon", (float)WeaponType.SWORD);
                     animator.SetTrigger("IsAttacking");
+                    
+                    animatorFPS.SetTrigger("IsAttacking");
                     
                     break;
                 case WeaponType.AXE:
@@ -254,17 +274,23 @@ namespace _2Scripts.Entities.Player
                     animator.SetFloat("Weapon", (float)WeaponType.SWORD);
                     animator.SetTrigger("IsAttacking");
                     
+                    animatorFPS.SetTrigger("IsAttacking");
+                    
                     break;
                 case WeaponType.DAGGERS:
                     
                     animator.SetFloat("Weapon", (float)WeaponType.DAGGERS);
                     animator.SetTrigger("IsAttacking");
                     
+                    animatorFPS.SetTrigger("IsAttacking");
+                    
                     break;
                 case WeaponType.MAGIC:
                     
                     animator.SetFloat("Weapon", (float)WeaponType.MAGIC);
                     animator.SetTrigger("IsAttacking");
+                    
+                    animatorFPS.SetTrigger("IsAttacking");
                     
                     break;
             }
