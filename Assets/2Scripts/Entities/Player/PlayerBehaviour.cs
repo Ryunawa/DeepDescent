@@ -23,6 +23,7 @@ namespace _2Scripts.Entities.Player
         [SerializeField] private Transform _camTransform;
         [SerializeField] private bool _overrideNetwork = false;
         [SerializeField] private CinemachineVirtualCamera _virtualCamera;
+        [SerializeField] private Camera _Camera;
         [SerializeField] private List<GameObject> playerModels;
         [SerializeField] private List<GameObject> playerModelsFPS;
 
@@ -44,6 +45,9 @@ namespace _2Scripts.Entities.Player
         private HealthComponent _health;
 
         public HealthComponent Health => _health;
+
+        public Camera Camera => _Camera;
+
         public bool IsAttacking => _isAttacking;
 
         [SerializeField] private NetworkVariable<bool> _isDead = new NetworkVariable<bool>();

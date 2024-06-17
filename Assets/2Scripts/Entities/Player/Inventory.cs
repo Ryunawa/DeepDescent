@@ -26,7 +26,9 @@ public class Inventory : GameManagerSync<Inventory>
 {
     [Header("Options")]
     [SerializeField] private bool overrideWithSavedInventory;
-    [SerializeField] private VisibleItems visibleItems;
+    private VisibleItems visibleItems;
+    [SerializeField] private VisibleItems visibleItemsFPS;
+    [SerializeField] private VisibleItems visibleItemsTPS;
     
     [Space,Header("Equipped Items")]
     public ArmorItem ChestArmor;
@@ -55,6 +57,8 @@ public class Inventory : GameManagerSync<Inventory>
     {
         if (gameState == GameState.InLevel)
         {
+            visibleItems = IsOwner ? visibleItemsFPS : visibleItemsTPS;
+            
             if (overrideWithSavedInventory)
             {
                 SaveSystem.LoadInventory();

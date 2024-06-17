@@ -105,8 +105,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2962349039048327619, guid: 84fe8fa6019501c4da76f5b8fdf01682,
         type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2962349039048327619, guid: 84fe8fa6019501c4da76f5b8fdf01682,
+        type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 490292639
+      value: 2162482717
       objectReference: {fileID: 0}
     - target: {fileID: 3090629861896308313, guid: 84fe8fa6019501c4da76f5b8fdf01682,
         type: 3}

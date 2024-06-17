@@ -1,6 +1,7 @@
 using _2Scripts.Entities;
 using System.Collections;
 using System.Collections.Generic;
+using _2Scripts.Manager;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -21,6 +22,8 @@ public class Projectile : NetworkBehaviour
             rb.isKinematic = true;
         }
         StartCoroutine(ShowVFXOrMesh());
+
+        transform.rotation = GameManager.playerBehaviour.Camera.transform.rotation;
     }
 
     private void FixedUpdate()
