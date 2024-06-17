@@ -25,9 +25,13 @@ public class AnimatorRedirector : MonoBehaviour
     {
         if (boltOrigin)
             GameManager.GetPlayerComponent<SpellCasterComponent>().positionToCastFrom = boltOrigin.position;
-        
+
         PlayerBehaviour playerBehaviour = GameManager.playerBehaviour;
-        _spellCasterComponent.SpawnSpellRpc(playerBehaviour.inventory.MainHandItem.ID, true);
+
+        bool isBow = playerBehaviour.inventory.MainHandItem.WeaponType == WeaponType.BOW;
+        bool isStaff = playerBehaviour.inventory.MainHandItem.WeaponType == WeaponType.MAGIC;
+        
+        _spellCasterComponent.SpawnSpellRpc(playerBehaviour.inventory.MainHandItem.ID, isStaff, isBow);
     }
 
     public void AnimateBow()
