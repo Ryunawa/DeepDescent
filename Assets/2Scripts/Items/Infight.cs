@@ -11,6 +11,8 @@ public class Infight : MonoBehaviour
     private bool _canInflictDamage = true;
     [SerializeField] private float damageCooldown = 1f;
 
+    [SerializeField] private bool isEnemy;
+
     [SerializeField]
     private MonoBehaviour controller;
 
@@ -40,33 +42,41 @@ public class Infight : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("enter trigger");
         other.TryGetComponent(out HealthComponent collidedHealthComponent);
-        if (_swinging && _canInflictDamage)
+
+        if (collidedHealthComponent == null)
         {
-            if (other.gameObject.CompareTag("Player"))
+            Debug.LogWarning("No HealthComponent found on the collided object.");
+            return;
+        }
+
+        // Is enemy attacking
+        if (_swinging && _canInflictDamage && isEnemy && other.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Hit player!");
+            if (isEnemy && other.gameObject.CompareTag("Player"))
             {
-                if (collidedHealthComponent && TryGetComponent(out EnemyData data))
+                if (TryGetComponent(out EnemyData data))
                 {
                     collidedHealthComponent.TakeDamage(data.damageInflicted);
+                    Debug.Log("DAMAGE: " + data.damageInflicted);
                 }
-                Debug.Log("DAMAGE");
 
                 // Start the cooldown coroutine
                 StartCoroutine(DamageCooldown());
             }
-            // else
-            // {
-            //     if (collidedHealthComponent && TryGetComponent(out Inventory inventory))
-            //     {
-            //         collidedHealthComponent.TakeDamage(inventory.MainHandItem.AttackValue);
-            //     }
-            // }
         }
-        else if (((PlayerBehaviour)controller).IsAttacking)
+        // Is player attacking
+        else
         {
-            if (collidedHealthComponent != ((PlayerBehaviour)controller).Health)
+            PlayerBehaviour playerController = controller as PlayerBehaviour;
+            if (playerController != null && playerController.IsAttacking)
             {
-                collidedHealthComponent.TakeDamage(GameManager.playerBehaviour.inventory.MainHandItem.AttackValue);
+                if (collidedHealthComponent != playerController.Health)
+                {
+                    collidedHealthComponent.TakeDamage(GameManager.playerBehaviour.inventory.MainHandItem.AttackValue);
+                }
             }
         }
     }

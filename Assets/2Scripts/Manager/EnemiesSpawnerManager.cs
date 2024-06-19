@@ -157,6 +157,9 @@ namespace _2Scripts.Manager
                         child.gameObject.SetActive(i == meshInfoToActivate.index);
                     }
 
+                    // Ensure the root (last child) is always active
+                    GetLastChild(newEnemy.transform).gameObject.SetActive(true);
+
                     // Set the health component
                     HealthComponent healthComponent = newEnemy.GetComponent<HealthComponent>();
                     if (healthComponent != null)
@@ -175,6 +178,11 @@ namespace _2Scripts.Manager
                     _currentEnemiesCount++;
                 }
             }
+        }
+
+        private Transform GetLastChild(Transform parentTransform)
+        {
+            return parentTransform.GetChild(parentTransform.childCount - 1);
         }
 
         IEnumerator StartSpawnAnim(Vector3 pEnemyPosition, GameObject pEnemyGameObject)

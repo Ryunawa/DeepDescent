@@ -5478,6 +5478,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 1565165106909735245, guid: 478b8ff498bd2624385544ba44e9f36a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1572578472623022755, guid: 478b8ff498bd2624385544ba44e9f36a,
         type: 3}
       propertyPath: GlobalObjectIdHash
