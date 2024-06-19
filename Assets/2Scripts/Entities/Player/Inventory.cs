@@ -415,8 +415,12 @@ public class Inventory : GameManagerSync<Inventory>
 
             if (item != null)
             {
-                item.Equip(this, isOffHand);
-                AddFromEquipment(item, isOffHand);
+                (bool, List<EquippableItem>) result = item.Equip(this, isOffHand);
+
+                if (!result.Item1)
+                    AddToInventory(item.ID, 1);
+                else
+                    AddFromEquipment(item, isOffHand);
             }
             isOffHand = false;
         }

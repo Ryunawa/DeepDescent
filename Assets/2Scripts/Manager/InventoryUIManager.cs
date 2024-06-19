@@ -112,6 +112,9 @@ namespace _2Scripts.Manager
                 inventoryUI.SetActive(value);
                 itemDetailUI.gameObject.SetActive(false);
                 Cursor.visible = value;
+
+                if (value)
+                    DrawInventory();
             }
         }
         
