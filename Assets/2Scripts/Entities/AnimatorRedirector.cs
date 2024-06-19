@@ -2,16 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using _2Scripts.Entities.Player;
+using _2Scripts.Helpers;
 using _2Scripts.Manager;
 using UnityEngine;
 
-public class AnimatorRedirector : MonoBehaviour
+public class AnimatorRedirector : GameManagerSync<AnimatorRedirector>
 {
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform boltOrigin;
     private SpellCasterComponent _spellCasterComponent;
 
-    private void Start()
+    protected override void OnGameManagerChangeState(GameState gameState)
     {
         _spellCasterComponent = GameManager.GetPlayerComponent<SpellCasterComponent>();
     }

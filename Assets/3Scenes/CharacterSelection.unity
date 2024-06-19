@@ -380,7 +380,7 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 462168562}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &509315519
+--- !u!1001 &728260344
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -436,14 +436,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 95361765663008898, guid: f090a6b49e0a273499900b9ba1ba7dd8,
+    - target: {fileID: 1753931070341041359, guid: f090a6b49e0a273499900b9ba1ba7dd8,
         type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 3474136bda9c66740ad5d342ce38d2ed, type: 2}
-    - target: {fileID: 95361765663008898, guid: f090a6b49e0a273499900b9ba1ba7dd8,
-        type: 3}
-      propertyPath: m_ApplyRootMotion
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -451,17 +446,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f090a6b49e0a273499900b9ba1ba7dd8, type: 3}
---- !u!4 &509315520 stripped
+--- !u!4 &728260345 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4601014344161154, guid: f090a6b49e0a273499900b9ba1ba7dd8,
     type: 3}
-  m_PrefabInstance: {fileID: 509315519}
+  m_PrefabInstance: {fileID: 728260344}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &509315521 stripped
+--- !u!1 &728260346 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1072503254754400, guid: f090a6b49e0a273499900b9ba1ba7dd8,
     type: 3}
-  m_PrefabInstance: {fileID: 509315519}
+  m_PrefabInstance: {fileID: 728260344}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &910224767
 PrefabInstance:
@@ -1410,7 +1405,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1908779708}
-  - {fileID: 509315520}
+  - {fileID: 728260345}
   - {fileID: 910224768}
   - {fileID: 462168564}
   m_Father: {fileID: 0}
@@ -1429,7 +1424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characters:
   - {fileID: 1908779709}
-  - {fileID: 509315521}
+  - {fileID: 728260346}
   - {fileID: 910224769}
   - {fileID: 462168563}
   selectedCharacter: 0

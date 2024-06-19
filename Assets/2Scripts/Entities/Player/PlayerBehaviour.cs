@@ -82,6 +82,12 @@ namespace _2Scripts.Entities.Player
                 _inputManager.Inputs.Player.Attack.performed += context => Attack();
 
                 GameManager.playerBehaviour = this;
+                
+                //13 fps
+                playerModelsFPS[0].gameObject.transform.parent.gameObject.layer = LayerMask.NameToLayer("PlayerRenderRig");
+                //14 tps
+                playerModels[0].gameObject.transform.parent.gameObject.layer = LayerMask.NameToLayer("PlayerNotRenderRig");
+
             }
             
             if (!IsOwner)
@@ -108,7 +114,6 @@ namespace _2Scripts.Entities.Player
                 for (int i = 0; i < 4; i++)
                 {
                     playerModelsFPS[i].SetActive(i == characterID);
-                    playerModels[i].SetActive(false);
                     animatorFPS.SetFloat("Class", characterID);
                 }
             }
