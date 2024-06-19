@@ -83,10 +83,17 @@ namespace _2Scripts.Entities.Player
 
                 GameManager.playerBehaviour = this;
                 
-                //13 fps
-                playerModelsFPS[0].gameObject.transform.parent.gameObject.layer = LayerMask.NameToLayer("PlayerRenderRig");
-                //14 tps
-                playerModels[0].gameObject.transform.parent.gameObject.layer = LayerMask.NameToLayer("PlayerNotRenderRig");
+                //13 layer 13 rendered on cam
+                foreach (var playerModelFPS in playerModelsFPS)
+                {
+                    playerModelFPS.layer = 13;
+                }
+                //14 layer14 not rendered on cam
+                foreach (var playerModel in playerModels)
+                {
+                    playerModel.layer = 14;
+                }
+                
 
             }
             
@@ -94,16 +101,24 @@ namespace _2Scripts.Entities.Player
             {
                 if (!_overrideNetwork)
                 {
+                    //13 layer 13 rendered on cam
+                    foreach (var playerModelFPS in playerModelsFPS)
+                    {
+                        playerModelFPS.layer = 14;
+                    }
+                    //14 layer14 not rendered on cam
+                    foreach (var playerModel in playerModels)
+                    {
+                        playerModel.layer = 13;
+                    }
+                    
                     _camTransform.gameObject.SetActive(false);
                     _virtualCamera.gameObject.SetActive(false);
 
                     enabled = false;
                 }
                 
-                //13 fps
-                playerModelsFPS[0].gameObject.transform.parent.gameObject.layer = LayerMask.NameToLayer("PlayerNotRenderRig");
-                //14 tps
-                playerModels[0].gameObject.transform.parent.gameObject.layer = LayerMask.NameToLayer("PlayerRenderRig");
+                
                 
             }
 
@@ -132,7 +147,7 @@ namespace _2Scripts.Entities.Player
             for (int i = 0; i < 4; i++)
             {
                 playerModels[i].SetActive(i == id);
-                stat.SetStats(i);
+                stat.SetStats(id);
                 animator.SetFloat("Class", id);
             }
         }
@@ -306,6 +321,11 @@ namespace _2Scripts.Entities.Player
                     animator.SetTrigger("IsAttacking");
                     
                     animatorFPS.SetTrigger("IsAttacking");
+                    
+                    break;
+                default:
+                    _isAttacking = false;
+                    Debug.Log("Can't Attack no weapon equipped");
                     
                     break;
             }
