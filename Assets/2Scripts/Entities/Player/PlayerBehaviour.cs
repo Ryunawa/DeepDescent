@@ -83,6 +83,13 @@ namespace _2Scripts.Entities.Player
 
                 GameManager.playerBehaviour = this;
                 
+                for (int i = 0; i < 4; i++)
+                {
+                    playerModels[i].SetActive(i == characterID);
+                    stat.SetStats(characterID);
+                    animator.SetFloat("Class", characterID);
+                }
+                
                 //13 layer 13 rendered on cam
                 foreach (var playerModelFPS in playerModelsFPS)
                 {
@@ -141,7 +148,7 @@ namespace _2Scripts.Entities.Player
         }
 
 
-        [Rpc(SendTo.ClientsAndHost)]
+        [Rpc(SendTo.NotMe)]
         private void UpdateCharRpc(int id)
         {
             for (int i = 0; i < 4; i++)
