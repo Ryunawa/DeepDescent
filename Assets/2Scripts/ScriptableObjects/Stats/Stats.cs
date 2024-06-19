@@ -9,4 +9,5 @@ public class Stats : ScriptableObject
     public float BaseArmour = 0.0f;
     public float DamageReceivedModifier = 1.0f;
     public float DamageInflictedModifier = 1.0f;
+    public List<WeaponType> EquippableWeaponType = new List<WeaponType>();
 }

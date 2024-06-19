@@ -211,6 +211,15 @@ public class Inventory : GameManagerSync<Inventory>
             EquippableItem realItem = GameManager.GetManager<ItemManager>().GetItem(newInventoryObject.ID) as EquippableItem;
             if (realItem)
             {
+                WeaponItem realItemWeapon = (WeaponItem)realItem;
+                if (realItemWeapon)
+                {
+                    if (!stat.CharacterStatPage.EquippableWeaponType.Contains(realItemWeapon.WeaponType))
+                    {
+                        Debug.Log($"[Inventory::EquipFromInventory()] - Can't equip new item at pos {itemPos} because our class cannot equip this item.");
+                        return;
+                    }
+                }
                 (bool, List<EquippableItem>) result = realItem.Equip(this, OffSlot);
                 if (result.Item1)
                 {
