@@ -99,6 +99,12 @@ namespace _2Scripts.Entities.Player
 
                     enabled = false;
                 }
+                
+                //13 fps
+                playerModelsFPS[0].gameObject.transform.parent.gameObject.layer = LayerMask.NameToLayer("PlayerNotRenderRig");
+                //14 tps
+                playerModels[0].gameObject.transform.parent.gameObject.layer = LayerMask.NameToLayer("PlayerRenderRig");
+                
             }
 
             Debug.Log("PLayerBehaviour Done Start ");
