@@ -48,7 +48,7 @@ public class MainLobby : GameManagerSync<MainLobby>
         lobbyUI.SetActive(true);
         lobbyName.text = multiManager.Lobby.Name;
         
-        actualPlayButton.interactable = false;
+        actualPlayButton.interactable = true;
         
         RefreshUI(false);
     }
@@ -66,16 +66,16 @@ public class MainLobby : GameManagerSync<MainLobby>
             playerNameText.text = player.Data["Name"].Value;
         }
 
-        if (!changeButtonState) return;
-        if (multiManager.IsLobbyHost())
-        {
-            actualPlayButton.interactable = isAllReady;
-        }
-
-        if (multiManager.Lobby.Players.Count == 1)
-        {
-            actualPlayButton.interactable = true;
-        }
+        // if (!changeButtonState) return;
+        // if (multiManager.IsLobbyHost())
+        // {
+        //     actualPlayButton.interactable = isAllReady;
+        // }
+        //
+        // if (multiManager.Lobby.Players.Count == 1)
+        // {
+        //     actualPlayButton.interactable = true;
+        // }
     }
 
     private void ReturnToLobbyList()
