@@ -1140,6 +1140,11 @@ PrefabInstance:
       objectReference: {fileID: 37933207}
     - target: {fileID: 3584134917664296696, guid: 37adf399883b51e42a2c5d805ca58989,
         type: 3}
+      propertyPath: dungeonSize
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3584134917664296696, guid: 37adf399883b51e42a2c5d805ca58989,
+        type: 3}
       propertyPath: propsParent
       value: 
       objectReference: {fileID: 2018240747}

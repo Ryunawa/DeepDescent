@@ -24,7 +24,8 @@ namespace _2Scripts.ProceduralGeneration
         public GameObject roomFourPrefab;
 
         public Room[] dungeon = new Room[]{};
-    
+        [SerializeField, Range(0, 100)] private float doorProbabilityIfEmpty = 50f;
+
         [Header("Props")]
         [SerializeField] private GameObject[] _props;
         [SerializeField] private GameObject portalPrefab;
@@ -300,54 +301,106 @@ namespace _2Scripts.ProceduralGeneration
         }
 
 
-        private bool DoesNeighbouringRoomNeedDoor(Directions direction, Dictionary<Directions, Room> neighbouringRooms, int actualRoomIndex)
+        private bool DoesNeighbouringRoomNeedDoor(Directions direction, Room neighbourRoom, int actualRoomIndex)
         {
-            Room neighbourRoom = neighbouringRooms[direction];
-
             if (neighbourRoom != null)
             {
-                // get opposite direction
+                // Get opposite direction
                 Directions oppositeDirection = GetOppositeDirection(direction);
 
-                // room has a door?
+                // Room has a door?
                 bool hasDoorOpposite = neighbourRoom.HasDoor(oppositeDirection);
 
-                // if it has door : door, if not no door
+                // If it has door : door, if not no door
                 return hasDoorOpposite;
             }
             else
             {
-                // is in array?
+                // Is in array?
                 int isWithinBounds = GetIndexNeighbour(actualRoomIndex, direction);
-
 
                 if (isWithinBounds >= 0)
                 {
-                    // room does not exist and is not out of bounds -> rand door
-                    return Random.Range(0, 2) == 1;
+                    // Check if neighboring room will have doors
+                    if (WillRoomHaveDoors(actualRoomIndex))
+                    {
+                        // Room does not exist and is not out of bounds -> rand door
+                        float randomValue = Random.Range(0f, 100f);
+                        return randomValue < doorProbabilityIfEmpty;
+                    }
+                    else
+                    {
+                        // Room does not have any planned doors or does not exist
+                        return false;
+                    }
                 }
                 else
                 {
-                    // room does not exist and is out of bounds -> no door
+                    // Room does not exist and is out of bounds -> no door
                     return false;
                 }
             }
         }
 
+        private bool WillRoomHaveDoors(int roomIndex)
+        {
+            // Get neighbouring rooms of the given room
+            Dictionary<Directions, Room> neighbouringRooms = GetNeighbouringRooms(roomIndex);
+
+            foreach (var kvp in neighbouringRooms)
+            {
+                Directions direction = kvp.Key;
+                Room neighbourRoom = kvp.Value;
+
+                if (neighbourRoom != null)
+                {
+                    // Check if the neighbouring room has doors towards the current room
+                    Directions oppositeDirection = GetOppositeDirection(direction);
+                    if (neighbourRoom.HasDoor(oppositeDirection))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    // Check if the neighbour room index is within bounds
+                    int neighbourRoomIndex = GetIndexNeighbour(roomIndex, direction);
+                    if (neighbourRoomIndex >= 0)
+                    {
+                        // If the neighbour room does not exist yet but is within bounds, check further
+                        Room actualRoom = dungeon[roomIndex];
+                        int actualRoomGeneration = actualRoom != null ? actualRoom.Generation : 0;
+                        int neighbourRoomGeneration = 0; // default for non-existing rooms
+
+                        if (actualRoomGeneration > neighbourRoomGeneration)
+                        {
+                            // If the actual room generation is greater than the neighbour room generation,
+                            // we can consider that the neighbour room will be created and can potentially have doors
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+
         public bool[] GetAllDoorsNeeded(int roomIndex)
         {
+
             bool[] doorNeeded = new bool[4];
             Dictionary<Directions, Room> neighbouringRooms = GetNeighbouringRooms(roomIndex);
 
             foreach (KeyValuePair<Directions, Room> kvp in neighbouringRooms)
             {
                 Directions direction = kvp.Key;
+                Room neighbourRoom = kvp.Value;
 
-                bool needsDoor = DoesNeighbouringRoomNeedDoor(direction, neighbouringRooms, roomIndex);
+                bool needsDoor = DoesNeighbouringRoomNeedDoor(direction, neighbourRoom, roomIndex);
 
-                switch(direction)
+                switch (direction)
                 {
-                    case Directions.North :
+                    case Directions.North:
                         doorNeeded[0] = needsDoor;
                         break;
                     case Directions.East:
@@ -364,45 +417,45 @@ namespace _2Scripts.ProceduralGeneration
             return doorNeeded;
         }
 
-
-        // create rooms in the four direction next to the given index
         public async Task CreateAdjacentRooms(int roomIndex, int genNumber, int roomNum)
         {
-            Dictionary<Directions, Room> neighbouringRooms = GetNeighbouringRooms(roomIndex);
+            Dictionary<Directions, Room> neighbouringRooms = GetNeighbouringRooms(roomIndex); // get all rooms next to ours
 
             foreach (KeyValuePair<Directions, Room> kvp in neighbouringRooms)
             {
                 Directions direction = kvp.Key;
                 Room room = kvp.Value;
 
-                await Task.Delay(100);
+                await Task.Delay(10);
 
                 if (room == null && IsRoomInArray(roomIndex, direction))
                 {
                     Vector3 position = GetPositionNeighbour(roomIndex, direction);
-                    int neighbourIndex = GetIndexNeighbour(roomIndex, direction);
+                    int neighbourIndex = GetIndexNeighbour(roomIndex, direction); 
                     bool[] doorNeeded = GetAllDoorsNeeded(neighbourIndex);
                     RoomType roomType = ChooseRoomType(doorNeeded);
                     Quaternion rotation = Quaternion.identity;
 
-                    // create room
+                    // Create room
                     Room instantiatedRoom = InstantiateRoom(roomType, position, rotation).GetComponent<Room>();
 
-                    if(instantiatedRoom)
+                    if (instantiatedRoom)
                     {
-                        // set room
+                        // Set room properties
                         instantiatedRoom.SizeRoom = _roomSize;
                         instantiatedRoom.Generation = genNumber;
-                        instantiatedRoom.ID = roomNum;
+                        instantiatedRoom.IdParentRoom = roomNum;
+                        instantiatedRoom.MyId = neighbourIndex;
 
-                        // rotate room
+
+                        // Rotate room
                         int rotationNeeded = GetRotationsNeeded(instantiatedRoom, doorNeeded);
                         instantiatedRoom.SetNumberOfRotation(rotationNeeded);
 
-                        // create props
+                        // Create props
                         GameObject instantiatedProps = InstantiateProps(roomType, position);
 
-                        // place it in their folder
+                        // Place it in their folder
                         instantiatedRoom.transform.SetParent(roomsParent.transform);
                         if (instantiatedProps)
                         {
@@ -411,6 +464,11 @@ namespace _2Scripts.ProceduralGeneration
                         }
 
                         dungeon[neighbourIndex] = instantiatedRoom;
+                        Debug.Log($"Room created at index {neighbourIndex} with generation {genNumber}");
+                    }
+                    else
+                    {
+                        Debug.LogError($"Failed to instantiate room at {position} with type {roomType}");
                     }
                 }
             }
@@ -678,12 +736,11 @@ namespace _2Scripts.ProceduralGeneration
         
             foreach (Room room in dungeon)
             {
-                if (Vector3.Distance(room.transform.position, playerPos) < Vector3.Distance(playerRoom.transform.position, playerPos))
+                if (room != null && (playerRoom == null || Vector3.Distance(room.transform.position, playerPos) < Vector3.Distance(playerRoom.transform.position, playerPos)))
                 {
                     playerRoom = room;
                 }
             }
-
 
             Dictionary<Directions, Room> rooms = GetNeighbouringRooms(GetIndexOfRoom(playerRoom));
 

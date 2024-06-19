@@ -14,10 +14,13 @@ namespace _2Scripts.ProceduralGeneration
         [SerializeField] private RoomType roomType;
         //Ordered : North, East, South, West
         [SerializeField] private FaceState[] originalFaceStatesArray = new FaceState[4];
+        [SerializeField] private FaceState[] modifiedFaceStatesArray = new FaceState[4];
+
         [SerializeField] private int generation;
 
         [SerializeField] private int numberOfRightRotation = 0;
-        public int ID;
+        public int MyId;
+        public int IdParentRoom;
         private float _sizeRoom = 0;
 
         private RoomProps _roomProps;
@@ -77,6 +80,8 @@ namespace _2Scripts.ProceduralGeneration
         {
             numberOfRightRotation = newNumberOfRightRotation;
             this.gameObject.transform.rotation = Quaternion.AngleAxis(90f * newNumberOfRightRotation, Vector3.up);
+
+            modifiedFaceStatesArray = GetRotatedFaceStates(numberOfRightRotation);
 
             CreateDoors();
         }
