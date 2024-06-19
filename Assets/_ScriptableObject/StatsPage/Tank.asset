@@ -16,3 +16,4 @@ MonoBehaviour:
   BaseArmour: 10
   DamageReceivedModifier: 0.5
   DamageInflictedModifier: 1
+  EquippableWeaponType: 0100000005000000
