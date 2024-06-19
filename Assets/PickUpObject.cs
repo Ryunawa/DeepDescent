@@ -17,6 +17,10 @@ namespace _2Scripts
                 playerBehaviour.ObjectToAddToInventory = other.gameObject;
                 obj.GOText.SetActive(true);
                 obj.playerBehaviourInspecting = playerBehaviour;
+                if (other.TryGetComponent(out Outline outline))
+                {
+                    outline.enabled = true;
+                }
             }
         }
 
@@ -29,6 +33,10 @@ namespace _2Scripts
             {
                 obj.GOText.SetActive(false);
                 obj.playerBehaviourInspecting = null;
+                if (other.TryGetComponent(out Outline outline))
+                {
+                    outline.enabled = false;
+                }
             }
         }
     }
