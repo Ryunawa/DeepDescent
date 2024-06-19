@@ -88,6 +88,7 @@ namespace _2Scripts.Entities.Player
                     playerModels[i].SetActive(i == characterID);
                     stat.SetStats(characterID);
                     animator.SetFloat("Class", characterID);
+                    animator.SetFloat("Weapon", characterID);
                 }
                 
                 //13 layer 13 rendered on cam
@@ -225,11 +226,18 @@ namespace _2Scripts.Entities.Player
         if (IsOwner)
         {
             animatorFPS.SetBool("IsRuning", _inputManager.GetPlayerMovement().magnitude > 0);
+            animator.SetBool("IsRuning", _inputManager.GetPlayerMovement().magnitude > 0);
         }
         
         animator.SetFloat("XAxis", _inputManager.GetPlayerMovement().x);
         animator.SetFloat("YAxis", _inputManager.GetPlayerMovement().y);
         animator.SetBool("IsJumping", !_characterController.isGrounded);
+        if (inventory.MainHandItem == null)
+        {
+            animatorFPS.SetFloat("Weapon", -1);
+            animator.SetFloat("Weapon", -1);
+        }
+        
     }
 
         private void OnDamaged(float damage)
@@ -332,6 +340,8 @@ namespace _2Scripts.Entities.Player
                     break;
                 default:
                     _isAttacking = false;
+                    
+                    animator.SetFloat("Weapon", -1);
                     Debug.Log("Can't Attack no weapon equipped");
                     
                     break;
