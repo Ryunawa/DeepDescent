@@ -29,7 +29,6 @@ public class DoorController : MonoBehaviour
         // play sound
         GameManager.GetManager<AudioManager>().PlaySfx("DoorOpen", this, 1, 5);
         animator.Play("DoorOpen", 0, 0.0f);
-        DynamicNavMesh.UpdateNavMesh();
     }
 
     public void CloseDoor()
@@ -37,7 +36,6 @@ public class DoorController : MonoBehaviour
         // play sound
         GameManager.GetManager<AudioManager>().PlaySfx("DoorClose", this, 1, 5);
         animator.Play("DoorClose", 0, 0.0f);
-        DynamicNavMesh.UpdateNavMesh();
         StartCoroutine(CloseDoorDelayed());
     }
 

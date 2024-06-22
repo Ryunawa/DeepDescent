@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using _2Scripts.Manager;
 using Unity.Netcode;
+using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -33,7 +34,7 @@ namespace _2Scripts.Entities.AI
 
         [Header("Combat Settings")]
         [SerializeField]
-        private float attackRange = 1.5f;
+        private float attackRange = 1.0f;
         [SerializeField]
         private float timeBeforeAttack = 2f; // attack speed in seconds
         [SerializeField]
@@ -48,9 +49,9 @@ namespace _2Scripts.Entities.AI
         private bool didAlreadyWait = false; // did it already wait once at its patrol point?
 
         // Components
-        private NavMeshAgent navMeshAgent;
-        private Animator animator;
-        private HealthComponent healthComponent;
+        [SerializeField] private NavMeshAgent navMeshAgent;
+        [SerializeField] private Animator animator;
+        [SerializeField] private HealthComponent healthComponent;
 
         // Other variables...
         private Vector3 playerLastPosition = Vector3.zero;
@@ -76,16 +77,11 @@ namespace _2Scripts.Entities.AI
             m_CurrentWaypointIndex = 0;
 
             animator = GetComponent<Animator>();
-
             navMeshAgent = GetComponent<NavMeshAgent>();
+
             navMeshAgent.stoppingDistance = attackRange - 0.5f;
             navMeshAgent.isStopped = false;
             navMeshAgent.speed = speedWalk;
-
-            if (waypoints != null && waypoints.Length > 0)
-            {
-                navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
-            }
 
             healthComponent = GetComponent<HealthComponent>();
             if (healthComponent == null)
@@ -95,9 +91,6 @@ namespace _2Scripts.Entities.AI
             }
             healthComponent.OnDeath.AddListener(HandleDeath);
 
-            // play sound
-            GameManager.GetManager<AudioManager>().PlaySfx("MonsterSpawn", this, 1, 5);
-
             // start attack coroutine
             StartCoroutine(AttackLoop());
         }
@@ -105,6 +98,14 @@ namespace _2Scripts.Entities.AI
         public void OnSpawnAnimationComplete()
         {
             isSpawnAnimationComplete = true;
+
+            if (waypoints != null && waypoints.Length > 0)
+            {
+                navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
+            }
+
+            // play sound
+            GameManager.GetManager<AudioManager>().PlaySfx("MonsterSpawn", this, 1, 5);
         }
 
         void Update()
@@ -133,6 +134,8 @@ namespace _2Scripts.Entities.AI
         // run after the player or its last known position
         private void Chasing()
         {
+            if (_isSwinging) return;
+
             m_PlayerNear = false;
             playerLastPosition = Vector3.zero;
 
@@ -409,8 +412,11 @@ namespace _2Scripts.Entities.AI
         {
             Vector3 direction = target.position - transform.position;
             direction.y = 0f;
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = targetRotation;
+            if (direction.sqrMagnitude > 0.001f)
+            {
+                Quaternion newRotation = Quaternion.LookRotation(direction);
+                transform.rotation = newRotation;
+            }
         }
 
         // face move goal, rotation is way more natural and faster

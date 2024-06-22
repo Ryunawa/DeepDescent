@@ -156,11 +156,10 @@ namespace _2Scripts.ProceduralGeneration
         
             await DoGen(1);
             Debug.Log("GenerationFinished");
-            DynamicNavMesh.UpdateNavMesh();
 
+            DynamicNavMesh.UpdateNavMesh();
             
             GameManager.GetManager<ItemManager>().StartSpawningItems();
-
             
             ChangeStateClientRpc();
             
@@ -731,7 +730,6 @@ namespace _2Scripts.ProceduralGeneration
         public List<(Room,List<GameObject>)> GetEnemySpawnPoints(GameObject pPlayer)
         {
             Vector3 playerPos = pPlayer.transform.position;
-
             Room playerRoom = dungeon[0];
         
             foreach (Room room in dungeon)
@@ -746,13 +744,11 @@ namespace _2Scripts.ProceduralGeneration
 
             List<(Room,List<GameObject>)> spawnPointsOfSurroundingRooms = new List<(Room, List<GameObject>)>();
 
-            Room[] roomsList = rooms.Values.ToArray();
-        
-            foreach (var t in roomsList)
+            foreach (var room in rooms.Values)
             {
-                if (t != null)
+                if (room != null)
                 {
-                    spawnPointsOfSurroundingRooms.Add((t,t.RoomProps.SpawnPoints));
+                    spawnPointsOfSurroundingRooms.Add((room, room.RoomProps.SpawnPoints));
                 }
             }
 

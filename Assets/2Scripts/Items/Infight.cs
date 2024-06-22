@@ -4,6 +4,7 @@ using _2Scripts.Entities;
 using _2Scripts.Entities.Player;
 using _2Scripts.Manager;
 using _2Scripts.Struct;
+using _2Scripts.Entities.AI;
 
 public class Infight : MonoBehaviour
 {
@@ -16,11 +17,11 @@ public class Infight : MonoBehaviour
     [SerializeField]
     private MonoBehaviour controller;
 
-    private IController swingController;
+    private AIController swingController;
 
     private void OnEnable()
     {
-        swingController = controller as IController;
+        swingController = controller as AIController;
         if (swingController != null)
         {
             swingController.OnSwingStateChanged += UpdateSwingingState;
@@ -44,7 +45,6 @@ public class Infight : MonoBehaviour
     {
         if (!other.gameObject.CompareTag("Player") && !other.gameObject.CompareTag("Enemy")) return;
 
-        Debug.Log("enter trigger");
         other.TryGetComponent(out HealthComponent collidedHealthComponent);
 
         if (collidedHealthComponent == null)
@@ -56,11 +56,10 @@ public class Infight : MonoBehaviour
         // Is enemy attacking
         if (_swinging && _canInflictDamage && isEnemy && other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Hit player!");
             if (TryGetComponent(out EnemyData data))
             {
-                collidedHealthComponent.TakeDamage(data.damageInflicted);
                 Debug.Log("DAMAGE: " + data.damageInflicted);
+                collidedHealthComponent.TakeDamage(data.damageInflicted);
             }
 
             // Start the cooldown coroutine
@@ -68,8 +67,7 @@ public class Infight : MonoBehaviour
         }
         // Is player attacking
         else
-        {
-            Debug.Log("else");
+         {
             PlayerBehaviour playerController = controller as PlayerBehaviour;
             if (playerController != null && playerController.IsAttacking)
             {

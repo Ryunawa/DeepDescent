@@ -33,6 +33,7 @@ namespace _2Scripts.Manager
 
         public bool bSpawnInMultiplayer;
 
+        [SerializeField] private List<(Room, List<GameObject>)> roomsTuple;
         [SerializeField] private List<LevelData> spawnableEnemiesPrefabsByLevel;
         [SerializeField] private int maxEnemiesPerLevel = 5;
         [SerializeField] private int maxEnemiesPerRoom = 3;
@@ -115,7 +116,7 @@ namespace _2Scripts.Manager
         private (Room, List<GameObject>) GetRandomRoomToSpawnIn()
         {
             (Room, List<GameObject>) randomRoom;
-            List<(Room, List<GameObject>)> roomsTuple = GameManager.instance.levelGenerator.GetAllEnemySpawnPoints();
+            roomsTuple = GameManager.instance.levelGenerator.GetAllEnemySpawnPoints();
             int roomIndex;
 
             do
@@ -149,6 +150,7 @@ namespace _2Scripts.Manager
                     GameObject newEnemy = Instantiate(enemyPrefab, new Vector3(spawningPosition.x, -1, spawningPosition.z), quaternion.identity);
                     newEnemy.GetComponent<NetworkObject>().Spawn();
                     newEnemy.transform.SetParent(spawnedEnemyFolder.transform);
+                    newEnemy.GetComponent<AIController>().enabled = true;
 
                     // Activate the appropriate mesh
                     for (int i = 0; i < newEnemy.transform.childCount; i++)
@@ -172,7 +174,6 @@ namespace _2Scripts.Manager
                         Debug.LogError("HealthComponent is missing on the spawned enemy.");
                     }
 
-                    newEnemy.GetComponent<AIController>().enabled = false;
                     Vector3 newEnemyPosition = newEnemy.transform.position;
                     StartCoroutine(StartSpawnAnim(newEnemyPosition, newEnemy));
                     _currentEnemiesCount++;
@@ -193,7 +194,6 @@ namespace _2Scripts.Manager
 
             yield return new WaitForSeconds(pEnemyGameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length + 0.25f);
             Destroy(newParticle);
-            pEnemyGameObject.GetComponent<AIController>().enabled = true;
         }
 
         /// <summary>

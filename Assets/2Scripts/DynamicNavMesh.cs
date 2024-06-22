@@ -20,6 +20,7 @@ public static class DynamicNavMesh
             }
         }
 
-        Task.Run(()=>navMeshSurface.BuildNavMesh());
+        navMeshSurface.BuildNavMesh();
+
     }
 }

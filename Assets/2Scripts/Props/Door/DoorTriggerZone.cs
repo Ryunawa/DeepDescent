@@ -8,49 +8,13 @@ using TMPro;
 public class DoorTriggerZone : MonoBehaviour
 {
     public DoorController doorController;
-
-    [SerializeField] private GameObject[] texts;
-
     [SerializeField] private bool isOpen;
-    [SerializeField] private bool canOpen;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            canOpen = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            canOpen = false;
-            foreach (GameObject text in texts)
-            {
-                text.SetActive(false);
-            }
-        }
-    }
-
-    private void Update()
-    {
-        if (!isOpen && canOpen)
-        {
-            foreach (GameObject text in texts)
-            {
-                text.SetActive(true);
-            }
-        }
-
-        if (InputManager.instance.PlayerUsed() && canOpen && !isOpen)
+        if ((other.CompareTag("Player") || other.CompareTag("Enemy")) && !isOpen)
         {
             isOpen = true;
-            foreach (GameObject text in texts)
-            {
-                text.SetActive(false);
-            }
             doorController.OpenDoor();
             StartCoroutine(CloseDoorDelayed(5f));
         }

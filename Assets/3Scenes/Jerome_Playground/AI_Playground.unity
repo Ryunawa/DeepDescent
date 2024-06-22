@@ -273,6 +273,8 @@ GameObject:
   - component: {fileID: 608022204}
   - component: {fileID: 608022203}
   - component: {fileID: 608022207}
+  - component: {fileID: 608022208}
+  - component: {fileID: 608022209}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -383,6 +385,49 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   rotationSpeed: 100
+--- !u!114 &608022208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 608022202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 445845249
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &608022209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 608022202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86a2c49eb2b56b94b98e0d89e64aaf4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDamaged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHealed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1278454073
 GameObject:
   m_ObjectHideFlags: 0
@@ -1029,10 +1074,60 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 3260982492
       objectReference: {fileID: 0}
+    - target: {fileID: 176947185698356318, guid: 7a48f06c595cad34ca4b9450ea942854,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1345433761309628975, guid: 7a48f06c595cad34ca4b9450ea942854,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1802348744260780271, guid: 7a48f06c595cad34ca4b9450ea942854,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2159747993356670605, guid: 7a48f06c595cad34ca4b9450ea942854,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2258826869452993765, guid: 7a48f06c595cad34ca4b9450ea942854,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2261272991624757268, guid: 7a48f06c595cad34ca4b9450ea942854,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2610772003855666042, guid: 7a48f06c595cad34ca4b9450ea942854,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 3959042653490119952, guid: 7a48f06c595cad34ca4b9450ea942854,
         type: 3}
       propertyPath: m_Name
       value: Enemies
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200093732340332956, guid: 7a48f06c595cad34ca4b9450ea942854,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 5517694810670698353, guid: 7a48f06c595cad34ca4b9450ea942854,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 6182836479081443862, guid: 7a48f06c595cad34ca4b9450ea942854,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 6472478569636586803, guid: 7a48f06c595cad34ca4b9450ea942854,
         type: 3}
@@ -1084,6 +1179,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6635760902118142473, guid: 7a48f06c595cad34ca4b9450ea942854,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 6801797999511325577, guid: 7a48f06c595cad34ca4b9450ea942854,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 7392039837098819629, guid: 7a48f06c595cad34ca4b9450ea942854,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 7940238476445617065, guid: 7a48f06c595cad34ca4b9450ea942854,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1106,7 +1221,7 @@ PrefabInstance:
     - target: {fileID: 192391585162652260, guid: 9d202cb3d24f3074cb7c22464d52d3b4,
         type: 3}
       propertyPath: m_LayerMask.m_Bits
-      value: 695
+      value: 183
       objectReference: {fileID: 0}
     - target: {fileID: 7299527195350491070, guid: 9d202cb3d24f3074cb7c22464d52d3b4,
         type: 3}
