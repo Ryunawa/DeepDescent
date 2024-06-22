@@ -26,6 +26,8 @@ namespace _2Scripts.Entities.Player
         [SerializeField] private Camera _Camera;
         [SerializeField] private List<GameObject> playerModels;
         [SerializeField] private List<GameObject> playerModelsFPS;
+        [SerializeField] private VisibleItems weaponModelsFPS;
+        [SerializeField] private VisibleItems weaponModels;
 
         [SerializeField] private Transform handPosition;
 
@@ -95,11 +97,13 @@ namespace _2Scripts.Entities.Player
                 foreach (var playerModelFPS in playerModelsFPS)
                 {
                     playerModelFPS.layer = 13;
+                    weaponModelsFPS.ChangeWeaponAndShieldLayer(13);
                 }
                 //14 layer14 not rendered on cam
                 foreach (var playerModel in playerModels)
                 {
                     playerModel.layer = 14;
+                    weaponModels.ChangeWeaponAndShieldLayer(14);
                 }
                 
 
@@ -113,11 +117,13 @@ namespace _2Scripts.Entities.Player
                     foreach (var playerModelFPS in playerModelsFPS)
                     {
                         playerModelFPS.layer = 14;
+                        weaponModelsFPS.ChangeWeaponAndShieldLayer(14);
                     }
                     //14 layer14 not rendered on cam
                     foreach (var playerModel in playerModels)
                     {
                         playerModel.layer = 13;
+                        weaponModels.ChangeWeaponAndShieldLayer(13);
                     }
                     
                     _camTransform.gameObject.SetActive(false);
@@ -215,11 +221,11 @@ namespace _2Scripts.Entities.Player
 
         _characterController.Move((move * playerSpeed + Vector3.up * ySpeed)*Time.fixedDeltaTime);
 
-            if (ObjectToAddToInventory && _inputManager.PlayerUsed())
-            {
-                if (ObjectToAddToInventory.TryGetComponent(out Object obj))
-                    obj.Interact();
-            }
+        if (ObjectToAddToInventory && _inputManager.PlayerUsed())
+        {
+            if (ObjectToAddToInventory.TryGetComponent(out Object obj))
+                obj.Interact();
+        }
 
         transform.rotation = Quaternion.Euler(0, _camTransform.eulerAngles.y, 0);
 
@@ -235,6 +241,7 @@ namespace _2Scripts.Entities.Player
         animator.SetFloat("XAxis", _inputManager.GetPlayerMovement().x);
         animator.SetFloat("YAxis", _inputManager.GetPlayerMovement().y);
         animator.SetBool("IsJumping", !_characterController.isGrounded);
+        
         if (inventory.MainHandItem == null)
         {
             animatorFPS.SetFloat("Weapon", -1);

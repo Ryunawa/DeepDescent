@@ -276,5 +276,18 @@ public class VisibleItems : NetworkBehaviour
         }
     }
 
+    public void ChangeWeaponAndShieldLayer(int layer)
+    {
+        foreach (GameObject swordItem in swordEquippable)
+        {
+            swordItem.layer = layer;
+        }
+
+        foreach (GameObject shieldItem in shieldEquippable)
+        {
+            shieldItem.layer = layer;
+        }
+    }
+
     
 }

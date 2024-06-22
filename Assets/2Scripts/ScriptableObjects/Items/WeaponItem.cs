@@ -25,7 +25,7 @@ public class WeaponItem : EquippableItem
     {
         if (!inventoryToEquipTo)
             return (false, null);
-        if (inventoryToEquipTo.stat.CharacterStatPage.EquippableWeaponType.Contains(WeaponType))
+        if (!inventoryToEquipTo.stat.CharacterStatPage.EquippableWeaponType.Contains(WeaponType))
             return (false, null);
         List<EquippableItem> oldItems = new List<EquippableItem>();
 
