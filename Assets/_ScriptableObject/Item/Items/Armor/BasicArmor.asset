@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba265f7600878294e8460a1541036533, type: 3}
-  m_Name: Armor
+  m_Name: BasicArmor
   m_EditorClassIdentifier: 
-  ID: 2
+  ID: 60
   Name: Basic plate armor
   Description: 'This armor was given to you by the adventurers guild, it''s far from
     the best but it''ll do '

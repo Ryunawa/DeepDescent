@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c562903765bf29647816548360324bd3, type: 3}
   m_Name: Junk
   m_EditorClassIdentifier: 
-  ID: 3
+  ID: 1
   Name: Empty Bottle
   Description: Some empty bottle
   Rarity: 0

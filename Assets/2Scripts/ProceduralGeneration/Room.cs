@@ -118,7 +118,7 @@ namespace _2Scripts.ProceduralGeneration
         public void CreateDoors()
         {
             GameObject doorsParent = GameObject.Find("Doors");
-            Vector3 pos = this.gameObject.transform.position;
+            Vector3 pos = gameObject.transform.position;
 
             if (HasDoor(Directions.North))
             {

@@ -53,9 +53,9 @@ MonoBehaviour:
       health: 80
     - index: 9
       health: 120
-  maxEnemiesPerLevel: 10
+  maxEnemiesPerLevel: 40
   maxEnemiesPerRoom: 5
-  spawnIntervalInSecond: 6
+  spawnIntervalInSecond: 2
   spawnParticle: {fileID: 152438, guid: 9d82e1be9de81be4dbc15c60c39dd6ff, type: 3}
   spawnedEnemyFolder: {fileID: 0}
   enemyPrefab: {fileID: 3959042653490119952, guid: 7a48f06c595cad34ca4b9450ea942854,
