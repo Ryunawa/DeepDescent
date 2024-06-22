@@ -83,6 +83,14 @@ namespace _2Scripts.Entities.Player
 
                 GameManager.playerBehaviour = this;
                 
+                for (int i = 0; i < 4; i++)
+                {
+                    playerModels[i].SetActive(i == characterID);
+                    stat.SetStats(characterID);
+                    animator.SetFloat("Class", characterID);
+                    animator.SetFloat("Weapon", characterID);
+                }
+                
                 //13 layer 13 rendered on cam
                 foreach (var playerModelFPS in playerModelsFPS)
                 {
@@ -141,7 +149,7 @@ namespace _2Scripts.Entities.Player
         }
 
 
-        [Rpc(SendTo.ClientsAndHost)]
+        [Rpc(SendTo.NotMe)]
         private void UpdateCharRpc(int id)
         {
             for (int i = 0; i < 4; i++)
@@ -215,14 +223,24 @@ namespace _2Scripts.Entities.Player
 
         transform.rotation = Quaternion.Euler(0, _camTransform.eulerAngles.y, 0);
 
+        // does not exist anymore
+        /*
         if (IsOwner)
         {
             animatorFPS.SetBool("IsRuning", _inputManager.GetPlayerMovement().magnitude > 0);
+            animator.SetBool("IsRuning", _inputManager.GetPlayerMovement().magnitude > 0);
         }
+        */
         
         animator.SetFloat("XAxis", _inputManager.GetPlayerMovement().x);
         animator.SetFloat("YAxis", _inputManager.GetPlayerMovement().y);
         animator.SetBool("IsJumping", !_characterController.isGrounded);
+        if (inventory.MainHandItem == null)
+        {
+            animatorFPS.SetFloat("Weapon", -1);
+            animator.SetFloat("Weapon", -1);
+        }
+        
     }
 
         private void OnDamaged(float damage)
@@ -325,6 +343,8 @@ namespace _2Scripts.Entities.Player
                     break;
                 default:
                     _isAttacking = false;
+                    
+                    animator.SetFloat("Weapon", -1);
                     Debug.Log("Can't Attack no weapon equipped");
                     
                     break;

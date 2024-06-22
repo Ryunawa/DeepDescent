@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.AI.Navigation;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ public static class DynamicNavMesh
                 return;
             }
         }
-        navMeshSurface.BuildNavMesh();
+
+        Task.Run(()=>navMeshSurface.BuildNavMesh());
     }
 }
