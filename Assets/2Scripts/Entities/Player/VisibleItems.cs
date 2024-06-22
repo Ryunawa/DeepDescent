@@ -278,14 +278,14 @@ public class VisibleItems : NetworkBehaviour
 
     public void ChangeWeaponAndShieldLayer(int layer)
     {
-        foreach (GameObject swordItem in swordEquippable)
-        {
-            swordItem.layer = layer;
+        foreach (Transform trans in leftHandFolderParent.GetComponentsInChildren<Transform>(true)) 
+        { 
+            trans.gameObject.layer = layer;
         }
-
-        foreach (GameObject shieldItem in shieldEquippable)
-        {
-            shieldItem.layer = layer;
+        
+        foreach (Transform trans in rightHandFolderParent.GetComponentsInChildren<Transform>(true)) 
+        { 
+            trans.gameObject.layer = layer;
         }
     }
 

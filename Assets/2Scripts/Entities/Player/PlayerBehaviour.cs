@@ -228,15 +228,12 @@ namespace _2Scripts.Entities.Player
         }
 
         transform.rotation = Quaternion.Euler(0, _camTransform.eulerAngles.y, 0);
-
-        // does not exist anymore
-        /*
+        
         if (IsOwner)
         {
             animatorFPS.SetBool("IsRuning", _inputManager.GetPlayerMovement().magnitude > 0);
             animator.SetBool("IsRuning", _inputManager.GetPlayerMovement().magnitude > 0);
         }
-        */
         
         animator.SetFloat("XAxis", _inputManager.GetPlayerMovement().x);
         animator.SetFloat("YAxis", _inputManager.GetPlayerMovement().y);
@@ -246,6 +243,17 @@ namespace _2Scripts.Entities.Player
         {
             animatorFPS.SetFloat("Weapon", -1);
             animator.SetFloat("Weapon", -1);
+        }
+        else
+        {
+            float weaponType = inventory.MainHandItem.WeaponType switch
+            {
+                WeaponType.AXE => (float)WeaponType.SWORD,
+                _ => (float)inventory.MainHandItem.WeaponType
+            };
+            
+            animatorFPS.SetFloat("Weapon", weaponType);
+            animator.SetFloat("Weapon", weaponType);
         }
         
     }
@@ -305,56 +313,16 @@ namespace _2Scripts.Entities.Player
             if (_isAttacking) return;
             
             _isAttacking = true;
-            
-            switch (inventory.MainHandItem.WeaponType)
+
+
+            if (inventory.MainHandItem != null)
             {
-                case WeaponType.BOW:
-                    
-                    animator.SetTrigger("IsAttacking");
-                    animator.SetFloat("Weapon", (float)WeaponType.BOW);
-                    
-                    animatorFPS.SetTrigger("IsAttacking");
-                    
-                    break;
-                case WeaponType.SWORD:
-                    
-                    animator.SetFloat("Weapon", (float)WeaponType.SWORD);
-                    animator.SetTrigger("IsAttacking");
-                    
-                    animatorFPS.SetTrigger("IsAttacking");
-                    
-                    break;
-                case WeaponType.AXE:
-                    
-                    animator.SetFloat("Weapon", (float)WeaponType.SWORD);
-                    animator.SetTrigger("IsAttacking");
-                    
-                    animatorFPS.SetTrigger("IsAttacking");
-                    
-                    break;
-                case WeaponType.DAGGERS:
-                    
-                    animator.SetFloat("Weapon", (float)WeaponType.DAGGERS);
-                    animator.SetTrigger("IsAttacking");
-                    
-                    animatorFPS.SetTrigger("IsAttacking");
-                    
-                    break;
-                case WeaponType.MAGIC:
-                    
-                    animator.SetFloat("Weapon", (float)WeaponType.MAGIC);
-                    animator.SetTrigger("IsAttacking");
-                    
-                    animatorFPS.SetTrigger("IsAttacking");
-                    
-                    break;
-                default:
-                    _isAttacking = false;
-                    
-                    animator.SetFloat("Weapon", -1);
-                    Debug.Log("Can't Attack no weapon equipped");
-                    
-                    break;
+                animator.SetTrigger("IsAttacking");
+                animatorFPS.SetTrigger("IsAttacking");
+            }
+            else{
+                _isAttacking = false;
+                Debug.Log("Can't Attack no weapon equipped");
             }
             
         }
