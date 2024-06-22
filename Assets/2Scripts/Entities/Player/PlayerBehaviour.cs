@@ -223,11 +223,14 @@ namespace _2Scripts.Entities.Player
 
         transform.rotation = Quaternion.Euler(0, _camTransform.eulerAngles.y, 0);
 
+        // does not exist anymore
+        /*
         if (IsOwner)
         {
             animatorFPS.SetBool("IsRuning", _inputManager.GetPlayerMovement().magnitude > 0);
             animator.SetBool("IsRuning", _inputManager.GetPlayerMovement().magnitude > 0);
         }
+        */
         
         animator.SetFloat("XAxis", _inputManager.GetPlayerMovement().x);
         animator.SetFloat("YAxis", _inputManager.GetPlayerMovement().y);

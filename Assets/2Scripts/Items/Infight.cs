@@ -42,6 +42,8 @@ public class Infight : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!other.gameObject.CompareTag("Player") && !other.gameObject.CompareTag("Enemy")) return;
+
         Debug.Log("enter trigger");
         other.TryGetComponent(out HealthComponent collidedHealthComponent);
 
@@ -55,21 +57,19 @@ public class Infight : MonoBehaviour
         if (_swinging && _canInflictDamage && isEnemy && other.gameObject.CompareTag("Player"))
         {
             Debug.Log("Hit player!");
-            if (isEnemy && other.gameObject.CompareTag("Player"))
+            if (TryGetComponent(out EnemyData data))
             {
-                if (TryGetComponent(out EnemyData data))
-                {
-                    collidedHealthComponent.TakeDamage(data.damageInflicted);
-                    Debug.Log("DAMAGE: " + data.damageInflicted);
-                }
-
-                // Start the cooldown coroutine
-                StartCoroutine(DamageCooldown());
+                collidedHealthComponent.TakeDamage(data.damageInflicted);
+                Debug.Log("DAMAGE: " + data.damageInflicted);
             }
+
+            // Start the cooldown coroutine
+            StartCoroutine(DamageCooldown());
         }
         // Is player attacking
         else
         {
+            Debug.Log("else");
             PlayerBehaviour playerController = controller as PlayerBehaviour;
             if (playerController != null && playerController.IsAttacking)
             {

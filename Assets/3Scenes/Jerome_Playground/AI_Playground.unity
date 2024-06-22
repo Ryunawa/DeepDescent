@@ -1029,50 +1029,10 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 3260982492
       objectReference: {fileID: 0}
-    - target: {fileID: 2649755269265097189, guid: 7a48f06c595cad34ca4b9450ea942854,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2664729893333764347, guid: 7a48f06c595cad34ca4b9450ea942854,
-        type: 3}
-      propertyPath: m_StoppingDistance
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3368318943448632292, guid: 7a48f06c595cad34ca4b9450ea942854,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3959042653490119952, guid: 7a48f06c595cad34ca4b9450ea942854,
         type: 3}
       propertyPath: m_Name
       value: Enemies
-      objectReference: {fileID: 0}
-    - target: {fileID: 4123103312939607119, guid: 7a48f06c595cad34ca4b9450ea942854,
-        type: 3}
-      propertyPath: stopChance
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4123103312939607119, guid: 7a48f06c595cad34ca4b9450ea942854,
-        type: 3}
-      propertyPath: obstacleLayer.m_Bits
-      value: 128
-      objectReference: {fileID: 0}
-    - target: {fileID: 4123103312939607119, guid: 7a48f06c595cad34ca4b9450ea942854,
-        type: 3}
-      propertyPath: waypoints.Array.data[0]
-      value: 
-      objectReference: {fileID: 1716754407}
-    - target: {fileID: 4123103312939607119, guid: 7a48f06c595cad34ca4b9450ea942854,
-        type: 3}
-      propertyPath: waypoints.Array.data[1]
-      value: 
-      objectReference: {fileID: 1687336988}
-    - target: {fileID: 6059768759122971009, guid: 7a48f06c595cad34ca4b9450ea942854,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6472478569636586803, guid: 7a48f06c595cad34ca4b9450ea942854,
         type: 3}
@@ -1122,26 +1082,6 @@ PrefabInstance:
     - target: {fileID: 6472478569636586803, guid: 7a48f06c595cad34ca4b9450ea942854,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6635888873314674520, guid: 7a48f06c595cad34ca4b9450ea942854,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6922019069958744328, guid: 7a48f06c595cad34ca4b9450ea942854,
-        type: 3}
-      propertyPath: GlobalObjectIdHash
-      value: 793809871
-      objectReference: {fileID: 0}
-    - target: {fileID: 6946442108237288098, guid: 7a48f06c595cad34ca4b9450ea942854,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8797535171652562854, guid: 7a48f06c595cad34ca4b9450ea942854,
-        type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

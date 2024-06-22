@@ -61,6 +61,7 @@ namespace _2Scripts.Entities.AI
         private bool m_PlayerNear; // player close to the AI
         private bool m_IsPatrol;
         private bool m_CanAttackPlayer;
+        private bool isSpawnAnimationComplete = false;
 
         void Start()
         {
@@ -85,15 +86,11 @@ namespace _2Scripts.Entities.AI
             {
                 navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
             }
-            else
-            {
-                Debug.LogWarning("Waypoints array is either null or empty.");
-            }
 
             healthComponent = GetComponent<HealthComponent>();
             if (healthComponent == null)
             {
-                Debug.LogError($"HealthComponent not found on {gameObject.name}. Adding HealthComponent dynamically.");
+                Debug.LogWarning($"HealthComponent not found on {gameObject.name}. Adding HealthComponent dynamically.");
                 healthComponent = gameObject.AddComponent<HealthComponent>();
             }
             healthComponent.OnDeath.AddListener(HandleDeath);
@@ -105,8 +102,16 @@ namespace _2Scripts.Entities.AI
             StartCoroutine(AttackLoop());
         }
 
+        public void OnSpawnAnimationComplete()
+        {
+            isSpawnAnimationComplete = true;
+        }
+
         void Update()
         {
+            // wait end animation "Getting Up"
+            if (!isSpawnAnimationComplete) return;
+
             float currentSpeed = navMeshAgent.velocity.magnitude;
             animator.SetFloat("Speed", currentSpeed);
 

@@ -83,7 +83,6 @@ namespace _2Scripts.Manager
 
             if (objectAudioSource == null)
             {
-                Debug.Log($"No AudioSource found on {pScript.gameObject.name}. Adding one.");
                 objectAudioSource = pScript.gameObject.AddComponent<AudioSource>();
             }
 
@@ -92,7 +91,7 @@ namespace _2Scripts.Manager
             objectAudioSource.minDistance = pMinDistance;
             objectAudioSource.maxDistance = pMaxDistance;
 
-            Debug.Log($"Playing sound {pSoundName} on {pScript.gameObject.name}");
+            // Debug.Log($"Playing sound {pSoundName} on {pScript.gameObject.name}");
             objectAudioSource.PlayOneShot(clip, volume);
         }
 
