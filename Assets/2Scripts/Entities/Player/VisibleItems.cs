@@ -276,5 +276,18 @@ public class VisibleItems : NetworkBehaviour
         }
     }
 
+    public void ChangeWeaponAndShieldLayer(int layer)
+    {
+        foreach (Transform trans in leftHandFolderParent.GetComponentsInChildren<Transform>(true)) 
+        { 
+            trans.gameObject.layer = layer;
+        }
+        
+        foreach (Transform trans in rightHandFolderParent.GetComponentsInChildren<Transform>(true)) 
+        { 
+            trans.gameObject.layer = layer;
+        }
+    }
+
     
 }
