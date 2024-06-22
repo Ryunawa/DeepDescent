@@ -56,7 +56,8 @@ public class Infight : MonoBehaviour
         // Is enemy attacking
         if (_swinging && _canInflictDamage && isEnemy && other.gameObject.CompareTag("Player"))
         {
-            if (TryGetComponent(out EnemyData data))
+            Debug.Log("is gonna inflict damage");
+            if (swingController.gameObject.TryGetComponent(out EnemyData data))
             {
                 Debug.Log("DAMAGE: " + data.damageInflicted);
                 collidedHealthComponent.TakeDamage(data.damageInflicted);

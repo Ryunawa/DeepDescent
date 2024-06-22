@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 7693311991120306100}
   m_Layer: 8
   m_Name: Character_Goblin_Shaman
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -432,7 +432,7 @@ GameObject:
   - component: {fileID: 2246815973642192401}
   m_Layer: 8
   m_Name: Character_Skeleton_Slave_01
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -745,7 +745,7 @@ GameObject:
   - component: {fileID: 7230241821642162364}
   m_Layer: 8
   m_Name: Character_Skeleton_Soldier_01
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -974,7 +974,7 @@ GameObject:
   - component: {fileID: 6268881238004349289}
   m_Layer: 8
   m_Name: Character_Rock_Golem
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1172,7 +1172,7 @@ GameObject:
   - component: {fileID: 8310253514850290777}
   m_Layer: 8
   m_Name: Character_Goblin_Warrior_Male
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1306,7 +1306,7 @@ GameObject:
   - component: {fileID: 6431214006307099148}
   m_Layer: 8
   m_Name: Character_Goblin_Female
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1505,7 +1505,7 @@ GameObject:
   - component: {fileID: 24323917121364178}
   m_Layer: 8
   m_Name: Character_Skeleton_Knight
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2254,7 +2254,7 @@ MonoBehaviour:
   roomSpawnedInID: 0
   damageToInflict: 0
   armorPenetration: 0
-  damageInflicted: 0
+  damageInflicted: 5
 --- !u!114 &-7472326433132149052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2552,7 +2552,7 @@ GameObject:
   - component: {fileID: 1597730552285819320}
   m_Layer: 8
   m_Name: Character_Ghost_01
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2801,7 +2801,7 @@ GameObject:
   - component: {fileID: 8623383202159235158}
   m_Layer: 8
   m_Name: Character_Ghost_02
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3237,7 +3237,7 @@ GameObject:
   - component: {fileID: 861969859781029679}
   m_Layer: 8
   m_Name: Character_Goblin_Warrior_Female
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3498,7 +3498,7 @@ GameObject:
   - component: {fileID: 4978630433474886033}
   m_Layer: 8
   m_Name: Character_Goblin_Male
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3813,7 +3813,7 @@ GameObject:
   - component: {fileID: 3901526460941737323}
   m_Layer: 8
   m_Name: Character_Skeleton_Soldier_02
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4169,7 +4169,7 @@ GameObject:
   - component: {fileID: 2017039118736987038}
   m_Layer: 8
   m_Name: Character_Tormented_Soul
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4392,7 +4392,7 @@ GameObject:
   - component: {fileID: 9145640555644233878}
   m_Layer: 8
   m_Name: Character_Goblin_WarChief
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
