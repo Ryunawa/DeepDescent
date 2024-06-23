@@ -160,7 +160,8 @@ namespace _2Scripts.ProceduralGeneration
             DynamicNavMesh.UpdateNavMesh();
             
             GameManager.GetManager<ItemManager>().StartSpawningItems();
-            
+            GameManager.instance.findEndUI();
+
             ChangeStateClientRpc();
             
             TeleportHostAndClientRpc(GetPosition(centerIndex));
