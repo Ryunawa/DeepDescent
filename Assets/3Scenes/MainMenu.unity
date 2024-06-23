@@ -927,6 +927,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5229766861338428809, guid: 02b05b25f2ce43b40be84f0046c7648f,
+        type: 3}
+      propertyPath: NetworkConfig.ForceSamePrefabs
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7455133032589466066, guid: 02b05b25f2ce43b40be84f0046c7648f,
         type: 3}
       propertyPath: m_Name

@@ -80,6 +80,15 @@ namespace _2Scripts.Entities.AI
             StartCoroutine(AttackLoop());
         }
 
+        [Rpc(SendTo.ClientsAndHost)]
+        public void ChangeSkinRpc(int index)
+        {
+            foreach (Transform child in transform)
+            { 
+                child.gameObject.SetActive(child.transform.GetSiblingIndex() == index);
+            }
+        }
+
         public void OnSpawnAnimationComplete()
         {
             if (!IsServer)return;
