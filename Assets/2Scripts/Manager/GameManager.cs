@@ -66,15 +66,6 @@ namespace _2Scripts.Manager
             };
         }
 
-        public void findEndUI()
-        {
-            endGameUI = GameObject.Find("EndScreen");
-            if(!endGameUI)
-            {
-                Debug.Log("End game ui -> impossible to be found.");
-            }
-        }
-
         public void AddADeadPlayer() // call en rpc client host
         {
             numberOfDeadPlayers++;
@@ -100,6 +91,7 @@ namespace _2Scripts.Manager
         private void EndGameRpc()
         {
             Debug.Log("Game Over. Returning to main menu.");
+            endGameUI = GetManager<SceneManager>().gameObject.transform.GetChild(1).gameObject;
             endGameUI.SetActive(true);
         }
 

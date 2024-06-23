@@ -160,7 +160,6 @@ namespace _2Scripts.ProceduralGeneration
             DynamicNavMesh.UpdateNavMesh();
             
             GameManager.GetManager<ItemManager>().StartSpawningItems();
-            GameManager.instance.findEndUI();
 
             ChangeStateClientRpc();
             
@@ -747,7 +746,7 @@ namespace _2Scripts.ProceduralGeneration
 
             foreach (var room in rooms.Values)
             {
-                if (room != null && room.RoomProps.SpawnPoints != null)
+                if (room != null && room.RoomProps != null && room.RoomProps.SpawnPoints != null && room.GetRoomType() != RoomType.Zero)
                 {
                     spawnPointsOfSurroundingRooms.Add((room, room.RoomProps.SpawnPoints));
                 }
