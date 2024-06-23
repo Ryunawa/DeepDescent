@@ -29,7 +29,9 @@ namespace _2Scripts.Entities
 		private EnemyData _enemyData;
 	
 		private StatComponent _statComponent;
-		
+
+        [SerializeField] private bool invincibleDebug;
+
         private int characterID;
 
         public float MaxHealth => maxHealth;
@@ -89,6 +91,8 @@ namespace _2Scripts.Entities
 
 		public void TakeDamage(float pDamage, float pArmorPenetration = 0)
 		{
+			if (invincibleDebug) return;
+
 			if(!IsServer)
 			{
 				TakeDamageServerRpc(pDamage);

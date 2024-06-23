@@ -14,6 +14,7 @@ using Unity.Netcode;
 using UnityEngine.Serialization;
 using static _2Scripts.Helpers.StructureAccessMethods;
 using Random = UnityEngine.Random;
+using System.Linq;
 
 namespace _2Scripts.Manager
 {
@@ -25,7 +26,7 @@ namespace _2Scripts.Manager
 
     public class EnemiesSpawnerManager : GameManagerSync<EnemiesSpawnerManager>
     {
-        private static EnemiesSpawnerManager instance; // Static instance variable
+        public static EnemiesSpawnerManager instance; // Static instance variable
 
         public EventHandler<int> OnEnemiesSpawnedOrKilledEventHandler;
 
@@ -178,6 +179,56 @@ namespace _2Scripts.Manager
                     StartCoroutine(StartSpawnAnim(newEnemyPosition, newEnemy));
                     _currentEnemiesCount++;
                 }
+            }
+        }
+
+        public void SpawnBossEnemy(Room roomTp)
+        {
+            if (_currentEnemiesCount < maxEnemiesPerLevel)
+            {
+                MeshInfo meshInfoToActivate = ChooseEnemyMeshInfo();
+                // get all spawn points
+                List<GameObject> gameObjectList = roomTp.GetAllEnemySpawnPoint();
+                // select the spawn point
+                (Room, List<GameObject>) roomToSpawnIn = (roomTp, gameObjectList);
+                Vector3 spawningPosition = roomToSpawnIn.Item2[Random.Range(0, roomToSpawnIn.Item2.Count)].transform.position;
+
+                // Boss is coming
+                GameObject newEnemy = Instantiate(enemyPrefab, new Vector3(spawningPosition.x, -1, spawningPosition.z), quaternion.identity);
+                AIController aiController = newEnemy.GetComponent<AIController>();
+
+                newEnemy.GetComponent<NetworkObject>().Spawn();
+                newEnemy.transform.SetParent(spawnedEnemyFolder.transform);
+                aiController.enabled = true;
+
+                // tell that he is the boss>
+                newEnemy.transform.localScale *= 1.5f;
+                aiController.isBoss = true;
+
+                // Activate the appropriate mesh
+                for (int i = 0; i < newEnemy.transform.childCount; i++)
+                {
+                    Transform child = newEnemy.transform.GetChild(i);
+                    child.gameObject.SetActive(i == meshInfoToActivate.index);
+                }
+
+                // Ensure the root (last child) is always active
+                GetLastChild(newEnemy.transform).gameObject.SetActive(true);
+
+                // Set the health component
+                HealthComponent healthComponent = newEnemy.GetComponent<HealthComponent>();
+                if (healthComponent != null)
+                {
+                    healthComponent.SetMaxHealth(meshInfoToActivate.health * 2);
+                    healthComponent.Heal(meshInfoToActivate.health); // Start with full health
+                }
+                else
+                {
+                    Debug.LogError("HealthComponent is missing on the spawned enemy.");
+                }
+
+                Vector3 newEnemyPosition = newEnemy.transform.position;
+                StartCoroutine(StartSpawnAnim(newEnemyPosition, newEnemy));
             }
         }
 

@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using _2Scripts.Entities.Player;
 using _2Scripts.Entities.AI;
 using _2Scripts.Manager;
+using _2Scripts.ProceduralGeneration;
 
 public class BossPillarInteraction : MonoBehaviour
 {
     private bool isPlayerInRange = false;
     private HashSet<PlayerBehaviour> nearbyPlayers = new HashSet<PlayerBehaviour>();
     [SerializeField] private GameObject bossPrefab;
+
+    [SerializeField] public Room roomTp;
 
     void Update()
     {
@@ -42,12 +45,8 @@ public class BossPillarInteraction : MonoBehaviour
             impulseSource.GenerateImpulse(3f);
         }
 
-        // Boss is coming
-        Vector3 spawnPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z + 5);
-        GameObject boss = Instantiate(bossPrefab, spawnPosition, Quaternion.identity);
-        // tell that he is the boss>
-        boss.GetComponent<AIController>().isBoss = true;
-        boss.transform.localScale *= 2; // make him bigger
+        // spawn the boss
+        EnemiesSpawnerManager.instance.SpawnBossEnemy(roomTp);
 
         GameManager.GetManager<GameFlowManager>().SetGameState(GameFlowManager.LevelState.BossInProgress);
     }

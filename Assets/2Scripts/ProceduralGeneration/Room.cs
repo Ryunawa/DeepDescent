@@ -71,6 +71,15 @@ namespace _2Scripts.ProceduralGeneration
             return _roomProps.ItemSpawnPoints;
         }
 
+        public List<GameObject> GetAllEnemySpawnPoint()
+        {
+            if (roomType == RoomType.Zero)
+            {
+                return new List<GameObject>();
+            }
+            return _roomProps.SpawnPoints;
+        }
+
         public RoomType GetRoomType()
         {
             return roomType;
