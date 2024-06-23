@@ -47,6 +47,8 @@ namespace _2Scripts.Entities
 			{
 				Debug.Log($"{gameObject.name} Die");
 				OnDeath.Invoke();
+				if(_enemyData)
+					GameManager.GetManager<EnemiesSpawnerManager>().EnemyDestroyed(_enemyData);
 			}
 		}
 

@@ -95,7 +95,7 @@ namespace _2Scripts.Manager
             }
             AdjustEnemiesStatsForNumPlayers(pNumPlayers);
 
-            for (int i = 0; i < _enemyTypesStructToUse.meshInfos.Count; i++)
+            for (int i = 0; i < _enemyTypesStructToUse.statsInfos.Count; i++)
             {
                 OnEnemiesStatsUpdatedEventHandler?.Invoke(this, GetStructElementByIndex<EnemyStats>(_enemyTypesStructToUse, i));
             }
@@ -110,9 +110,9 @@ namespace _2Scripts.Manager
         {
             float multiplier = GetMultiplierForNumPlayers(pNumPlayers);
 
-            for (int i = 0; i < _enemyTypesStructToUse.meshInfos.Count; i++)
+            for (int i = 0; i < _enemyTypesStructToUse.statsInfos.Count; i++)
             {
-                _enemyTypesStructToUse.meshInfos[i] = AdjustEnemyStats(_enemyTypesStructToUse.meshInfos[i], multiplier);
+                _enemyTypesStructToUse.statsInfos[i] = AdjustEnemyStats(_enemyTypesStructToUse.statsInfos[i], multiplier);
             }
         }
 
@@ -122,9 +122,11 @@ namespace _2Scripts.Manager
         /// <param name="pStatsToAdjust">struct of an enemy type's stats</param>
         /// <param name="pRate"></param>
         /// <returns></returns>
-        private MeshInfo AdjustEnemyStats(MeshInfo pStatsToAdjust, float pRate)
+        private EnemyStats AdjustEnemyStats(EnemyStats pStatsToAdjust, float pRate)
         {
             pStatsToAdjust.health *= pRate;
+            pStatsToAdjust.spawnRate *= pRate;
+            pStatsToAdjust.damageDealt *= pRate;
             return pStatsToAdjust;
         }
 
@@ -167,12 +169,12 @@ namespace _2Scripts.Manager
             double elapsedTimeMinutes = pTimer.GetStopWatchObject().Elapsed.TotalMinutes;
             float multiplier = 1 + (float)(Math.Log(1 + elapsedTimeMinutes / timeInterval) * baseTimeRate);
 
-            for (int i = 0; i < _enemyTypesStructToUse.meshInfos.Count; i++)
+            for (int i = 0; i < _enemyTypesStructToUse.statsInfos.Count; i++)
             {
-                _enemyTypesStructToUse.meshInfos[i] = AdjustEnemyStats(_enemyTypesStructToUse.meshInfos[i], multiplier);
+                _enemyTypesStructToUse.statsInfos[i] = AdjustEnemyStats(_enemyTypesStructToUse.statsInfos[i], multiplier);
             }
 
-            for (int i = 0; i < _enemyTypesStructToUse.meshInfos.Count; i++)
+            for (int i = 0; i < _enemyTypesStructToUse.statsInfos.Count; i++)
             {
                 OnEnemiesStatsUpdatedEventHandler?.Invoke(this, GetStructElementByIndex<EnemyStats>(_enemyTypesStructToUse, i));
             }

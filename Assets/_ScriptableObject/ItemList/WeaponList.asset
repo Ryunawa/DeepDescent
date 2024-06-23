@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: WeaponList
   m_EditorClassIdentifier: 
   items:
-  - {fileID: 11400000, guid: 618c02ef3966bbf4e9ac18485b0419e2, type: 2}
-  - {fileID: 11400000, guid: e7e4fe612603f9347abb2beb9bcca8d8, type: 2}
   - {fileID: 11400000, guid: 5f2a3df817aba7d428d27ea4fe3ff9e0, type: 2}
+  - {fileID: 11400000, guid: 728a7fa009e4e4f4b9579f1663a998e0, type: 2}
+  - {fileID: 11400000, guid: 4e0aeaf8b48143c44b90b5ffff9c6fac, type: 2}
+  - {fileID: 11400000, guid: 618c02ef3966bbf4e9ac18485b0419e2, type: 2}
   - {fileID: 11400000, guid: d5759e7b1e80d8e4d897c8829bba5380, type: 2}
+  - {fileID: 11400000, guid: 1fdf9bdbaa2720d4fac72c7a33272368, type: 2}
+  - {fileID: 11400000, guid: e7e4fe612603f9347abb2beb9bcca8d8, type: 2}
+  - {fileID: 11400000, guid: 2708d25fa88b0054b833fe7688e5ddd1, type: 2}

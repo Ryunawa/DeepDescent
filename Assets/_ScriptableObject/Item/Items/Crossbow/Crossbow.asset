@@ -26,4 +26,4 @@ MonoBehaviour:
     type: 3}
   WeaponType: 0
   AttackValue: 5
-  AttackSpeed: 0
+  AttackSpeed: 1

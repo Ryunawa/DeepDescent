@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbb346e1f2f939149b31b1e0f80d53b5, type: 3}
   m_Name: ParchmentList
   m_EditorClassIdentifier: 
-  items: []
+  items:
+  - {fileID: 11400000, guid: 447942d8e9388d1438bc79634473375e, type: 2}
+  - {fileID: 11400000, guid: 0e3b465c75238614c8a5eeb4c54a9c92, type: 2}
+  - {fileID: 11400000, guid: 2889795e7f326f44c8bb406bf7986903, type: 2}
