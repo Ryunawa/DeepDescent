@@ -290,10 +290,10 @@ namespace _2Scripts.Entities.Player
             }
             transform.Rotate(transform.right, 90.0f);
 
-            StartCoroutine(nameof(SetupDeath));
+            StartCoroutine(SetupDeath());
         }
 
-        private IEnumerable SetupDeath()
+        private IEnumerator SetupDeath()
         {
             yield return new WaitForSeconds(1.0f);
 
