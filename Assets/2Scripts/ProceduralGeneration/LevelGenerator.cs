@@ -130,7 +130,7 @@ namespace _2Scripts.ProceduralGeneration
 
             dungeon = new Room[_staticDungeonSize*_staticDungeonSize];
         
-            Random.InitState(35896);
+            Random.InitState(-1); // 35896
 
             //Generation n = 1 : center
             int centerIndex = (_staticDungeonSize /2) * (_staticDungeonSize +1);
@@ -772,10 +772,21 @@ namespace _2Scripts.ProceduralGeneration
             for (int gen = _staticDungeonSize; gen > 0; gen--)
             {
                 Room[] rooms = GetRoomFromGeneration(gen);
-                if (rooms.Length > 0)
+                List<Room> validRooms = new List<Room>();
+
+                // filter all RoomType.Zero
+                foreach (Room room in rooms)
                 {
-                    // Get a random room from this gen
-                    Room targetRoom = rooms[Random.Range(0, rooms.Length)];
+                    if (room.GetRoomType() != RoomType.Zero)
+                    {
+                        validRooms.Add(room);
+                    }
+                }
+
+                // if a valid room has been found -> put the portal
+                if (validRooms.Count > 0)
+                {
+                    Room targetRoom = validRooms[Random.Range(0, validRooms.Count)];
                     Vector3 portalPosition = targetRoom.transform.position;
                     GameObject portal = Instantiate(portalPrefab, portalPosition, Quaternion.identity);
                     portal.GetComponent<NetworkObject>().Spawn();
@@ -783,6 +794,7 @@ namespace _2Scripts.ProceduralGeneration
                 }
             }
         }
+
 
         public List<ItemSpawnPoint> GetAllItemSpawnPoints()
 {
