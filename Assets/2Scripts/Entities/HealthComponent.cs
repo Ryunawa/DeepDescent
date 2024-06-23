@@ -18,7 +18,7 @@ namespace _2Scripts.Entities
 	{
 		[FormerlySerializedAs("MaxHealth")] [SerializeField] private float maxHealth = 100;
 
-		private NetworkVariable<float> _health = new NetworkVariable<float>();
+		[SerializeField] private NetworkVariable<float> _health = new NetworkVariable<float>();
 
 		public UnityEvent OnDeath;
 
