@@ -61,8 +61,10 @@ namespace _2Scripts.Manager
 
         protected override void OnGameManagerChangeState(GameState gameState)
         {
-            if (gameState != GameState.InLevel) return;
-
+            if (gameState != GameState.InLevel || !IsHost) return;
+            
+            AdjustDifficultyParameters(NetworkManager.ConnectedClients.Count, (DifficultyMode)Int32.Parse(GameManager.GetManager<MultiManager>().Lobby.Data["Difficulty"].Value));
+            
             GameManager.GetManager<GameFlowManager>().OnNextLevelEvent.AddListener(UpdateDifficultyOverTime);
         }
 
