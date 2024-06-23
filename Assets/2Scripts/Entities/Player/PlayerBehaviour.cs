@@ -8,6 +8,7 @@ using Unity.Netcode;
 using UnityEngine.Serialization;
 using NaughtyAttributes;
 using Unity.VisualScripting;
+using System.Collections;
 
 namespace _2Scripts.Entities.Player
 {
@@ -59,6 +60,8 @@ namespace _2Scripts.Entities.Player
             get => _isDead;
             set => _isDead = value;
         }
+        public CinemachineVirtualCamera VirtualCamera { get => _virtualCamera; set => _virtualCamera = value; }
+        public Camera Camera1 { get => _Camera; set => _Camera = value; }
 
         public Inventory inventory;
         public StatComponent stat;
@@ -286,6 +289,33 @@ namespace _2Scripts.Entities.Player
                     break;
             }
             transform.Rotate(transform.right, 90.0f);
+
+            StartCoroutine(nameof(SetupDeath));
+        }
+
+        private IEnumerable SetupDeath()
+        {
+            yield return new WaitForSeconds(1.0f);
+
+            _virtualCamera.GetCinemachineComponent<CinemachinePOV>().m_HorizontalAxis.m_MaxSpeed = 0.0f;
+            _virtualCamera.GetCinemachineComponent<CinemachinePOV>().m_VerticalAxis.m_MaxSpeed = 0.0f;
+            _Camera.gameObject.SetActive(false);
+            _virtualCamera.gameObject.SetActive(false);
+
+            List<GameObject> allPlayers = GameManager.GetManager<MultiManager>().GetAllPlayerGameObjects();
+            while (true)
+            {
+                GameObject DeathCamPlayer = allPlayers[UnityEngine.Random.Range(0, allPlayers.Count)].GetComponentInChildren<PlayerBehaviour>().gameObject;
+                if (!DeathCamPlayer.Equals(gameObject))
+                {
+                    DeathCamPlayer.GetComponent<PlayerBehaviour>().Camera.gameObject.SetActive(true);
+                    DeathCamPlayer.GetComponent<PlayerBehaviour>().VirtualCamera.gameObject.SetActive(true);
+                    break;
+                }
+                
+            }
+            this.enabled = false;
+
         }
 
         private void ModifyDeathValue(bool newBool)
