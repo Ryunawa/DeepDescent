@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using _2Scripts.Entities.AI;
 using _2Scripts.Entities.Player;
 using _2Scripts.Helpers;
 using _2Scripts.Interfaces;
@@ -7,6 +8,7 @@ using _2Scripts.UI;
 using NaughtyAttributes;
 using Unity.Netcode;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -29,6 +31,8 @@ namespace _2Scripts.Entities
 		private EnemyData _enemyData;
 	
 		private StatComponent _statComponent;
+
+        [SerializeField] private AIController aiController;
 
         [SerializeField] private bool invincibleDebug;
 
@@ -89,7 +93,7 @@ namespace _2Scripts.Entities
 		}
 
 
-		public void TakeDamage(float pDamage, float pArmorPenetration = 0)
+		public void TakeDamage(float pDamage, float pArmorPenetration = 0, Transform attacker = null)
 		{
 			if (invincibleDebug) return;
 
@@ -126,10 +130,19 @@ namespace _2Scripts.Entities
             if (gameObject.layer == LayerMask.NameToLayer("Enemy"))
             {
                  GameManager.GetManager<AudioManager>().PlaySfx("MonsterDie", this, 1, 5);
+
+
+                AIController aiController = GetComponent<AIController>();
+                if (aiController != null && attacker != null)
+                {
+                    aiController.SwitchToChaseMode(attacker);
+                }
             }
 
 
             _health.Value -= damage;
+
+
 
             // if (_hud)
             // {

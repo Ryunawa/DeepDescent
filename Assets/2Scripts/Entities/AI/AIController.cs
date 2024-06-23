@@ -514,6 +514,17 @@ namespace _2Scripts.Entities.AI
             return alivePlayersInRange;
         }
 
+        // Switch to chase mode when attacked
+        public void SwitchToChaseMode(Transform attacker)
+        {
+            m_PlayerDetected = true;
+            m_IsPatrol = false;
+            m_PlayerPosition = attacker.position;
+            m_PlayerTransform = attacker;
+            ActivateMovements(speedRun);
+            navMeshAgent.SetDestination(m_PlayerPosition);
+        }
+
 
         [Rpc(SendTo.Server, RequireOwnership = false)]
         private void DespawnNetworkObjectRpc()
