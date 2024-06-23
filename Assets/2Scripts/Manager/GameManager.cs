@@ -38,7 +38,9 @@ namespace _2Scripts.Manager
 
         private static ManagerObject[] _managersAndPrefabs = {};
         private static Coroutine _stateChangeCoroutine;
-        
+
+        public static ManagerObject[] ManagersAndPrefabs => _managersAndPrefabs;
+
         public static UnityEvent<GameState> stateChanged = new ();
         
         #region Data and objects
@@ -123,7 +125,10 @@ namespace _2Scripts.Manager
             {
                 case GameState.MainMenu:
                  
-                    neededManagers = new List<ManagerType>{ManagerType.Multi, ManagerType.Audio, ManagerType.Scene};
+                    neededManagers = new List<ManagerType>
+                    {
+                        ManagerType.Multi, ManagerType.Audio, ManagerType.Scene
+                    };
                  
                     ActivateNeededManagers(neededManagers);
                  

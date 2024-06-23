@@ -97,6 +97,7 @@ namespace _2Scripts.Manager
 
         private void ModifyBaseStats(float pMultiplier)
         {
+            _enemyTypesStructToUse = normalDifficultyEnemyStats;
             for (var index = 0; index < normalDifficultyEnemyStats.statsInfos.Count; index++)
             {
                 var enemyStats = normalDifficultyEnemyStats.statsInfos[index];
