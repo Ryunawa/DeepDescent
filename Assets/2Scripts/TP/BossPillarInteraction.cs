@@ -74,7 +74,7 @@ public class BossPillarInteraction : MonoBehaviour
         }
 
         // spawn the boss
-        EnemiesSpawnerManager.instance.SpawnBossEnemy(roomTp);
+        GameManager.GetManager<EnemiesSpawnerManager>().SpawnBossEnemy(roomTp);
 
         GameManager.GetManager<GameFlowManager>().SetGameState(GameFlowManager.LevelState.BossInProgress);
     }

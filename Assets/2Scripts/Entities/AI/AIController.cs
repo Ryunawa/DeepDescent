@@ -58,6 +58,7 @@ namespace _2Scripts.Entities.AI
 
         void Start()
         {
+            if (!IsServer)return;
             // init var
             m_IsPatrol = true;
             m_CanAttackPlayer = false;
@@ -81,6 +82,7 @@ namespace _2Scripts.Entities.AI
 
         public void OnSpawnAnimationComplete()
         {
+            if (!IsServer)return;
             isSpawnAnimationComplete = true;
 
             if (waypoints != null && waypoints.Length > 0)
@@ -94,6 +96,8 @@ namespace _2Scripts.Entities.AI
 
         void Update()
         {
+            if (!IsServer)return;
+            
             // wait end animation "Getting Up"
             if (!isSpawnAnimationComplete) return;
 
