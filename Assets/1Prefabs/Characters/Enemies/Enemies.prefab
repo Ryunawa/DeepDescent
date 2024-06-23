@@ -2197,7 +2197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3233595993
+  GlobalObjectIdHash: 1265631158
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -2281,8 +2281,10 @@ MonoBehaviour:
   OnHealed:
     m_PersistentCalls:
       m_Calls: []
-  aiController: {fileID: 0}
+  aiController: {fileID: 4123103312939607119}
   invincibleDebug: 0
+  flashColor: {r: 1, g: 0, b: 0, a: 0.1}
+  flashSpeed: 5
 --- !u!114 &-3727143859710676315
 MonoBehaviour:
   m_ObjectHideFlags: 0

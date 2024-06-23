@@ -16,6 +16,8 @@ namespace _2Scripts.Manager
     {
         private static GameState _gameState;
 
+        public Timer.Timer timer;
+
         private static int numberOfDeadPlayers;
 
         public static GameState GameState => _gameState;
@@ -66,7 +68,7 @@ namespace _2Scripts.Manager
             };
         }
 
-        public void AddADeadPlayer() // call en rpc client host
+        public void AddADeadPlayer()
         {
             numberOfDeadPlayers++;
             Debug.Log("numberOfDeadPlayers : " + numberOfDeadPlayers);
@@ -93,6 +95,12 @@ namespace _2Scripts.Manager
             Debug.Log("Game Over. Returning to main menu.");
             endGameUI = GetManager<SceneManager>().gameObject.transform.GetChild(1).gameObject;
             endGameUI.SetActive(true);
+            timer = FindObjectOfType<Timer.Timer>();
+            timer.StopTimer();
+
+            // Activate the cursor
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
 
 

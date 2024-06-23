@@ -13,30 +13,37 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.TextCore.Text;
+using UnityEngine.UI;
 
 namespace _2Scripts.Entities
 {
 	public class HealthComponent : GameManagerSync<HealthComponent>
 	{
-		[FormerlySerializedAs("MaxHealth")] [SerializeField] private float maxHealth = 100;
+        [Header("Health Settings")]
+        [FormerlySerializedAs("MaxHealth")]
+        [SerializeField]
+        private float maxHealth = 100;
+        [SerializeField]
+        private NetworkVariable<float> _health = new NetworkVariable<float>();
+        private HUD hudObject;
 
-		[SerializeField] private NetworkVariable<float> _health = new NetworkVariable<float>();
+        [Header("Debug")]
+        [SerializeField]
+        private bool invincibleDebug;
 
-		public UnityEvent OnDeath;
+        [Header("Components")]
+        private EnemyData _enemyData;
+        private StatComponent _statComponent;
+        [SerializeField]
+        private AIController aiController;
 
-		public UnityEvent<float> OnDamaged;
-
-		public UnityEvent<float> OnHealed;
-
-		private EnemyData _enemyData;
-	
-		private StatComponent _statComponent;
-
-        [SerializeField] private AIController aiController;
-
-        [SerializeField] private bool invincibleDebug;
-
+        [Header("Character Settings")]
         private int characterID;
+
+        [Header("Events")]
+        public UnityEvent OnDeath;
+        public UnityEvent<float> OnDamaged;
+        public UnityEvent<float> OnHealed;
 
         public float MaxHealth => maxHealth;
 
@@ -53,8 +60,8 @@ namespace _2Scripts.Entities
 				OnDeath.Invoke();
 				if (!_enemyData)
 				{
-					GameManager.instance.AddADeadPlayer();
-				}
+                    addDeadPlayerRPC();
+                }
 				else
                 {
                     GameManager.GetManager<EnemiesSpawnerManager>().EnemyDestroyed(_enemyData);
@@ -62,12 +69,17 @@ namespace _2Scripts.Entities
 			}
 		}
 
-		// Start is called before the first frame update
-		protected override void OnGameManagerChangeState(GameState gameState)
+        [Rpc(SendTo.ClientsAndHost)]
+        private void addDeadPlayerRPC()
+        {
+            GameManager.instance.AddADeadPlayer();
+        }
+
+        // Start is called before the first frame update
+        protected override void OnGameManagerChangeState(GameState gameState)
 		{
 			if (gameState != GameState.InLevel) return;
-			
-			Debug.Log("start Health");
+
 			if (_enemyData)
 			{
 				maxHealth = _enemyData.enemyStats.health;
@@ -91,14 +103,12 @@ namespace _2Scripts.Entities
             
             
 			_health.OnValueChanged += _CheckForDeath;
-            
-
 
             _enemyData = GetComponent<EnemyData>();
             _statComponent = GetComponent<StatComponent>();
 
             //OnGameManagerChangeState(GameManager.GameState);
-		}
+        }
 
 
 		public void TakeDamage(float pDamage, float pArmorPenetration = 0, Transform attacker = null)
@@ -146,21 +156,21 @@ namespace _2Scripts.Entities
                     aiController.SwitchToChaseMode(attacker);
                 }
             }
+			else
+			{
+				if (!hudObject) hudObject = GameObject.Find("HUD").GetComponent<HUD>();
+                if (hudObject) hudObject.FlashDamageEffect(_health.Value, maxHealth);
 
+				else Debug.Log("no HUD found");
+            }
 
             _health.Value -= damage;
-
-
-
-            // if (_hud)
-            // {
-            //     _hud.SetHp();
-            // }
 
             OnDamaged.Invoke(pDamage);
 		}
 
-		public void Heal(float iHeal)
+
+        public void Heal(float iHeal)
 		{
 			if(!IsServer) 
 			{
