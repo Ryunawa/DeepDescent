@@ -121,15 +121,15 @@ public class MainLobby : GameManagerSync<MainLobby>
         {
             case 1:
                 SetToggleImage(easyToggle, checkToggle);
-                // DifficultyMode.Easy;
+                multiManager.AdjustDifficulty(DifficultyMode.Easy);
                 break;
             case 2:
                 SetToggleImage(normalToggle, checkToggle);
-                // DifficultyMode.Normal;
+                multiManager.AdjustDifficulty(DifficultyMode.Normal);
                 break;
             case 3:
                 SetToggleImage(hardToggle, checkToggle);
-                // DifficultyMode.Normal;
+                multiManager.AdjustDifficulty(DifficultyMode.Hard);
                 break;
         }
 

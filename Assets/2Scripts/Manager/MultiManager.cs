@@ -18,6 +18,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Player = Unity.Services.Lobbies.Models.Player;
 using DataObject = Unity.Services.Lobbies.Models.DataObject;
+using _2Scripts.Enum;
 
 namespace _2Scripts.Manager
 {
@@ -55,8 +56,6 @@ namespace _2Scripts.Manager
 
 		protected async void OnDestroy()
 		{
-			
-
 			if(_lobby != null)
 			{
 				await LeaveLobbyAsync();
@@ -284,6 +283,13 @@ namespace _2Scripts.Manager
 				throw;
 			}
 		}
+
+		// Adjust only difficulty
+		public void AdjustDifficulty(DifficultyMode newDifficulty)
+		{
+			// TODO
+		}
+
 
 		/// <summary>
 		/// Called to sub to lobby events 
