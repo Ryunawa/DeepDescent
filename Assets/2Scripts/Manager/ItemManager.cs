@@ -14,7 +14,7 @@ namespace _2Scripts.Manager
     public class ItemManager : GameManagerSync<ItemManager>
     {
         [SerializeField] public ItemList itemList;
-        [SerializeField] private int itemCount = 10;
+        [SerializeField] private int itemCount = 20;
         [SerializeField] private List<ItemSpawnPoint> itemSpawnPoints;
 
         [SerializeField] public ItemList weaponList;
