@@ -347,7 +347,7 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 1.68
+  m_Height: 2
   m_Radius: 0.4
   m_SlopeLimit: 45
   m_StepOffset: 0.3
@@ -6131,7 +6131,7 @@ PrefabInstance:
     - target: {fileID: 3485439767503049980, guid: 478b8ff498bd2624385544ba44e9f36a,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3531700238952009788, guid: 478b8ff498bd2624385544ba44e9f36a,
         type: 3}
