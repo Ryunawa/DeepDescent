@@ -13,7 +13,8 @@ public class LobbyList : MonoBehaviour
     [SerializeField] private GameObject parentMenu;
 
     private MultiManager _multiManager;
-    
+    [SerializeField] private Button btnJoin;
+
     private void Start()
     {
         _multiManager = GameManager.GetManager<MultiManager>();
@@ -22,6 +23,8 @@ public class LobbyList : MonoBehaviour
 
     public void ButtonSelected(LobbyButton lobbyButton)
     {
+        btnJoin.interactable = true;
+
         btn.onClick.RemoveAllListeners();
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         btn.onClick.AddListener(() => _multiManager.JoinLobby(lobbyButton.GetLobbyId()));

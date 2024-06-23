@@ -95,7 +95,7 @@ namespace _2Scripts.Manager
 
                     neededManagers = new List<ManagerType>
                     {
-                        ManagerType.GameFlow, ManagerType.UI, ManagerType.Enemy
+                        ManagerType.UI, ManagerType.Enemy
                     };
                      
                     ActivateNeededManagers(neededManagers, true);
@@ -105,7 +105,7 @@ namespace _2Scripts.Manager
                 case GameState.Generating:
                     neededManagers = new List<ManagerType>
                     {
-                        ManagerType.Item, ManagerType.Difficulty, ManagerType.Light
+                        ManagerType.GameFlow, ManagerType.Item, ManagerType.Difficulty, ManagerType.Light
                     };
                     
                     ActivateNeededManagers(neededManagers, true);
