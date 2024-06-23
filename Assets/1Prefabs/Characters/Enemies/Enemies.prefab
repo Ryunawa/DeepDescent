@@ -2158,7 +2158,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 0.23
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
@@ -2172,7 +2172,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.4
-  m_Speed: 3.5
+  m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 200
@@ -2182,7 +2182,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 5
   m_ObstacleAvoidanceType: 4
 --- !u!114 &-8515664152495936704
 MonoBehaviour:
@@ -2220,8 +2220,8 @@ MonoBehaviour:
   distanceAcceptation: 2
   startWaitTime: 4
   timeToRotate: 2
-  speedWalk: 3
-  speedRun: 7
+  speedWalk: 1
+  speedRun: 4
   viewDistance: 15
   viewAngle: 90
   playerMask:
@@ -2230,15 +2230,15 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 128
-  attackRange: 1.5
+  attackRange: 1
   timeBeforeAttack: 2
   _isSwinging: 0
   isBoss: 0
   waypoints: []
   stopChance: 0.5
-  navMeshAgent: {fileID: 0}
-  animator: {fileID: 0}
-  healthComponent: {fileID: 0}
+  navMeshAgent: {fileID: 2664729893333764347}
+  animator: {fileID: 6560489301098289846}
+  healthComponent: {fileID: -7472326433132149052}
 --- !u!114 &-4435357719316504908
 MonoBehaviour:
   m_ObjectHideFlags: 0

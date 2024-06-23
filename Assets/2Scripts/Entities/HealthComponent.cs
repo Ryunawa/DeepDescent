@@ -134,6 +134,7 @@ namespace _2Scripts.Entities
 
             OnDamaged.Invoke(pDamage);
 		}
+
 		public void Heal(float iHeal)
 		{
 			if(!IsServer) 

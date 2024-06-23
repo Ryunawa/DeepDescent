@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using _2Scripts.Entities.Player;
 using _2Scripts.Manager;
 using Unity.Netcode;
 using Unity.Services.Lobbies.Models;
@@ -11,34 +13,22 @@ namespace _2Scripts.Entities.AI
     public class AIController : NetworkBehaviour, IController
     {
         [Header("Movement Settings")]
-        [SerializeField]
-        private float distanceAcceptation = 2f; // distance where we can consider the IA managed to go to his goal
-        [SerializeField]
-        private float startWaitTime = 4; // wait time before the AI starts moving between each action
-        [SerializeField]
-        private float timeToRotate = 2; // time it takes for the AI to rotate its direction while patrolling or chasing
-        [SerializeField]
-        private float speedWalk = 3; // speed when patrolling
-        [SerializeField]
-        private float speedRun = 7; // speed when chasing
+        [SerializeField] private float distanceAcceptation = 2f; // distance where we can consider the IA managed to go to his goal
+        [SerializeField] private float startWaitTime = 4; // wait time before the AI starts moving between each action
+        [SerializeField] private float timeToRotate = 2; // time it takes for the AI to rotate its direction while patrolling or chasing
+        [SerializeField] private float speedWalk = 1; // speed when patrolling
+        [SerializeField] private float speedRun = 4; // speed when chasing
 
         [Header("Detection Settings")]
-        [SerializeField]
-        private float viewDistance = 15; // radius of detection
-        [SerializeField]
-        private float viewAngle = 90; // angle of detection
-        [SerializeField]
-        private LayerMask playerMask;
-        [SerializeField]
-        private LayerMask obstacleMask;
+        [SerializeField] private float viewDistance = 15; // radius of detection
+        [SerializeField] private float viewAngle = 90; // angle of detection
+        [SerializeField] private LayerMask playerMask;
+        [SerializeField] private LayerMask obstacleMask;
 
         [Header("Combat Settings")]
-        [SerializeField]
-        private float attackRange = 1.0f;
-        [SerializeField]
-        private float timeBeforeAttack = 2f; // attack speed in seconds
-        [SerializeField]
-        private bool _isSwinging;
+        [SerializeField] private float attackRange = 0.2f;
+        [SerializeField] private float timeBeforeAttack = 2f; // attack speed in seconds
+        [SerializeField] private bool _isSwinging;
         public bool isBoss;
 
         [Header("Patrol")]
@@ -56,6 +46,7 @@ namespace _2Scripts.Entities.AI
         // Other variables...
         private Vector3 playerLastPosition = Vector3.zero;
         private Vector3 m_PlayerPosition;
+        private Transform m_PlayerTransform;
         private float m_WaitTime;
         private float m_TimeToRotate;
         private bool m_PlayerDetected; // player has been seen
@@ -72,23 +63,15 @@ namespace _2Scripts.Entities.AI
             m_PlayerDetected = false;
 
             m_PlayerPosition = Vector3.zero;
+            m_PlayerTransform = null;
             m_WaitTime = startWaitTime;
             m_TimeToRotate = timeToRotate;
             m_CurrentWaypointIndex = 0;
-
-            animator = GetComponent<Animator>();
-            navMeshAgent = GetComponent<NavMeshAgent>();
 
             navMeshAgent.stoppingDistance = attackRange - 0.5f;
             navMeshAgent.isStopped = false;
             navMeshAgent.speed = speedWalk;
 
-            healthComponent = GetComponent<HealthComponent>();
-            if (healthComponent == null)
-            {
-                Debug.LogWarning($"HealthComponent not found on {gameObject.name}. Adding HealthComponent dynamically.");
-                healthComponent = gameObject.AddComponent<HealthComponent>();
-            }
             healthComponent.OnDeath.AddListener(HandleDeath);
 
             // start attack coroutine
@@ -113,6 +96,12 @@ namespace _2Scripts.Entities.AI
             // wait end animation "Getting Up"
             if (!isSpawnAnimationComplete) return;
 
+            if (_isSwinging)
+            {
+                Stop();
+                return;
+            }
+
             float currentSpeed = navMeshAgent.velocity.magnitude;
             animator.SetFloat("Speed", currentSpeed);
 
@@ -127,15 +116,12 @@ namespace _2Scripts.Entities.AI
             else
             {
                 Chasing();
-                FaceTarget();
             }
         }
 
         // run after the player or its last known position
         private void Chasing()
         {
-            if (_isSwinging) return;
-
             m_PlayerNear = false;
             playerLastPosition = Vector3.zero;
 
@@ -144,6 +130,7 @@ namespace _2Scripts.Entities.AI
             {
                 ActivateMovements(speedRun);
                 navMeshAgent.SetDestination(m_PlayerPosition);
+                FaceTarget();
             }
 
             // Check if the player is close enough to stop chasing
@@ -191,69 +178,6 @@ namespace _2Scripts.Entities.AI
             }
         }
 
-        // patrolling points by points
-        private void PatrollingPointsByPoints()
-        {
-            // if player is near, move to the last position known of him
-            if (m_PlayerNear)
-            {
-                if (m_TimeToRotate <= 0)
-                {
-                    ActivateMovements(speedWalk);
-                    MoveToPlayer(playerLastPosition);
-                }
-                else
-                {
-                    Stop();
-                    m_TimeToRotate -= Time.deltaTime;
-                }
-            }
-            // player not near, just move waypoints by waypoints
-            else
-            {
-                m_PlayerNear = false;
-                playerLastPosition = Vector3.zero;
-
-                if (waypoints != null && waypoints.Length > 0)
-                {
-                    navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
-                }
-                else
-                {
-                    Debug.LogWarning("Waypoints array is either null or empty.");
-                }
-
-                if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
-                {
-                    if (m_WaitTime <= 0)
-                    {
-                        // move to the next waypoint
-                        NextPoint();
-                        ActivateMovements(speedWalk);
-                        m_WaitTime = startWaitTime;
-                    }
-                    else
-                    {
-                        // wait before moving
-                        Stop();
-                        m_WaitTime -= Time.deltaTime;
-                    }
-                }
-            }
-        }
-
-        private void NewRandomPointPatrolling()
-        {
-            Vector3 randomPoint = GetRandomAccessiblePoint();
-
-            // if a point is valid -> become destination
-            if (randomPoint != Vector3.zero)
-            {
-                navMeshAgent.SetDestination(randomPoint);
-                didAlreadyWait = false;
-            }
-        }
-
         private void Patrolling()
         {
             // if ia close to its destination and finished his journey
@@ -279,6 +203,23 @@ namespace _2Scripts.Entities.AI
                 }
             }
         }
+
+        private void NewRandomPointPatrolling()
+        {
+            Vector3 randomPoint = GetRandomAccessiblePoint();
+
+            // if a point is valid -> become destination
+            if (randomPoint != Vector3.zero)
+            {
+                navMeshAgent.SetDestination(randomPoint);
+                didAlreadyWait = false;
+            }
+            else
+            {
+                Debug.LogWarning("No valid random point found for patrolling.");
+            }
+        }
+
 
         private IEnumerator StartWaiting(float waitTime)
         {
@@ -333,6 +274,7 @@ namespace _2Scripts.Entities.AI
         // attack the player
         private void Attack()
         {
+            LookAt(m_PlayerTransform);
             animator.SetTrigger("IsAttacking");
         }
 
@@ -435,11 +377,11 @@ namespace _2Scripts.Entities.AI
         // detect player within view
         private void EnvironmentView()
         {
-            Collider[] playersInRange = Physics.OverlapSphere(transform.position, viewDistance, playerMask);
+            Collider[] alivePlayersInRange = findAlivePlayerInRange();
 
-            for (int i = 0; i < playersInRange.Length; i++)
+            for (int i = 0; i < alivePlayersInRange.Length; i++)
             {
-                Transform player = playersInRange[i].transform;
+                Transform player = alivePlayersInRange[i].transform;
                 Vector3 dirToPlayer = (player.position - transform.position).normalized;
 
                 float dstToPlayer = Vector3.Distance(transform.position, player.position);
@@ -447,7 +389,8 @@ namespace _2Scripts.Entities.AI
                 // if close to the player, attack!
                 if (dstToPlayer <= attackRange)
                 {
-                    LookAt(player);
+                    // LookAt(player);
+                    FaceTarget();
                     m_CanAttackPlayer = true;
                     Stop();
                     animator.SetBool("IsPreparingToAttack", true);
@@ -483,6 +426,25 @@ namespace _2Scripts.Entities.AI
                 if (m_PlayerDetected)
                 {
                     m_PlayerPosition = player.transform.position;
+                    m_PlayerTransform = player.transform;
+                }
+            }
+
+            // if no player in sight -> patrol
+            if (alivePlayersInRange.Length <= 0)
+            {
+                m_IsPatrol = true;
+                m_CanAttackPlayer = false;
+                m_PlayerDetected = false;
+                animator.SetBool("IsPreparingToAttack", false);
+                if (waypoints != null && waypoints.Length > 0)
+                {
+                    ActivateMovements(speedWalk);
+                    navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
+                }
+                else
+                {
+                    Debug.LogWarning("Waypoints array is either null or empty.");
                 }
             }
         }
@@ -526,6 +488,29 @@ namespace _2Scripts.Entities.AI
             DespawnNetworkObjectRpc();
         }
 
+        private Collider[] findAlivePlayerInRange()
+        {
+            Collider[] playersInRange = Physics.OverlapSphere(transform.position, viewDistance, playerMask);
+            Collider[] alivePlayersInRange = new Collider[playersInRange.Length];
+            int aliveCount = 0;
+
+            foreach (var playerCollider in playersInRange)
+            {
+                PlayerBehaviour playerBehavior = playerCollider.GetComponent<PlayerBehaviour>();
+                if (playerBehavior != null && !playerBehavior.IsDead.Value)
+                {
+                    alivePlayersInRange[aliveCount] = playerCollider;
+                    aliveCount++;
+                }
+            }
+
+            Array.Resize(ref alivePlayersInRange, aliveCount);
+
+            if (aliveCount > 0) Debug.Log("aliveCount : " + aliveCount);
+            return alivePlayersInRange;
+        }
+
+
         [Rpc(SendTo.Server, RequireOwnership = false)]
         private void DespawnNetworkObjectRpc()
         {
@@ -535,3 +520,5 @@ namespace _2Scripts.Entities.AI
         }
     }
 }
+
+
