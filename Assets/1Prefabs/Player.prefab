@@ -386,7 +386,7 @@ MonoBehaviour:
   - {fileID: 1836012347846607791}
   - {fileID: 852035927539004766}
   - {fileID: 2465924669315230800}
-  weaponModelsFPS: {fileID: 6629835315862853820}
+  weaponModelsFPS: {fileID: 0}
   weaponModels: {fileID: 2509654312490104346}
   handPosition: {fileID: 1096527134474656183}
   ObjectToAddToInventory: {fileID: 0}
@@ -460,7 +460,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overrideWithSavedInventory: 1
-  visibleItemsFPS: {fileID: 6629835315862853820}
+  visibleItemsFPS: {fileID: 0}
   visibleItemsTPS: {fileID: 2509654312490104346}
   ChestArmor: {fileID: 0}
   LegArmor: {fileID: 0}
@@ -482,9 +482,9 @@ MonoBehaviour:
   CanDualWield: 0
   OffHandItem: {fileID: 0}
   InventoryItems:
-  - ID: 1
+  - ID: 10
     Amount: 1
-  - ID: 2
+  - ID: 60
     Amount: 1
   InventorySpace: 6
   stat: {fileID: 5409913450011231913}
@@ -3288,6 +3288,11 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 147764093
       objectReference: {fileID: 0}
+    - target: {fileID: 5150099861164618387, guid: 478b8ff498bd2624385544ba44e9f36a,
+        type: 3}
+      propertyPath: _animator
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5174659622220319754, guid: 478b8ff498bd2624385544ba44e9f36a,
         type: 3}
       propertyPath: m_Layer
@@ -3910,18 +3915,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1096527134475099061}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6629835315862853820 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5996065206469346057, guid: 478b8ff498bd2624385544ba44e9f36a,
-    type: 3}
-  m_PrefabInstance: {fileID: 1096527134475099061}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc407140ecbcf1740a8a7e32db0dc097, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6761648592124047130 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5972219573605627055, guid: 478b8ff498bd2624385544ba44e9f36a,

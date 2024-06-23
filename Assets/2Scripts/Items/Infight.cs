@@ -11,7 +11,7 @@ public class Infight : MonoBehaviour
     private bool _swinging;
     private bool _canInflictDamage = true;
     [SerializeField] private float damageCooldown = 1f;
-
+    [SerializeField] private GameObject parentOwner;
     [SerializeField] private bool isEnemy;
 
     [SerializeField]
@@ -56,7 +56,7 @@ public class Infight : MonoBehaviour
         // Is enemy attacking
         if (_swinging && _canInflictDamage && isEnemy && other.gameObject.CompareTag("Player"))
         {
-            if (TryGetComponent(out EnemyData data))
+            if (parentOwner.TryGetComponent(out EnemyData data))
             {
                 Debug.Log("DAMAGE: " + data.damageInflicted);
                 collidedHealthComponent.TakeDamage(data.damageInflicted);
