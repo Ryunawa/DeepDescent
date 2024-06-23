@@ -407,6 +407,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  _health:
+    m_InternalValue: 0
   OnDeath:
     m_PersistentCalls:
       m_Calls: []
@@ -416,6 +418,7 @@ MonoBehaviour:
   OnHealed:
     m_PersistentCalls:
       m_Calls: []
+  invincibleDebug: 0
 --- !u!114 &5061184010628317641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5746,7 +5749,7 @@ PrefabInstance:
     - target: {fileID: 1607070514140403738, guid: 478b8ff498bd2624385544ba44e9f36a,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1761312432320202815, guid: 478b8ff498bd2624385544ba44e9f36a,
         type: 3}

@@ -29,6 +29,7 @@ namespace _2Scripts.Entities.AI
         [SerializeField] private float attackRange = 0.2f;
         [SerializeField] private float timeBeforeAttack = 2f; // attack speed in seconds
         [SerializeField] private bool _isSwinging;
+        [SerializeField] private GameObject deathFxPrefab;
         public bool isBoss;
 
         [Header("Patrol")]
@@ -352,6 +353,8 @@ namespace _2Scripts.Entities.AI
         // look at a transform
         private void LookAt(Transform target)
         {
+            if (!this || !target) return;
+
             Vector3 direction = target.position - transform.position;
             direction.y = 0f;
             if (direction.sqrMagnitude > 0.001f)
@@ -442,10 +445,6 @@ namespace _2Scripts.Entities.AI
                     ActivateMovements(speedWalk);
                     navMeshAgent.SetDestination(waypoints[m_CurrentWaypointIndex].position);
                 }
-                else
-                {
-                    Debug.LogWarning("Waypoints array is either null or empty.");
-                }
             }
         }
 
@@ -479,6 +478,12 @@ namespace _2Scripts.Entities.AI
                 GameManager.GetManager<GameFlowManager>().SetGameState(GameFlowManager.LevelState.BossDefeated);
             }
 
+            if (deathFxPrefab != null)
+            {
+                GameObject deathFx = Instantiate(deathFxPrefab, transform.position + Vector3.up, Quaternion.identity);
+                deathFx.GetComponent<NetworkObject>().Spawn();
+            }
+
             // potential reward?
 
             //Unsubscribe first
@@ -487,6 +492,7 @@ namespace _2Scripts.Entities.AI
             //Despawn
             DespawnNetworkObjectRpc();
         }
+
 
         private Collider[] findAlivePlayerInRange()
         {
@@ -503,10 +509,8 @@ namespace _2Scripts.Entities.AI
                     aliveCount++;
                 }
             }
-
             Array.Resize(ref alivePlayersInRange, aliveCount);
 
-            if (aliveCount > 0) Debug.Log("aliveCount : " + aliveCount);
             return alivePlayersInRange;
         }
 

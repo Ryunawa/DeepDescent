@@ -2233,6 +2233,7 @@ MonoBehaviour:
   attackRange: 1
   timeBeforeAttack: 2
   _isSwinging: 0
+  deathFxPrefab: {fileID: 129598, guid: 7aa776f254f4c934b919a237205029ca, type: 3}
   isBoss: 0
   waypoints: []
   stopChance: 0.5
@@ -2268,6 +2269,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  _health:
+    m_InternalValue: 0
   OnDeath:
     m_PersistentCalls:
       m_Calls: []
@@ -2277,6 +2280,7 @@ MonoBehaviour:
   OnHealed:
     m_PersistentCalls:
       m_Calls: []
+  invincibleDebug: 0
 --- !u!114 &-3727143859710676315
 MonoBehaviour:
   m_ObjectHideFlags: 0

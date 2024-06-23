@@ -3,7 +3,11 @@ guid: bbd6cb26d85f0d24b9bb3acf2e8dcb53
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - deathFxPrefab: {fileID: 129598, guid: 7aa776f254f4c934b919a237205029ca, type: 3}
+  - navMeshAgent: {instanceID: 0}
+  - animator: {instanceID: 0}
+  - healthComponent: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

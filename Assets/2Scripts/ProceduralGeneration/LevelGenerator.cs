@@ -746,7 +746,7 @@ namespace _2Scripts.ProceduralGeneration
 
             foreach (var room in rooms.Values)
             {
-                if (room != null)
+                if (room != null && room.RoomProps.SpawnPoints != null)
                 {
                     spawnPointsOfSurroundingRooms.Add((room, room.RoomProps.SpawnPoints));
                 }
