@@ -4663,7 +4663,7 @@ MonoBehaviour:
   actualPlayButton: {fileID: 642098618284212520}
   playButton: {fileID: 678052885523666340}
   createButton: {fileID: 7966286604045407095}
-  mainMenuButton: {fileID: 0}
+  mainMenuButton: {fileID: 7146869084183191454}
   checkToggle: {fileID: 21300000, guid: 33cd3b491748050418115b4d3a0b6534, type: 3}
   uncheckToggle: {fileID: 21300000, guid: 5659b073e19871d4da7394b6456da365, type: 3}
   easyToggle: {fileID: 2655873222553909247}
