@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using _2Scripts.Interfaces;
 using _2Scripts.ProceduralGeneration;
@@ -261,7 +262,8 @@ namespace _2Scripts.Manager
 			options.Player = GetPlayer();
 			options.Data = new Dictionary<string, DataObject>
 			{
-				{"startGame", new DataObject(DataObject.VisibilityOptions.Member, "0")} 
+				{"startGame", new DataObject(DataObject.VisibilityOptions.Member, "0")}, 
+				{"Difficulty", new DataObject(DataObject.VisibilityOptions.Member, "1")} 
 			};
 
 			try
@@ -285,9 +287,28 @@ namespace _2Scripts.Manager
 		}
 
 		// Adjust only difficulty
-		public void AdjustDifficulty(DifficultyMode newDifficulty)
+		public async void AdjustDifficulty(DifficultyMode newDifficulty)
 		{
-			// TODO
+			if(!_IsOwnerOfLobby) return;
+			
+			try
+			{
+				await Lobbies.Instance.UpdateLobbyAsync(_lobby.Id, new UpdateLobbyOptions
+				{
+					Data = new Dictionary<string, DataObject>
+					{
+						{
+							"Difficulty",
+							new DataObject(DataObject.VisibilityOptions.Member, ((float)newDifficulty).ToString())
+						}
+					}
+				});
+			}
+			catch (LobbyServiceException e)
+			{
+				Debug.LogError(e);
+				throw;
+			}
 		}
 
 
@@ -583,7 +604,8 @@ namespace _2Scripts.Manager
 						Data = new Dictionary<string, DataObject>
 						{
 							{"startGame", new DataObject(DataObject.VisibilityOptions.Member, relayCode)}
-						}
+						},
+						IsPrivate = true
 					});
 				}
 				catch (LobbyServiceException e)

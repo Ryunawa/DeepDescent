@@ -4538,10 +4538,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: LobbyManager, Assembly-CSharp
-        m_MethodName: LeaveLobby
-        m_Mode: 1
+      - m_Target: {fileID: 5680610354232151730}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5611739280961751341}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4620,7 +4632,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 492296716
+  GlobalObjectIdHash: 2109772801
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -4651,6 +4663,7 @@ MonoBehaviour:
   actualPlayButton: {fileID: 642098618284212520}
   playButton: {fileID: 678052885523666340}
   createButton: {fileID: 7966286604045407095}
+  mainMenuButton: {fileID: 0}
   checkToggle: {fileID: 21300000, guid: 33cd3b491748050418115b4d3a0b6534, type: 3}
   uncheckToggle: {fileID: 21300000, guid: 5659b073e19871d4da7394b6456da365, type: 3}
   easyToggle: {fileID: 2655873222553909247}

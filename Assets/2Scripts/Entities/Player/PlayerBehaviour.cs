@@ -141,8 +141,6 @@ namespace _2Scripts.Entities.Player
 
             Debug.Log("PLayerBehaviour Done Start ");
         }
-        
-
         protected override void OnGameManagerChangeState(GameState gameState)
         {
             if (gameState != GameState.InLevel) return;
@@ -295,22 +293,39 @@ namespace _2Scripts.Entities.Player
 
         private IEnumerator SetupDeath()
         {
-            yield return new WaitForSeconds(1.0f);
-
             _virtualCamera.GetCinemachineComponent<CinemachinePOV>().m_HorizontalAxis.m_MaxSpeed = 0.0f;
             _virtualCamera.GetCinemachineComponent<CinemachinePOV>().m_VerticalAxis.m_MaxSpeed = 0.0f;
             _Camera.gameObject.SetActive(false);
             _virtualCamera.gameObject.SetActive(false);
+            //13 layer 13 rendered on cam
+            foreach (var playerModel in playerModels)
+            {
+                playerModel.layer = 13;
+                weaponModels.ChangeWeaponAndShieldLayer(13);
+            }
+            //14 layer14 not rendered on cam
+            foreach (var playerModelFPS in playerModelsFPS)
+            {
+                playerModelFPS.layer = 14;
+                weaponModelsFPS.ChangeWeaponAndShieldLayer(14);
+            }
 
             List<GameObject> allPlayers = GameManager.GetManager<MultiManager>().GetAllPlayerGameObjects();
             allPlayers.Remove(transform.parent.gameObject);
             GameObject DeathCamPlayer = allPlayers[UnityEngine.Random.Range(0, allPlayers.Count)];
             if (!DeathCamPlayer.Equals(gameObject))
             {
-                DeathCamPlayer.GetComponent<PlayerBehaviour>().Camera.gameObject.SetActive(true);
-                DeathCamPlayer.GetComponent<PlayerBehaviour>().VirtualCamera.gameObject.SetActive(true);
+                PlayerBehaviour pb = DeathCamPlayer.GetComponentInChildren<PlayerBehaviour>();
+                pb.Camera.gameObject.SetActive(true);
+                pb.VirtualCamera.gameObject.SetActive(true);
+                foreach (var playerModel in pb.playerModels)
+                {
+                    playerModel.layer = 14;
+                    pb.weaponModels.ChangeWeaponAndShieldLayer(14);
+                }
             }
             this.enabled = false;
+            yield return null;
 
         }
 

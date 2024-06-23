@@ -20,6 +20,7 @@ public class MainLobby : GameManagerSync<MainLobby>
     [FormerlySerializedAs("playButton")] [SerializeField] private Button actualPlayButton;
     [SerializeField] private Button playButton;
     [SerializeField] private Button createButton;
+    [SerializeField] private Button mainMenuButton;
 
 
     [SerializeField] private Sprite checkToggle;
@@ -43,9 +44,10 @@ public class MainLobby : GameManagerSync<MainLobby>
         multiManager.refreshUI.AddListener(RefreshUI);
         multiManager.kickedEvent.AddListener(ReturnToLobbyList);
         multiManager.CharacterChosen.AddListener(OnCharacterChosen);
-        playButton.onClick.AddListener(GameManager.GetManager<MultiManager>().Init);
-        createButton.onClick.AddListener(GameManager.GetManager<MultiManager>().CreateLobby);
-        actualPlayButton.onClick.AddListener(GameManager.GetManager<MultiManager>().StartGame);
+        playButton.onClick.AddListener(multiManager.Init);
+        createButton.onClick.AddListener(multiManager.CreateLobby);
+        actualPlayButton.onClick.AddListener(multiManager.StartGame);
+        mainMenuButton.onClick.AddListener(multiManager.LeaveLobby);
 
         // Add listeners to the difficulty toggles
         easyToggle.onValueChanged.AddListener(delegate { ChangeDifficultyBtn(1); });
@@ -84,16 +86,11 @@ public class MainLobby : GameManagerSync<MainLobby>
             playerNameText.text = player.Data["Name"].Value;
         }
 
-        // if (!changeButtonState) return;
-        // if (multiManager.IsLobbyHost())
-        // {
-        //     actualPlayButton.interactable = isAllReady;
-        // }
-        //
-        // if (multiManager.Lobby.Players.Count == 1)
-        // {
-        //     actualPlayButton.interactable = true;
-        // }
+        if (!multiManager) return;
+        bool isActive = multiManager.IsLobbyHost();
+        
+        actualPlayButton.gameObject.SetActive(isActive);
+        easyToggle.transform.parent.gameObject.SetActive(isActive);
     }
 
     private void ReturnToLobbyList()
