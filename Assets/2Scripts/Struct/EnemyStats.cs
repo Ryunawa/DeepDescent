@@ -15,5 +15,13 @@ namespace _2Scripts.Struct
         public float damageDealt;
         [Tooltip("Percentage of damage reduced by the enemy' armor")]
         public float armor;
+
+
+        public EnemyStats(float health, float damageDealt, float armor) : this()
+        {
+            this.health = health;
+            this.damageDealt = damageDealt;
+            this.armor = armor;
+        }
     }
 }

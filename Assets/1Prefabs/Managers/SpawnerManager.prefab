@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2296164002090773121}
+  - component: {fileID: 2169866212472000335}
   - component: {fileID: 3295599234532194143}
   m_Layer: 0
   m_Name: SpawnerManager
@@ -32,6 +33,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2169866212472000335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3071932430965317333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3109164399
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &3295599234532194143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44,14 +66,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edf09592a36817a458e4d72a05a0b5be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bSpawnInMultiplayer: 0
   spawnableEnemiesIndexByLevel:
-  - enemyIndex: 0000000001000000
+  - enemyIndex: 050000000400000006000000070000000200000003000000
+  - enemyIndex: 090000000b0000000c0000000a000000
+  - enemyIndex: 080000000d0000000000000001000000
   maxEnemiesPerLevel: 40
-  maxEnemiesPerRoom: 5
   spawnIntervalInSecond: 2
   spawnParticle: {fileID: 152438, guid: 9d82e1be9de81be4dbc15c60c39dd6ff, type: 3}
   spawnedEnemyFolder: {fileID: 0}
   enemyPrefab: {fileID: 3959042653490119952, guid: 7a48f06c595cad34ca4b9450ea942854,
     type: 3}
-  bShouldSpawn: 0

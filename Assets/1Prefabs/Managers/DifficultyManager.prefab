@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7150967302586417312}
+  - component: {fileID: 475009626224393732}
   - component: {fileID: 4587219548495061341}
   - component: {fileID: 559719539115313260}
   m_Layer: 0
@@ -33,6 +34,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &475009626224393732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3898088850932888483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3509401169
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!114 &4587219548495061341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48,21 +70,146 @@ MonoBehaviour:
   easyDifficultyEnemyStats:
     statsInfos:
     - index: 0
-      spawnRate: 0.3
+      spawnRate: 0.5
       health: 30
+      damageDealt: 7.5
+      armor: 0
+    - index: 1
+      spawnRate: 0.5
+      health: 50
+      damageDealt: 7.5
+      armor: 0
+    - index: 2
+      spawnRate: 0.5
+      health: 50
+      damageDealt: 7.5
+      armor: 5
+    - index: 3
+      spawnRate: 0.5
+      health: 30
+      damageDealt: 7.5
+      armor: 5
+    - index: 4
+      spawnRate: 0.15
+      health: 65
+      damageDealt: 15
+      armor: 5
+    - index: 5
+      spawnRate: 0.1
+      health: 90
+      damageDealt: 20
+      armor: 15
+    - index: 6
+      spawnRate: 0.25
+      health: 55
+      damageDealt: 12.5
+      armor: 10
+    - index: 7
+      spawnRate: 0.25
+      health: 55
+      damageDealt: 12.5
+      armor: 10
+    - index: 8
+      spawnRate: 0.2
+      health: 150
       damageDealt: 5
+      armor: 40
+    - index: 9
+      spawnRate: 0.2
+      health: 80
+      damageDealt: 20
+      armor: 25
+    - index: 10
+      spawnRate: 0.5
+      health: 40
+      damageDealt: 7.5
+      armor: 10
+    - index: 11
+      spawnRate: 0.3
+      health: 75
+      damageDealt: 12.5
+      armor: 15
+    - index: 12
+      spawnRate: 0.3
+      health: 75
+      damageDealt: 12.5
+      armor: 15
+    - index: 13
+      spawnRate: 0.3
+      health: 50
+      damageDealt: 20
       armor: 0
   normalDifficultyEnemyStats:
     statsInfos:
     - index: 0
       spawnRate: 0.5
-      health: 35
-      damageDealt: 6
-      armor: 1
+      health: 30
+      damageDealt: 7.5
+      armor: 0
     - index: 1
       spawnRate: 0.5
-      health: 20
-      damageDealt: 7
+      health: 50
+      damageDealt: 7.5
+      armor: 0
+    - index: 2
+      spawnRate: 0.5
+      health: 50
+      damageDealt: 7.5
+      armor: 5
+    - index: 3
+      spawnRate: 0.5
+      health: 30
+      damageDealt: 7.5
+      armor: 5
+    - index: 4
+      spawnRate: 0.15
+      health: 65
+      damageDealt: 15
+      armor: 5
+    - index: 5
+      spawnRate: 0.1
+      health: 90
+      damageDealt: 20
+      armor: 15
+    - index: 6
+      spawnRate: 0.25
+      health: 55
+      damageDealt: 12.5
+      armor: 10
+    - index: 7
+      spawnRate: 0.25
+      health: 55
+      damageDealt: 12.5
+      armor: 10
+    - index: 8
+      spawnRate: 0.2
+      health: 150
+      damageDealt: 5
+      armor: 40
+    - index: 9
+      spawnRate: 0.2
+      health: 80
+      damageDealt: 20
+      armor: 25
+    - index: 10
+      spawnRate: 0.5
+      health: 40
+      damageDealt: 7.5
+      armor: 10
+    - index: 11
+      spawnRate: 0.3
+      health: 75
+      damageDealt: 12.5
+      armor: 15
+    - index: 12
+      spawnRate: 0.3
+      health: 75
+      damageDealt: 12.5
+      armor: 15
+    - index: 13
+      spawnRate: 0.3
+      health: 50
+      damageDealt: 20
       armor: 0
   hardDifficultyEnemyStats:
     statsInfos: []

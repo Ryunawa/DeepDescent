@@ -37,7 +37,7 @@ namespace _2Scripts.Manager
            ClearPreviousDungeon();
            
            // Set bool depending on the current dungeon level
-           GameManager.instance.levelGenerator.spawnShop = GameManager.GetManager<GameFlowManager>().CurrLevel % 4 == 0;
+           GameManager.instance.levelGenerator.spawnShop = GameManager.GetManager<GameFlowManager>().CurrLevel % 5 == 0;
                
            // Start the generation
            GameManager.instance.levelGenerator.StartGeneration();

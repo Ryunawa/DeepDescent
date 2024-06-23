@@ -17,9 +17,7 @@ namespace _2Scripts.Manager
         #region Variables
 
         [Header("Enemy Stats By Enemy Type")]
-        [SerializeField] private EnemyTypes easyDifficultyEnemyStats;
         [SerializeField] private EnemyTypes normalDifficultyEnemyStats;
-        [SerializeField] private EnemyTypes hardDifficultyEnemyStats;
 
         [Space(15)]
 
@@ -49,9 +47,7 @@ namespace _2Scripts.Manager
         private EnemyTypes _enemyTypesStructToUse;
         private ResourceType _resourcesDropRateStructToUse;
         private float _difficultyMultiplier;
-
-        public DifficultyMode pDifficulty_var;
-
+        
         #endregion
 
         private void OnDisable()
@@ -79,18 +75,16 @@ namespace _2Scripts.Manager
             switch (pDifficulty)
             {
                 case DifficultyMode.Easy:
-                    _enemyTypesStructToUse = easyDifficultyEnemyStats;
-                    _resourcesDropRateStructToUse = easyDifficultyResourceStats;
+                    ModifyBaseStats(0.8f);
                     break;
 
                 case DifficultyMode.Normal:
-                    _enemyTypesStructToUse = normalDifficultyEnemyStats;
-                    _resourcesDropRateStructToUse = normalDifficultyResourceStats;
+                    ModifyBaseStats(1f);
                     break;
 
                 case DifficultyMode.Hard:
-                    _enemyTypesStructToUse = hardDifficultyEnemyStats;
-                    _resourcesDropRateStructToUse = hardDifficultyResourceStats;
+                    
+                    ModifyBaseStats(1.2f);
                     break;
             }
             AdjustEnemiesStatsForNumPlayers(pNumPlayers);
@@ -98,6 +92,19 @@ namespace _2Scripts.Manager
             for (int i = 0; i < _enemyTypesStructToUse.statsInfos.Count; i++)
             {
                 OnEnemiesStatsUpdatedEventHandler?.Invoke(this, GetStructElementByIndex<EnemyStats>(_enemyTypesStructToUse, i));
+            }
+        }
+
+        private void ModifyBaseStats(float pMultiplier)
+        {
+            for (var index = 0; index < normalDifficultyEnemyStats.statsInfos.Count; index++)
+            {
+                var enemyStats = normalDifficultyEnemyStats.statsInfos[index];
+                float health = enemyStats.health * pMultiplier;
+                float damage = enemyStats.damageDealt * pMultiplier;
+                float armor = enemyStats.armor * pMultiplier;
+
+                _enemyTypesStructToUse.statsInfos[index] = new EnemyStats(health, damage, armor);
             }
         }
 
