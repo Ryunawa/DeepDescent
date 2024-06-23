@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using _2Scripts.Entities;
 using _2Scripts.Entities.AI;
 using _2Scripts.Helpers;
@@ -11,65 +10,45 @@ using NaughtyAttributes;
 using UnityEngine;
 using Unity.Mathematics;
 using Unity.Netcode;
-using UnityEngine.Serialization;
-using static _2Scripts.Helpers.StructureAccessMethods;
 using Random = UnityEngine.Random;
-using System.Linq;
 
 namespace _2Scripts.Manager
 {
     [Serializable]
     public class LevelData
     {
-        public List<MeshInfo> enemyMeshInfos; // List of enemy mesh indices and health values for this level
+        public List<int> enemyIndex; // List of enemy index for this level
     }
 
     public class EnemiesSpawnerManager : GameManagerSync<EnemiesSpawnerManager>
     {
-        public static EnemiesSpawnerManager instance; // Static instance variable
-
         public EventHandler<int> OnEnemiesSpawnedOrKilledEventHandler;
 
         #region Variables
-
-        public bool bSpawnInMultiplayer;
-
-        [SerializeField] private List<(Room, List<GameObject>)> roomsTuple;
-        [SerializeField] private List<LevelData> spawnableEnemiesPrefabsByLevel;
+        
+        [Tooltip("All the index of enemies that can be spawn for each level, \n Allows us to set the visibility for the mesh depending of the index")]
+        [SerializeField] private List<LevelData> spawnableEnemiesIndexByLevel;
+        [Tooltip("Max number of enemies in the level at the same time")]
         [SerializeField] private int maxEnemiesPerLevel = 5;
-        [SerializeField] private int maxEnemiesPerRoom = 3;
+        [Tooltip("Interval between each spawn")]
         [Range(0.1f, 10)]
         [SerializeField] private float spawnIntervalInSecond;
-
+        [Tooltip("This particle will be spawn with the player to add a nice visual spawn effect")]
         [SerializeField] private GameObject spawnParticle;
+        [Tooltip("Parent GameObject to organized a bit the hierarchy")]
         [SerializeField] private GameObject spawnedEnemyFolder;
-
+        [Tooltip("This is the prefab that will be spawn, it contains all the mesh for every enemy.")]
         [SerializeField] private GameObject enemyPrefab; // Add this field if it's missing
 
-        private EnemyTypes _enemiesList;
+        private List<(Room, List<GameObject>)> _roomsTuple;
         private int _currentEnemiesCount;
-
-        private LevelGenerator _levelGenerator;
-
-        public bool bShouldSpawn;
-
+        
         #endregion
 
-        protected override void Start()
+        protected override void OnGameManagerChangeState(GameState gameState)
         {
-            base.Start();
-
-            if (instance != null && instance != this)
-            {
-                Debug.LogWarning("Multiple instances of EnemiesSpawnerManager detected. Destroying duplicate.");
-                Destroy(this.gameObject);
-                return;
-            }
-            else
-            {
-                instance = this;
-            }
-
+            if (gameState != GameState.InLevel) return;
+            
             if (spawnedEnemyFolder == null)
             {
                 spawnedEnemyFolder = GameObject.FindWithTag("SpawnedEnemies");
@@ -78,11 +57,6 @@ namespace _2Scripts.Manager
                     Debug.LogError("No GameObject with tag 'SpawnedEnemies' found. Please ensure there is a GameObject with this tag in the scene.");
                 }
             }
-        }
-
-        protected override void OnGameManagerChangeState(GameState gameState)
-        {
-            if (gameState != GameState.InLevel) return;
 
             if (NetworkManager.Singleton.IsServer)
             {
@@ -91,7 +65,7 @@ namespace _2Scripts.Manager
 
                 if (GameManager.instance.levelGenerator.spawnShop)
                     return;
-                _enemiesList = GameManager.GetManager<DifficultyManager>().GetEnemiesStatsToUse();
+                
                 StartCoroutine(SpawnEnemies());
             }
         }
@@ -100,14 +74,25 @@ namespace _2Scripts.Manager
         /// Return the enemy mesh info to spawn depending on its spawn rate
         /// </summary>
         /// <returns></returns>
-        private MeshInfo ChooseEnemyMeshInfo()
+        private EnemyStats ChooseEnemyMeshInfo()
         {
-            int index = Math.Min(GameManager.GetManager<GameFlowManager>().CurrLevel, spawnableEnemiesPrefabsByLevel.Count);
-            LevelData currSpawnableEnemiesPrefabs = spawnableEnemiesPrefabsByLevel[index - 1];
-
-            List<MeshInfo> meshInfos = currSpawnableEnemiesPrefabs.enemyMeshInfos;
-            MeshInfo chosenMeshInfo = meshInfos[Random.Range(0, meshInfos.Count)];
-            return chosenMeshInfo;
+            int index = Math.Min(GameManager.GetManager<GameFlowManager>().CurrLevel, spawnableEnemiesIndexByLevel.Count);
+            LevelData currSpawnableEnemiesPrefabs = spawnableEnemiesIndexByLevel[index - 1];
+            EnemyTypes allTypeOfEnemies = GameManager.GetManager<DifficultyManager>().GetEnemiesStatsToUse();
+            List<int> enemiesMeshIndex = currSpawnableEnemiesPrefabs.enemyIndex;
+            
+                foreach (var enemyStats in allTypeOfEnemies.statsInfos)
+                {
+                    if (Random.value < enemyStats.spawnRate)
+                    {
+                        foreach (var enemyMeshIndex in enemiesMeshIndex)
+                        {
+                            if (enemyMeshIndex == enemyStats.index)
+                                return enemyStats;
+                        }
+                    }
+                }
+            return allTypeOfEnemies.statsInfos[0];
         }
 
         /// <summary>
@@ -117,13 +102,13 @@ namespace _2Scripts.Manager
         private (Room, List<GameObject>) GetRandomRoomToSpawnIn()
         {
             (Room, List<GameObject>) randomRoom;
-            roomsTuple = GameManager.instance.levelGenerator.GetAllEnemySpawnPoints();
+            _roomsTuple = GameManager.instance.levelGenerator.GetAllEnemySpawnPoints();
             int roomIndex;
 
             do
             {
-                int randomInt = Random.Range(0, roomsTuple.Count);
-                randomRoom = roomsTuple[randomInt];
+                int randomInt = Random.Range(0, _roomsTuple.Count);
+                randomRoom = _roomsTuple[randomInt];
                 roomIndex = GameManager.instance.levelGenerator.GetIndexOfRoom(randomRoom.Item1);
             } while (GameManager.instance.levelGenerator.IsRoomEmpty(roomIndex));
 
@@ -142,7 +127,7 @@ namespace _2Scripts.Manager
 
                 if (_currentEnemiesCount < maxEnemiesPerLevel)
                 {
-                    MeshInfo meshInfoToActivate = ChooseEnemyMeshInfo();
+                    EnemyStats meshInfoToActivate = ChooseEnemyMeshInfo();
                     (Room, List<GameObject>) roomToSpawnIn = GetRandomRoomToSpawnIn();
                     Vector3 spawningPosition = roomToSpawnIn.Item2[Random.Range(0, roomToSpawnIn.Item2.Count)].transform.position;
 
@@ -165,6 +150,7 @@ namespace _2Scripts.Manager
 
                     // Set the health component
                     HealthComponent healthComponent = newEnemy.GetComponent<HealthComponent>();
+                    newEnemy.GetComponent<EnemyData>().enemyStats = meshInfoToActivate;
                     if (healthComponent != null)
                     {
                         healthComponent.SetMaxHealth(meshInfoToActivate.health);
@@ -186,7 +172,7 @@ namespace _2Scripts.Manager
         {
             if (_currentEnemiesCount < maxEnemiesPerLevel)
             {
-                MeshInfo meshInfoToActivate = ChooseEnemyMeshInfo();
+                EnemyStats meshInfoToActivate = ChooseEnemyMeshInfo();
                 // get all spawn points
                 List<GameObject> gameObjectList = roomTp.GetAllEnemySpawnPoint();
                 // select the spawn point
@@ -250,10 +236,10 @@ namespace _2Scripts.Manager
         /// <summary>
         /// Decrement the total enemies number 
         /// </summary>
-        public void EnemyDestroyed(EnemyData penemyKilled)
+        public void EnemyDestroyed(EnemyData pEnemyKilled)
         {
             _currentEnemiesCount--;
-            OnEnemiesSpawnedOrKilledEventHandler?.Invoke(penemyKilled.roomSpawnedInID, -1);
+            OnEnemiesSpawnedOrKilledEventHandler?.Invoke(pEnemyKilled.roomSpawnedInID, -1);
         }
 
         /// <summary>
@@ -268,21 +254,6 @@ namespace _2Scripts.Manager
                     networkObjectChild.Despawn();
             }
             Debug.Log("All enemies left removed");
-        }
-
-        // /!\ DEBUG ONLY /!\
-        [Button]
-        private void DEBUG_StartSpawn()
-        {
-            GameManager.GetManager<DifficultyManager>().DEBUG_SetEasyStatsForEnemies();
-            _enemiesList = GameManager.GetManager<DifficultyManager>().GetEnemiesStatsToUse();
-            StartCoroutine(SpawnEnemies());
-        }
-        // /!\ DEBUG ONLY /!\
-        [Button]
-        private void DEBUG_StopSpawn()
-        {
-            StopCoroutine(SpawnEnemies());
         }
     }
 }

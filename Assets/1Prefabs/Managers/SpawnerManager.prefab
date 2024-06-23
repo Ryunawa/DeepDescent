@@ -45,14 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bSpawnInMultiplayer: 0
-  spawnableEnemiesPrefabsByLevel:
-  - enemyMeshInfos:
-    - index: 1
-      health: 50
-    - index: 3
-      health: 80
-    - index: 9
-      health: 120
+  spawnableEnemiesIndexByLevel:
+  - enemyIndex: 0000000001000000
   maxEnemiesPerLevel: 40
   maxEnemiesPerRoom: 5
   spawnIntervalInSecond: 2

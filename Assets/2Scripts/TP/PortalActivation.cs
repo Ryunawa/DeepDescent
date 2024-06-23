@@ -36,7 +36,7 @@ namespace _2Scripts.TP
         {
             GameManager.GetManager<GameFlowManager>().SetGameState(GameFlowManager.LevelState.BossNotDiscovered);
             // Teleportation
-            GameManager.GetManager<GameFlowManager>().LoadNextLevel();
+            GameManager.GetManager<GameFlowManager>().LoadNextLevelServerRpc();
         }
 
         private void OnTriggerEnter(Collider other)

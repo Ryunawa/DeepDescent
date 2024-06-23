@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbb346e1f2f939149b31b1e0f80d53b5, type: 3}
   m_Name: ArmorList
   m_EditorClassIdentifier: 
-  items: []
+  items:
+  - {fileID: 11400000, guid: 8318c8cda8a49d94aa70db04a64e1a6d, type: 2}
+  - {fileID: 11400000, guid: 94a846be36cd04741ae71e2493c50c4a, type: 2}

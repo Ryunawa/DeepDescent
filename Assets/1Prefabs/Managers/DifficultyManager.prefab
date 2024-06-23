@@ -46,11 +46,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   easyDifficultyEnemyStats:
-    meshInfos: []
+    statsInfos:
+    - index: 0
+      spawnRate: 0.3
+      health: 30
+      damageDealt: 5
+      armor: 0
   normalDifficultyEnemyStats:
-    meshInfos: []
+    statsInfos:
+    - index: 0
+      spawnRate: 0.5
+      health: 35
+      damageDealt: 6
+      armor: 1
+    - index: 1
+      spawnRate: 0.5
+      health: 20
+      damageDealt: 7
+      armor: 0
   hardDifficultyEnemyStats:
-    meshInfos: []
+    statsInfos: []
   easyDifficultyResourceStats:
     crystalDropRate:
       prefab: {fileID: 0}
@@ -122,6 +137,7 @@ MonoBehaviour:
   baseTimeRate: 0.9
   totalTimeInMinutes: 40
   timer: {fileID: 559719539115313260}
+  pDifficulty_var: 0
 --- !u!114 &559719539115313260
 MonoBehaviour:
   m_ObjectHideFlags: 0
