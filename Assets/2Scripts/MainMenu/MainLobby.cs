@@ -1,6 +1,8 @@
+using _2Scripts.Enum;
 using _2Scripts.Helpers;
 using _2Scripts.Interfaces;
 using _2Scripts.Manager;
+using NaughtyAttributes;
 using TMPro;
 using Unity.Netcode;
 using Unity.VisualScripting;
@@ -19,6 +21,14 @@ public class MainLobby : GameManagerSync<MainLobby>
     [SerializeField] private Button playButton;
     [SerializeField] private Button createButton;
 
+
+    [SerializeField] private Sprite checkToggle;
+    [SerializeField] private Sprite uncheckToggle;
+    [SerializeField] private Toggle easyToggle;
+    [SerializeField] private Toggle normalToggle;
+    [SerializeField] private Toggle hardToggle;
+    private int difficultyLevel = 2;
+
     private MultiManager multiManager;
 
     protected override void OnGameManagerChangeState(GameState gameState)
@@ -36,6 +46,14 @@ public class MainLobby : GameManagerSync<MainLobby>
         playButton.onClick.AddListener(GameManager.GetManager<MultiManager>().Init);
         createButton.onClick.AddListener(GameManager.GetManager<MultiManager>().CreateLobby);
         actualPlayButton.onClick.AddListener(GameManager.GetManager<MultiManager>().StartGame);
+
+        // Add listeners to the difficulty toggles
+        easyToggle.onValueChanged.AddListener(delegate { ChangeDifficultyBtn(1); });
+        normalToggle.onValueChanged.AddListener(delegate { ChangeDifficultyBtn(2); });
+        hardToggle.onValueChanged.AddListener(delegate { ChangeDifficultyBtn(3); });
+
+        // Initialize the difficulty to a default value
+        ChangeDifficultyBtn(2);
     }
 
     private void ShowUI()
@@ -89,5 +107,51 @@ public class MainLobby : GameManagerSync<MainLobby>
         GameManager.GetManager<SceneManager>().DeactivateLoadingScreen();
         transform.root.gameObject.SetActive(true);
     }
-    
+
+
+    private void ChangeDifficultyBtn(int difficulty)
+    {
+        difficultyLevel = difficulty;
+
+        // Reset all buttons to unchecked
+        ResetAllButtons();
+
+        // Change the appropriate button's child image to checked
+        switch (difficulty)
+        {
+            case 1:
+                SetToggleImage(easyToggle, checkToggle);
+                // DifficultyMode.Easy;
+                break;
+            case 2:
+                SetToggleImage(normalToggle, checkToggle);
+                // DifficultyMode.Normal;
+                break;
+            case 3:
+                SetToggleImage(hardToggle, checkToggle);
+                // DifficultyMode.Normal;
+                break;
+        }
+
+    }
+
+    private void ResetAllButtons()
+    {
+        SetToggleImage(easyToggle, uncheckToggle);
+        SetToggleImage(normalToggle, uncheckToggle);
+        SetToggleImage(hardToggle, uncheckToggle);
+    }
+
+    private void SetToggleImage(Toggle toggle, Sprite newSprite)
+    {
+        // Assuming the child image is the first child of the toggle
+        Image toggleImage = toggle.transform.GetChild(0).GetComponent<Image>();
+        toggleImage.sprite = newSprite;
+    }
+
+    public int GetSelectedDifficulty()
+    {
+        return difficultyLevel;
+    }
+
 }

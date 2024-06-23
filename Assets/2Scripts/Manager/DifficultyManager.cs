@@ -50,6 +50,8 @@ namespace _2Scripts.Manager
         private ResourceType _resourcesDropRateStructToUse;
         private float _difficultyMultiplier;
 
+        public DifficultyMode pDifficulty_var;
+
         #endregion
 
         private void OnDisable()
