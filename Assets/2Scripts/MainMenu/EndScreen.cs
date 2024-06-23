@@ -1,10 +1,13 @@
+using _2Scripts.Manager;
+using UnityEditor.SearchService;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class EndScreen : MonoBehaviour
 {
     public void ReturnToMainMenu()
     {
-        SceneManager.LoadScene(0);
+        GameManager.GetManager<SceneManager>().ActivateLoadingScreen();
+        GameManager.instance.ChangeGameState(GameState.MainMenu);
+        GameManager.GetManager<SceneManager>().LoadScene(Scenes.MainMenu);
     }
 }

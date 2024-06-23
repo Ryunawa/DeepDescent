@@ -54,6 +54,7 @@ namespace _2Scripts.Manager
         [Rpc(SendTo.Server)]
     public void LoadNextLevelServerRpc()
     {
+        GameManager.instance.ResetNumberOfDeadPlayer();
         LoadNextLevelClientRpc();
         Timer.StopTimer();
         OnNextLevelEvent?.Invoke(Timer);
