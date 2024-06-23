@@ -303,16 +303,12 @@ namespace _2Scripts.Entities.Player
             _virtualCamera.gameObject.SetActive(false);
 
             List<GameObject> allPlayers = GameManager.GetManager<MultiManager>().GetAllPlayerGameObjects();
-            while (true)
+            allPlayers.Remove(transform.parent.gameObject);
+            GameObject DeathCamPlayer = allPlayers[UnityEngine.Random.Range(0, allPlayers.Count)];
+            if (!DeathCamPlayer.Equals(gameObject))
             {
-                GameObject DeathCamPlayer = allPlayers[UnityEngine.Random.Range(0, allPlayers.Count)].GetComponentInChildren<PlayerBehaviour>().gameObject;
-                if (!DeathCamPlayer.Equals(gameObject))
-                {
-                    DeathCamPlayer.GetComponent<PlayerBehaviour>().Camera.gameObject.SetActive(true);
-                    DeathCamPlayer.GetComponent<PlayerBehaviour>().VirtualCamera.gameObject.SetActive(true);
-                    break;
-                }
-                
+                DeathCamPlayer.GetComponent<PlayerBehaviour>().Camera.gameObject.SetActive(true);
+                DeathCamPlayer.GetComponent<PlayerBehaviour>().VirtualCamera.gameObject.SetActive(true);
             }
             this.enabled = false;
 
