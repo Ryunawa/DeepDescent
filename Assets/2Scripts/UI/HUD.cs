@@ -15,7 +15,14 @@ namespace _2Scripts.UI
     public class HUD : GameManagerSync<HUD>
     {
         [SerializeField] private float gameTime = 3;
-        
+
+        [Header("Visual Feedback")]
+        private bool isFlashing = false;
+        [SerializeField] private Image bloodImg;
+        [SerializeField] private Color flashColor = new Color(1f, 1f, 1f, 0.1f);
+        [SerializeField] private float flashSpeed = 5f;
+        [SerializeField] private float flashDuration = 0.5f;
+
         [Header("Left")]
         [SerializeField] private Slider HP;
         [SerializeField] private Slider BlueBar;
@@ -28,6 +35,7 @@ namespace _2Scripts.UI
         
         [SerializeField] private Image[] quickSlotsImages = new Image[3];
         [SerializeField] private TextMeshProUGUI[] quickSlotsQuantity = new TextMeshProUGUI[3];
+
 
         private GameFlowManager _gameFlowManager;
 
@@ -49,12 +57,26 @@ namespace _2Scripts.UI
         {
             if (_gameFlowManager)
                 SetTimer(_gameFlowManager.Timer.GetTimerElapsedTime());
+
+
+            if (isFlashing)
+            {
+                Color currentColor = bloodImg.color;
+                currentColor.a = Mathf.Lerp(currentColor.a, 0, flashSpeed * Time.deltaTime / flashDuration);
+                bloodImg.color = currentColor;
+
+                if (currentColor.a <= 0.01f)
+                {
+                    bloodImg.color = new Color(currentColor.r, currentColor.g, currentColor.b, 0);
+                    isFlashing = false;
+                }
+            }
         }
         
         public bool SetHp()
         {
            HP.value = GameManager.playerBehaviour.Health.GetHealth() / GameManager.playerBehaviour.Health.MaxHealth;
-            return true;
+           return true;
         }
         
         public bool SetBlueBar(float value)
@@ -100,6 +122,18 @@ namespace _2Scripts.UI
 
             return true;
         }
-        
+
+        public void FlashDamageEffect(float currentHealth, float maxHealth)
+        {
+            isFlashing = true;
+            Color flashColor = bloodImg.color;
+            float healthPercentage = currentHealth / maxHealth;
+
+            // Inverse the health percentage to make the image more visible as health decreases
+            flashColor.a = 0.5f * (1 - healthPercentage);
+
+            bloodImg.color = flashColor;
+        }
+
     }
 }

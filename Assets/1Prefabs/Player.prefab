@@ -409,6 +409,12 @@ MonoBehaviour:
   maxHealth: 100
   _health:
     m_InternalValue: 0
+  invincibleDebug: 0
+  aiController: {fileID: 0}
+  damageFlashImage: {fileID: 0}
+  flashColor: {r: 1, g: 1, b: 1, a: 0.1}
+  flashSpeed: 5
+  flashDuration: 0.5
   OnDeath:
     m_PersistentCalls:
       m_Calls: []
@@ -418,7 +424,6 @@ MonoBehaviour:
   OnHealed:
     m_PersistentCalls:
       m_Calls: []
-  invincibleDebug: 0
 --- !u!114 &5061184010628317641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3855,6 +3860,7 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 6571337338748914205, guid: 478b8ff498bd2624385544ba44e9f36a, type: 3}
     - {fileID: 8252237477458276801, guid: 478b8ff498bd2624385544ba44e9f36a, type: 3}
+    - {fileID: 8974724520617201661, guid: 478b8ff498bd2624385544ba44e9f36a, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 131680, guid: 478b8ff498bd2624385544ba44e9f36a,
@@ -7181,6 +7187,7 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 6571337338748914205, guid: 478b8ff498bd2624385544ba44e9f36a, type: 3}
     - {fileID: 8252237477458276801, guid: 478b8ff498bd2624385544ba44e9f36a, type: 3}
+    - {fileID: 8974724520617201661, guid: 478b8ff498bd2624385544ba44e9f36a, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 478b8ff498bd2624385544ba44e9f36a, type: 3}

@@ -288,7 +288,9 @@ namespace _2Scripts.Entities.Player
             }
             transform.Rotate(transform.right, 90.0f);
 
-            StartCoroutine(SetupDeath());
+
+            if (GameManager.GetManager<MultiManager>().GetAllPlayerGameObjects().Count >= 2)
+                StartCoroutine(SetupDeath());
         }
 
         private IEnumerator SetupDeath()
@@ -323,6 +325,16 @@ namespace _2Scripts.Entities.Player
                     playerModel.layer = 14;
                     pb.weaponModels.ChangeWeaponAndShieldLayer(14);
                 }
+            }
+            while (true)
+            {
+                if (inventory.InventoryItems.Count > 0)
+                {
+                    inventory.DropFirstItem(new Vector3(UnityEngine.Random.Range(0.0f, 1.0f), 0.0f, UnityEngine.Random.Range(0.0f, 1.0f)));
+                    yield return new WaitForSeconds(0.1f);
+                }
+                else
+                    break;
             }
             this.enabled = false;
             yield return null;

@@ -79,9 +79,9 @@ MonoBehaviour:
   roomFourPrefab: {fileID: 4804944387938855065, guid: 0b1595586e51cbe4db13f7be476e3215,
     type: 3}
   dungeon: []
+  doorProbabilityIfEmpty: 50
   _props:
   - {fileID: 7711286722867014909, guid: a0112e71897e5414db37d63de6680102, type: 3}
-  - {fileID: 7825597609852004801, guid: 0d38404e13bb6664f85fb35f6eae552b, type: 3}
   - {fileID: 8384136562222545150, guid: fffbb7e51d4a76048b6f39d67f37196a, type: 3}
   - {fileID: 289011377166552801, guid: df11e075dbd300b40b02da4537ee1871, type: 3}
   - {fileID: 56899907952853865, guid: 9b16dae3c6590ca4e8d7a29ae07172e4, type: 3}

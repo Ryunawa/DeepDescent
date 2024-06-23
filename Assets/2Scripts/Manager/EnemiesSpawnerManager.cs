@@ -143,6 +143,8 @@ namespace _2Scripts.Manager
                     {
                         Transform child = newEnemy.transform.GetChild(i);
                         child.gameObject.SetActive(i == meshInfoToActivate.index);
+
+                        newEnemy.GetComponent<AIController>().ChangeSkinRpc(meshInfoToActivate.index);
                     }
 
                     // Ensure the root (last child) is always active
@@ -166,6 +168,12 @@ namespace _2Scripts.Manager
                     _currentEnemiesCount++;
                 }
             }
+        }
+
+        [Rpc(SendTo.ClientsAndHost)]
+        private void ChangeMeshRpc()
+        {
+            
         }
 
         public void SpawnBossEnemy(Room roomTp)

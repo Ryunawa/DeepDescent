@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using _2Scripts.Entities.Player;
 using _2Scripts.ProceduralGeneration;
+using Unity.Netcode;
+using Unity.Services.Qos.V2.Models;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -14,8 +16,13 @@ namespace _2Scripts.Manager
     {
         private static GameState _gameState;
 
+        public Timer.Timer timer;
+
+        private static int numberOfDeadPlayers;
+
         public static GameState GameState => _gameState;
 
+        [Header("Managers")]
         [SerializeField]private GameObject  multiManagerPrefab;
         [SerializeField]private GameObject inventoryUIManagerPrefab;
         [SerializeField]private GameObject gameFlowManagerPrefab;
@@ -25,6 +32,9 @@ namespace _2Scripts.Manager
         [SerializeField]private GameObject  lightManagerPrefab;
         [SerializeField]private GameObject enemiesSpawnerManagerPrefab;
         [SerializeField]private GameObject  audioManagerPrefab;
+        
+        [Header("Other")]
+        [SerializeField] private GameObject endGameUI;
 
         private static ManagerObject[] _managersAndPrefabs = {};
         private static Coroutine _stateChangeCoroutine;
@@ -57,7 +67,43 @@ namespace _2Scripts.Manager
                 new (ManagerType.Audio, null,audioManagerPrefab)
             };
         }
-     
+
+        public void AddADeadPlayer()
+        {
+            numberOfDeadPlayers++;
+            Debug.Log("numberOfDeadPlayers : " + numberOfDeadPlayers);
+
+            if (numberOfDeadPlayers >= NetworkManager.Singleton.ConnectedClients.Count)
+            {
+                if (NetworkManager.Singleton.IsServer || NetworkManager.Singleton.IsHost)
+                {
+                    EndGameRpc();
+                }
+            }
+        }
+
+        public void ResetNumberOfDeadPlayer()
+        {
+            numberOfDeadPlayers = 0;
+            Debug.Log("numberOfDeadPlayers : " + numberOfDeadPlayers);
+        }
+
+
+        [Rpc(SendTo.ClientsAndHost)]
+        private void EndGameRpc()
+        {
+            Debug.Log("Game Over. Returning to main menu.");
+            endGameUI = GetManager<SceneManager>().gameObject.transform.GetChild(1).gameObject;
+            endGameUI.SetActive(true);
+            timer = FindObjectOfType<Timer.Timer>();
+            timer.StopTimer();
+
+            // Activate the cursor
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+
+
         private void Start()
         {
            ChangeGameState(GameState.MainMenu);
@@ -110,7 +156,7 @@ namespace _2Scripts.Manager
                     
                     ActivateNeededManagers(neededManagers, true);
                     break;
-                
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(gameState), gameState, null);
             }

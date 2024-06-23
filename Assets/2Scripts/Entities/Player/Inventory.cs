@@ -128,12 +128,15 @@ public class Inventory : GameManagerSync<Inventory>
         SaveSystem.Save();
     }
 
-    public void DropFromInventory(int itemPos)
+    public void DropFromInventory(int itemPos, Vector3? DropOffset = null)
     {
         if (InventoryItems.Count <= InventorySpace)
         {
             InventoryObject newInventoryObject = InventoryItems[itemPos];
-            SpawnInventoryItemsRpc(newInventoryObject.ID);
+            Vector3 trueOffset = Vector3.zero;
+            if (DropOffset != null)
+                trueOffset = (Vector3) DropOffset;
+            SpawnInventoryItemsRpc(newInventoryObject.ID, trueOffset);
             if (InventoryItems[itemPos].Amount > 1)
             {
                 newInventoryObject.Amount = -1;
@@ -158,9 +161,9 @@ public class Inventory : GameManagerSync<Inventory>
     }
 
     [Rpc(SendTo.Server)]
-    public void SpawnInventoryItemsRpc(int id)
+    public void SpawnInventoryItemsRpc(int id, Vector3 Offset)
     {
-        NetworkObject o = Instantiate(GameManager.GetManager<ItemManager>().GetItemNetworkObject(id), transform.position, Quaternion.identity);
+        NetworkObject o = Instantiate(GameManager.GetManager<ItemManager>().GetItemNetworkObject(id), transform.position + Offset, Quaternion.identity);
         o.Spawn();
     }
 
@@ -282,9 +285,9 @@ public class Inventory : GameManagerSync<Inventory>
     }
 
     [Button]
-    public void DropFirstItem()
+    public void DropFirstItem(Vector3? DropOffset = null)
     {
-        DropFromInventory(0);
+        DropFromInventory(0, DropOffset);
     }
 
     public void RemoveFromEquipment(InventoryObject item, bool offHand = false)
