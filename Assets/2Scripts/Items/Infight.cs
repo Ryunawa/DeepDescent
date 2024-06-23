@@ -58,7 +58,6 @@ public class Infight : MonoBehaviour
         {
             if (parentOwner.TryGetComponent(out EnemyData data))
             {
-                Debug.Log("DAMAGE: " + data.damageInflicted);
                 collidedHealthComponent.TakeDamage(data.damageInflicted);
             }
 

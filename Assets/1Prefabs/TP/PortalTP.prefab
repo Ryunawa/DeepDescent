@@ -78,8 +78,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58445b8bbd7204746a9e5c9bda59dc5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bossPrefab: {fileID: 3959042653490119952, guid: bf7079a114337a64f9c64f12fcf62083,
+  bossPrefab: {fileID: 3959042653490119952, guid: 7a48f06c595cad34ca4b9450ea942854,
     type: 3}
+  pillarFx: {fileID: 1416841970759849867}
+  roomTp: {fileID: 0}
 --- !u!114 &1265007091238403510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 0
+  GlobalObjectIdHash: 986617693
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1

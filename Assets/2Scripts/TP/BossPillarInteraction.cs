@@ -11,8 +11,19 @@ public class BossPillarInteraction : MonoBehaviour
     private bool isPlayerInRange = false;
     private HashSet<PlayerBehaviour> nearbyPlayers = new HashSet<PlayerBehaviour>();
     [SerializeField] private GameObject bossPrefab;
+    [SerializeField] private GameObject pillarFx;
 
     [SerializeField] public Room roomTp;
+
+    private void Start()
+    {
+        if (pillarFx != null)
+        {
+            pillarFx.GetComponent<ParticleSystem>().Stop();
+            pillarFx.SetActive(true);
+            pillarFx.GetComponent<ParticleSystem>().Play();
+        }
+    }
 
     void Update()
     {
@@ -20,12 +31,29 @@ public class BossPillarInteraction : MonoBehaviour
         {
             ActivatePillar();
         }
+
+        if (GameManager.GetManager<GameFlowManager>().CurrentState == GameFlowManager.LevelState.BossDefeated)
+        {
+            if (pillarFx != null)
+            {
+                pillarFx.SetActive(true);
+            }
+
+            // Play Music
+            GameManager.GetManager<AudioManager>().PlayMusic("InsideTheDungeonMusic", 0.1f);
+        }
     }
 
     private void ActivatePillar()
     {
         // Play Music
         GameManager.GetManager<AudioManager>().PlayMusic("BossMusic", 0.1f);
+
+        if (pillarFx != null)
+        {
+            pillarFx.SetActive(false);
+            pillarFx.GetComponent<ParticleSystem>().Stop();
+        }
 
         CinemachineImpulseSource[] impulseSources = FindObjectsOfType<CinemachineImpulseSource>();
         foreach (CinemachineImpulseSource impulseSource in impulseSources)
