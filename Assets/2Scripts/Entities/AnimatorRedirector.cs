@@ -10,11 +10,11 @@ public class AnimatorRedirector : GameManagerSync<AnimatorRedirector>
 {
     [SerializeField] private List<Animator> _animators;
     [SerializeField] private Transform boltOrigin;
-    private SpellCasterComponent _spellCasterComponent;
+    [SerializeField] private SpellCasterComponent _spellCasterComponent;
 
     protected override void OnGameManagerChangeState(GameState gameState)
     {
-        _spellCasterComponent = GameManager.GetPlayerComponent<SpellCasterComponent>();
+        //_spellCasterComponent = GameManager.GetPlayerComponent<SpellCasterComponent>();
     }
 
     public void ResetIsAttacking()
