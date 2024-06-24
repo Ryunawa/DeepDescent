@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: 41
   Name: SpellBook II
   Description: The volume II of the Basic Book of spells
-  Rarity: 0
+  Rarity: 1
   SellValue: 9
   QuickUse: 0
   Stackable: 0

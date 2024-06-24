@@ -10,20 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b1a7f6fcc0440b449ceeda2b794c3ff, type: 3}
-  m_Name: GreatSword
+  m_Name: ShieldPlank
   m_EditorClassIdentifier: 
-  ID: 11
-  Name: Great Sword
-  Description: A sword, made of stone, you can hit things with it, pretty useful
-    isn't it ?
-  Rarity: 1
-  SellValue: 10
+  ID: 20
+  Name: Shield Plank
+  Description: This shield is weak but it's there so don't complain.
+  Rarity: 0
+  SellValue: 6
   QuickUse: 0
   Stackable: 0
-  InventoryIcon: {fileID: 21300000, guid: 08d5ec2d201ece949a5e428ba3ea0e63, type: 3}
-  ObjectPrefab: {fileID: 8778570344472889581, guid: b87713f69e4e3a74da5723290180e88d,
+  InventoryIcon: {fileID: 21300000, guid: f270ae2815e437842921f264c20b5271, type: 3}
+  ObjectPrefab: {fileID: 1364107923810573949, guid: 73a1af21d8b85384e9eec1d939519fc9,
     type: 3}
   SpellToSpawn: {fileID: 0}
-  WeaponType: 1
-  AttackValue: 40
+  WeaponType: 5
+  AttackValue: 2
   AttackSpeed: 1

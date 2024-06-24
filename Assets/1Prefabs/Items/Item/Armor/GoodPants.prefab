@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5661988192913138698}
   - component: {fileID: 3833993036907413658}
   m_Layer: 10
-  m_Name: IntermediateArmor
+  m_Name: GoodPants
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 808603172
+  GlobalObjectIdHash: 2973383108
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 564780b624588d04d972212d480c5d52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemDetails: {fileID: 11400000, guid: 94a846be36cd04741ae71e2493c50c4a, type: 2}
+  ItemDetails: {fileID: 11400000, guid: 205ea34871ddf42418bc236c1458252f, type: 2}
   amount: 1
   GOText: {fileID: 9051244745979120837}
   playerBehaviourInspecting: {fileID: 0}

@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: 70
   Name: Blue Potion
   Description: A nice potion tinted in blue.
-  Rarity: 1
+  Rarity: 3
   SellValue: 4
   QuickUse: 1
   Stackable: 1
@@ -23,5 +23,5 @@ MonoBehaviour:
   ObjectPrefab: {fileID: 5744667273649279677, guid: 66a92c130e046614b8ca68da7403f599,
     type: 3}
   PotionType: 0
-  PotionValue: 10
+  PotionValue: 30
   PotionCooldown: 10
