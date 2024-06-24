@@ -5196,7 +5196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 564780b624588d04d972212d480c5d52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemDetails: {fileID: 11400000, guid: 35c21c525c5a3274682ee0d9255c87ea, type: 2}
+  ItemDetails: {fileID: 11400000, guid: dfa147571c1a5ed43822090351c151a3, type: 2}
   amount: 1
   GOText: {fileID: 8578353768432963058}
   playerBehaviourInspecting: {fileID: 0}
