@@ -127,8 +127,12 @@ namespace _2Scripts.Manager
 		/// <param name="lobbyChanges"></param>
 		private void OnLobbyChanged(ILobbyChanges lobbyChanges)
 		{
+			
+			
 			Debug.Log("Lobby changed");
 			lobbyChanges.ApplyToLobby(_lobby);
+			
+			if (GameManager.GameState != GameState.MainMenu)return;
 
 			if (_lobby.Data["startGame"].Value != "0" && !_IsOwnerOfLobby)
 			{
