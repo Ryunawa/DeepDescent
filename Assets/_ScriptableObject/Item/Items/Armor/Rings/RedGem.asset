@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: RedGem
   m_EditorClassIdentifier: 
   ID: 80
-  Name: 
-  Description: 
+  Name: Red Gem
+  Description: There is a little blessing on it
   Rarity: 1
   SellValue: 5
   QuickUse: 0
