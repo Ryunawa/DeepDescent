@@ -9,6 +9,7 @@ using UnityEngine.Serialization;
 using NaughtyAttributes;
 using Unity.VisualScripting;
 using System.Collections;
+using _2Scripts.UI;
 
 namespace _2Scripts.Entities.Player
 {
@@ -359,6 +360,14 @@ namespace _2Scripts.Entities.Player
             Debug.Log("Use Quickslot");
             if ( inventory.QuickSlots[(int)index].ID == -1)return;
             ((ConsumableItem)GameManager.GetManager<ItemManager>().GetItem(inventory.QuickSlots[(int)index].ID)).Use(gameObject);
+            inventory.QuickSlots[(int)index].Amount -= 1;
+            if (inventory.QuickSlots[(int)index].Amount <= 0)
+            {
+                int itemId = inventory.QuickSlots[(int)index].ID;
+                inventory.UnEquipQuickSlot((int) index);
+                inventory.InventoryItems.Remove(inventory.InventoryItems.Find(x => x.ID == itemId));
+                GameManager.GetManager<InventoryUIManager>().DrawInventory();
+            }
         }
         
         private void Attack()

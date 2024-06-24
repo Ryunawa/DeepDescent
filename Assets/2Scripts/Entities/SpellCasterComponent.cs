@@ -36,6 +36,11 @@ public class SpellCasterComponent : NetworkBehaviour
         
         
         NetworkObject o = Instantiate(spell.GetComponent<NetworkObject>(), pos, Quaternion.identity);
+
+        if (isFromStaff || isFromCrossbow)
+            o.GetComponent<Projectile>().projectileDamage =
+                GameManager.playerBehaviour.inventory.MainHandItem.AttackValue;
+        
         o.GetComponent<Projectile>().projectileDirection = gameObject.transform.forward.normalized;
         o.Spawn();
     }

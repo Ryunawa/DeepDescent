@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using _2Scripts.Entities.Player;
 using _2Scripts.Interfaces;
+using _2Scripts.Manager;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -12,7 +14,16 @@ namespace _2Scripts
         public Item ItemDetails;
         public int amount;
         public GameObject GOText;
+        private ParticleSystem _vfx;
         [DoNotSerialize] public PlayerBehaviour playerBehaviourInspecting;
+
+        private void Start()
+        {
+            _vfx = GetComponentInChildren<ParticleSystem>();
+            
+            ParticleSystem.ColorOverLifetimeModule color = _vfx.colorOverLifetime;
+            color.color = GameManager.GetManager<ItemManager>().GetGradientFromRarity(ItemDetails.Rarity);
+        }
 
         private void Update()
         {

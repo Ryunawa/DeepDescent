@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba265f7600878294e8460a1541036533, type: 3}
+  m_Name: SuperiorChest
+  m_EditorClassIdentifier: 
+  ID: 63
+  Name: Superior chest armor
+  Description: This armor has been made by dwarfs for humans.
+  Rarity: 3
+  SellValue: 20
+  QuickUse: 0
+  Stackable: 0
+  InventoryIcon: {fileID: 21300000, guid: d659f7396cd57754eba78763cf986c51, type: 3}
+  ObjectPrefab: {fileID: 285884523482912472, guid: 4912e12f83944e54abc47c2a78631e5c,
+    type: 3}
+  ArmorType: 0
+  ArmorValue: 20

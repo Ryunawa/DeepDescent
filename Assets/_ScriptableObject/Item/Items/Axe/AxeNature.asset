@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b1a7f6fcc0440b449ceeda2b794c3ff, type: 3}
+  m_Name: AxeNature
+  m_EditorClassIdentifier: 
+  ID: 17
+  Name: Axe Nature
+  Description: An axe straight from the fairytales
+  Rarity: 2
+  SellValue: 25
+  QuickUse: 0
+  Stackable: 0
+  InventoryIcon: {fileID: 21300000, guid: 719c2201c2f5f6c4aafffaeb5abdf5f9, type: 3}
+  ObjectPrefab: {fileID: 8778570344472889581, guid: dce423ab097b44b4081af9a9fc7dda95,
+    type: 3}
+  SpellToSpawn: {fileID: 0}
+  WeaponType: 3
+  AttackValue: 40
+  AttackSpeed: 1
