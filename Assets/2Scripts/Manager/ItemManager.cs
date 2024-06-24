@@ -22,6 +22,12 @@ namespace _2Scripts.Manager
         [SerializeField] public ItemList potionList;
         [SerializeField] public ItemList parchmentList;
 
+        [SerializeField] public Gradient commonGradient;
+        [SerializeField] public Gradient uncommonGradient;
+        [SerializeField] public Gradient rareGradient;
+        [SerializeField] public Gradient epicGradient;
+        [SerializeField] public Gradient legendaryGradient;
+
         private Dictionary<int, Item> _itemsDictionary;
 
         protected override void Start()
@@ -154,6 +160,19 @@ namespace _2Scripts.Manager
             }
 
             return adjustedChances;
+        }
+
+        public Gradient GetGradientFromRarity(Rarity rarity)
+        {
+            return rarity switch
+            {
+                Rarity.Common => commonGradient,
+                Rarity.Uncommon => uncommonGradient,
+                Rarity.Rare => rareGradient,
+                Rarity.Epic => epicGradient,
+                Rarity.Legendary => legendaryGradient,
+                _ => throw new ArgumentOutOfRangeException(nameof(rarity), rarity, null)
+            };
         }
 
     }
