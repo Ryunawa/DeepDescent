@@ -18,6 +18,6 @@ MonoBehaviour:
   DamageInflictedModifier: 2
   EquippableWeaponType: 03000000
   StartingItemInInventory:
-  - {fileID: 11400000, guid: c418ee6bc24660540b937618600987a3, type: 2}
+  - {fileID: 11400000, guid: 4d972556319316943986767d3a4fe3de, type: 2}
   - {fileID: 11400000, guid: 8318c8cda8a49d94aa70db04a64e1a6d, type: 2}
   - {fileID: 11400000, guid: 2889795e7f326f44c8bb406bf7986903, type: 2}
