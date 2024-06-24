@@ -118,6 +118,7 @@ namespace _2Scripts.Manager
 			
 			GameManager.GetManager<SceneManager>().ActivateLoadingScreen();
 			GameManager.GetManager<SceneManager>().LoadScene(Scenes.MainMenu);
+			GameManager.instance.ChangeGameState(GameState.MainMenu);
 		}
 	
 		/// <summary>

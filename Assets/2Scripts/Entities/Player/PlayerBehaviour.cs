@@ -69,10 +69,9 @@ namespace _2Scripts.Entities.Player
 
         protected override void Start()
         {
-            base.Start();
-            
             if (IsOwner)
             {
+                base.Start();
                 _health = GetComponent<HealthComponent>();
 
                 _health.OnDeath.AddListener(OnDie);
@@ -135,9 +134,6 @@ namespace _2Scripts.Entities.Player
 
                     enabled = false;
                 }
-                
-                
-                
             }
 
             Debug.Log("PLayerBehaviour Done Start ");
