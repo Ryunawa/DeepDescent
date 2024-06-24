@@ -43,7 +43,7 @@ namespace _2Scripts.Manager
         /// Play a sound once
         /// </summary>
         /// <param name="pSoundName">The name associated to the sound to play</param>
-        public void PlaySfx(string pSoundName, float volume = 0.5f)
+        public void PlaySfx(string pSoundName, float volume = 0.3f)
         {
             Sound s = Array.Find(sfxSounds, x => x.name == pSoundName);
 
@@ -68,7 +68,7 @@ namespace _2Scripts.Manager
         /// Footstep sounds: minDistance = 1, maxDistance = 5
         /// Weapon sounds: minDistance = 2, maxDistance = 10
         /// Explosions: minDistance = 5, maxDistance = 50
-        public void PlaySfx(string pSoundName, MonoBehaviour pScript, float pMinDistance, float pMaxDistance, float volume = 0.5f)
+        public void PlaySfx(string pSoundName, MonoBehaviour pScript, float pMinDistance, float pMaxDistance, float volume = 0.3f)
         {
             Sound s = Array.Find(sfxSounds, x => x.name == pSoundName);
 
