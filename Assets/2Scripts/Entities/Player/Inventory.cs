@@ -65,10 +65,13 @@ public class Inventory : GameManagerSync<Inventory>
             }
             else
             {
-                foreach (var item in stat.CharacterStatPage.StartingItemInInventory)
+                if (stat.CharacterStatPage)
                 {
-                    InventoryObject newObj = new InventoryObject(item.ID, 0);
-                    InventoryItems.Add(newObj);
+                    foreach (var item in stat.CharacterStatPage.StartingItemInInventory)
+                    {
+                        InventoryObject newObj = new InventoryObject(item.ID, 0);
+                        InventoryItems.Add(newObj);
+                    }
                 }
             }
         }
