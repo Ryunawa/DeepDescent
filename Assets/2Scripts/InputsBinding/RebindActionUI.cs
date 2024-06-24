@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using Debug = UnityEngine.Debug;
 
 ////TODO: localization support
 
@@ -162,6 +165,7 @@ namespace _2Scripts.InputsBinding
         /// <param name="action"></param>
         /// <param name="bindingIndex"></param>
         /// <returns></returns>
+        
         public bool ResolveActionAndBinding(out InputAction action, out int bindingIndex)
         {
             bindingIndex = -1;
@@ -311,8 +315,6 @@ namespace _2Scripts.InputsBinding
             
             // Configure the rebind.
             m_RebindOperation = action.PerformInteractiveRebinding(bindingIndex)
-                .WithControlsExcluding("<Mouse>")
-                .WithControlsExcluding("<Mouse/leftbutton>")
                 .WithCancelingThrough("<keyboard>/escape")
                 .OnCancel(
                     operation =>
@@ -365,7 +367,7 @@ namespace _2Scripts.InputsBinding
                 m_RebindText.text = text;
             }
 
-            // If we have no rebind overlay and no callback but we have a binding text label,
+            // If we have no rebind overlay and no callback, but we have a binding text label,
             // temporarily set the binding text label to "<Waiting>".
             if (m_RebindOverlay == null && m_RebindText == null && m_RebindStartEvent == null && m_BindingText != null)
                 m_BindingText.text = "<Waiting...>";
@@ -432,6 +434,8 @@ namespace _2Scripts.InputsBinding
             s_RebindActionUIs.Add(this);
             if (s_RebindActionUIs.Count == 1)
                 InputSystem.onActionChange += OnActionChange;
+            
+            RefreshAllUI();
         }
 
         protected void OnDisable()
@@ -471,6 +475,19 @@ namespace _2Scripts.InputsBinding
                     referencedAction.actionMap == actionMap ||
                     referencedAction.actionMap?.asset == actionAsset)
                     component.UpdateBindingDisplay();
+            }
+        }
+
+        public void RefreshAllUI()
+        {
+            for (var i = 0; i < s_RebindActionUIs.Count; ++i)
+            {
+                var component = s_RebindActionUIs[i];
+                var referencedAction = component.actionReference?.action;
+                if (referencedAction == null)
+                    continue;
+
+                component.UpdateBindingDisplay();
             }
         }
 
