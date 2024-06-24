@@ -463,7 +463,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2b82b41b712ab4ebef0146dea13585, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  overrideWithSavedInventory: 1
+  overrideWithSavedInventory: 0
   visibleItemsFPS: {fileID: 7254602137039646948}
   visibleItemsTPS: {fileID: 2509654312490104346}
   ChestArmor: {fileID: 0}

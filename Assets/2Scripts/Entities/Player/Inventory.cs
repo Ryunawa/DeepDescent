@@ -63,6 +63,14 @@ public class Inventory : GameManagerSync<Inventory>
             {
                 SaveSystem.LoadInventory();
             }
+            else
+            {
+                foreach (var item in stat.CharacterStatPage.StartingItemInInventory)
+                {
+                    InventoryObject newObj = new InventoryObject(item.ID, 0);
+                    InventoryItems.Add(newObj);
+                }
+            }
         }
     }
 
