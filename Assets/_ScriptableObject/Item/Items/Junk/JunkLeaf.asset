@@ -20,5 +20,5 @@ MonoBehaviour:
   QuickUse: 0
   Stackable: 1
   InventoryIcon: {fileID: 21300000, guid: 17140e59711297c47b6438d2a2328e20, type: 3}
-  ObjectPrefab: {fileID: 2525646817608247078, guid: 3723411a8fa58d7489a04e18a1702815,
+  ObjectPrefab: {fileID: 2525646817608247078, guid: 2691bb65d65d64240af769b25aa08590,
     type: 3}

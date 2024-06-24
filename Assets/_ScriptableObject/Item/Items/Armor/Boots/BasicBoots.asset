@@ -21,7 +21,7 @@ MonoBehaviour:
   QuickUse: 0
   Stackable: 0
   InventoryIcon: {fileID: 21300000, guid: b34659b340ac78145adfb5447e662535, type: 3}
-  ObjectPrefab: {fileID: 285884523482912472, guid: 4c40ac0ca294beb46b57d90b8fbb9cf9,
+  ObjectPrefab: {fileID: 285884523482912472, guid: ff9d0f09d75096d46b958a7992b2e137,
     type: 3}
   ArmorType: 2
   ArmorValue: 2

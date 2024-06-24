@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b44b4d57f865a7d49813d7e6e3376e4f, type: 3}
-  m_Name: RedPotion
+  m_Name: MagicHealthPotion
   m_EditorClassIdentifier: 
-  ID: 71
-  Name: Red Potion
-  Description: A nice potion tinted in red.
-  Rarity: 1
-  SellValue: 4
+  ID: 74
+  Name: Magic Potion
+  Description: A flask filled with magic
+  Rarity: 3
+  SellValue: 16
   QuickUse: 1
   Stackable: 1
-  InventoryIcon: {fileID: 21300000, guid: 10876d86c0d0c7948ab7c3f219be6325, type: 3}
-  ObjectPrefab: {fileID: 5744667273649279677, guid: bbe697f0605be80448f4603882cb4ec4,
+  InventoryIcon: {fileID: 21300000, guid: e0ff51a21a06571409fc8cdb196b2f3a, type: 3}
+  ObjectPrefab: {fileID: 5744667273649279677, guid: d0224749867b0ad4d9fa09bb72e7a11c,
     type: 3}
   PotionType: 0
-  PotionValue: 10
+  PotionValue: 50
   PotionCooldown: 10

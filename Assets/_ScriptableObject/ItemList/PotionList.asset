@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: PotionList
   m_EditorClassIdentifier: 
   items:
-  - {fileID: 11400000, guid: ed930c4ddce8bed49adbfda77e068471, type: 2}
   - {fileID: 11400000, guid: e0e94ef56d2489846ad06d48b09fa116, type: 2}
+  - {fileID: 11400000, guid: 82e880bbe0a569f4fb7ae07f5c0187fa, type: 2}
+  - {fileID: 11400000, guid: ed930c4ddce8bed49adbfda77e068471, type: 2}
+  - {fileID: 11400000, guid: 56bb5499f98d79247b758cb7b2fb5e29, type: 2}
