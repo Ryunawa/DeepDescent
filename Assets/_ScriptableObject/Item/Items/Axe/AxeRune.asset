@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b1a7f6fcc0440b449ceeda2b794c3ff, type: 3}
-  m_Name: AxeRunes
+  m_Name: AxeRune
   m_EditorClassIdentifier: 
   ID: 15
   Name: Axe
