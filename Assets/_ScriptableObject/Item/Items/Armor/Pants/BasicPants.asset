@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 65
   Name: Basic pant armor
-  Description: 'This armor was given to you by the adventurers guild, it''s far from
-    the best but it''ll do '
+  Description: 'This armor is far from the best but it''ll do '
   Rarity: 0
   SellValue: 5
   QuickUse: 0
