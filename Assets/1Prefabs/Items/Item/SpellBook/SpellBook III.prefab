@@ -5073,7 +5073,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 233271399
+  GlobalObjectIdHash: 1647956117
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -5094,7 +5094,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 564780b624588d04d972212d480c5d52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemDetails: {fileID: 11400000, guid: d5759e7b1e80d8e4d897c8829bba5380, type: 2}
+  ItemDetails: {fileID: 11400000, guid: 139f1935091cfa343ab21f7789f6e272, type: 2}
   amount: 1
   GOText: {fileID: 8578353768432963058}
   playerBehaviourInspecting: {fileID: 0}
