@@ -34,7 +34,7 @@ RectTransform:
   - {fileID: 6409469376753845290}
   - {fileID: 5089683139368509415}
   - {fileID: 62227076572770607}
-  - {fileID: 5195381898108610290}
+  - {fileID: 3379364704456875917}
   m_Father: {fileID: 8775711610864921790}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -261,7 +261,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 223}
   m_SizeDelta: {x: 400.573, y: 132.537}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7631089566447476762
@@ -536,18 +536,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5413672252961975290}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8808340483494000905}
+  m_Father: {fileID: 3379364704456875917}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 162.228}
-  m_Pivot: {x: 0.5, y: 0}
+  m_SizeDelta: {x: -100, y: -100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2301409242815363004
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -659,7 +659,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Texts:
   - '"If you''re going through hell, keep going."  -Winston Churchill '
-  - '"We know what we are, but know not what we may be."  -William Shakespeare '
+  - '"We know what we are, but know not what we may be." - William Shakespeare '
+  - '"Exploration is really the essence of the human spirit." - Frank Borman '
+  - '"The deeper you go, the greater the treasure... and the danger." '
+  - '"In the darkness, the bravest souls find their way." '
+  - '"Every dungeon has its dragon." '
+  - '"Adventure is not outside man; it is within." - George Eliot '
+  - '"In the face of danger, heroes are born." '
+  - '"The journey of a thousand miles begins with one step." - Lao Tzu '
+  - '"Fortune favors the bold, but be prepared for a fight." '
+  - '"In every dark corner, a secret waits to be discovered." '
+  - '"The bravest hearts venture where the faintest fear to tread." '
+  - '"Monsters are real, and so are heroes." '
+  - '"Through peril and fear, the treasure is near." '
+  - '"The greatest glory in living lies not in never falling, but in rising every
+    time we fall." - Nelson Mandela '
+  - '"Victory belongs to those who dare." '
+  - '"The dungeon is dark, but your will is your light." '
+  - '"Every shadow hides a story." '
+  - '"In the depths of the abyss, only the fearless prevail." '
+  - '"Danger lurks at every turn; courage is your best weapon." '
+  - '"In the heart of the labyrinth, heroes find their true strength." '
+  - '"Your greatest adventure begins where the light ends."      '
+  - '"In the darkest dungeons, the brightest heroes emerge." '
+  - '"Only those who dare to fail greatly can ever achieve greatly." - Robert F.
+    Kennedy '
+  - '"The thrill of the unknown is what drives the true adventurer." '
+  - '"With each step into the abyss, your legend grows."      '
 --- !u!1 &7063614492014962943
 GameObject:
   m_ObjectHideFlags: 0
@@ -675,7 +701,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8775711610864921790
 Transform:
   m_ObjectHideFlags: 0
@@ -693,6 +719,82 @@ Transform:
   - {fileID: 8808340483494000905}
   m_Father: {fileID: 2341536952927807308}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7196977362275373104
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3379364704456875917}
+  - component: {fileID: 2469772814701691682}
+  - component: {fileID: 2377903754922309639}
+  m_Layer: 5
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3379364704456875917
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7196977362275373104}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5195381898108610290}
+  m_Father: {fileID: 8808340483494000905}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 195.9715}
+  m_Pivot: {x: 0.5, y: 0}
+--- !u!222 &2469772814701691682
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7196977362275373104}
+  m_CullTransparentMesh: 1
+--- !u!114 &2377903754922309639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7196977362275373104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: f7f681cd213d9a7488500ce745f2d4f8, type: 3}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1.42
 --- !u!1 &8478184384408011046
 GameObject:
   m_ObjectHideFlags: 0
@@ -758,7 +860,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 915b7feefb54bcc4a81240086f2689a7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 70abbeb3cb7df5e4c8e0b10b8e1ddb67, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
