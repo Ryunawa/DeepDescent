@@ -10,8 +10,6 @@ public class MainMenuUsername : MonoBehaviour
 
     private void Start()
     { 
-        GameManager.GetManager<SceneManager>()?.DeactivateLoadingScreen();
-        
         TryGetComponent<Button>(out _playBtn);
         CheckForUsername();
     }
