@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b1a7f6fcc0440b449ceeda2b794c3ff, type: 3}
   m_Name: SpellBook V
   m_EditorClassIdentifier: 
-  ID: 41
+  ID: 44
   Name: SpellBook V
   Description: The legendary volume V of the Book of spells
   Rarity: 4
