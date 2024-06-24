@@ -5016,7 +5016,7 @@ GameObject:
   - component: {fileID: 207105875455061266}
   - component: {fileID: -5121422036193001125}
   m_Layer: 10
-  m_Name: SpellBook III
+  m_Name: SpellBook IV
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5073,7 +5073,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1647956117
+  GlobalObjectIdHash: 1116407439
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -5094,7 +5094,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 564780b624588d04d972212d480c5d52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemDetails: {fileID: 11400000, guid: 139f1935091cfa343ab21f7789f6e272, type: 2}
+  ItemDetails: {fileID: 11400000, guid: c39bc05a01f5aed429203a9aa060c5ae, type: 2}
   amount: 1
   GOText: {fileID: 8578353768432963058}
   playerBehaviourInspecting: {fileID: 0}
@@ -5187,7 +5187,7 @@ PrefabInstance:
     - target: {fileID: 2393642, guid: 287641c6816a5d6439b3abd4dbe279ed, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: e4bc7360351fcd043ade596dee6a5f32, type: 2}
+      objectReference: {fileID: 2100000, guid: de3f5c396801d514b84c3310364ef87b, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
