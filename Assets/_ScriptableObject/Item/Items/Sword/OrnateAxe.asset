@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 13
   Name: Ornate Axe
-  Description: A sword, made of stone, you can hit things with it, pretty useful
-    isn't it ?
+  Description: An perfect axe for goblins
   Rarity: 3
   SellValue: 35
   QuickUse: 0
@@ -24,6 +23,6 @@ MonoBehaviour:
   ObjectPrefab: {fileID: 8778570344472889581, guid: f51b33b4836650a4ca3c8357a71b158f,
     type: 3}
   SpellToSpawn: {fileID: 0}
-  WeaponType: 1
-  AttackValue: 60
-  AttackSpeed: 0.7
+  WeaponType: 3
+  AttackValue: 40
+  AttackSpeed: 1.5
