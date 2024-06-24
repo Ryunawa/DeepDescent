@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using _2Scripts.Manager;
 using NaughtyAttributes;
@@ -50,5 +51,31 @@ public class AlignGameObjects : MonoBehaviour
     {
         for (int i = transform.childCount; i > 0; --i)
             DestroyImmediate(transform.GetChild(0).gameObject);
+    }
+    
+    [Button]
+    public void ShowDuplicateIDItem()
+    {
+        int highestValue = ItemList.Items.Max(i => i.ID);
+
+        for (int i = 0; i < highestValue; i++)
+        {
+            List<Item> items = ItemList.Items.Where(x => x.ID == i).ToList();
+
+            if (items.Count > 1 )
+            {
+                foreach (Item item in items)
+                {
+                    Debug.Log($"Duplicate ID : {item.ID}, Item name : {item.Name}, position in List {ItemList.Items.IndexOf(item)}");
+                }
+            }
+            
+        }
+    }
+
+    [Button]
+    public void OrderByIDItems()
+    {
+        ItemList.Items.OrderBy(x => x.ID);
     }
 }
