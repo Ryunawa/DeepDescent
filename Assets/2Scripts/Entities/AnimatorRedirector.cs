@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class AnimatorRedirector : GameManagerSync<AnimatorRedirector>
 {
-    [SerializeField] private Animator _animator;
+    [SerializeField] private List<Animator> _animators;
     [SerializeField] private Transform boltOrigin;
     private SpellCasterComponent _spellCasterComponent;
 
@@ -37,6 +37,9 @@ public class AnimatorRedirector : GameManagerSync<AnimatorRedirector>
 
     public void AnimateBow()
     {
-        _animator.Play("Take 001");
+        foreach (var animator in _animators)
+        {
+            animator.Play("Take 001");
+        }
     }
 }

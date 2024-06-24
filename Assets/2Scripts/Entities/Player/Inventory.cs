@@ -353,18 +353,21 @@ public class Inventory : GameManagerSync<Inventory>
         switch (item)
         {
             case ArmorItem:
-                visibleItems.AddVisibleArmorRpc();
+                visibleItemsTPS.AddVisibleArmorRpc();
+                
                 break;
             case WeaponItem weapon:
                 // left hand - shield
                 if (OffSlot)
                 {
-                    visibleItems.EquipLeftHandRpc(weapon.Name);
+                    visibleItemsFPS.EquipLeftHandRpc(weapon.Name);
+                    visibleItemsTPS.EquipLeftHandRpc(weapon.Name);
                 }
                 // right hand - weapon
                 else
                 {
-                    visibleItems.EquipRightHandRpc(weapon.Name);
+                    visibleItemsFPS.EquipRightHandRpc(weapon.Name);
+                    visibleItemsTPS.EquipRightHandRpc(weapon.Name);
                 }
                 break;
             default:
@@ -384,12 +387,14 @@ public class Inventory : GameManagerSync<Inventory>
                 // left hand - shield
                 if (OffSlot)
                 {
-                    visibleItems.UnequipLeftHandRpc();
+                    visibleItemsFPS.UnequipLeftHandRpc();
+                    visibleItemsTPS.UnequipLeftHandRpc();
                 }
                 // right hand - weapon
                 else
                 {
-                    visibleItems.UnequipRightHandRpc();
+                    visibleItemsFPS.UnequipRightHandRpc();
+                    visibleItemsTPS.UnequipRightHandRpc();
                 }
                 break;
             default:
