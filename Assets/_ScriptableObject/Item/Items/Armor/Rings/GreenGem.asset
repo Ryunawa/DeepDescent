@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: GreenGem
   m_EditorClassIdentifier: 
   ID: 82
-  Name: 
-  Description: 
+  Name: Green Gem
+  Description: Has been created by one of the best wizard of the world!
   Rarity: 3
   SellValue: 11
   QuickUse: 0

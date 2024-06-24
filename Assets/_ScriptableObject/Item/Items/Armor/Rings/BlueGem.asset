@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: BlueGem
   m_EditorClassIdentifier: 
   ID: 81
-  Name: 
-  Description: 
+  Name: Blue Gem
+  Description: Has been created by one of the best wizard of the country!
   Rarity: 2
   SellValue: 8
   QuickUse: 0
