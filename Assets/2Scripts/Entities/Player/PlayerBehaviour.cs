@@ -9,6 +9,7 @@ using UnityEngine.Serialization;
 using NaughtyAttributes;
 using Unity.VisualScripting;
 using System.Collections;
+using _2Scripts.UI;
 
 namespace _2Scripts.Entities.Player
 {
@@ -365,6 +366,7 @@ namespace _2Scripts.Entities.Player
                 int itemId = inventory.QuickSlots[(int)index].ID;
                 inventory.UnEquipQuickSlot((int) index);
                 inventory.InventoryItems.Remove(inventory.InventoryItems.Find(x => x.ID == itemId));
+                GameManager.GetManager<InventoryUIManager>().DrawInventory();
             }
         }
         
