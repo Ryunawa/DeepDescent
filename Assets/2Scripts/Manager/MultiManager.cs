@@ -115,6 +115,7 @@ namespace _2Scripts.Manager
 			Debug.Log("Kicked");
 			_lobby = null;
 			kickedEvent.Invoke();
+			GameManager.GetManager<SceneManager>().LoadScene(Scenes.MainMenu);
 		}
 	
 		/// <summary>
