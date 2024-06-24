@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 40
   Name: SpellBook I
-  Description: 'The volume I of the Basic Book of spells '
+  Description: 'The basic volume I of the Book of spells '
   Rarity: 0
   SellValue: 5
   QuickUse: 0
@@ -25,5 +25,5 @@ MonoBehaviour:
   SpellToSpawn: {fileID: 7308431643095106308, guid: 016112e59dccd3c409838e47f272a2ec,
     type: 3}
   WeaponType: 4
-  AttackValue: 30
+  AttackValue: 10
   AttackSpeed: 0

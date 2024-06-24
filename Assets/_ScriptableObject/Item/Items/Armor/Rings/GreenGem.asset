@@ -23,4 +23,4 @@ MonoBehaviour:
   ObjectPrefab: {fileID: 285884523482912472, guid: b7aa526357e59114aa78e7224122bb7b,
     type: 3}
   ArmorType: 3
-  ArmorValue: 8
+  ArmorValue: 9

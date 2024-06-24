@@ -16,11 +16,11 @@ MonoBehaviour:
   Name: Superior boots armor
   Description: This armor has been made by dwarfs for humans.
   Rarity: 3
-  SellValue: 20
+  SellValue: 30
   QuickUse: 0
   Stackable: 0
   InventoryIcon: {fileID: 21300000, guid: b34659b340ac78145adfb5447e662535, type: 3}
   ObjectPrefab: {fileID: 285884523482912472, guid: 9ab51e65687c3d84bb9911cb84719e3f,
     type: 3}
   ArmorType: 2
-  ArmorValue: 10
+  ArmorValue: 12

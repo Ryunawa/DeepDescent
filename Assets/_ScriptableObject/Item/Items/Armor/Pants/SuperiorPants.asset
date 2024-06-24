@@ -16,11 +16,11 @@ MonoBehaviour:
   Name: Superior pant armor
   Description: This armor has been made by dwarfs for humans.
   Rarity: 3
-  SellValue: 20
+  SellValue: 30
   QuickUse: 0
   Stackable: 0
   InventoryIcon: {fileID: 21300000, guid: 256e45a4ad30eb8498f9b5f563aef258, type: 3}
   ObjectPrefab: {fileID: 285884523482912472, guid: e7a8cc0e19794dc43a1a5eba77fc4c7b,
     type: 3}
   ArmorType: 1
-  ArmorValue: 10
+  ArmorValue: 12

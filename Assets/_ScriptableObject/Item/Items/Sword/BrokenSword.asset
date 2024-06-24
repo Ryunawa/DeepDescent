@@ -25,5 +25,5 @@ MonoBehaviour:
     type: 3}
   SpellToSpawn: {fileID: 0}
   WeaponType: 1
-  AttackValue: 25
-  AttackSpeed: 0.7
+  AttackValue: 10
+  AttackSpeed: 1

@@ -14,16 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 41
   Name: SpellBook II
-  Description: The volume II of the Basic Book of spells
+  Description: The uncommun volume II of the Book of spells
   Rarity: 1
-  SellValue: 9
+  SellValue: 10
   QuickUse: 0
   Stackable: 0
   InventoryIcon: {fileID: 21300000, guid: 01e77d20268c10549970c6e3787cd10e, type: 3}
   ObjectPrefab: {fileID: 8778570344472889581, guid: 2fb062cd5e63ae441bc0a71a75f514a2,
     type: 3}
-  SpellToSpawn: {fileID: 898206259863307853, guid: 2b6cd5e2fec35e0488d95b13b19d0779,
+  SpellToSpawn: {fileID: 7308431643095106308, guid: 426ab46a4bf9c644c9be63ca5c6fd85a,
     type: 3}
   WeaponType: 4
-  AttackValue: 45
+  AttackValue: 20
   AttackSpeed: 0

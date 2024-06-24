@@ -16,11 +16,11 @@ MonoBehaviour:
   Name: Unbreakable chest armor
   Description: This armor has only been seen worn by dragons
   Rarity: 4
-  SellValue: 30
+  SellValue: 40
   QuickUse: 0
   Stackable: 0
   InventoryIcon: {fileID: 21300000, guid: d659f7396cd57754eba78763cf986c51, type: 3}
   ObjectPrefab: {fileID: 285884523482912472, guid: e3d3395162fe7f94f97f26ba22e2bb67,
     type: 3}
   ArmorType: 0
-  ArmorValue: 30
+  ArmorValue: 20

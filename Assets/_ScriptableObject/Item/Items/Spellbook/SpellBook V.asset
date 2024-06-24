@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b1a7f6fcc0440b449ceeda2b794c3ff, type: 3}
+  m_Name: SpellBook V
+  m_EditorClassIdentifier: 
+  ID: 41
+  Name: SpellBook V
+  Description: The legendary volume V of the Book of spells
+  Rarity: 4
+  SellValue: 40
+  QuickUse: 0
+  Stackable: 0
+  InventoryIcon: {fileID: 21300000, guid: 01e77d20268c10549970c6e3787cd10e, type: 3}
+  ObjectPrefab: {fileID: 8778570344472889581, guid: 2fb062cd5e63ae441bc0a71a75f514a2,
+    type: 3}
+  SpellToSpawn: {fileID: 7308431643095106308, guid: 016112e59dccd3c409838e47f272a2ec,
+    type: 3}
+  WeaponType: 4
+  AttackValue: 50
+  AttackSpeed: 0

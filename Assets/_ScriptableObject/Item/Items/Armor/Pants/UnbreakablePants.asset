@@ -16,11 +16,11 @@ MonoBehaviour:
   Name: Unbreakable pant armor
   Description: This armor has only been seen worn by dragons
   Rarity: 4
-  SellValue: 30
+  SellValue: 50
   QuickUse: 0
   Stackable: 0
   InventoryIcon: {fileID: 21300000, guid: 256e45a4ad30eb8498f9b5f563aef258, type: 3}
   ObjectPrefab: {fileID: 285884523482912472, guid: b93493ec86634b442bf6a54444fca01c,
     type: 3}
   ArmorType: 1
-  ArmorValue: 15
+  ArmorValue: 20
