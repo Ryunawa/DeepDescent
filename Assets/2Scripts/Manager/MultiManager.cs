@@ -113,7 +113,7 @@ namespace _2Scripts.Manager
 		private void OnKickedFromLobby()
 		{
 			Debug.Log("Kicked");
-			_lobby = null;
+			LeaveLobbyAsync();
 			kickedEvent.Invoke();
 			
 			GameManager.GetManager<SceneManager>().ActivateLoadingScreen();
@@ -669,7 +669,7 @@ namespace _2Scripts.Manager
 			
 			if (_IsOwnerOfLobby)
 			{
-				GameManager.GetManager<SceneManager>().LoadScene(Scenes.Level);
+				GameManager.GetManager<SceneManager>().LoadSceneNetwork(Scenes.Level);
 			}
 
 			GameManager.GetManager<SceneManager>().ActivateLoadingScreen();

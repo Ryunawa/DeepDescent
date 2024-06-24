@@ -43,9 +43,14 @@ namespace _2Scripts.Manager
                 UnityEngine.SceneManagement.SceneManager.GetSceneByName(sceneName));
         }
         
-        public void LoadScene(Scenes scenes)
+        public void LoadSceneNetwork(Scenes scenes)
         {
             NetworkManager.Singleton.SceneManager.LoadScene(scenes.ToString(), LoadSceneMode.Single);
+        }
+        
+        public void LoadScene(Scenes scenes)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(scenes.ToString(), LoadSceneMode.Single);
         }
 
         public void ActivateLoadingScreen()

@@ -8,6 +8,6 @@ public class EndScreen : MonoBehaviour
     {
         GameManager.GetManager<SceneManager>().ActivateLoadingScreen();
         GameManager.instance.ChangeGameState(GameState.MainMenu);
-        GameManager.GetManager<SceneManager>().LoadScene(Scenes.MainMenu);
+        GameManager.GetManager<SceneManager>().LoadSceneNetwork(Scenes.MainMenu);
     }
 }
