@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba265f7600878294e8460a1541036533, type: 3}
   m_Name: Necklace
   m_EditorClassIdentifier: 
-  ID: 85
+  ID: 90
   Name: 
   Description: Beautifull necklace full of magic
   Rarity: 3
