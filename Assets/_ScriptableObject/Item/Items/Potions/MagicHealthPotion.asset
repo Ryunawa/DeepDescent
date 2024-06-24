@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b44b4d57f865a7d49813d7e6e3376e4f, type: 3}
   m_Name: MagicHealthPotion
   m_EditorClassIdentifier: 
-  ID: 74
+  ID: 73
   Name: Magic Potion
   Description: A flask filled with magic
   Rarity: 3

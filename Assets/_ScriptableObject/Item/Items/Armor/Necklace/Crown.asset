@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba265f7600878294e8460a1541036533, type: 3}
   m_Name: Crown
   m_EditorClassIdentifier: 
-  ID: 91
-  Name: 
+  ID: 92
+  Name: Crown
   Description: A crown for real kings
   Rarity: 4
   SellValue: 20
