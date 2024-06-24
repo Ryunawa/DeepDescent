@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 11
   Name: Great Sword
-  Description: A sword, made of stone, you can hit things with it, pretty useful
-    isn't it ?
+  Description: A sword, made of real iron by an expert
   Rarity: 1
   SellValue: 10
   QuickUse: 0
@@ -26,4 +25,4 @@ MonoBehaviour:
   SpellToSpawn: {fileID: 0}
   WeaponType: 1
   AttackValue: 40
-  AttackSpeed: 1
+  AttackSpeed: 0.7
