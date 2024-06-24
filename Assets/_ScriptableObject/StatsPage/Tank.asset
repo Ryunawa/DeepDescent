@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fbe6e87a3e409c44b598784801ccecf, type: 3}
   m_Name: Tank
   m_EditorClassIdentifier: 
-  MaxLife: 150
+  MaxLife: 100
   BaseArmour: 10
   DamageReceivedModifier: 0.5
   DamageInflictedModifier: 1
