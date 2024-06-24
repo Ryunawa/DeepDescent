@@ -98,7 +98,7 @@ namespace _2Scripts.Manager
             List<Item> spawnableItems = itemList.Items;
 
             LevelGenerator levelGenerator = FindObjectOfType<LevelGenerator>();
-            List<ItemSpawnPoint> itemSpawnPoints = levelGenerator.GetAllItemSpawnPoints();
+            itemSpawnPoints = levelGenerator.GetAllItemSpawnPoints();
 
             int itemsSpawned = 0;
             foreach (var spawnPoint in itemSpawnPoints)
