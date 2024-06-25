@@ -22,6 +22,10 @@ public class Projectile : NetworkBehaviour
             rb.isKinematic = true;
         }
         StartCoroutine(ShowVFXOrMesh());
+        if (IsServer)
+        {
+            StartCoroutine(CallForDespawn());
+        }
     }
 
     private void FixedUpdate()
@@ -56,5 +60,17 @@ public class Projectile : NetworkBehaviour
             vfx.Play(true);
         if (mesh)
             mesh.SetActive(true);
+    }
+
+    private IEnumerator CallForDespawn()
+    {
+        yield return new WaitForSeconds(5.0f);
+        DestroyThisRpc();
+    }
+    [Rpc(SendTo.Server)]
+    private void DestroyThisRpc()
+    {
+        if (TryGetComponent( out NetworkObject networkObject))
+            networkObject.Despawn(true);
     }
 }

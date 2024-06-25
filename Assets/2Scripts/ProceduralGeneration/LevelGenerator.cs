@@ -141,8 +141,6 @@ namespace _2Scripts.ProceduralGeneration
 
             dungeon = new Room[_staticDungeonSize*_staticDungeonSize];
 
-            UnityEngine.Random.InitState(-1);
-
             //Generation n = 1 : center
             int centerIndex = (_staticDungeonSize /2) * (_staticDungeonSize +1);
             Room startRoom = InstantiateRoom(RoomType.Four, GetPosition(centerIndex), Quaternion.identity).GetComponent<Room>();
@@ -182,8 +180,6 @@ namespace _2Scripts.ProceduralGeneration
             // Random.InitState((int)DateTime.Now.Ticks);
 
             dungeon = new Room[_staticDungeonSize * _staticDungeonSize];
-
-            Random.InitState(-1); // OLD SEED: 35896
 
             //Generation n = 1 : center
             int centerIndex = (_staticDungeonSize / 2) * (_staticDungeonSize + 1);
