@@ -67,6 +67,6 @@ public class ArmorItem : EquippableItem
 
     public override string GetStats()
     {
-        return $"Armor : {ArmorValue})";
+        return $"Armor : {ArmorValue}";
     }
 }
