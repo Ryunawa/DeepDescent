@@ -1,9 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using _2Scripts.Entities.Player;
 using _2Scripts.Helpers;
 using _2Scripts.Manager;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
@@ -155,7 +154,6 @@ namespace _2Scripts.ProceduralGeneration
             _roomNumber = 0;
         
             await DoGen(1);
-            Debug.Log("GenerationFinished");
 
             DynamicNavMesh.UpdateNavMesh();
             
@@ -173,7 +171,7 @@ namespace _2Scripts.ProceduralGeneration
 
             dungeon = new Room[_staticDungeonSize * _staticDungeonSize];
 
-            Random.InitState(35896);
+            Random.InitState(-1); // TODO : 35896
 
             //Generation n = 1 : center
             int centerIndex = (_staticDungeonSize / 2) * (_staticDungeonSize + 1);
@@ -797,7 +795,7 @@ namespace _2Scripts.ProceduralGeneration
         }
 
 
-        public List<ItemSpawnPoint> GetAllItemSpawnPoints()
+        public List<ItemSpawnPoint> GetAllShuffledItemSpawnPoints()
 {
             List<ItemSpawnPoint> allSpawnPoints = new List<ItemSpawnPoint>();
             foreach (var room in dungeon)
@@ -807,9 +805,23 @@ namespace _2Scripts.ProceduralGeneration
                     allSpawnPoints.AddRange(room.GetAllItemSpawnPoint());
                 }
             }
-            return allSpawnPoints;
+            List<ItemSpawnPoint> shuffledSpawnPoints = ShuffleItemSpawnPoints(allSpawnPoints);
+            return shuffledSpawnPoints;
         }
 
+
+        public List<ItemSpawnPoint> ShuffleItemSpawnPoints(List<ItemSpawnPoint> list)
+        {
+            for (int i = list.Count - 1; i > 0; i--)
+            {
+                int randomIndex = UnityEngine.Random.Range(0, i + 1);
+                ItemSpawnPoint temp = list[i];
+                list[i] = list[randomIndex];
+                list[randomIndex] = temp;
+            }
+
+            return list;
+        }
     }
 
     public enum Directions

@@ -228,10 +228,6 @@ namespace _2Scripts.Entities.AI
                 navMeshAgent.SetDestination(randomPoint);
                 didAlreadyWait = false;
             }
-            else
-            {
-                Debug.LogWarning("No valid random point found for patrolling.");
-            }
         }
 
 

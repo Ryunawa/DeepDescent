@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemList: {fileID: 11400000, guid: 9955bbdfc35aa654eabe5762843da012, type: 2}
-  itemCount: 10
+  itemCount: 20
   itemSpawnPoints: []
   weaponList: {fileID: 11400000, guid: bbcb656dfed990444bd88ebcee39bbc3, type: 2}
   armorList: {fileID: 11400000, guid: 688bc97c35fb8834b88e8a5ec12f669c, type: 2}

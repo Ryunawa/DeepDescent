@@ -197,6 +197,7 @@ namespace _2Scripts.Manager
         /// <returns></returns>
         public float GetDifficultyMultiplier()
         {
+            if (_difficultyMultiplier <= 0) return 1;
             return _difficultyMultiplier;
         }
 

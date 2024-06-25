@@ -60,10 +60,10 @@ namespace _2Scripts.Manager
                 switch (item)
                 {
                     case WeaponItem:
-                        weaponList.Items.Add(item);
+                        if(item.Rarity != Rarity.Legendary) weaponList.Items.Add(item);
                         break;
                     case ArmorItem:
-                        armorList.Items.Add(item);
+                        if (item.Rarity != Rarity.Legendary) armorList.Items.Add(item);
                         break;
                     case PotionItem:
                         potionList.Items.Add(item);
@@ -93,12 +93,11 @@ namespace _2Scripts.Manager
 
         private void SpawnItems(int numberOfItems)
         {
-            Debug.Log("Start SpawnItem");
             float difficultyMultiplier = GameManager.GetManager<DifficultyManager>().GetDifficultyMultiplier();
             List<Item> spawnableItems = itemList.Items;
 
             LevelGenerator levelGenerator = FindObjectOfType<LevelGenerator>();
-            itemSpawnPoints = levelGenerator.GetAllItemSpawnPoints();
+            itemSpawnPoints = levelGenerator.GetAllShuffledItemSpawnPoints();
 
             int itemsSpawned = 0;
             foreach (var spawnPoint in itemSpawnPoints)
@@ -115,7 +114,9 @@ namespace _2Scripts.Manager
                     {
                         Vector3 spawnPosition = spawnPoint.transform.position;
                         Quaternion randomRotation = Quaternion.Euler(0, UnityEngine.Random.Range(-180f, 180f), 0);
-                        Instantiate(itemToSpawn.ObjectPrefab, spawnPosition, randomRotation);
+
+                        GameObject instantiatedItem = Instantiate(itemToSpawn.ObjectPrefab, spawnPosition, randomRotation);
+                        instantiatedItem.GetComponent<NetworkObject>().Spawn();
 
                         spawnPoint.isOccupied = true;
                         itemsSpawned++;
@@ -126,8 +127,11 @@ namespace _2Scripts.Manager
 
         private Item GetRandomItemBasedOnRarity(List<Item> items, float difficultyMultiplier)
         {
+            List<Item> itemsTemp = ShuffleItems(items);
             float[] spawnChances = CalculateSpawnChances(difficultyMultiplier);
-            float randomWeight = UnityEngine.Random.Range(0f, 100f);
+
+            float totalWeight = spawnChances.Sum();
+            float randomWeight = UnityEngine.Random.Range(0f, totalWeight);
 
             for (int i = 0; i < items.Count; i++)
             {
@@ -139,12 +143,24 @@ namespace _2Scripts.Manager
                 randomWeight -= itemWeight;
             }
 
-            return null;
+            return items[UnityEngine.Random.Range(0, items.Count)];
+        }
+
+        public List<Item> ShuffleItems(List<Item> items)
+        {
+            for (int i = items.Count - 1; i > 0; i--)
+            {
+                int randomIndex = UnityEngine.Random.Range(0, i + 1);
+                Item temp = items[i];
+                items[i] = items[randomIndex];
+                items[randomIndex] = temp;
+            }
+            return items;
         }
 
         private float[] CalculateSpawnChances(float difficultyMultiplier)
         {
-            float[] baseChances = { 60f, 24f, 10f, 5f, 1f }; // Base chances for Common, Uncommon, Rare, Epic, Legendary
+            float[] baseChances = { 60f, 24f, 10f, 5f, 1f };
             float totalWeight = 0f;
             float[] adjustedChances = new float[baseChances.Length];
 
@@ -152,11 +168,6 @@ namespace _2Scripts.Manager
             {
                 adjustedChances[i] = baseChances[i] * Mathf.Pow(difficultyMultiplier, i);
                 totalWeight += adjustedChances[i];
-            }
-
-            for (int i = 0; i < adjustedChances.Length; i++)
-            {
-                adjustedChances[i] = (adjustedChances[i] / totalWeight) * 100f;
             }
 
             return adjustedChances;
@@ -174,6 +185,5 @@ namespace _2Scripts.Manager
                 _ => throw new ArgumentOutOfRangeException(nameof(rarity), rarity, null)
             };
         }
-
     }
 }
