@@ -76,6 +76,7 @@ namespace _2Scripts.UI
         public bool SetHp()
         {
            HP.value = GameManager.playerBehaviour.Health.GetHealth() / GameManager.playerBehaviour.Health.MaxHealth;
+           
            return true;
         }
         

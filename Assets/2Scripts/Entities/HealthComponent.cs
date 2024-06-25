@@ -52,7 +52,10 @@ namespace _2Scripts.Entities
 		{
 			if (this == GameManager.playerBehaviour.Health)
 			{
-				GameManager.GetManager<InventoryUIManager>().HUD.SetHp();
+				HUD hud = GameManager.GetManager<InventoryUIManager>().HUD;
+				
+				hud.SetHp();
+				hud.FlashDamageEffect(iCurVal, MaxHealth);
 			}
 			
 			if (iPrevVal > 0 && iCurVal <= 0)
@@ -165,10 +168,10 @@ namespace _2Scripts.Entities
             }
 			else
 			{
-				if (!hudObject) hudObject = GameObject.Find("HUD").GetComponent<HUD>();
-                if (hudObject) hudObject.FlashDamageEffect(_health.Value, maxHealth);
+				// if (!hudObject) hudObject = GameObject.Find("HUD").GetComponent<HUD>();
+				// if (hudObject) hudObject.FlashDamageEffect(_health.Value, maxHealth);
 
-				else Debug.Log("no HUD found");
+				// else Debug.Log("no HUD found");
             }
 
             _health.Value -= damage;
