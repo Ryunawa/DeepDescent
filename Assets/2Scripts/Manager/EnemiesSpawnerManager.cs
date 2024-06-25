@@ -73,8 +73,10 @@ namespace _2Scripts.Manager
         /// <returns></returns>
         private EnemyStats ChooseEnemyMeshInfo()
         {
-            int index = GameManager.GetManager<GameFlowManager>().CurrLevel % 4;
+            int index = GameManager.GetManager<GameFlowManager>().CurrLevel % 5;
+            
             LevelData currSpawnableEnemiesPrefabs = spawnableEnemiesIndexByLevel[index];
+
             EnemyTypes allTypeOfEnemies = GameManager.GetManager<DifficultyManager>().GetEnemiesStatsToUse();
             List<int> enemiesMeshIndex = currSpawnableEnemiesPrefabs.enemyIndex;
             
