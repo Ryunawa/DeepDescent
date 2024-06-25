@@ -56,6 +56,13 @@ namespace _2Scripts.ProceduralGeneration
         private int _roomNumber = 1;
 
         private MultiManager _multiManager;
+        private NetworkObject portalNO;
+
+        public NetworkObject Portal
+        {
+            get => portalNO;
+            set => portalNO = value;
+        }
 
         private void Awake()
         {
@@ -106,7 +113,8 @@ namespace _2Scripts.ProceduralGeneration
         {
             Debug.Log("CALLED CHANGE STATE FROM RPC");
             SubToGameManagerEvent();
-            GameManager.instance.ChangeGameState(GameState.InLevel);
+            if(GameManager.GameState != GameState.InLevel)
+                GameManager.instance.ChangeGameState(GameState.InLevel);
         }
 
         public async void StartGeneration()
@@ -787,10 +795,11 @@ namespace _2Scripts.ProceduralGeneration
                 {
                     Room targetRoom = validRooms[Random.Range(0, validRooms.Count)];
                     Vector3 portalPosition = targetRoom.transform.position;
-                    GameObject portal = Instantiate(portalPrefab, portalPosition, Quaternion.identity, propsParent1.transform);
-                    portal.GetComponent<NetworkObject>().Spawn();
+                    GameObject portal = Instantiate(portalPrefab, portalPosition, Quaternion.identity);
+                    portalNO = portal.GetComponent<NetworkObject>();
+                    portalNO.Spawn();
                     portal.GetComponent<BossPillarInteraction>().roomTp = targetRoom;
-                    break;
+                    return;
                 }
             }
         }

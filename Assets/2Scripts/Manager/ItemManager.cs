@@ -44,6 +44,7 @@ namespace _2Scripts.Manager
 
         public void StartSpawningItems()
         {
+            ItemSpawned.Clear();
             SpawnItems(itemCount);
         }
 

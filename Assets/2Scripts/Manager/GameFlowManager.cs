@@ -24,7 +24,7 @@ namespace _2Scripts.Manager
 
         public Timer.Timer Timer { get; private set; }
 
-            public int CurrLevel { get; private set; } = 1;
+            public int CurrLevel { get; private set; } = 4;
 
         protected override void OnGameManagerChangeState(GameState gameState)
         {
@@ -55,8 +55,8 @@ namespace _2Scripts.Manager
         {
             GameManager.instance.ResetNumberOfDeadPlayer();
             Timer.StopTimer();
-            OnNextLevelEvent?.Invoke(Timer);
             CurrLevel++;
+            OnNextLevelEvent?.Invoke(Timer);
         }
     }
 }
