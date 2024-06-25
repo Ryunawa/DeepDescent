@@ -88,6 +88,14 @@ public class Inventory : GameManagerSync<Inventory>
             {
                 if (stat.CharacterStatPage)
                 {
+                    ChestArmor = null;
+                    LegArmor = null;
+                    FeetArmor = null;
+                    RingsItem[0] = null;
+                    RingsItem[1] = null;
+                    NecklaceItem = null;
+                    MainHandItem = null;
+                    OffHandItem = null;
                     foreach (var item in stat.CharacterStatPage.StartingItemInInventory)
                     {
                         InventoryObject newObj = new InventoryObject(item.ID, 1);
@@ -460,7 +468,10 @@ public class Inventory : GameManagerSync<Inventory>
                 if (!result.Item1)
                     AddToInventory(item.ID, 1);
                 else
+                {
                     AddFromEquipment(item, isOffHand);
+                }
+
             }
             isOffHand = false;
         }
