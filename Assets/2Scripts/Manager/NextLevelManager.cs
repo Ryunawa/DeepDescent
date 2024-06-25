@@ -35,6 +35,7 @@ namespace _2Scripts.Manager
            
            // Stop the spawner
            GameManager.GetManager<EnemiesSpawnerManager>().StopSpawning();
+           GameManager.ManagersAndPrefabs[7].ManagerMonoBehaviour = null;
            
            GameManager.GetManager<SceneManager>().LoadSceneNetwork(Scenes.Level);
            
