@@ -70,6 +70,11 @@ namespace _2Scripts.Entities.Player
         public Inventory inventory;
         public StatComponent stat;
 
+        public int getCharacterId()
+        {
+            return characterID;
+        }
+
         protected override void Start()
         {
             if (IsOwner)
@@ -394,22 +399,8 @@ namespace _2Scripts.Entities.Player
         private void Attack()
         {
             if (_isAttacking) return;
-            
+
             _isAttacking = true;
-
-            switch (characterID)
-            {
-                case 0: // archer
-                    GameManager.GetManager<AudioManager>().PlaySfx("ArrowWhoosh", this, 1, 5);
-                    break;
-                case 2: // witch
-                    GameManager.GetManager<AudioManager>().PlaySfx("FireBallWhoosh", this, 1, 5);
-                    break;
-                case 1 | 3: // goblin | dwarf
-                    GameManager.GetManager<AudioManager>().PlaySfx("SwordWhoosh", this, 1, 5);
-                    break;
-            }
-
 
             if (inventory.MainHandItem != null)
             {
@@ -420,7 +411,6 @@ namespace _2Scripts.Entities.Player
                 _isAttacking = false;
                 Debug.Log("Can't Attack no weapon equipped");
             }
-            
         }
         
         public void ResetIsAttacking()

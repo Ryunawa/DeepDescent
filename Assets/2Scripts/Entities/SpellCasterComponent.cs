@@ -15,6 +15,10 @@ public class SpellCasterComponent : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void SpawnSpellRpc(int id, bool isFromStaff = false, bool isFromCrossbow = false)
     {
+        // play sound
+        if (isFromCrossbow) GameManager.GetManager<AudioManager>().PlaySfx("ArrowWhoosh", this, 1, 5);
+        else  GameManager.GetManager<AudioManager>().PlaySfx("FireBallWhoosh", this, 1, 5);
+
         Debug.Log("SpellSpawned");
         Vector3 pos;
         GameObject spell;
