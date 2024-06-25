@@ -40,7 +40,7 @@ public class AnimatorRedirector : GameManagerSync<AnimatorRedirector>
         }
         
         
-        _spellCasterComponent.SpawnSpellRpc(playerBehaviour.inventory.MainHandItem.ID, pos, isStaff, isBow);
+        _spellCasterComponent.SpawnSpellRpc(playerBehaviour.inventory.MainHandItem.ID, pos, playerBehaviour.transform.rotation, isStaff, isBow);
     }
 
     public void AnimateBow()

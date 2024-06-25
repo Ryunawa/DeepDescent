@@ -22,8 +22,6 @@ public class Projectile : NetworkBehaviour
             rb.isKinematic = true;
         }
         StartCoroutine(ShowVFXOrMesh());
-
-        transform.rotation = GameManager.playerBehaviour.Camera.transform.rotation;
     }
 
     private void FixedUpdate()

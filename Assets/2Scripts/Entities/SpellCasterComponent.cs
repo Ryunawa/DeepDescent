@@ -13,7 +13,7 @@ public class SpellCasterComponent : NetworkBehaviour
     public Vector3 positionToCastFrom;
     
     [Rpc(SendTo.Server)]
-    public void SpawnSpellRpc(int id, Vector3 pos ,bool isFromStaff = false, bool isFromCrossbow = false)
+    public void SpawnSpellRpc(int id, Vector3 pos, Quaternion rotation ,bool isFromStaff = false, bool isFromCrossbow = false)
     {
         Debug.Log("SpellSpawned");
         GameObject spell;
@@ -32,7 +32,7 @@ public class SpellCasterComponent : NetworkBehaviour
         }
         
         
-        NetworkObject o = Instantiate(spell.GetComponent<NetworkObject>(), pos, Quaternion.identity);
+        NetworkObject o = Instantiate(spell.GetComponent<NetworkObject>(), pos, rotation);
 
         if (isFromStaff || isFromCrossbow)
             o.GetComponent<Projectile>().projectileDamage =
