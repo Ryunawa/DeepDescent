@@ -15,6 +15,7 @@ public class SpellCasterComponent : NetworkBehaviour
     [Rpc(SendTo.Server)]
     public void SpawnSpellRpc(int id, bool isFromStaff = false, bool isFromCrossbow = false)
     {
+        Debug.Log("SpellSpawned");
         Vector3 pos;
         GameObject spell;
         if (isFromStaff)

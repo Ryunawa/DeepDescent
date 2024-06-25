@@ -72,6 +72,8 @@ namespace _2Scripts.Manager
 
         public void AddADeadPlayer()
         {
+            if (!GetManager<MultiManager>().IsLobbyHost())return;
+            
             numberOfDeadPlayers++;
             Debug.Log("numberOfDeadPlayers : " + numberOfDeadPlayers);
 

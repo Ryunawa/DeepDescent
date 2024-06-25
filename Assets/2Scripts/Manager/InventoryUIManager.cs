@@ -107,6 +107,7 @@ namespace _2Scripts.Manager
             // if shop is not open
             if (shopUI.activeSelf == false)
             {
+                //SetupInventory(inventoryRoot, inventoryBG, ListUI);
                 bool value = _isOpened = !_isOpened;
 
                 inventoryUI.SetActive(value);
@@ -121,6 +122,15 @@ namespace _2Scripts.Manager
         
         private void SetupInventory(GameObject inventoryRoot, GameObject inventoryBG, List<ItemUI> List)
         {
+            foreach (Transform child in inventoryRoot.transform)
+            {
+                Destroy(child.gameObject);
+            }
+            foreach (Transform child in inventoryBG.transform)
+            {
+                Destroy(child.gameObject);
+            }
+            
             for (int i = 0; i < _inventory.InventorySpace; i++)
             {
                 ItemUI item = Instantiate(ItemPrefab, inventoryRoot.transform);

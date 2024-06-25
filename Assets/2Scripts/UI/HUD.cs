@@ -108,7 +108,7 @@ namespace _2Scripts.UI
 
             quickSlotsImages[index].color = Color.white;
             quickSlotsImages[index].sprite = image;
-            quickSlotsQuantity[index].text = quantity.ToString();
+            quickSlotsQuantity[index].text = quantity == 1 ? "": quantity.ToString();
             
             return true;
         }

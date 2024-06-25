@@ -69,7 +69,7 @@ namespace _2Scripts.Entities
 			}
 		}
 
-        [Rpc(SendTo.ClientsAndHost)]
+        [Rpc(SendTo.Server)]
         private void addDeadPlayerRPC()
         {
             GameManager.instance.AddADeadPlayer();

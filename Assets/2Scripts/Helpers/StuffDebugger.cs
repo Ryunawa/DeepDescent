@@ -76,6 +76,6 @@ public class AlignGameObjects : MonoBehaviour
     [Button]
     public void OrderByIDItems()
     {
-        ItemList.Items.OrderBy(x => x.ID);
+        ItemList.Items = ItemList.Items.OrderBy(x => x.ID).ToList();
     }
 }

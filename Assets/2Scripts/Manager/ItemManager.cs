@@ -148,12 +148,10 @@ namespace _2Scripts.Manager
 
         public List<Item> ShuffleItems(List<Item> items)
         {
-            for (int i = items.Count - 1; i > 0; i--)
+            for (int i = items.Count - 1; i >= 0; i--)
             {
-                int randomIndex = UnityEngine.Random.Range(0, i + 1);
-                Item temp = items[i];
-                items[i] = items[randomIndex];
-                items[randomIndex] = temp;
+                int randomIndex = UnityEngine.Random.Range(0, items.Count);
+                (items[i], items[randomIndex]) = (items[randomIndex], items[i]);
             }
             return items;
         }

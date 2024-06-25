@@ -13,6 +13,10 @@ public class ItemList : ScriptableObject
     {
         return items.Find(x => x.ID == id);
     }
-
-    public List<Item> Items => items;
+    
+    public List<Item> Items
+    {
+        get => items;
+        set => items = value;
+    }
 }
