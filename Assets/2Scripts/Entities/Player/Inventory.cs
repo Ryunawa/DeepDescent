@@ -67,6 +67,15 @@ public class Inventory : GameManagerSync<Inventory>
                 {
                     if (stat.CharacterStatPage)
                     {
+                        InventoryItems.Clear();
+                        ChestArmor = null;
+                        LegArmor = null;
+                        FeetArmor = null;
+                        RingsItem[0] = null;
+                        RingsItem[1] = null;
+                        NecklaceItem = null;
+                        MainHandItem = null;
+                        OffHandItem = null;
                         foreach (var item in stat.CharacterStatPage.StartingItemInInventory)
                         {
                             InventoryObject newObj = new InventoryObject(item.ID, 1);
