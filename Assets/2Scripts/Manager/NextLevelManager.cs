@@ -34,15 +34,20 @@ namespace _2Scripts.Manager
            ShowLoadingScreenClientRpc();
            
            // Stop the spawner
-           GameManager.GetManager<EnemiesSpawnerManager>().StopSpawning();
+           //GameManager.GetManager<EnemiesSpawnerManager>().StopSpawning();
            
+           GameManager.GetManager<SceneManager>().LoadSceneNetwork(Scenes.Level);
+           
+           GameManager.instance.levelGenerator.spawnShop = GameManager.GetManager<GameFlowManager>().CurrLevel % 5 == 0;
+           
+           ChangeGameStateRpc();
            
            
            // Set bool depending on the current dungeon level
-           GameManager.instance.levelGenerator.spawnShop = GameManager.GetManager<GameFlowManager>().CurrLevel % 5 == 0;
+           
            
            // Remove All the previous generated room (props too)
-           StartCoroutine(ClearPreviousDungeon(ChangeGameStateRpc));
+           //StartCoroutine(ClearPreviousDungeon(ChangeGameStateRpc));
                
            // Start the generation
            //GameManager.instance.levelGenerator.StartGeneration();
