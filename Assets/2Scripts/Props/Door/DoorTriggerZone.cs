@@ -1,29 +1,57 @@
 using UnityEngine;
 using System.Collections;
-using Unity.VisualScripting.Antlr3.Runtime;
-using UnityEngine.UI;
-using static System.Net.Mime.MediaTypeNames;
-using TMPro;
 
 public class DoorTriggerZone : MonoBehaviour
 {
     public DoorController doorController;
     [SerializeField] private bool isOpen;
+    private int objectsInTrigger = 0;
+    private Coroutine closeDoorCoroutine = null;
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((other.CompareTag("Player") || other.CompareTag("Enemy")) && !isOpen)
+        if (other.CompareTag("Player") || other.CompareTag("Enemy"))
         {
-            isOpen = true;
-            doorController.OpenDoor();
-            StartCoroutine(CloseDoorDelayed(5f));
+            objectsInTrigger++;
+            if (!isOpen)
+            {
+                isOpen = true;
+                doorController.OpenDoor();
+                if (closeDoorCoroutine != null)
+                {
+                    StopCoroutine(closeDoorCoroutine);
+                    closeDoorCoroutine = null;
+                }
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player") || other.CompareTag("Enemy"))
+        {
+            objectsInTrigger--;
+            if (objectsInTrigger <= 0)
+            {
+                objectsInTrigger = 0;
+                if (closeDoorCoroutine != null)
+                {
+                    StopCoroutine(closeDoorCoroutine);
+                }
+                closeDoorCoroutine = StartCoroutine(CloseDoorDelayed(5f));
+            }
         }
     }
 
     private IEnumerator CloseDoorDelayed(float delay)
     {
         yield return new WaitForSeconds(delay);
-        doorController.CloseDoor();
+        if (objectsInTrigger <= 0 && isOpen)
+        {
+            isOpen = false;
+            doorController.CloseDoor();
+            closeDoorCoroutine = null;
+        }
     }
 
     public void setIsOpen(bool isItOpen)
