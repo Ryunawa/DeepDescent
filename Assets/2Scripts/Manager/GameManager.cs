@@ -87,14 +87,12 @@ namespace _2Scripts.Manager
         public void ResetNumberOfDeadPlayer()
         {
             numberOfDeadPlayers = 0;
-            Debug.Log("numberOfDeadPlayers : " + numberOfDeadPlayers);
         }
 
 
         [Rpc(SendTo.ClientsAndHost)]
         private void EndGameRpc()
         {
-            Debug.Log("Game Over. Returning to main menu.");
             endGameUI = GetManager<SceneManager>().gameObject.transform.GetChild(1).gameObject;
             endGameUI.SetActive(true);
             timer = FindObjectOfType<Timer.Timer>();

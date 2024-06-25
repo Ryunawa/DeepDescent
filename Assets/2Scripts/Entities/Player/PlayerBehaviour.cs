@@ -16,6 +16,9 @@ namespace _2Scripts.Entities.Player
     [RequireComponent(typeof(CharacterController))]
     public class PlayerBehaviour : GameManagerSync<PlayerBehaviour>, IController
     {
+        [SerializeField] private float stepInterval = 0.3f;
+        private float stepTimer = 0.0f;
+
         [SerializeField] private Vector2 camSens = new(100, 100);
         [SerializeField] private float playerSpeed = 2.0f;
         [SerializeField] private float jumpHeight = 1.0f;
@@ -187,24 +190,10 @@ namespace _2Scripts.Entities.Player
         switch (_characterController.isGrounded)
         {
             case true when _inputManager.PlayerJumped():
-                    {
-                        switch (characterID)
-                        {
-                            case 0:
-                                GameManager.GetManager<AudioManager>().PlaySfx("ArcherJump", this, 1, 5);
-                                break;
-                            case 1:
-                                GameManager.GetManager<AudioManager>().PlaySfx("DwarfJump", this, 1, 5);
-                                break;
-                            case 2:
-                                GameManager.GetManager<AudioManager>().PlaySfx("WitchJump", this, 1, 5);
-                                break;
-                            case 3:
-                                GameManager.GetManager<AudioManager>().PlaySfx("GoblinJump", this, 1, 5);
-                                break;
-                        }
-                        ySpeed = jumpHeight;
-                    }
+                {
+                    GameManager.GetManager<AudioManager>().PlaySfx("Jump", this, 1, 5);
+                    ySpeed = jumpHeight;
+                }
                 break;
             case true :
                 ySpeed = -0.5f;
@@ -219,7 +208,22 @@ namespace _2Scripts.Entities.Player
 
         _characterController.Move((move * playerSpeed + Vector3.up * ySpeed)*Time.fixedDeltaTime);
 
-        if (ObjectToAddToInventory && _inputManager.PlayerUsed())
+        // step sound
+        if (_characterController.isGrounded && move.magnitude > 0)
+        {
+            stepTimer += Time.fixedDeltaTime;
+            if (stepTimer >= stepInterval)
+            {
+                GameManager.GetManager<AudioManager>().PlaySfx("Footstep", this, 1, 5);
+                stepTimer = 0.0f;
+            }
+        }
+        else
+        {
+            stepTimer = 0.0f;
+        }
+
+            if (ObjectToAddToInventory && _inputManager.PlayerUsed())
         {
             if (ObjectToAddToInventory.TryGetComponent(out Object obj))
                 obj.Interact();
@@ -258,7 +262,28 @@ namespace _2Scripts.Entities.Player
 
         private void OnDamaged(float damage)
         {
-            //TODO do smthg?
+            // 1/3 chance that the player will do noise
+            int randomNumber = UnityEngine.Random.Range(0, 3);
+            if (randomNumber != 0)
+            {
+                return;
+            }
+
+            switch (characterID)
+            {
+                case 0:
+                    GameManager.GetManager<AudioManager>().PlaySfx("ArcherHurt", this, 1, 5);
+                    break;
+                case 1:
+                    GameManager.GetManager<AudioManager>().PlaySfx("DwarfHurt", this, 1, 5);
+                    break;
+                case 2:
+                    GameManager.GetManager<AudioManager>().PlaySfx("WitchHurt", this, 1, 5);
+                    break;
+                case 3:
+                    GameManager.GetManager<AudioManager>().PlaySfx("GoblinHurt", this, 1, 5);
+                    break;
+            }
         }
 
         private void OnDie()

@@ -122,7 +122,7 @@ namespace _2Scripts.ProceduralGeneration
                 return;
             }
             // Play Music
-            GameManager.GetManager<AudioManager>().PlayMusic("InsideTheDungeonMusic", 0.01f);
+            GameManager.GetManager<AudioManager>().PlayMusic("InsideTheDungeonMusic", 0.08f);
 
             _staticDungeonSize = dungeonSize;
             // Random.InitState((int)DateTime.Now.Ticks);

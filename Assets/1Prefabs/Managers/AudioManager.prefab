@@ -346,14 +346,14 @@ MonoBehaviour:
     clips:
     - {fileID: 8300000, guid: 4ae0414616ef1264bb72d3ae6fa9c8a6, type: 3}
     - {fileID: 8300000, guid: 534f9b03181febc469e17ad3bcd34fa1, type: 3}
-  - name: DwarfJump
+  - name: DwarfHurt
     clips:
     - {fileID: 8300000, guid: bdf8fdd74b9213d49a6f3270411a4d88, type: 3}
     - {fileID: 8300000, guid: de075e6b388c01b4db5aa64f418785d4, type: 3}
   - name: ArcherDeath
     clips:
     - {fileID: 8300000, guid: 1f01846fd259fb146b026c859e942386, type: 3}
-  - name: ArcherJump
+  - name: ArcherHurt
     clips:
     - {fileID: 8300000, guid: c6aec977ad5ed314281720c939a3eaad, type: 3}
     - {fileID: 8300000, guid: 31d39eadc2d104c47878831cc9fea8c6, type: 3}
@@ -361,7 +361,7 @@ MonoBehaviour:
     clips:
     - {fileID: 8300000, guid: 1fa81a6a1e69b7444818bf8298282ca2, type: 3}
     - {fileID: 8300000, guid: e54f44dd199a130409dabe000df31ecb, type: 3}
-  - name: GoblinJump
+  - name: GoblinHurt
     clips:
     - {fileID: 8300000, guid: 1014c8ae38751364fbc19074ad576c83, type: 3}
     - {fileID: 8300000, guid: 5007a3ae3127f4e4992d67fdae22cf56, type: 3}
@@ -369,7 +369,7 @@ MonoBehaviour:
     clips:
     - {fileID: 8300000, guid: 57d115e1443772d4e8162182b28f9f57, type: 3}
     - {fileID: 8300000, guid: 0dd643bd88b605d44b9a62a1bf8bac64, type: 3}
-  - name: WitchJump
+  - name: WitchHurt
     clips:
     - {fileID: 8300000, guid: 2a4f4ca95e82b3c489feb70465f02f3f, type: 3}
     - {fileID: 8300000, guid: 2abaa942d2d583b4ebba01a84bc4f7a6, type: 3}
@@ -442,5 +442,15 @@ MonoBehaviour:
   - name: FemaleSigh
     clips:
     - {fileID: 8300000, guid: 3ac77aa3ef0c28a419118aefd1cd75a9, type: 3}
+  - name: Jump
+    clips:
+    - {fileID: 8300000, guid: 90d147c3e5871e343a01bbe6463376fa, type: 3}
+    - {fileID: 8300000, guid: 015c5219df126044e88d8ed277664ada, type: 3}
+  - name: Footstep
+    clips:
+    - {fileID: 8300000, guid: 7e5929bf8c149ef42a8bed70999213a3, type: 3}
+    - {fileID: 8300000, guid: cb09d421259866a4ca8ff3a1f86cbf10, type: 3}
+    - {fileID: 8300000, guid: 94c2d80426ddac04fa5c3f1a84c9fc69, type: 3}
+    - {fileID: 8300000, guid: 3369c4682e2d5934bb5b8b11a8bfb5b9, type: 3}
   musicSource: {fileID: 5790782807701466028}
   sfxSource: {fileID: 2922250723814831833}

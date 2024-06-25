@@ -40,7 +40,7 @@ public class BossPillarInteraction : MonoBehaviour
             }
 
             // Play Music
-            GameManager.GetManager<AudioManager>().PlayMusic("InsideTheDungeonMusic", 0.1f);
+            GameManager.GetManager<AudioManager>().PlayMusic("InsideTheDungeonMusic", 0.08f);
         }
     }
 
