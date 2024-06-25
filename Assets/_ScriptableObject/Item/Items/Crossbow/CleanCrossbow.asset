@@ -20,7 +20,7 @@ MonoBehaviour:
   QuickUse: 0
   Stackable: 0
   InventoryIcon: {fileID: 21300000, guid: e0aed90e77e036446ae3ddd445035f5d, type: 3}
-  ObjectPrefab: {fileID: 8778570344472889581, guid: 4d86e361c4570b94ba6d820d5a2e4314,
+  ObjectPrefab: {fileID: 8778570344472889581, guid: 3a523898190d0604883a22fa13aa398f,
     type: 3}
   SpellToSpawn: {fileID: 2358931352745170473, guid: 4310a36ce6c8744419542189d05c1301,
     type: 3}
