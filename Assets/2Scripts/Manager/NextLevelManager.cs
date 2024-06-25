@@ -84,7 +84,7 @@ namespace _2Scripts.Manager
             NetworkObject[] children = GameManager.instance.levelGenerator.propsParent1.GetComponentsInChildren<NetworkObject>();
             for (var index = 0; index < children.Length; index++)
             {
-                if (objects.Length == 0) break;
+                if (children.Length == 0) break;
                 NetworkObject networkObjectChild = children[index];
                 if (networkObjectChild.gameObject != GameManager.instance.levelGenerator.propsParent1)
                     networkObjectChild.Despawn();
