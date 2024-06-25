@@ -17,8 +17,10 @@ namespace _2Scripts.Struct
         public float armor;
 
 
-        public EnemyStats(float health, float damageDealt, float armor) : this()
+        public EnemyStats(int index, float spawnRate, float health, float damageDealt, float armor) : this()
         {
+            this.index = index;
+            this.spawnRate = spawnRate;
             this.health = health;
             this.damageDealt = damageDealt;
             this.armor = armor;

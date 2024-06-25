@@ -57,7 +57,7 @@ namespace _2Scripts.Manager
 
         protected override void OnGameManagerChangeState(GameState gameState)
         {
-            if (gameState != GameState.InLevel || !IsHost) return;
+            if (gameState != GameState.InLevel || !GameManager.GetManager<MultiManager>().IsLobbyHost()) return;
             
             AdjustDifficultyParameters(NetworkManager.ConnectedClients.Count, (DifficultyMode)Int32.Parse(GameManager.GetManager<MultiManager>().Lobby.Data["Difficulty"].Value));
             
@@ -70,7 +70,7 @@ namespace _2Scripts.Manager
         /// </summary>
         /// <param name="pDifficulty"> Easy, Normal or Hard</param>
         /// <param name="pNumPlayers">One, two, three or four</param>
-        public void AdjustDifficultyParameters(int pNumPlayers, DifficultyMode pDifficulty = DifficultyMode.Normal)
+        public void AdjustDifficultyParameters(int pNumPlayers, DifficultyMode pDifficulty = DifficultyMode.Easy)
         {
             switch (pDifficulty)
             {
@@ -105,7 +105,7 @@ namespace _2Scripts.Manager
                 float damage = enemyStats.damageDealt * pMultiplier;
                 float armor = enemyStats.armor * pMultiplier;
 
-                _enemyTypesStructToUse.statsInfos[index] = new EnemyStats(health, damage, armor);
+                _enemyTypesStructToUse.statsInfos[index] = new EnemyStats(enemyStats.index, enemyStats.spawnRate, health, damage, armor);
             }
         }
 
