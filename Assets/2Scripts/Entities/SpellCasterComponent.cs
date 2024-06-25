@@ -19,7 +19,6 @@ public class SpellCasterComponent : NetworkBehaviour
         if (isFromCrossbow) GameManager.GetManager<AudioManager>().PlaySfx("ArrowWhoosh", this, 1, 5);
         else  GameManager.GetManager<AudioManager>().PlaySfx("FireBallWhoosh", this, 1, 5);
 
-        Debug.Log("SpellSpawned");
         GameObject spell;
         if (isFromStaff)
         {

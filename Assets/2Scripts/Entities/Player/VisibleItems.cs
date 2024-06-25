@@ -74,7 +74,7 @@ public class VisibleItems : NetworkBehaviour
     // Activates the shield
     public void AddVisibleShieldRpc()
     {
-        if (!shield.activeSelf)
+        if (!shield.activeSelf && shield)
         {
             shield.SetActive(true);
         }
@@ -84,7 +84,7 @@ public class VisibleItems : NetworkBehaviour
     // Deactivates the shield
     public void RemoveVisibleShieldRpc()
     {
-        if (shield.activeSelf)
+        if (shield.activeSelf && shield)
         {
             shield.SetActive(false);
         }
@@ -94,7 +94,7 @@ public class VisibleItems : NetworkBehaviour
     // Activates the spellBook
     public void AddVisibleSpellBookRpc()
     {
-        if (!spellBook.activeSelf)
+        if (!spellBook.activeSelf && spellBook)
         {
             spellBook.SetActive(true);
         }
@@ -104,7 +104,7 @@ public class VisibleItems : NetworkBehaviour
     // Deactivates the spellBook
     public void RemoveVisibleSpellBookRpc()
     {
-        if (spellBook.activeSelf)
+        if (spellBook.activeSelf && spellBook)
         {
             spellBook.SetActive(false);
         }
@@ -114,7 +114,7 @@ public class VisibleItems : NetworkBehaviour
     // Activates the potion
     public void AddVisiblePotionsRpc()
     {
-        if (!potion.activeSelf)
+        if (!potion.activeSelf && potion)
         {
             potion.SetActive(true);
         }
@@ -124,7 +124,7 @@ public class VisibleItems : NetworkBehaviour
     // Deactivates the potion
     public void RemoveVisiblePotionsRpc()
     {
-        if (potion.activeSelf)
+        if (potion.activeSelf && potion)
         {
             potion.SetActive(false);
         }
@@ -134,7 +134,7 @@ public class VisibleItems : NetworkBehaviour
     // Activates the next armor in order
     public void AddVisibleArmorRpc()
     {
-        if (armorIndex < armors.Count && !armors[armorIndex].activeSelf)
+        if (armorIndex < armors.Count && !armors[armorIndex].activeSelf && armors[armorIndex])
         {
             armors[armorIndex].SetActive(true);
             armorIndex++;
@@ -148,7 +148,7 @@ public class VisibleItems : NetworkBehaviour
         if (armorIndex > 0)
         {
             armorIndex--;
-            if (armors[armorIndex].activeSelf)
+            if (armors[armorIndex].activeSelf && armors[armorIndex])
             {
                 armors[armorIndex].SetActive(false);
             }

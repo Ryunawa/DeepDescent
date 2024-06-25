@@ -39,7 +39,6 @@ public class AnimatorRedirector : GameManagerSync<AnimatorRedirector>
             pos = GameManager.playerBehaviour.HandPosition.position;
         }
         
-        
         _spellCasterComponent.SpawnSpellRpc(playerBehaviour.inventory.MainHandItem.ID, pos, playerBehaviour.transform.rotation, isStaff, isBow);
     }
 

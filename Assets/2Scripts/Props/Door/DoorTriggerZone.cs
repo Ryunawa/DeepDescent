@@ -4,6 +4,7 @@ using System.Collections;
 public class DoorTriggerZone : MonoBehaviour
 {
     public DoorController doorController;
+    [SerializeField] public Collider doorCollider;
     [SerializeField] private bool isOpen;
     private int objectsInTrigger = 0;
     private Coroutine closeDoorCoroutine = null;
@@ -17,6 +18,7 @@ public class DoorTriggerZone : MonoBehaviour
             {
                 isOpen = true;
                 doorController.OpenDoor();
+                doorCollider.enabled = false;
                 if (closeDoorCoroutine != null)
                 {
                     StopCoroutine(closeDoorCoroutine);
@@ -50,6 +52,7 @@ public class DoorTriggerZone : MonoBehaviour
         {
             isOpen = false;
             doorController.CloseDoor();
+            doorCollider.enabled = true;
             closeDoorCoroutine = null;
         }
     }
@@ -57,5 +60,6 @@ public class DoorTriggerZone : MonoBehaviour
     public void setIsOpen(bool isItOpen)
     {
         isOpen = isItOpen;
+        doorCollider.enabled = !isItOpen;
     }
 }

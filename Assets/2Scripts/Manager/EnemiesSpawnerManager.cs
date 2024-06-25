@@ -235,8 +235,12 @@ namespace _2Scripts.Manager
             yield return new WaitForSeconds(0.2f);
 
             GameObject newParticle = Instantiate(spawnParticle, new Vector3(pEnemyPosition.x, 0.2f, pEnemyPosition.z - 0.5f), quaternion.identity);
-            newParticle.GetComponent<NetworkObject>().Spawn();
-            newParticle.transform.localScale *= 2.5f;
+            if (newParticle)
+            {
+                newParticle.GetComponent<NetworkObject>().Spawn();
+                newParticle.transform.localScale *= 2.5f;
+            }
+
         }
 
 
