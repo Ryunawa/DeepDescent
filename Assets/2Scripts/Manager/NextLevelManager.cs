@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using _2Scripts.Helpers;
 using _2Scripts.Interfaces;
+using _2Scripts.ProceduralGeneration;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -93,7 +95,13 @@ namespace _2Scripts.Manager
                 if (networkObjectChild.gameObject != GameManager.instance.levelGenerator.doorsParent1)
                     networkObjectChild.Despawn();
             }
-            
+
+            ItemManager itemManager = GameManager.GetManager<ItemManager>();
+
+            for (int i = 0; i < itemManager.ItemSpawned.Count; i++)
+            {
+                Destroy(itemManager.ItemSpawned[i]);
+            }
             //TODO: clear stuff
 
             yield return true;

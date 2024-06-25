@@ -30,6 +30,11 @@ namespace _2Scripts.Manager
 
         private Dictionary<int, Item> _itemsDictionary;
 
+        private List<GameObject> _itemSpawned = new();
+
+        public List<GameObject> ItemSpawned => _itemSpawned;
+
+
         protected override void Start()
         {
             base.Start();
@@ -117,6 +122,7 @@ namespace _2Scripts.Manager
 
                         GameObject instantiatedItem = Instantiate(itemToSpawn.ObjectPrefab, spawnPosition, randomRotation);
                         instantiatedItem.GetComponent<NetworkObject>().Spawn();
+                        _itemSpawned.Add(instantiatedItem);
 
                         spawnPoint.isOccupied = true;
                         itemsSpawned++;
