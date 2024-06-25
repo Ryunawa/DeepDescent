@@ -397,6 +397,19 @@ namespace _2Scripts.Entities.Player
             
             _isAttacking = true;
 
+            switch (characterID)
+            {
+                case 0: // archer
+                    GameManager.GetManager<AudioManager>().PlaySfx("ArrowWhoosh", this, 1, 5);
+                    break;
+                case 2: // witch
+                    GameManager.GetManager<AudioManager>().PlaySfx("FireBallWhoosh", this, 1, 5);
+                    break;
+                case 1 | 3: // goblin | dwarf
+                    GameManager.GetManager<AudioManager>().PlaySfx("SwordWhoosh", this, 1, 5);
+                    break;
+            }
+
 
             if (inventory.MainHandItem != null)
             {

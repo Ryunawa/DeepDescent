@@ -424,7 +424,7 @@ MonoBehaviour:
   - name: MonsterTakeHit
     clips:
     - {fileID: 8300000, guid: f470eb11fe1aaef48b2142bc74c1de56, type: 3}
-  - name: MonsterDie
+  - name: MonsterHurt
     clips:
     - {fileID: 8300000, guid: d75dfca32802e5f4a83614182a69370d, type: 3}
   - name: MonsterSpawn
@@ -452,5 +452,17 @@ MonoBehaviour:
     - {fileID: 8300000, guid: cb09d421259866a4ca8ff3a1f86cbf10, type: 3}
     - {fileID: 8300000, guid: 94c2d80426ddac04fa5c3f1a84c9fc69, type: 3}
     - {fileID: 8300000, guid: 3369c4682e2d5934bb5b8b11a8bfb5b9, type: 3}
+  - name: MonsterDie
+    clips:
+    - {fileID: 8300000, guid: 51b3a48a4f8a8cd43a916ca7278b3f0c, type: 3}
+  - name: ArrowWhoosh
+    clips:
+    - {fileID: 8300000, guid: 1c4ca39116fe0184b980c0bb5b445144, type: 3}
+    - {fileID: 8300000, guid: 11d8d2a986ed3e84ea9d243046e6b8be, type: 3}
+    - {fileID: 8300000, guid: 751d056c4ed999541ad5b6d8c6783a11, type: 3}
+  - name: SwordWhoosh
+    clips:
+    - {fileID: 8300000, guid: b0e41c2231d20c7438c16091e0164bbf, type: 3}
+    - {fileID: 8300000, guid: 50c9c617c117155409e4588a1f08407e, type: 3}
   musicSource: {fileID: 5790782807701466028}
   sfxSource: {fileID: 2922250723814831833}

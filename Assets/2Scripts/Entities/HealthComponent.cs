@@ -147,8 +147,9 @@ namespace _2Scripts.Entities
             // play sound
             if (gameObject.layer == LayerMask.NameToLayer("Enemy"))
             {
-                 GameManager.GetManager<AudioManager>().PlaySfx("MonsterDie", this, 1, 5);
+                GameManager.GetManager<AudioManager>().PlaySfx("MonsterHurt", this, 1, 5);
 
+				// TODO: add visual effects
 
                 AIController aiController = GetComponent<AIController>();
                 if (aiController != null && attacker != null)
