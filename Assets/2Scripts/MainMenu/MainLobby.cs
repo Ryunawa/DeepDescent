@@ -51,7 +51,7 @@ public class MainLobby : GameManagerSync<MainLobby>
         playButton.onClick.AddListener(multiManager.Init);
         createButton.onClick.AddListener(multiManager.CreateLobby);
         actualPlayButton.onClick.AddListener(multiManager.StartGame);
-        mainMenuButton.onClick.AddListener(multiManager.LeaveLobby);
+        //mainMenuButton.onClick.AddListener(multiManager.LeaveLobby);
 
         // Add listeners to the difficulty toggles
         easyToggle.onValueChanged.AddListener(delegate { ChangeDifficultyBtn(1); });
