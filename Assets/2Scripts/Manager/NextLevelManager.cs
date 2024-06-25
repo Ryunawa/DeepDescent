@@ -34,7 +34,7 @@ namespace _2Scripts.Manager
            ShowLoadingScreenClientRpc();
            
            // Stop the spawner
-           //GameManager.GetManager<EnemiesSpawnerManager>().StopSpawning();
+           GameManager.GetManager<EnemiesSpawnerManager>().StopSpawning();
            
            GameManager.GetManager<SceneManager>().LoadSceneNetwork(Scenes.Level);
            
