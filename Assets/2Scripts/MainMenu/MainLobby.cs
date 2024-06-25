@@ -35,7 +35,10 @@ public class MainLobby : GameManagerSync<MainLobby>
     protected override void OnGameManagerChangeState(GameState gameState)
     {
         if (gameState != GameState.MainMenu) return;
-        
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
         GameManager.GetManager<SceneManager>().DeactivateLoadingScreen();
         
         // Play Music

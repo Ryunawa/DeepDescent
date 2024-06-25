@@ -109,6 +109,14 @@ namespace _2Scripts.Manager
                 inventoryUI.SetActive(value);
                 itemDetailUI.gameObject.SetActive(false);
                 Cursor.visible = value;
+                if (value)
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                }
+                else
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                }
 
                 if (value)
                     DrawInventory();

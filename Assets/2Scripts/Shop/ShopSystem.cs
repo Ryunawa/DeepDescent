@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using _2Scripts.Helpers;
 using _2Scripts.Interfaces;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class ShopSystem : GameManagerSync<ShopSystem>
 {
@@ -99,6 +100,7 @@ public class ShopSystem : GameManagerSync<ShopSystem>
 
     public void OpenShop(PlayerBehaviour player)
     {
+
         Inventory inventory = GameManager.GetManager<InventoryUIManager>().Inventory;
         GameObject inventoryUI = GameManager.GetManager<InventoryUIManager>().inventoryUI;
         GameObject shopUI = GameManager.GetManager<InventoryUIManager>().shopUI;
@@ -106,6 +108,8 @@ public class ShopSystem : GameManagerSync<ShopSystem>
         if (activeShopUIs.ContainsKey(player) || !inventory || inventoryUI.activeSelf == true) return;
 
         GameManager.GetManager<InventoryUIManager>().DrawInventoryShop();
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
         inventory.isInShop = true;
         shopUI.SetActive(true);
         activeShopUIs[player] = shopUI;
@@ -117,6 +121,8 @@ public class ShopSystem : GameManagerSync<ShopSystem>
 
         if (activeShopUIs.ContainsKey(player) && inventory)
         {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
             inventory.isInShop = false;
             GameManager.GetManager<InventoryUIManager>().shopUI.SetActive(false);
             activeShopUIs.Remove(player);
