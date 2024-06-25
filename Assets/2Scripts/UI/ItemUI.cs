@@ -273,7 +273,7 @@ public class ItemUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
                 switch (item)
                 {
                     case EquippableItem:
-                        inventory.EquipFromInventory(itemUI.ItemPos, IsOffHand);
+                        inventory.EquipFromInventory(itemUI.ItemPos, (GameManager.GetManager<ItemManager>().GetItem(itemUI.ItemID) as WeaponItem).WeaponType == WeaponType.SHIELD);
                         break;
                     case ConsumableItem:
                         inventory.UseFromInventory(itemUI.ItemPos);
