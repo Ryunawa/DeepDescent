@@ -10,6 +10,7 @@ using NaughtyAttributes;
 using UnityEngine;
 using Unity.Mathematics;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using Random = UnityEngine.Random;
 
 namespace _2Scripts.Manager
@@ -25,36 +26,43 @@ namespace _2Scripts.Manager
         public EventHandler<int> OnEnemiesSpawnedOrKilledEventHandler;
 
         #region Variables
-        
-        [Tooltip("All the index of enemies that can be spawn for each level, \n Allows us to set the visibility for the mesh depending of the index")]
-        [SerializeField] private List<LevelData> spawnableEnemiesIndexByLevel;
-        [Tooltip("Max number of enemies in the level at the same time")]
-        [SerializeField] private int maxEnemiesPerLevel = 5;
-        [Tooltip("Interval between each spawn")]
-        [Range(0.1f, 10)]
-        [SerializeField] private float spawnIntervalInSecond;
-        [Tooltip("This particle will be spawn with the player to add a nice visual spawn effect")]
-        [SerializeField] private GameObject spawnParticle;
-        [Tooltip("Parent GameObject to organized a bit the hierarchy")]
-        [SerializeField] private GameObject spawnedEnemyFolder;
-        [Tooltip("This is the prefab that will be spawn, it contains all the mesh for every enemy.")]
-        [SerializeField] private GameObject enemyPrefab; // Add this field if it's missing
+
+        [Tooltip(
+            "All the index of enemies that can be spawn for each level, \n Allows us to set the visibility for the mesh depending of the index")]
+        [SerializeField]
+        private List<LevelData> spawnableEnemiesIndexByLevel;
+
+        [Tooltip("Max number of enemies in the level at the same time")] [SerializeField]
+        private int maxEnemiesPerLevel = 5;
+
+        [Tooltip("Interval between each spawn")] [Range(0.1f, 10)] [SerializeField]
+        private float spawnIntervalInSecond;
+
+        [Tooltip("This particle will be spawn with the player to add a nice visual spawn effect")] [SerializeField]
+        private GameObject spawnParticle;
+
+        [Tooltip("Parent GameObject to organized a bit the hierarchy")] [SerializeField]
+        private GameObject spawnedEnemyFolder;
+
+        [Tooltip("This is the prefab that will be spawn, it contains all the mesh for every enemy.")] [SerializeField]
+        private GameObject enemyPrefab; // Add this field if it's missing
 
         private List<(Room, List<GameObject>)> _roomsTuple;
         private int _currentEnemiesCount;
-        
+
         #endregion
 
         protected override void OnGameManagerChangeState(GameState gameState)
         {
             if (gameState != GameState.InLevel) return;
-            
+
             if (spawnedEnemyFolder == null)
             {
                 spawnedEnemyFolder = GameObject.FindWithTag("SpawnedEnemies");
                 if (spawnedEnemyFolder == null)
                 {
-                    Debug.LogError("No GameObject with tag 'SpawnedEnemies' found. Please ensure there is a GameObject with this tag in the scene.");
+                    Debug.LogError(
+                        "No GameObject with tag 'SpawnedEnemies' found. Please ensure there is a GameObject with this tag in the scene.");
                 }
             }
 
@@ -62,7 +70,7 @@ namespace _2Scripts.Manager
             {
                 if (GameManager.instance.levelGenerator.spawnShop)
                     return;
-                
+
                 StartCoroutine(SpawnEnemies());
             }
         }
@@ -73,36 +81,26 @@ namespace _2Scripts.Manager
         /// <returns></returns>
         private EnemyStats ChooseEnemyMeshInfo()
         {
-            int index = GameManager.GetManager<GameFlowManager>().CurrLevel % 4;
+            int index = GameManager.GetManager<GameFlowManager>().CurrLevel % 5;
+            
             LevelData currSpawnableEnemiesPrefabs = spawnableEnemiesIndexByLevel[index];
+
             EnemyTypes allTypeOfEnemies = GameManager.GetManager<DifficultyManager>().GetEnemiesStatsToUse();
             List<int> enemiesMeshIndex = currSpawnableEnemiesPrefabs.enemyIndex;
-            
-                // foreach (var enemyStats in allTypeOfEnemies.statsInfos)
-                // {
-                //     if (Random.value < enemyStats.spawnRate)
-                //     {
-                //         foreach (var enemyMeshIndex in enemiesMeshIndex)
-                //         {
-                //             if (enemyMeshIndex == enemyStats.index)
-                //                 return enemyStats;
-                //         }
-                //     }
-                // }
 
-                foreach (var enemyIndex in enemiesMeshIndex)
+            foreach (var enemyIndex in enemiesMeshIndex)
+            {
+                foreach (var enemyStats in allTypeOfEnemies.statsInfos)
                 {
-                    foreach (var enemyStats in allTypeOfEnemies.statsInfos)
-                    {
-                        if(enemyIndex == enemyStats.index)
-                            if (Random.value < enemyStats.spawnRate)
-                                return enemyStats;
-                    }
+                    if (enemyIndex == enemyStats.index)
+                        if (Random.value < enemyStats.spawnRate)
+                            return enemyStats;
                 }
-                return allTypeOfEnemies.statsInfos[0];
+            }
+            return allTypeOfEnemies.statsInfos[0];
         }
 
-        /// <summary>
+    /// <summary>
         /// Return the position of a random room to use to spawn the enemy
         /// </summary>
         /// <returns></returns>
