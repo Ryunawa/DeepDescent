@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 7
   Name: A wood log
-  Description: You seriously need to stop picking eaverything you see.
+  Description: You seriously need to stop picking everything you see.
   Rarity: 0
   SellValue: 0
   QuickUse: 0

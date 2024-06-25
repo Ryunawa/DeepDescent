@@ -62,7 +62,7 @@ namespace _2Scripts.Save
             Debug.Log("Loaded Inventory");
         }
         
-        private static bool CheckForSave()
+        public static bool CheckForSave()
         {
             return File.Exists(Path);
         }

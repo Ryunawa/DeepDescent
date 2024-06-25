@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 13
   Name: Ornate Knight Sword
-  Description: A pretty sword. Damn, sharp too
+  Description: A pretty sword. Damn sharp too
   Rarity: 3
   SellValue: 30
   QuickUse: 0

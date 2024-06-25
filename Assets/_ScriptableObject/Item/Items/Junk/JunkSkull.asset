@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 6
   Name: Useless Skull
-  Description: Pretend that it's your friend, gain their sympathy
+  Description: Pretend that it's your friend's, gain their sympathy
   Rarity: 1
   SellValue: 6
   QuickUse: 0

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 24
   Name: Shield Ornate Gold
-  Description: You can tell that this shield has been done by angels
+  Description: You can tell that this shield has been crafted by angels
   Rarity: 4
   SellValue: 40
   QuickUse: 0

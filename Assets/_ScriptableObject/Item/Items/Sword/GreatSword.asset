@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 11
   Name: Great Sword
-  Description: A sword, made of real iron by an expert
+  Description: A sword, made of real iron by an expert blacksmith
   Rarity: 1
   SellValue: 10
   QuickUse: 0

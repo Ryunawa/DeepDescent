@@ -61,7 +61,19 @@ public class Inventory : GameManagerSync<Inventory>
             
             if (overrideWithSavedInventory)
             {
-                SaveSystem.LoadInventory();
+                if (SaveSystem.CheckForSave()) 
+                    SaveSystem.LoadInventory();
+                else
+                {
+                    if (stat.CharacterStatPage)
+                    {
+                        foreach (var item in stat.CharacterStatPage.StartingItemInInventory)
+                        {
+                            InventoryObject newObj = new InventoryObject(item.ID, 1);
+                            InventoryItems.Add(newObj);
+                        }
+                    }
+                }
             }
             else
             {

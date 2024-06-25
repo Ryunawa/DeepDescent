@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 3
   Name: Special Fish
-  Description: A rare to find a dungeon's fish
+  Description: It's rare to find a dungeon's fish
   Rarity: 1
   SellValue: 3
   QuickUse: 0

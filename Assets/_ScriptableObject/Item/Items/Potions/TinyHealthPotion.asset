@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 70
   Name: Tiny Health Potion
-  Description: I mean, i keep it
+  Description: It's not the size that counts
   Rarity: 0
   SellValue: 4
   QuickUse: 1

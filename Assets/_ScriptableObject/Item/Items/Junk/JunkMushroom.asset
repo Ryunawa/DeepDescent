@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 5
   Name: Red Mushroom
-  Description: Seems eatable, or is it?
+  Description: Seems edible, or is it?
   Rarity: 0
   SellValue: 5
   QuickUse: 0

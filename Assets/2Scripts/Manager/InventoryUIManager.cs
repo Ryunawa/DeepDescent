@@ -38,6 +38,8 @@ namespace _2Scripts.Manager
         [Space, Header("Slots (but the fast ones)")]
         [SerializeField] private ItemUI[] quickSlots = new ItemUI[3];
 
+        private bool _alreadySetupItems = false;
+
 
         public static readonly Dictionary<Rarity, Color32> Colors = new Dictionary<Rarity, Color32>()
         {
@@ -89,11 +91,15 @@ namespace _2Scripts.Manager
             {
                 _inventory.QuickSlots[index] = new InventoryObject(-1, 0);
             }
-                        
+
+            if (_alreadySetupItems)
+                return;
+
             SetupInventory(inventoryRoot, inventoryBG, ListUI);
             SetupInventory(shopRoot, shopBG, ListShop);
-                        
-            
+
+            _alreadySetupItems = true;
+
             inventoryUI.SetActive(false);
         }
 

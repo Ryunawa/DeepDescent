@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 17
   Name: Axe
-  Description: An perfect axe to kill
+  Description: A perfect axe to kill
   Rarity: 3
   SellValue: 20
   QuickUse: 0

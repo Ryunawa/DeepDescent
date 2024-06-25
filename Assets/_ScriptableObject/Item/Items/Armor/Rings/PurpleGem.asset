@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 83
   Name: Purple Gem
-  Description: Everyone though this Gem dispared decades ago!
+  Description: Everyone though this Gem disappeared decades ago!
   Rarity: 4
   SellValue: 15
   QuickUse: 0

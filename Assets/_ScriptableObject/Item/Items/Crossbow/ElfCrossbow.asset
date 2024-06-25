@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 52
   Name: Elf Crossbow
-  Description: Forge by the elves in the wood of the famous White Tree
+  Description: Forged by the elves with the wood of the famous White Tree
   Rarity: 2
   SellValue: 20
   QuickUse: 0

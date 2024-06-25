@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 4
   Name: Empty Bottle
-  Description: Some empty bottle
+  Description: An empty bottle
   Rarity: 0
   SellValue: 4
   QuickUse: 0

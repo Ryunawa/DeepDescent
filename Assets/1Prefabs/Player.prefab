@@ -539,6 +539,7 @@ MonoBehaviour:
   _health:
     m_InternalValue: 0
   invincibleDebug: 0
+  feedback: {fileID: 0}
   aiController: {fileID: 0}
   OnDeath:
     m_PersistentCalls:
@@ -592,7 +593,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2b82b41b712ab4ebef0146dea13585, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  overrideWithSavedInventory: 0
+  overrideWithSavedInventory: 1
   visibleItemsFPS: {fileID: 7254602137039646948}
   visibleItemsTPS: {fileID: 2509654312490104346}
   ChestArmor: {fileID: 0}
