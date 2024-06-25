@@ -133,7 +133,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Class
     m_Mirror: 0
-  m_BlendParameter: Class
+  m_BlendParameter: Weapon
   m_BlendParameterY: Class
   m_MinThreshold: 0
   m_MaxThreshold: 3
@@ -747,7 +747,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Class
     m_Mirror: 0
-  m_BlendParameter: Class
+  m_BlendParameter: Weapon
   m_BlendParameterY: Weapon
   m_MinThreshold: 0
   m_MaxThreshold: 3
@@ -794,7 +794,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Class
     m_Mirror: 0
-  m_BlendParameter: Class
+  m_BlendParameter: Weapon
   m_BlendParameterY: Class
   m_MinThreshold: 0
   m_MaxThreshold: 3
@@ -915,7 +915,7 @@ AnimatorTransition:
   m_Conditions:
   - m_ConditionMode: 4
     m_ConditionEvent: Weapon
-    m_EventTreshold: 0
+    m_EventTreshold: -0.5
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 9180974169889982084}
   m_Solo: 0

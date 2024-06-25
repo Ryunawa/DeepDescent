@@ -13,25 +13,21 @@ public class SpellCasterComponent : NetworkBehaviour
     public Vector3 positionToCastFrom;
     
     [Rpc(SendTo.Server)]
-    public void SpawnSpellRpc(int id, bool isFromStaff = false, bool isFromCrossbow = false)
+    public void SpawnSpellRpc(int id, Vector3 pos, Quaternion rotation ,bool isFromStaff = false, bool isFromCrossbow = false)
     {
         // play sound
         if (isFromCrossbow) GameManager.GetManager<AudioManager>().PlaySfx("ArrowWhoosh", this, 1, 5);
         else  GameManager.GetManager<AudioManager>().PlaySfx("FireBallWhoosh", this, 1, 5);
 
         Debug.Log("SpellSpawned");
-        Vector3 pos;
         GameObject spell;
         if (isFromStaff)
         {
             spell = ((WeaponItem)GameManager.GetManager<ItemManager>().GetItem(id)).SpellToSpawn;
-            pos = GameManager.playerBehaviour.HandPosition.position;
-
         }
         else if(isFromCrossbow)
         {
             spell = ((WeaponItem)GameManager.GetManager<ItemManager>().GetItem(id)).SpellToSpawn;
-            pos = positionToCastFrom;
         }
         else 
         {
@@ -40,7 +36,7 @@ public class SpellCasterComponent : NetworkBehaviour
         }
         
         
-        NetworkObject o = Instantiate(spell.GetComponent<NetworkObject>(), pos, Quaternion.identity);
+        NetworkObject o = Instantiate(spell.GetComponent<NetworkObject>(), pos, rotation);
 
         if (isFromStaff || isFromCrossbow)
             o.GetComponent<Projectile>().projectileDamage =

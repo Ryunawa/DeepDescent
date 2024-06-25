@@ -24,15 +24,23 @@ public class AnimatorRedirector : GameManagerSync<AnimatorRedirector>
 
     public void CastSpell()
     {
-        if (boltOrigin)
-            GameManager.GetPlayerComponent<SpellCasterComponent>().positionToCastFrom = boltOrigin.position;
-
         PlayerBehaviour playerBehaviour = GameManager.playerBehaviour;
 
         bool isBow = playerBehaviour.inventory.MainHandItem.WeaponType == WeaponType.BOW;
         bool isStaff = playerBehaviour.inventory.MainHandItem.WeaponType == WeaponType.MAGIC;
+
+        Vector3 pos = Vector3.zero;
+        if (isBow)
+        {
+            pos = boltOrigin.position;
+        }
+        else if (isStaff)
+        {
+            pos = GameManager.playerBehaviour.HandPosition.position;
+        }
         
-        _spellCasterComponent.SpawnSpellRpc(playerBehaviour.inventory.MainHandItem.ID, isStaff, isBow);
+        
+        _spellCasterComponent.SpawnSpellRpc(playerBehaviour.inventory.MainHandItem.ID, pos, playerBehaviour.transform.rotation, isStaff, isBow);
     }
 
     public void AnimateBow()
