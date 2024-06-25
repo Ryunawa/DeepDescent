@@ -60,9 +60,6 @@ namespace _2Scripts.Manager
 
             if (NetworkManager.Singleton.IsServer)
             {
-                if (GameManager.GetManager<GameFlowManager>().CurrLevel == 1)
-                    GameManager.GetManager<DifficultyManager>().AdjustDifficultyParameters(GameManager.GetManager<MultiManager>().GetAllPlayerGameObjects().Count);
-
                 if (GameManager.instance.levelGenerator.spawnShop)
                     return;
                 
@@ -81,18 +78,28 @@ namespace _2Scripts.Manager
             EnemyTypes allTypeOfEnemies = GameManager.GetManager<DifficultyManager>().GetEnemiesStatsToUse();
             List<int> enemiesMeshIndex = currSpawnableEnemiesPrefabs.enemyIndex;
             
-                foreach (var enemyStats in allTypeOfEnemies.statsInfos)
+                // foreach (var enemyStats in allTypeOfEnemies.statsInfos)
+                // {
+                //     if (Random.value < enemyStats.spawnRate)
+                //     {
+                //         foreach (var enemyMeshIndex in enemiesMeshIndex)
+                //         {
+                //             if (enemyMeshIndex == enemyStats.index)
+                //                 return enemyStats;
+                //         }
+                //     }
+                // }
+
+                foreach (var enemyIndex in enemiesMeshIndex)
                 {
-                    if (Random.value < enemyStats.spawnRate)
+                    foreach (var enemyStats in allTypeOfEnemies.statsInfos)
                     {
-                        foreach (var enemyMeshIndex in enemiesMeshIndex)
-                        {
-                            if (enemyMeshIndex == enemyStats.index)
+                        if(enemyIndex == enemyStats.index)
+                            if (Random.value < enemyStats.spawnRate)
                                 return enemyStats;
-                        }
                     }
                 }
-            return allTypeOfEnemies.statsInfos[0];
+                return allTypeOfEnemies.statsInfos[0];
         }
 
         /// <summary>
