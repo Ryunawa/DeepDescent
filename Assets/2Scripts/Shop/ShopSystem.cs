@@ -17,6 +17,7 @@ public class ShopSystem : GameManagerSync<ShopSystem>
     private HashSet<PlayerBehaviour> nearbyPlayers = new HashSet<PlayerBehaviour>();
 
     [SerializeField] private GameObject itemUIPrefab; // Prefab for ItemUI
+    private bool _alreadyPopulated;
 
     protected override void OnGameManagerChangeState(GameState gameState)
     {
@@ -43,6 +44,8 @@ public class ShopSystem : GameManagerSync<ShopSystem>
             return;
         }
 
+        if (_alreadyPopulated)
+            return;
         // Fill weapon UI
         CreateAndSetupItemUI(itemManager.weaponList.Items, GameManager.GetManager<InventoryUIManager>().weaponUIParent);
 
@@ -54,6 +57,8 @@ public class ShopSystem : GameManagerSync<ShopSystem>
 
         // Fill parchment UI
         CreateAndSetupItemUI(itemManager.parchmentList.Items, GameManager.GetManager<InventoryUIManager>().parchmentUIParent);
+
+        _alreadyPopulated = true;
     }
 
     private void CreateAndSetupItemUI(List<Item> items, Transform parent)

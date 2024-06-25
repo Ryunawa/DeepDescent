@@ -14,6 +14,8 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private GameObject potionSection;
     [SerializeField] private GameObject parchmentSection;
 
+    [SerializeField] private ScrollRect scrollRect;
+
     private void Start()
     {
         weaponButton.onClick.AddListener(() => ShowSection(weaponSection));
@@ -31,5 +33,6 @@ public class ShopUI : MonoBehaviour
         armorSection.SetActive(sectionToShow == armorSection);
         potionSection.SetActive(sectionToShow == potionSection);
         parchmentSection.SetActive(sectionToShow == parchmentSection);
+        scrollRect.content = sectionToShow.GetComponent<RectTransform>();
     }
 }

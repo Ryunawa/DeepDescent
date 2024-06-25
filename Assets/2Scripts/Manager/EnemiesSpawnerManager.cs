@@ -266,11 +266,14 @@ namespace _2Scripts.Manager
         public void StopSpawning()
         {
             StopAllCoroutines();
-            foreach (var networkObjectChild in spawnedEnemyFolder.GetComponentsInChildren<NetworkObject>())
+            var objects = spawnedEnemyFolder.GetComponentsInChildren<NetworkObject>();
+            for (var index = 0; index < objects.Length; index++)
             {
-                if (networkObjectChild.gameObject != spawnedEnemyFolder)
+                var networkObjectChild = objects[index];
+                if (networkObjectChild.gameObject != spawnedEnemyFolder && networkObjectChild.IsSpawned)
                     networkObjectChild.Despawn();
             }
+
             Debug.Log("All enemies left removed");
         }
     }
