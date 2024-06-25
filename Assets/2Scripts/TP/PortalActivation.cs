@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using _2Scripts.Entities.Player;
 using _2Scripts.Manager;
 using NaughtyAttributes;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace _2Scripts.TP
 {
-    public class PortalActivation : MonoBehaviour
+    public class PortalActivation : NetworkBehaviour
     {
         private bool isPlayerInRange = false;
         private HashSet<PlayerBehaviour> nearbyPlayers = new HashSet<PlayerBehaviour>();
@@ -36,7 +37,21 @@ namespace _2Scripts.TP
         {
             GameManager.GetManager<GameFlowManager>().SetGameState(GameFlowManager.LevelState.BossNotDiscovered);
             // Teleportation
-            GameManager.GetManager<GameFlowManager>().LoadNextLevelServerRpc();
+            LoadNextLevelServerRpc();
+        }
+
+        [Rpc(SendTo.Server)]
+        public void LoadNextLevelServerRpc()
+        {
+            GameManager.GetManager<GameFlowManager>().LoadNextLevelServer();
+
+            ChangeGameStateRpc();
+        }
+
+        [Rpc(SendTo.ClientsAndHost)]
+        public void ChangeGameStateRpc()
+        {
+            GameManager.instance.ChangeGameState(GameState.Generating);
         }
 
         private void OnTriggerEnter(Collider other)

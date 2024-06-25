@@ -20,7 +20,7 @@ public class ExitDoor : MonoBehaviour
     private void ActivateDoor()
     {
         // Teleportation
-        GameManager.GetManager<GameFlowManager>().LoadNextLevelServerRpc();
+        GameManager.GetManager<GameFlowManager>().LoadNextLevelServer();
     }
 
     private void OnTriggerEnter(Collider other)

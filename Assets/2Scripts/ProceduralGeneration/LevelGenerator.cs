@@ -128,8 +128,8 @@ namespace _2Scripts.ProceduralGeneration
             // Random.InitState((int)DateTime.Now.Ticks);
 
             dungeon = new Room[_staticDungeonSize*_staticDungeonSize];
-        
-            Random.InitState(35896);
+
+            UnityEngine.Random.InitState(35896);
 
             //Generation n = 1 : center
             int centerIndex = (_staticDungeonSize /2) * (_staticDungeonSize +1);
@@ -787,8 +787,8 @@ namespace _2Scripts.ProceduralGeneration
                     Room targetRoom = validRooms[Random.Range(0, validRooms.Count)];
                     Vector3 portalPosition = targetRoom.transform.position;
                     GameObject portal = Instantiate(portalPrefab, portalPosition, Quaternion.identity);
-                    portal.GetComponent<BossPillarInteraction>().roomTp = targetRoom;
                     portal.GetComponent<NetworkObject>().Spawn();
+                    portal.GetComponent<BossPillarInteraction>().roomTp = targetRoom;
                     break;
                 }
             }
