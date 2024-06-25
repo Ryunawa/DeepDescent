@@ -72,11 +72,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doorController: {fileID: 8791856742876579872}
-  texts:
-  - {fileID: 9144393875717302935}
-  - {fileID: 3206746810714015615}
+  doorCollider: {fileID: 7937252121900818872}
   isOpen: 0
-  canOpen: 0
 --- !u!114 &8150445007848004566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,7 +86,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2051614329
+  GlobalObjectIdHash: 2933946587
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1

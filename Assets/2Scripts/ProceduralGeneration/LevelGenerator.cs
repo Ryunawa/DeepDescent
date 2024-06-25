@@ -80,21 +80,23 @@ namespace _2Scripts.ProceduralGeneration
             switch (gameState)
             {
                 case GameState.Generating:
-                {
-                    _multiManager = GameManager.GetManager<MultiManager>();
+                    {
+                        _multiManager = GameManager.GetManager<MultiManager>();
                             
-                    if(_multiManager.IsLobbyHost())
+                        if(_multiManager.IsLobbyHost())
                         StartGeneration();
-                    break;
-                }
+                        break;
+                    }
                 case GameState.InLevel:
-                {
-                    dungeonGeneratedEvent.Invoke();
-                    if (!spawnShop) PlacePortal();
-                    GameManager.GetManager<SceneManager>().DeactivateLoadingScreen();
-                    GameManager.GetManager<InventoryUIManager>().gameObject.SetActive(true);
+                    {
+                        // Play Music
+                        GameManager.GetManager<AudioManager>().PlayMusic("InsideTheDungeonMusic", 0.08f);
+                        dungeonGeneratedEvent.Invoke();
+                        if (!spawnShop) PlacePortal();
+                        GameManager.GetManager<SceneManager>().DeactivateLoadingScreen();
+                        GameManager.GetManager<InventoryUIManager>().gameObject.SetActive(true);
                     
-                    break;
+                        break;
                 }
             }
         }
@@ -121,8 +123,6 @@ namespace _2Scripts.ProceduralGeneration
                 
                 return;
             }
-            // Play Music
-            GameManager.GetManager<AudioManager>().PlayMusic("InsideTheDungeonMusic", 0.08f);
 
             _staticDungeonSize = dungeonSize;
             // Random.InitState((int)DateTime.Now.Ticks);

@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3789269002
+  GlobalObjectIdHash: 3721836186
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -942,7 +942,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_RecenterTarget: 0
   m_VerticalAxis:
-    Value: 44.272137
+    Value: 50.772446
     m_SpeedMode: 1
     m_MaxSpeed: 0.25
     m_AccelTime: 0.1
@@ -966,7 +966,7 @@ MonoBehaviour:
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_HorizontalAxis:
-    Value: -169.43741
+    Value: -164.1079
     m_SpeedMode: 1
     m_MaxSpeed: 0.25
     m_AccelTime: 0.1
@@ -1115,7 +1115,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8091742732339123299}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.03468346, y: -0.92235935, z: 0.37520784, w: 0.08526103}
+  m_LocalRotation: {x: 0.059266254, y: -0.8947642, z: 0.42460164, w: 0.12489194}
   m_LocalPosition: {x: 0, y: 1.439, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
