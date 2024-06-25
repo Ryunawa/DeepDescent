@@ -1,5 +1,4 @@
 using _2Scripts.Manager;
-using UnityEditor.SearchService;
 using UnityEngine;
 
 public class EndScreen : MonoBehaviour

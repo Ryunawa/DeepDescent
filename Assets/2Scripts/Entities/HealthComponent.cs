@@ -1,19 +1,12 @@
-using System.Threading.Tasks;
+
 using _2Scripts.Entities.AI;
-using _2Scripts.Entities.Player;
 using _2Scripts.Helpers;
-using _2Scripts.Interfaces;
 using _2Scripts.Manager;
 using _2Scripts.UI;
-using NaughtyAttributes;
 using Unity.Netcode;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
-using UnityEngine.TextCore.Text;
-using UnityEngine.UI;
 
 namespace _2Scripts.Entities
 {
