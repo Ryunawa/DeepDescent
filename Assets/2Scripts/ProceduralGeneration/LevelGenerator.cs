@@ -787,7 +787,7 @@ namespace _2Scripts.ProceduralGeneration
                 {
                     Room targetRoom = validRooms[Random.Range(0, validRooms.Count)];
                     Vector3 portalPosition = targetRoom.transform.position;
-                    GameObject portal = Instantiate(portalPrefab, portalPosition, Quaternion.identity);
+                    GameObject portal = Instantiate(portalPrefab, portalPosition, Quaternion.identity, propsParent1.transform);
                     portal.GetComponent<NetworkObject>().Spawn();
                     portal.GetComponent<BossPillarInteraction>().roomTp = targetRoom;
                     break;
