@@ -25,5 +25,5 @@ MonoBehaviour:
   SpellToSpawn: {fileID: 7308431643095106308, guid: 426ab46a4bf9c644c9be63ca5c6fd85a,
     type: 3}
   WeaponType: 4
-  AttackValue: 40
+  AttackValue: 50
   AttackSpeed: 0
