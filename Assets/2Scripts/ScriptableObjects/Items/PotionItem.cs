@@ -40,9 +40,9 @@ public class PotionItem : ConsumableItem
         switch (PotionType)
         {
             case PotionType.HEALTH:
+                stat += "Heal :";
                 break;
             default:
-                stat += "Heal :";
                 break;
         }
         
