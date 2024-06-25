@@ -211,7 +211,7 @@ MonoBehaviour:
   m_Lens:
     FieldOfView: 74.31447
     OrthographicSize: 5
-    NearClipPlane: 0.26
+    NearClipPlane: 0.2
     FarClipPlane: 1000
     Dutch: 0
     ModeOverride: 0
@@ -1154,7 +1154,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.26
+  near clip plane: 0.2
   far clip plane: 1000
   field of view: 74.31447
   orthographic: 0
@@ -2953,7 +2953,7 @@ PrefabInstance:
     - target: {fileID: 1607070514140403738, guid: 478b8ff498bd2624385544ba44e9f36a,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1761312432320202815, guid: 478b8ff498bd2624385544ba44e9f36a,
         type: 3}
@@ -7114,7 +7114,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 4300026, guid: e2958561779b1a748a4246b9d0c0b309, type: 3}
+      objectReference: {fileID: 4300024, guid: e2958561779b1a748a4246b9d0c0b309, type: 3}
     - target: {fileID: 3119369386208854566, guid: 478b8ff498bd2624385544ba44e9f36a,
         type: 3}
       propertyPath: m_Enabled

@@ -171,7 +171,7 @@ namespace _2Scripts.ProceduralGeneration
 
             dungeon = new Room[_staticDungeonSize * _staticDungeonSize];
 
-            Random.InitState(-1); // TODO : 35896
+            Random.InitState(35896); // TODO : -1
 
             //Generation n = 1 : center
             int centerIndex = (_staticDungeonSize / 2) * (_staticDungeonSize + 1);
