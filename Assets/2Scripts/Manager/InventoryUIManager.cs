@@ -107,7 +107,7 @@ namespace _2Scripts.Manager
             // if shop is not open
             if (shopUI.activeSelf == false)
             {
-                SetupInventory(inventoryRoot, inventoryBG, ListUI);
+                //SetupInventory(inventoryRoot, inventoryBG, ListUI);
                 bool value = _isOpened = !_isOpened;
 
                 inventoryUI.SetActive(value);
