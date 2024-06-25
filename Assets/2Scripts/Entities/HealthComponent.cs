@@ -33,6 +33,7 @@ namespace _2Scripts.Entities
 
         [Header("Components")]
         private EnemyData _enemyData;
+        [SerializeField] private EnemyFeedback feedback;
         private StatComponent _statComponent;
         [SerializeField]
         private AIController aiController;
@@ -83,7 +84,7 @@ namespace _2Scripts.Entities
 
 			if (_enemyData)
 			{
-				maxHealth = _enemyData.enemyStats.health;
+                maxHealth = _enemyData.enemyStats.health;
 				Heal(_enemyData.enemyStats.health);
                 GameManager.GetManager<AudioManager>().PlaySfx("MonsterSpawn", this, 1, 5);
             }
@@ -136,6 +137,9 @@ namespace _2Scripts.Entities
 			{
 				if (_enemyData)
 				{
+                    if (feedback) feedback.TakeHit();
+                    else Debug.LogError("feedback is nul.");
+
                     float effectiveArmor = _enemyData.enemyStats.armor * (1 - pArmorPenetration / 100);
                     float damageReductionFactor = 1 - effectiveArmor / 100;
                     damage = pDamage * damageReductionFactor;
