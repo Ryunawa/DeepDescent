@@ -1,19 +1,12 @@
-using System.Threading.Tasks;
+
 using _2Scripts.Entities.AI;
-using _2Scripts.Entities.Player;
 using _2Scripts.Helpers;
-using _2Scripts.Interfaces;
 using _2Scripts.Manager;
 using _2Scripts.UI;
-using NaughtyAttributes;
 using Unity.Netcode;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
-using UnityEngine.TextCore.Text;
-using UnityEngine.UI;
 
 namespace _2Scripts.Entities
 {
@@ -33,6 +26,7 @@ namespace _2Scripts.Entities
 
         [Header("Components")]
         private EnemyData _enemyData;
+        [SerializeField] private EnemyFeedback feedback;
         private StatComponent _statComponent;
         [SerializeField]
         private AIController aiController;
@@ -51,7 +45,10 @@ namespace _2Scripts.Entities
 		{
 			if (this == GameManager.playerBehaviour.Health)
 			{
-				GameManager.GetManager<InventoryUIManager>().HUD.SetHp();
+				HUD hud = GameManager.GetManager<InventoryUIManager>().HUD;
+				
+				hud.SetHp();
+				hud.FlashDamageEffect(iCurVal, MaxHealth);
 			}
 			
 			if (iPrevVal > 0 && iCurVal <= 0)
@@ -83,7 +80,7 @@ namespace _2Scripts.Entities
 
 			if (_enemyData)
 			{
-				maxHealth = _enemyData.enemyStats.health;
+                maxHealth = _enemyData.enemyStats.health;
 				Heal(_enemyData.enemyStats.health);
                 GameManager.GetManager<AudioManager>().PlaySfx("MonsterSpawn", this, 1, 5);
             }
@@ -136,6 +133,9 @@ namespace _2Scripts.Entities
 			{
 				if (_enemyData)
 				{
+                    if (feedback) feedback.TakeHit();
+                    else Debug.LogError("feedback is nul.");
+
                     float effectiveArmor = _enemyData.enemyStats.armor * (1 - pArmorPenetration / 100);
                     float damageReductionFactor = 1 - effectiveArmor / 100;
                     damage = pDamage * damageReductionFactor;
@@ -161,10 +161,10 @@ namespace _2Scripts.Entities
             }
 			else
 			{
-				if (!hudObject) hudObject = GameObject.Find("HUD").GetComponent<HUD>();
-                if (hudObject) hudObject.FlashDamageEffect(_health.Value, maxHealth);
+				// if (!hudObject) hudObject = GameObject.Find("HUD").GetComponent<HUD>();
+				// if (hudObject) hudObject.FlashDamageEffect(_health.Value, maxHealth);
 
-				else Debug.Log("no HUD found");
+				// else Debug.Log("no HUD found");
             }
 
             _health.Value -= damage;

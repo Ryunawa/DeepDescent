@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AxeRune
   m_EditorClassIdentifier: 
   ID: 15
-  Name: Axe
+  Name: Axe Rune
   Description: An axe, with a little drawing on it
   Rarity: 0
   SellValue: 5

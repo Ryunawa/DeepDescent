@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using _2Scripts.Manager;
 using _2Scripts.UI;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class Singleton<T> : MonoBehaviour

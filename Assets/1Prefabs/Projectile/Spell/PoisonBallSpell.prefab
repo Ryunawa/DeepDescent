@@ -123,7 +123,7 @@ PrefabInstance:
     - target: {fileID: 2962349039048327619, guid: 84fe8fa6019501c4da76f5b8fdf01682,
         type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2962898375
+      value: 2227855383
       objectReference: {fileID: 0}
     - target: {fileID: 3090629861896308313, guid: 84fe8fa6019501c4da76f5b8fdf01682,
         type: 3}
@@ -193,7 +193,7 @@ PrefabInstance:
     - target: {fileID: 8442775795403847343, guid: 84fe8fa6019501c4da76f5b8fdf01682,
         type: 3}
       propertyPath: m_Name
-      value: PoisonBall
+      value: PoisonBallSpell
       objectReference: {fileID: 0}
     - target: {fileID: 8622122686040950725, guid: 84fe8fa6019501c4da76f5b8fdf01682,
         type: 3}
@@ -256,12 +256,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acdaaf2ec66853c48a9000244338c695, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileType: 0
   projectileMovementSpeed: 0.2
-  projectileDamage: 1
-  projectileLife: 1
+  projectileDamage: 60
+  projectileLife: 2
   despawnOnDeath: 1
   vfx: {fileID: 1124249251357369524}
+  mesh: {fileID: 0}
   projectileDirection: {x: 0, y: 0, z: 0}
 --- !u!135 &1931507558003540051
 SphereCollider:

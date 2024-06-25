@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: OrnateAxe
   m_EditorClassIdentifier: 
   ID: 16
-  Name: Axe Rune
+  Name: Ornate Axe
   Description: An axe, of good quality
   Rarity: 1
   SellValue: 10
