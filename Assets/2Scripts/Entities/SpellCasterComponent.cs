@@ -1,9 +1,6 @@
 using _2Scripts.Manager;
-using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class SpellCasterComponent : NetworkBehaviour

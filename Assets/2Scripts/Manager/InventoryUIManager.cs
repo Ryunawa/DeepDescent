@@ -2,13 +2,9 @@ using System.Collections.Generic;
 using _2Scripts.Entities.Player;
 using _2Scripts.Enum;
 using _2Scripts.Helpers;
-using _2Scripts.Interfaces;
 using _2Scripts.UI;
 using NaughtyAttributes;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using static UnityEditor.Progress;
 
 namespace _2Scripts.Manager
 {
