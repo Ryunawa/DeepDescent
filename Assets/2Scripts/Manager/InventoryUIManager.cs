@@ -122,12 +122,14 @@ namespace _2Scripts.Manager
         
         private void SetupInventory(GameObject inventoryRoot, GameObject inventoryBG, List<ItemUI> List)
         {
-            
-            for (int i = inventoryRoot.transform.childCount; i > 0; --i)
-                Destroy(inventoryRoot.transform.GetChild(0).gameObject);
-            
-            for (int i = inventoryBG.transform.childCount; i > 0; --i)
-                Destroy(inventoryBG.transform.GetChild(0).gameObject);
+            foreach (Transform child in inventoryRoot.transform)
+            {
+                Destroy(child.gameObject);
+            }
+            foreach (Transform child in inventoryBG.transform)
+            {
+                Destroy(child.gameObject);
+            }
             
             for (int i = 0; i < _inventory.InventorySpace; i++)
             {

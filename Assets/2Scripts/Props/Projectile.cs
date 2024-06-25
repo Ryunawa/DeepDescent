@@ -42,6 +42,8 @@ public class Projectile : NetworkBehaviour
             healthComponent.TakeDamage(projectileDamage);
         }
 
+        Debug.Log(other.gameObject.name);
+        
         projectileLife--;
 
         if (projectileLife <= 0)
