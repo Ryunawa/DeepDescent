@@ -243,7 +243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doorController: {fileID: 5817592631510846919}
-  doorCollider: {fileID: 6894016246905923690}
+  doorCollider: {fileID: 4309055180501905306}
   isOpen: 0
 --- !u!114 &-1409100390241146301
 MonoBehaviour:
@@ -257,7 +257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 998554626
+  GlobalObjectIdHash: 1901352485
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -512,6 +512,12 @@ PrefabInstance:
 --- !u!4 &4263709968891495968 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 447596, guid: b6fbab28aa20d7e478b285863d7fc151,
+    type: 3}
+  m_PrefabInstance: {fileID: 4263709968891843148}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &4309055180501905306 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 65138897227120086, guid: b6fbab28aa20d7e478b285863d7fc151,
     type: 3}
   m_PrefabInstance: {fileID: 4263709968891843148}
   m_PrefabAsset: {fileID: 0}
