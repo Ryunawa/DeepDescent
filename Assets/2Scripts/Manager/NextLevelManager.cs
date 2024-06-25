@@ -53,7 +53,10 @@ namespace _2Scripts.Manager
         [Rpc(SendTo.ClientsAndHost)]
         public void ChangeGameStateRpc()
         {
-            GameManager.instance.ChangeGameState(GameState.Generating);
+            if (GameManager.GameState != GameState.Generating)
+            {
+                GameManager.instance.ChangeGameState(GameState.Generating);
+            }
         }
 
         /// <summary>

@@ -108,7 +108,7 @@ namespace _2Scripts.ProceduralGeneration
             }
         }
 
-        [Rpc(SendTo.NotServer)]
+        [Rpc(SendTo.ClientsAndHost)]
         private void ChangeStateClientRpc()
         {
             if (GameManager.GameState != GameState.InLevel)
