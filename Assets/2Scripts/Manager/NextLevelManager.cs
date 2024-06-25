@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Threading.Tasks;
 using _2Scripts.Helpers;
 using _2Scripts.Interfaces;
@@ -34,13 +35,23 @@ namespace _2Scripts.Manager
            GameManager.GetManager<EnemiesSpawnerManager>().StopSpawning();
            
            // Remove All the previous generated room (props too)
-           ClearPreviousDungeon();
+           StartCoroutine(ClearPreviousDungeon());
            
            // Set bool depending on the current dungeon level
            GameManager.instance.levelGenerator.spawnShop = GameManager.GetManager<GameFlowManager>().CurrLevel % 5 == 0;
                
            // Start the generation
-           GameManager.instance.levelGenerator.StartGeneration();
+           //GameManager.instance.levelGenerator.StartGeneration();
+           //NO NEED GAME STATE GENERATES IN STATE : generating. so we just call change state to generating
+           
+           ChangeGameStateRpc();
+           
+        }
+        
+        [Rpc(SendTo.ClientsAndHost)]
+        public void ChangeGameStateRpc()
+        {
+            GameManager.instance.ChangeGameState(GameState.Generating);
         }
 
         /// <summary>
@@ -55,24 +66,37 @@ namespace _2Scripts.Manager
         /// <summary>
         /// Despawn the props, rooms and doors of the current dungeon
         /// </summary>
-        private async void ClearPreviousDungeon()
+        private IEnumerator ClearPreviousDungeon()
         {
-            foreach (var networkObjectChild in GameManager.instance.levelGenerator.roomsParent1.GetComponentsInChildren<NetworkObject>())
+            if (!GameManager.GetManager<MultiManager>().IsLobbyHost()) yield return false;
+            
+            NetworkObject[] objects = GameManager.instance.levelGenerator.roomsParent1.GetComponentsInChildren<NetworkObject>();
+            for (var index = 0; index < objects.Length; index++)
             {
-                if(networkObjectChild.gameObject != GameManager.instance.levelGenerator.roomsParent1)
+                NetworkObject networkObjectChild = objects[index];
+                if (networkObjectChild.gameObject != GameManager.instance.levelGenerator.roomsParent1)
                     networkObjectChild.Despawn();
             }
-            foreach (var networkObjectChild in GameManager.instance.levelGenerator.propsParent1.GetComponentsInChildren<NetworkObject>())
+
+            NetworkObject[] children = GameManager.instance.levelGenerator.propsParent1.GetComponentsInChildren<NetworkObject>();
+            for (var index = 0; index < children.Length; index++)
             {
-                if(networkObjectChild.gameObject != GameManager.instance.levelGenerator.propsParent1)
+                NetworkObject networkObjectChild = children[index];
+                if (networkObjectChild.gameObject != GameManager.instance.levelGenerator.propsParent1)
                     networkObjectChild.Despawn();
             }
-            foreach (var networkObjectChild in GameManager.instance.levelGenerator.doorsParent1.GetComponentsInChildren<NetworkObject>())
+
+            NetworkObject[] inChildren = GameManager.instance.levelGenerator.doorsParent1.GetComponentsInChildren<NetworkObject>();
+            for (var index = 0; index < inChildren.Length; index++)
             {
-                if(networkObjectChild.gameObject != GameManager.instance.levelGenerator.doorsParent1)
+                NetworkObject networkObjectChild = inChildren[index];
+                if (networkObjectChild.gameObject != GameManager.instance.levelGenerator.doorsParent1)
                     networkObjectChild.Despawn();
             }
-            await Task.CompletedTask;
+            
+            //TODO: clear stuff
+
+            yield return true;
             Debug.Log("All dungeon elements clear");
         }
     }

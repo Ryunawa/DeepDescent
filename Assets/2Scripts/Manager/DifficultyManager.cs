@@ -89,10 +89,10 @@ namespace _2Scripts.Manager
             }
             AdjustEnemiesStatsForNumPlayers(pNumPlayers);
 
-            for (int i = 0; i < _enemyTypesStructToUse.statsInfos.Count; i++)
-            {
-                OnEnemiesStatsUpdatedEventHandler?.Invoke(this, GetStructElementByIndex<EnemyStats>(_enemyTypesStructToUse, i));
-            }
+            // for (int i = 0; i < _enemyTypesStructToUse.statsInfos.Count; i++)
+            // {
+            //     OnEnemiesStatsUpdatedEventHandler?.Invoke(this, GetStructElementByIndex<EnemyStats>(_enemyTypesStructToUse, i));
+            // }
         }
 
         private void ModifyBaseStats(float pMultiplier)
@@ -182,10 +182,10 @@ namespace _2Scripts.Manager
                 _enemyTypesStructToUse.statsInfos[i] = AdjustEnemyStats(_enemyTypesStructToUse.statsInfos[i], multiplier);
             }
 
-            for (int i = 0; i < _enemyTypesStructToUse.statsInfos.Count; i++)
-            {
-                OnEnemiesStatsUpdatedEventHandler?.Invoke(this, GetStructElementByIndex<EnemyStats>(_enemyTypesStructToUse, i));
-            }
+            // for (int i = 0; i < _enemyTypesStructToUse.statsInfos.Count; i++)
+            // {
+            //     OnEnemiesStatsUpdatedEventHandler?.Invoke(this, GetStructElementByIndex<EnemyStats>(_enemyTypesStructToUse, i));
+            // }
 
             _difficultyMultiplier = multiplier;
             Debug.Log("Multiplicateur : " + multiplier);

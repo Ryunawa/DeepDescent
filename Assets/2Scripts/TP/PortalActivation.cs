@@ -44,14 +44,6 @@ namespace _2Scripts.TP
         public void LoadNextLevelServerRpc()
         {
             GameManager.GetManager<GameFlowManager>().LoadNextLevelServer();
-
-            ChangeGameStateRpc();
-        }
-
-        [Rpc(SendTo.ClientsAndHost)]
-        public void ChangeGameStateRpc()
-        {
-            GameManager.instance.ChangeGameState(GameState.Generating);
         }
 
         private void OnTriggerEnter(Collider other)

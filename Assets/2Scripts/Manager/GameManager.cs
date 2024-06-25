@@ -121,6 +121,7 @@ namespace _2Scripts.Manager
         public void ChangeGameState(GameState gameState)
         {
             List<ManagerType> neededManagers;
+            _gameState = gameState;
             switch (gameState)
             {
                 case GameState.MainMenu:
@@ -165,8 +166,6 @@ namespace _2Scripts.Manager
                 default:
                     throw new ArgumentOutOfRangeException(nameof(gameState), gameState, null);
             }
-
-            _gameState = gameState;
         }
 
         private void ActivateNeededManagers(List<ManagerType> neededManagers, bool isAdditive = false)
