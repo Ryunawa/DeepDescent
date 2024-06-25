@@ -14,7 +14,8 @@ public class SoundAttackBehavior : StateMachineBehaviour
 
         switch (ID)
         {
-            case 1 | 3:
+            case 1:
+            case 3:
                 GameManager.GetManager<AudioManager>().PlaySfx("SwordWhoosh", playerBehaviour, 1, 5);
                 break;
         }
