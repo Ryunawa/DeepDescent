@@ -477,9 +477,6 @@ namespace _2Scripts.Entities.AI
         // Death function
         private void HandleDeath()
         {
-            GameManager.GetManager<AudioManager>().PlaySfx("MonsterDie", this, 1, 5);
-            Debug.Log("Sound die!");
-
             if (isBoss)
             {
                 // play sound

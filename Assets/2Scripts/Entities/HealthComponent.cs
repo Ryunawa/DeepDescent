@@ -64,6 +64,7 @@ namespace _2Scripts.Entities
                 }
 				else
                 {
+                    GameManager.GetManager<AudioManager>().PlaySfx("MonsterDie", this, 1, 5);
                     GameManager.GetManager<EnemiesSpawnerManager>().EnemyDestroyed(_enemyData);
                 }
 			}
@@ -84,7 +85,8 @@ namespace _2Scripts.Entities
 			{
 				maxHealth = _enemyData.enemyStats.health;
 				Heal(_enemyData.enemyStats.health);
-			}
+                GameManager.GetManager<AudioManager>().PlaySfx("MonsterSpawn", this, 1, 5);
+            }
 
 			Heal(maxHealth);
             characterID = GameManager.GetManager<MultiManager>().GetSelectedCharacterID();
