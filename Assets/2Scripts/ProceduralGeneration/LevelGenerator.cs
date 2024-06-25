@@ -108,13 +108,17 @@ namespace _2Scripts.ProceduralGeneration
             }
         }
 
-        [Rpc(SendTo.ClientsAndHost)]
+        [Rpc(SendTo.NotServer)]
         private void ChangeStateClientRpc()
         {
-            Debug.Log("CALLED CHANGE STATE FROM RPC");
-            SubToGameManagerEvent();
-            if(GameManager.GameState != GameState.InLevel)
+            if (GameManager.GameState != GameState.InLevel)
+            {
+                Debug.Log("CALLED CHANGE STATE FROM RPC");
+                SubToGameManagerEvent();
+                            
                 GameManager.instance.ChangeGameState(GameState.InLevel);
+            }
+            
         }
 
         public async void StartGeneration()
