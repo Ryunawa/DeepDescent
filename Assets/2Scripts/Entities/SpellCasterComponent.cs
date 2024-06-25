@@ -13,21 +13,17 @@ public class SpellCasterComponent : NetworkBehaviour
     public Vector3 positionToCastFrom;
     
     [Rpc(SendTo.Server)]
-    public void SpawnSpellRpc(int id, bool isFromStaff = false, bool isFromCrossbow = false)
+    public void SpawnSpellRpc(int id, Vector3 pos ,bool isFromStaff = false, bool isFromCrossbow = false)
     {
         Debug.Log("SpellSpawned");
-        Vector3 pos;
         GameObject spell;
         if (isFromStaff)
         {
             spell = ((WeaponItem)GameManager.GetManager<ItemManager>().GetItem(id)).SpellToSpawn;
-            pos = GameManager.playerBehaviour.HandPosition.position;
-
         }
         else if(isFromCrossbow)
         {
             spell = ((WeaponItem)GameManager.GetManager<ItemManager>().GetItem(id)).SpellToSpawn;
-            pos = positionToCastFrom;
         }
         else 
         {
