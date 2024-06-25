@@ -84,7 +84,7 @@ namespace _2Scripts.ProceduralGeneration
                         _multiManager = GameManager.GetManager<MultiManager>();
                             
                         if(_multiManager.IsLobbyHost())
-                        StartGeneration();
+                            StartGeneration();
                         break;
                     }
                 case GameState.InLevel:
@@ -211,6 +211,7 @@ namespace _2Scripts.ProceduralGeneration
         {
             if (startDepth == _staticDungeonSize)
             {
+                Debug.Log("DoGenFinished");
                 return;
             }
         
