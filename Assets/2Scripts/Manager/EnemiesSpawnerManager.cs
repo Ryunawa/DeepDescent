@@ -237,12 +237,7 @@ namespace _2Scripts.Manager
             GameObject newParticle = Instantiate(spawnParticle, new Vector3(pEnemyPosition.x, 0.2f, pEnemyPosition.z - 0.5f), quaternion.identity);
             newParticle.GetComponent<NetworkObject>().Spawn();
             newParticle.transform.localScale *= 2.5f;
-
-            yield return new WaitForSeconds(pEnemyGameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length + 0.25f);
-            newParticle.GetComponent<NetworkObject>().Despawn();
-            Destroy(newParticle);
         }
-
 
 
         /// <summary>
