@@ -19,11 +19,13 @@ namespace _2Scripts.Entities
             set => _enemyStats = value;
         }
 
-        private void OnDestroy()
+
+        public override void OnNetworkDespawn()
         {
+            base.OnNetworkDespawn();
             GameManager.GetManager<DifficultyManager>().OnEnemiesStatsUpdatedEventHandler -= UpdateStatsOnNewLevel;
         }
-        
+
         protected override void OnGameManagerChangeState(GameState gameState)
         {
             if (gameState == GameState.Generating)
