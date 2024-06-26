@@ -99,8 +99,8 @@ namespace _2Scripts.ProceduralGeneration
                     {
                         _multiManager = GameManager.GetManager<MultiManager>();
 
-                        int indexOfPlayer = NetworkManager.Singleton.ConnectedClientsList.ToList()
-                            .IndexOf(NetworkManager.Singleton.LocalClient);
+                        int indexOfPlayer = _multiManager.Lobby.Players.IndexOf(_multiManager.Lobby.Players.Find(x => x.Data["Name"].Value == _multiManager.PlayerName); // NetworkManager.Singleton.ConnectedClientsList.ToList()
+                            //.IndexOf(NetworkManager.Singleton.LocalClient);
 
                         switch (indexOfPlayer)
                         {
