@@ -27,6 +27,8 @@ public class BossPillarInteraction : MonoBehaviour
 
     void Update()
     {
+        if (!GameManager.GetManager<GameFlowManager>())
+            return;
         if (isPlayerInRange && Input.GetKeyDown(KeyCode.E) && GameManager.GetManager<GameFlowManager>().CurrentState == GameFlowManager.LevelState.BossNotDiscovered)
         {
             ActivatePillar();
