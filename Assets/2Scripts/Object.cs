@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using _2Scripts.Entities.Player;
+using _2Scripts.Helpers;
 using _2Scripts.Interfaces;
 using _2Scripts.Manager;
 using Unity.Netcode;
@@ -9,7 +10,7 @@ using UnityEngine;
 
 namespace _2Scripts
 {
-    public class Object : NetworkBehaviour, IInteractable
+    public class Object : GameManagerSync<Object>, IInteractable
     {
         public Item ItemDetails;
         public int amount;
@@ -17,9 +18,18 @@ namespace _2Scripts
         private ParticleSystem _vfx;
         [DoNotSerialize] public PlayerBehaviour playerBehaviourInspecting;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             _vfx = GetComponentInChildren<ParticleSystem>();
+            
+            ParticleSystem.ColorOverLifetimeModule color = _vfx.colorOverLifetime;
+            color.color = GameManager.GetManager<ItemManager>().GetGradientFromRarity(ItemDetails.Rarity);
+        }
+
+        protected override void OnGameManagerChangeState(GameState gameState)
+        {
+            if (gameState != GameState.InLevel)return;
             
             ParticleSystem.ColorOverLifetimeModule color = _vfx.colorOverLifetime;
             color.color = GameManager.GetManager<ItemManager>().GetGradientFromRarity(ItemDetails.Rarity);
