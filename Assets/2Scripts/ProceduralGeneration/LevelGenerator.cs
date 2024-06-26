@@ -3,6 +3,7 @@ using _2Scripts.Entities.Player;
 using _2Scripts.Helpers;
 using _2Scripts.Manager;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
@@ -85,7 +86,7 @@ namespace _2Scripts.ProceduralGeneration
 
         private IEnumerator ChangeState()
         {
-            yield return new WaitUntil(()=>GameManager.areClientsRdy.Count == NetworkManager.ConnectedClients.Count);
+            yield return new WaitUntil(()=>GameManager.ArePlayersRdy());
            
             StartGeneration();
         }
@@ -97,8 +98,26 @@ namespace _2Scripts.ProceduralGeneration
                 case GameState.Generating:
                     {
                         _multiManager = GameManager.GetManager<MultiManager>();
+
+                        int indexOfPlayer = NetworkManager.Singleton.ConnectedClientsList.ToList()
+                            .IndexOf(NetworkManager.Singleton.LocalClient);
+
+                        switch (indexOfPlayer)
+                        {
+                            case 0:
+                                GameManager.isHostRdy.Value = true;
+                                break;
+                            case 1:
+                                GameManager.isClientOneRdy.Value = true;
+                                break;
+                            case 2:
+                                GameManager.isClientTwoRdy.Value = true;
+                                break;
+                            case 3:
+                                GameManager.isClientThreeRdy.Value = true;
+                                break;
+                        }
                         
-                        GameManager.areClientsRdy.Add(true); 
                         
                         break;
                     }

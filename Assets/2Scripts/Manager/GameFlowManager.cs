@@ -55,7 +55,10 @@ namespace _2Scripts.Manager
         {
             GameManager.instance.ResetNumberOfDeadPlayer();
             Timer.StopTimer();
-            GameManager.areClientsRdy.Clear();
+            GameManager.isHostRdy.Value = false;
+            GameManager.isClientOneRdy.Value = false;
+            GameManager.isClientTwoRdy.Value = false;
+            GameManager.isClientThreeRdy.Value = false;
             CurrLevel++;
             OnNextLevelEvent?.Invoke(Timer);
         }
