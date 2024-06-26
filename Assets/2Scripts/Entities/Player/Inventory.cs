@@ -55,6 +55,12 @@ public class Inventory : GameManagerSync<Inventory>
 
     protected override void OnGameManagerChangeState(GameState gameState)
     {
+        if (!IsOwner)
+        {
+            enabled = false;
+            return;
+        }
+            
         if (gameState == GameState.InLevel)
         {
             visibleItems = IsOwner ? visibleItemsFPS : visibleItemsTPS;
