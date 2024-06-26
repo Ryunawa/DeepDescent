@@ -111,14 +111,17 @@ namespace _2Scripts.Manager
             }
 
             ItemManager itemManager = GameManager.GetManager<ItemManager>();
-
-            for (int i = 0; i < itemManager.ItemSpawned.Count; i++)
+            if (itemManager)
             {
-                if (itemManager.ItemSpawned.Count == 0) break;
                 
-                itemManager.ItemSpawned[i].GetComponent<NetworkObject>().Despawn();
-            }
             
+                for (int i = 0; i < itemManager.ItemSpawned.Count; i++)
+                {
+                    if (itemManager.ItemSpawned.Count == 0) break;
+                
+                    itemManager.ItemSpawned[i].GetComponent<NetworkObject>().Despawn();
+                }
+            }
             GameManager.instance.levelGenerator.Portal.Despawn();
 
             action.Invoke();
