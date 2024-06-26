@@ -22,9 +22,6 @@ namespace _2Scripts
         {
             base.Start();
             _vfx = GetComponentInChildren<ParticleSystem>();
-            
-            ParticleSystem.ColorOverLifetimeModule color = _vfx.colorOverLifetime;
-            color.color = GameManager.GetManager<ItemManager>().GetGradientFromRarity(ItemDetails.Rarity);
         }
 
         protected override void OnGameManagerChangeState(GameState gameState)

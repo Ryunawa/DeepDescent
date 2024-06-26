@@ -221,7 +221,7 @@ namespace _2Scripts.Manager
         /// <returns></returns>
         public static T GetManager<T>() where T : class
         {
-             return _managersAndPrefabs.First(x => x.ManagerMonoBehaviour is T).ManagerMonoBehaviour as T;
+             return _managersAndPrefabs.FirstOrDefault(x => x.ManagerMonoBehaviour is T).ManagerMonoBehaviour as T;
         }
         
         /// <summary>
