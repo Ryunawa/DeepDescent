@@ -87,7 +87,7 @@ namespace _2Scripts.ProceduralGeneration
         private IEnumerator ChangeState()
         {
             yield return new WaitUntil(()=>GameManager.instance._networkData.ArePlayersRdy());
-           
+            spawnShop = GameManager.GetManager<GameFlowManager>().CurrLevel % 5 == 0;
             StartGeneration();
         }
         
