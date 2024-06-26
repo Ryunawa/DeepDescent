@@ -42,6 +42,8 @@ namespace _2Scripts
 
         public void Interact()
         {
+            if (!playerBehaviourInspecting)return;
+            
             // Pickup Object
             bool isItemAdded = playerBehaviourInspecting.inventory.AddToInventory(ItemDetails.ID, amount);
             if (isItemAdded) DespawnNetworkObjectRpc();
