@@ -29,8 +29,8 @@ namespace _2Scripts.Manager
         protected override void OnGameManagerChangeState(GameState gameState)
         {
             if(gameState != GameState.InLevel) { return; }
-            GameManager.instance.levelGenerator.dungeonGeneratedEvent.AddListener(StartGame);
             Timer = FindObjectOfType<Timer.Timer>();
+            StartGame();
         }
 
         public void SetGameState(LevelState state)
