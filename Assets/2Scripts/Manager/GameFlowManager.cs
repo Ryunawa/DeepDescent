@@ -24,7 +24,7 @@ namespace _2Scripts.Manager
 
         public Timer.Timer Timer { get; private set; }
 
-            public int CurrLevel { get; private set; } = 5;
+            public int CurrLevel { get; private set; } = 4;
 
         protected override void OnGameManagerChangeState(GameState gameState)
         {
