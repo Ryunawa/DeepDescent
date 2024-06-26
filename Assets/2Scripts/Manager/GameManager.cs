@@ -37,7 +37,7 @@ namespace _2Scripts.Manager
         [SerializeField] private GameObject endGameUI;
 
         private static ManagerObject[] _managersAndPrefabs = {};
-        private static Coroutine _stateChangeCoroutine;
+        public static Coroutine _stateChangeCoroutine;
 
         public static ManagerObject[] ManagersAndPrefabs => _managersAndPrefabs;
 
@@ -155,6 +155,11 @@ namespace _2Scripts.Manager
                     break;
                 
                 case GameState.Generating:
+
+                    if (levelGenerator)
+                    {
+                        
+                    }
                     neededManagers = new List<ManagerType>
                     {
                         ManagerType.GameFlow, ManagerType.Item, ManagerType.Difficulty, ManagerType.Light

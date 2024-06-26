@@ -71,15 +71,9 @@ namespace _2Scripts.ProceduralGeneration
 
         protected override void Start()
         {
-            
-            if (GameManager.GameState == GameState.Generating)
-            {
-                OnGameManagerChangeState(GameManager.GameState);
-            }
-            else
-            {
-                base.Start();
-            }
+            base.Start();
+
+            GameManager.instance.ChangeGameState(GameState.Generating);
         }
 
         protected override void OnGameManagerChangeState(GameState gameState)
@@ -95,15 +89,15 @@ namespace _2Scripts.ProceduralGeneration
                         break;
                     }
                 case GameState.InLevel:
-                    {
-                        // Play Music
-                        GameManager.GetManager<AudioManager>().PlayMusic("InsideTheDungeonMusic", 0.08f);
-                        dungeonGeneratedEvent.Invoke();
-                        if (!spawnShop) PlacePortal();
-                        GameManager.GetManager<SceneManager>().DeactivateLoadingScreen();
-                        GameManager.GetManager<InventoryUIManager>().gameObject.SetActive(true);
-                    
-                        break;
+                {
+                    // Play Music
+                    GameManager.GetManager<AudioManager>().PlayMusic("InsideTheDungeonMusic", 0.08f);
+                    dungeonGeneratedEvent.Invoke();
+                    if (!spawnShop) PlacePortal();
+                    GameManager.GetManager<SceneManager>().DeactivateLoadingScreen();
+                    GameManager.GetManager<InventoryUIManager>().gameObject.SetActive(true);
+                        
+                    break;
                 }
             }
         }
@@ -114,11 +108,10 @@ namespace _2Scripts.ProceduralGeneration
             if (GameManager.GameState != GameState.InLevel)
             {
                 Debug.Log("CALLED CHANGE STATE FROM RPC");
-                SubToGameManagerEvent();
+                // SubToGameManagerEvent();
                             
                 GameManager.instance.ChangeGameState(GameState.InLevel);
             }
-            
         }
 
         public async void StartGeneration()
@@ -164,15 +157,15 @@ namespace _2Scripts.ProceduralGeneration
             dungeon[centerIndex] = startRoom;
 
             _roomNumber = 0;
-        
+            
             await DoGen(1);
-
+            
             DynamicNavMesh.UpdateNavMesh();
-            
+                        
             GameManager.GetManager<ItemManager>().StartSpawningItems();
-
-            ChangeStateClientRpc();
             
+            ChangeStateClientRpc();
+                        
             TeleportHostAndClientRpc(GetPosition(centerIndex));
         }
 
@@ -240,7 +233,7 @@ namespace _2Scripts.ProceduralGeneration
                     continue;
                 }
             
-                await CreateAdjacentRooms(GetIndexOfRoom(room), startDepth, _roomNumber);
+                CreateAdjacentRooms(GetIndexOfRoom(room), startDepth, _roomNumber);
             }
         
             await DoGen(startDepth);
@@ -427,7 +420,7 @@ namespace _2Scripts.ProceduralGeneration
             return doorNeeded;
         }
 
-        public async Task CreateAdjacentRooms(int roomIndex, int genNumber, int roomNum)
+        public void CreateAdjacentRooms(int roomIndex, int genNumber, int roomNum)
         {
             Dictionary<Directions, Room> neighbouringRooms = GetNeighbouringRooms(roomIndex); // get all rooms next to ours
 
@@ -435,8 +428,6 @@ namespace _2Scripts.ProceduralGeneration
             {
                 Directions direction = kvp.Key;
                 Room room = kvp.Value;
-
-                await Task.Delay(10);
 
                 if (room == null && IsRoomInArray(roomIndex, direction))
                 {
