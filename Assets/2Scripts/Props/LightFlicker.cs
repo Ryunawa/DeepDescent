@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using _2Scripts.Helpers;
 using _2Scripts.Interfaces;
 using _2Scripts.Manager;
 using Unity.VisualScripting;
@@ -9,7 +10,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Light))]
-public class LightFlicker : MonoBehaviour
+public class LightFlicker : GameManagerSync<LightFlicker>
 {
     [SerializeField] private int flickerIntervalsMS = 100;
     [SerializeField] private float baseLightIntensity = 2.5f;

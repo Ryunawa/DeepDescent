@@ -77,7 +77,7 @@ namespace _2Scripts.ProceduralGeneration
             NetworkManager.Singleton.SceneManager.OnSynchronizeComplete += SceneManagerOnOnSynchronizeComplete;
             
         }
-        
+
         private void SceneManagerOnOnSynchronizeComplete(ulong clientid)
         {
             GameManager.instance.ChangeGameState(GameState.Generating);
@@ -236,7 +236,7 @@ namespace _2Scripts.ProceduralGeneration
                     continue;
                 }
             
-                CreateAdjacentRooms(GetIndexOfRoom(room), startDepth, _roomNumber);
+                await CreateAdjacentRooms(GetIndexOfRoom(room), startDepth, _roomNumber);
             }
         
             await DoGen(startDepth);
@@ -423,7 +423,7 @@ namespace _2Scripts.ProceduralGeneration
             return doorNeeded;
         }
 
-        public void CreateAdjacentRooms(int roomIndex, int genNumber, int roomNum)
+        public async Task CreateAdjacentRooms(int roomIndex, int genNumber, int roomNum)
         {
             Dictionary<Directions, Room> neighbouringRooms = GetNeighbouringRooms(roomIndex); // get all rooms next to ours
 
@@ -432,6 +432,8 @@ namespace _2Scripts.ProceduralGeneration
                 Directions direction = kvp.Key;
                 Room room = kvp.Value;
 
+                await Task.Delay(2);
+                
                 if (room == null && IsRoomInArray(roomIndex, direction))
                 {
                     Vector3 position = GetPositionNeighbour(roomIndex, direction);
@@ -439,7 +441,7 @@ namespace _2Scripts.ProceduralGeneration
                     bool[] doorNeeded = GetAllDoorsNeeded(neighbourIndex);
                     RoomType roomType = ChooseRoomType(doorNeeded);
                     Quaternion rotation = Quaternion.identity;
-
+                    
                     // Create room
                     Room instantiatedRoom = InstantiateRoom(roomType, position, rotation).GetComponent<Room>();
 
