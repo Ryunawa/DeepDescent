@@ -1,3 +1,4 @@
+using System.Collections;
 using _2Scripts.Entities.Player;
 using _2Scripts.Helpers;
 using _2Scripts.Manager;
@@ -72,6 +73,15 @@ namespace _2Scripts.ProceduralGeneration
         protected override void Start()
         {
             base.Start();
+
+
+            StartCoroutine(WaitForClients());
+
+        }
+
+        private IEnumerator WaitForClients()
+        {
+            yield return new WaitUntil(() => NetworkManager.Singleton.ConnectedClients.Count == GameManager.GetManager<MultiManager>().Lobby.Players.Count);
 
             GameManager.instance.ChangeGameState(GameState.Generating);
         }
