@@ -112,7 +112,7 @@ namespace _2Scripts.ProceduralGeneration
         private void ChangeStateClientRpc()
         {
             Debug.Log("CALLED CHANGE STATE FROM RPC");
-            SubToGameManagerEvent();
+            //SubToGameManagerEvent();
             if(GameManager.GameState != GameState.InLevel)
                 GameManager.instance.ChangeGameState(GameState.InLevel);
         }
