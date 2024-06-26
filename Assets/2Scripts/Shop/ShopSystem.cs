@@ -112,6 +112,7 @@ public class ShopSystem : GameManagerSync<ShopSystem>
         inventory.isInShop = true;
         shopUI.SetActive(true);
         activeShopUIs[player] = shopUI;
+        Cursor.visible = true;
     }
 
     public void CloseShop(PlayerBehaviour player)
@@ -124,6 +125,7 @@ public class ShopSystem : GameManagerSync<ShopSystem>
             GameManager.GetManager<InventoryUIManager>().shopUI.SetActive(false);
             activeShopUIs.Remove(player);
         }
+        Cursor.visible = false;
     }
 
     void OnTriggerEnter(Collider other)
