@@ -77,24 +77,17 @@ namespace _2Scripts.ProceduralGeneration
         {
             base.Start();
 
-            load = false; 
-            sync = false;
-
-            NetworkManager.Singleton.SceneManager.OnLoadComplete += (id, sceneName, mode) =>
-            {
-                load = sceneName == Scenes.Level.ToString(); 
-            };
-
-            NetworkManager.Singleton.SceneManager.OnSynchronizeComplete += id => { sync = true; };
-
-            StartCoroutine(ChangeState());
+            GameManager.instance.ChangeGameState(GameState.Generating);
+            
+             if(_multiManager.IsLobbyHost())
+                StartCoroutine(ChangeState());
         }
 
         private IEnumerator ChangeState()
         {
-            yield return new WaitUntil(()=>load && sync);
-
-            GameManager.instance.ChangeGameState(GameState.Generating);
+            yield return new WaitUntil(()=>GameManager.areClientsRdy.Value.Count == NetworkManager.ConnectedClients.Count);
+           
+            StartGeneration();
         }
         
         protected override void OnGameManagerChangeState(GameState gameState)
@@ -104,9 +97,9 @@ namespace _2Scripts.ProceduralGeneration
                 case GameState.Generating:
                     {
                         _multiManager = GameManager.GetManager<MultiManager>();
-                            
-                        if(_multiManager.IsLobbyHost())
-                            StartGeneration();
+                        
+                        GameManager.areClientsRdy.Value.Add(true); 
+                        
                         break;
                     }
                 case GameState.InLevel:
