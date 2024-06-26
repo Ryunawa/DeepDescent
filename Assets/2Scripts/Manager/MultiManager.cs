@@ -20,6 +20,8 @@ using UnityEngine.Events;
 using Player = Unity.Services.Lobbies.Models.Player;
 using DataObject = Unity.Services.Lobbies.Models.DataObject;
 using _2Scripts.Enum;
+using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 namespace _2Scripts.Manager
 {
@@ -675,8 +677,8 @@ namespace _2Scripts.Manager
 			}
 
 			GameManager.GetManager<SceneManager>().ActivateLoadingScreen();
-			UnityEngine.SceneManagement.SceneManager.sceneLoaded += (arg0, mode) => GameManager.instance.ChangeGameState(GameState.Generating); 
 		}
+		
 	
 		public void SpawnNetworkObject(NetworkObject objectToSpawn, Vector3 position, Quaternion rotation)
 		{

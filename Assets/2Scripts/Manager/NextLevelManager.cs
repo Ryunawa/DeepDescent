@@ -36,19 +36,21 @@ namespace _2Scripts.Manager
            // Stop the spawner
            GameManager.GetManager<EnemiesSpawnerManager>().StopSpawning();
            GameManager.ManagersAndPrefabs[7].ManagerMonoBehaviour = null;
+           StartCoroutine(ClearPreviousDungeon(() =>
+           {
+               GameManager.GetManager<SceneManager>().LoadSceneNetwork(Scenes.Level);
+               GameManager.instance.levelGenerator.spawnShop = GameManager.GetManager<GameFlowManager>().CurrLevel % 5 == 0;
+           }));
            
-           GameManager.GetManager<SceneManager>().LoadSceneNetwork(Scenes.Level);
            
-           GameManager.instance.levelGenerator.spawnShop = GameManager.GetManager<GameFlowManager>().CurrLevel % 5 == 0;
-           
-           ChangeGameStateRpc();
+           //ChangeGameStateRpc();
            
            
            // Set bool depending on the current dungeon level
            
            
            // Remove All the previous generated room (props too)
-           //StartCoroutine(ClearPreviousDungeon(ChangeGameStateRpc));
+           
                
            // Start the generation
            //GameManager.instance.levelGenerator.StartGeneration();
@@ -56,14 +58,14 @@ namespace _2Scripts.Manager
            
         }
         
-        [Rpc(SendTo.ClientsAndHost)]
-        public void ChangeGameStateRpc()
-        {
-            if (GameManager.GameState != GameState.Generating)
-            {
-                GameManager.instance.ChangeGameState(GameState.Generating);
-            }
-        }
+        // [Rpc(SendTo.ClientsAndHost)]
+        // public void ChangeGameStateRpc()
+        // {
+        //     if (GameManager.GameState != GameState.Generating)
+        //     {
+        //         GameManager.instance.ChangeGameState(GameState.Generating);
+        //     }
+        // }
 
         /// <summary>
         /// Show the loading screen for all clients and host
