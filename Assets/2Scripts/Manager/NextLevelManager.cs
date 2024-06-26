@@ -120,7 +120,8 @@ namespace _2Scripts.Manager
             //         itemManager.ItemSpawned[i].GetComponent<NetworkObject>().Despawn();
             //     }
             // }
-            GameManager.instance.levelGenerator.Portal.Despawn();
+            if(GameManager.instance.levelGenerator.Portal != null)
+                GameManager.instance.levelGenerator.Portal.Despawn();
 
             action.Invoke();
             yield return true;
