@@ -212,7 +212,7 @@ namespace _2Scripts.ProceduralGeneration
         [Rpc(SendTo.ClientsAndHost)]
         private void TeleportHostAndClientRpc(Vector3 pPosition)
         {
-            _multiManager.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().TeleportPlayer( pPosition + Vector3.up * 5);
+            GameManager.GetManager<MultiManager>().GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().TeleportPlayer( pPosition + Vector3.up * 5);
         }
         
         private async Task DoGen(int startDepth)
