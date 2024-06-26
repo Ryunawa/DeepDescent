@@ -75,13 +75,19 @@ namespace _2Scripts.ProceduralGeneration
             base.Start();
 
 
-            StartCoroutine(WaitForClients());
-
+            if (GameManager.GetManager<MultiManager>().IsLobbyHost())
+            {
+                StartCoroutine(WaitForClients());
+            }
+            else
+            {
+                GameManager.instance.ChangeGameState(GameState.Generating);
+            }
         }
 
         private IEnumerator WaitForClients()
         {
-            yield return new WaitUntil(() => NetworkManager.Singleton.ConnectedClients.Count == GameManager.GetManager<MultiManager>().Lobby.Players.Count);
+            yield return new WaitUntil(() => NetworkManager.Singleton.PendingClients.Count == 0);
 
             GameManager.instance.ChangeGameState(GameState.Generating);
         }
