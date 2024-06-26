@@ -101,22 +101,8 @@ namespace _2Scripts.ProceduralGeneration
 
                         int indexOfPlayer = _multiManager.Lobby.Players.IndexOf(_multiManager.Lobby.Players.Find(x => x.Data["Name"].Value == _multiManager.PlayerName)); // NetworkManager.Singleton.ConnectedClientsList.ToList()
                             //.IndexOf(NetworkManager.Singleton.LocalClient);
-
-                        switch (indexOfPlayer)
-                        {
-                            case 0:
-                                GameManager.instance._networkData.isHostRdy.Value = true;
-                                break;
-                            case 1:
-                                GameManager.instance._networkData.isClientOneRdy.Value = true;
-                                break;
-                            case 2:
-                                GameManager.instance._networkData.isClientTwoRdy.Value = true;
-                                break;
-                            case 3:
-                                GameManager.instance._networkData.isClientThreeRdy.Value = true;
-                                break;
-                        }
+                      
+                        GameManager.instance._networkData.UpdateRdyServerRpc(indexOfPlayer);
                         
                         
                         break;

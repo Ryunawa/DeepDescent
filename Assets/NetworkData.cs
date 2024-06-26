@@ -27,4 +27,24 @@ public class NetworkData : NetworkBehaviour
 
         return false;
     }
+
+    [Rpc(SendTo.Server)]
+    public void UpdateRdyServerRpc(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                isHostRdy.Value = true;
+                break;
+            case 1:
+                isClientOneRdy.Value = true;
+                break;
+            case 2:
+                isClientTwoRdy.Value = true;
+                break;
+            case 3:
+                isClientThreeRdy.Value = true;
+                break;
+        }
+    }
 }
