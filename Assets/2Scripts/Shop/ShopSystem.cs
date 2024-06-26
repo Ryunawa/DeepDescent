@@ -113,6 +113,7 @@ public class ShopSystem : GameManagerSync<ShopSystem>
         shopUI.SetActive(true);
         activeShopUIs[player] = shopUI;
         Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void CloseShop(PlayerBehaviour player)
@@ -126,6 +127,7 @@ public class ShopSystem : GameManagerSync<ShopSystem>
             activeShopUIs.Remove(player);
         }
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void OnTriggerEnter(Collider other)
