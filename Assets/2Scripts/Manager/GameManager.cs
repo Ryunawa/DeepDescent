@@ -45,7 +45,7 @@ namespace _2Scripts.Manager
         
         #region Data and objects
 
-        public static NetworkVariable<List<bool>> areClientsRdy = new ();
+        public static NetworkList<bool> areClientsRdy = new ();
         
         public LevelGenerator levelGenerator;
         public NextLevelManager nextLevelManager;

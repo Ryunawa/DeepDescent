@@ -79,13 +79,13 @@ namespace _2Scripts.ProceduralGeneration
 
             GameManager.instance.ChangeGameState(GameState.Generating);
             
-             if(_multiManager.IsLobbyHost())
+             if(GameManager.GetManager<MultiManager>().IsLobbyHost())
                 StartCoroutine(ChangeState());
         }
 
         private IEnumerator ChangeState()
         {
-            yield return new WaitUntil(()=>GameManager.areClientsRdy.Value.Count == NetworkManager.ConnectedClients.Count);
+            yield return new WaitUntil(()=>GameManager.areClientsRdy.Count == NetworkManager.ConnectedClients.Count);
            
             StartGeneration();
         }
@@ -98,7 +98,7 @@ namespace _2Scripts.ProceduralGeneration
                     {
                         _multiManager = GameManager.GetManager<MultiManager>();
                         
-                        GameManager.areClientsRdy.Value.Add(true); 
+                        GameManager.areClientsRdy.Add(true); 
                         
                         break;
                     }
@@ -219,7 +219,7 @@ namespace _2Scripts.ProceduralGeneration
         [Rpc(SendTo.ClientsAndHost)]
         private void TeleportHostAndClientRpc(Vector3 pPosition)
         {
-            GameManager.GetManager<MultiManager>().GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().TeleportPlayer( pPosition + Vector3.up * 5);
+            _multiManager.GetPlayerGameObject().GetComponentInChildren<PlayerBehaviour>().TeleportPlayer( pPosition + Vector3.up * 5);
         }
         
         private async Task DoGen(int startDepth)
