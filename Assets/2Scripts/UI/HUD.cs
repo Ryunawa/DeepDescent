@@ -48,7 +48,7 @@ namespace _2Scripts.UI
             
             _gameFlowManager.OnNextLevelEvent.AddListener(arg0 =>
             {
-                SetLevelNumber(_gameFlowManager.Timer.GetTimerElapsedTime());
+                SetLevelNumber(_gameFlowManager.CurrLevel.ToString());
                 UpdateDifficultyColor();
             });
         }
