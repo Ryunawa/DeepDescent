@@ -12,7 +12,7 @@ namespace _2Scripts.Manager
 {
     public class NextLevelManager : GameManagerSync<NextLevelManager>
     {
-        private void OnDisable()
+        public override void OnNetworkDespawn()
         {
             GameManager.GetManager<GameFlowManager>().OnNextLevelEvent.RemoveListener(GenerateNewDungeon);
         }

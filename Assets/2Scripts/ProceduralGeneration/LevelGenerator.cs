@@ -94,7 +94,7 @@ namespace _2Scripts.ProceduralGeneration
         {
             yield return new WaitUntil(()=>load && sync);
 
-        GameManager.instance.ChangeGameState(GameState.Generating);
+            GameManager.instance.ChangeGameState(GameState.Generating);
         }
         
         protected override void OnGameManagerChangeState(GameState gameState)
