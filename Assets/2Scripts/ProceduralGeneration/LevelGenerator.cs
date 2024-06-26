@@ -58,6 +58,9 @@ namespace _2Scripts.ProceduralGeneration
 
         private MultiManager _multiManager;
         private NetworkObject portalNO;
+        
+        bool load = false; 
+        bool sync = false;
 
         public NetworkObject Portal
         {
@@ -74,13 +77,24 @@ namespace _2Scripts.ProceduralGeneration
         {
             base.Start();
 
-            NetworkManager.Singleton.SceneManager.OnSynchronizeComplete += SceneManagerOnOnSynchronizeComplete;
-            
+            load = false; 
+            sync = false;
+
+            NetworkManager.Singleton.SceneManager.OnLoadComplete += (id, sceneName, mode) =>
+            {
+                load = sceneName == Scenes.Level.ToString(); 
+            };
+
+            NetworkManager.Singleton.SceneManager.OnSynchronizeComplete += id => { sync = true; };
+
+            StartCoroutine(ChangeState());
         }
 
-        private void SceneManagerOnOnSynchronizeComplete(ulong clientid)
+        private IEnumerator ChangeState()
         {
-            GameManager.instance.ChangeGameState(GameState.Generating);
+            yield return new WaitUntil(()=>load && sync);
+
+        GameManager.instance.ChangeGameState(GameState.Generating);
         }
         
         protected override void OnGameManagerChangeState(GameState gameState)
