@@ -205,6 +205,7 @@ public class Inventory : GameManagerSync<Inventory>
     {
         NetworkObject o = Instantiate(GameManager.GetManager<ItemManager>().GetItemNetworkObject(id), transform.position + Offset, Quaternion.identity);
         o.Spawn();
+        GameManager.GetManager<ItemManager>().ItemSpawned.Add(o.gameObject);
     }
 
     public void UseFromInventory(int itemPos)
