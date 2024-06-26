@@ -243,13 +243,23 @@ namespace _2Scripts.Manager
         {
             yield return new WaitForSeconds(0.2f);
 
+            if (IsServer)
+            {
+                SpawnParticleRpc(pEnemyPosition);
+            }
+
+
+        }
+
+        [Rpc(SendTo.Server)]
+        private void SpawnParticleRpc(Vector3 pEnemyPosition)
+        {
             GameObject newParticle = Instantiate(spawnParticle, new Vector3(pEnemyPosition.x, 0.2f, pEnemyPosition.z - 0.5f), quaternion.identity);
             if (newParticle)
             {
                 newParticle.GetComponent<NetworkObject>().Spawn();
                 newParticle.transform.localScale *= 2.5f;
             }
-
         }
 
 
