@@ -131,7 +131,7 @@ public class Inventory : GameManagerSync<Inventory>
                 Debug.Log($"[Inventory::AddToInventory()] - Added new unstackable item of ID: {itemID} with an amount of {itemAmount} to inventory");
             }
 
-            ActivateItemVisibilityInventory(item);
+            //ActivateItemVisibilityInventory(item);
             SaveSystem.Save();
             GameManager.GetManager<InventoryUIManager>().DrawInventory();
             return true;
@@ -159,7 +159,7 @@ public class Inventory : GameManagerSync<Inventory>
                 InventoryItems.RemoveAt(itemPos);
                 Debug.Log($"[Inventory::DropFromInventory() | SellItem] - Dropped/Sold item at pos {itemPos}.No remaining item.");
             }
-            DeactivateItemVisibilityInventory(GameManager.GetManager<ItemManager>().GetItem(newInventoryObject.ID));
+            //DeactivateItemVisibilityInventory(GameManager.GetManager<ItemManager>().GetItem(newInventoryObject.ID));
             SaveSystem.Save();
             return;
         }
@@ -191,7 +191,7 @@ public class Inventory : GameManagerSync<Inventory>
             // play sound
             GameManager.GetManager<AudioManager>().PlaySfx("ItemDrop", this, 1, 5);
 
-            DeactivateItemVisibilityInventory(GameManager.GetManager<ItemManager>().GetItem(newInventoryObject.ID));
+            //DeactivateItemVisibilityInventory(GameManager.GetManager<ItemManager>().GetItem(newInventoryObject.ID));
             SaveSystem.Save();
             return;
         }
@@ -230,7 +230,7 @@ public class Inventory : GameManagerSync<Inventory>
                 // play sound
                 GameManager.GetManager<AudioManager>().PlaySfx("UsePotion", this, 1, 5);
 
-                DeactivateItemVisibilityInventory(GameManager.GetManager<ItemManager>().GetItem(newInventoryObject.ID));
+                //DeactivateItemVisibilityInventory(GameManager.GetManager<ItemManager>().GetItem(newInventoryObject.ID));
                 SaveSystem.Save();
                 return;
             }
