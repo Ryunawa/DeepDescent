@@ -6,14 +6,14 @@ using UnityEngine;
 public class NetworkData : NetworkBehaviour
 {
     public NetworkVariable<bool> isHostRdy = new NetworkVariable<bool>(false);
-    public NetworkVariable<bool> isClientOneRdy = new NetworkVariable<bool>(false);;
-    public NetworkVariable<bool> isClientTwoRdy = new NetworkVariable<bool>(false);;
-    public NetworkVariable<bool> isClientThreeRdy = new NetworkVariable<bool>(false);;
+    public NetworkVariable<bool> isClientOneRdy = new NetworkVariable<bool>(false);
+    public NetworkVariable<bool> isClientTwoRdy = new NetworkVariable<bool>(false);
+    public NetworkVariable<bool> isClientThreeRdy = new NetworkVariable<bool>(false);
     
     
     public bool ArePlayersRdy()
     {
-        switch (NetworkManager.Singleton.ConnectedClients.Count)
+        switch (NetworkManager.Singleton.ConnectedClients.Count + NetworkManager.Singleton.PendingClients.Count)
         {
             case 1:
                 return isHostRdy.Value;
