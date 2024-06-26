@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class NetworkData : NetworkBehaviour
 {
-    public NetworkVariable<bool> isHostRdy = new ();
-    public NetworkVariable<bool> isClientOneRdy = new ();
-    public NetworkVariable<bool> isClientTwoRdy = new ();
-    public NetworkVariable<bool> isClientThreeRdy = new ();
+    public NetworkVariable<bool> isHostRdy = new NetworkVariable<bool>(false);
+    public NetworkVariable<bool> isClientOneRdy = new NetworkVariable<bool>(false);;
+    public NetworkVariable<bool> isClientTwoRdy = new NetworkVariable<bool>(false);;
+    public NetworkVariable<bool> isClientThreeRdy = new NetworkVariable<bool>(false);;
     
     
     public bool ArePlayersRdy()
