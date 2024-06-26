@@ -74,24 +74,15 @@ namespace _2Scripts.ProceduralGeneration
         {
             base.Start();
 
-
-            if (GameManager.GetManager<MultiManager>().IsLobbyHost())
-            {
-                StartCoroutine(WaitForClients());
-            }
-            else
-            {
-                GameManager.instance.ChangeGameState(GameState.Generating);
-            }
+            NetworkManager.Singleton.SceneManager.OnSynchronizeComplete += SceneManagerOnOnSynchronizeComplete;
+            
         }
-
-        private IEnumerator WaitForClients()
+        
+        private void SceneManagerOnOnSynchronizeComplete(ulong clientid)
         {
-            yield return new WaitUntil(() => NetworkManager.Singleton.PendingClients.Count == 0);
-
             GameManager.instance.ChangeGameState(GameState.Generating);
         }
-
+        
         protected override void OnGameManagerChangeState(GameState gameState)
         {
             switch (gameState)
