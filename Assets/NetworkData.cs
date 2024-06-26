@@ -1,3 +1,4 @@
+using _2Scripts.Manager;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -13,7 +14,7 @@ public class NetworkData : NetworkBehaviour
     
     public bool ArePlayersRdy()
     {
-        switch (NetworkManager.Singleton.ConnectedClients.Count + NetworkManager.Singleton.PendingClients.Count)
+        switch (GameManager.GetManager<MultiManager>().Lobby.Players.Count)
         {
             case 1:
                 return isHostRdy.Value;
