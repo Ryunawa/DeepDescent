@@ -29,7 +29,8 @@ Transform:
   m_LocalPosition: {x: 3.0578198, y: 1.4579982, z: -0.9526297}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8720063922954530426}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8334649584711766696
@@ -44,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79d6f497e4224994e924582322090134, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timer: {fileID: 0}
   multiManagerPrefab: {fileID: 1843229823627844517, guid: 86fe4e420015a7947a2b0a9c87ab6530,
     type: 3}
   inventoryUIManagerPrefab: {fileID: 895331382670999333, guid: a1d968599afd05c47bb56a757104644f,
@@ -56,10 +58,119 @@ MonoBehaviour:
     type: 3}
   difficultyManagerPrefab: {fileID: 3898088850932888483, guid: 01ec7c7644f588d43a94dbc0d2630a8b,
     type: 3}
-  nextLevelManagerPrefab: {fileID: 0}
   lightManagerPrefab: {fileID: 5143186317500875256, guid: e62ebc94e6f479c4da5a050362b5d501,
     type: 3}
   enemiesSpawnerManagerPrefab: {fileID: 3071932430965317333, guid: 8d2e40b9ff3b60c4781cbf29ad49db4e,
     type: 3}
   audioManagerPrefab: {fileID: 8837794741868511713, guid: 9530bac34b0c8a049b0981abfb39f2fe,
     type: 3}
+  endGameUI: {fileID: 0}
+  _networkData: {fileID: 0}
+  levelGenerator: {fileID: 0}
+  nextLevelManager: {fileID: 0}
+--- !u!1 &7887387421245223764
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8720063922954530426}
+  - component: {fileID: 2475359205349431065}
+  - component: {fileID: 7539608131663275638}
+  - component: {fileID: 4807202106083388360}
+  m_Layer: 0
+  m_Name: NetworkData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8720063922954530426
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7887387421245223764}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1496907404484506475}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2475359205349431065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7887387421245223764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 2435266329
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &7539608131663275638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7887387421245223764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aef5e2668a152f43bd6d7a670d9234f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isHostRdy:
+    m_InternalValue: 0
+  isClientOneRdy:
+    m_InternalValue: 0
+  isClientTwoRdy:
+    m_InternalValue: 0
+  isClientThreeRdy:
+    m_InternalValue: 0
+--- !u!114 &4807202106083388360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7887387421245223764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UseUnreliableDeltas: 0
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0

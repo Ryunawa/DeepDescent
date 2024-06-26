@@ -45,10 +45,7 @@ namespace _2Scripts.Manager
         
         #region Data and objects
 
-        public static NetworkVariable<bool> isHostRdy = new ();
-        public static NetworkVariable<bool> isClientOneRdy = new ();
-        public static NetworkVariable<bool> isClientTwoRdy = new ();
-        public static NetworkVariable<bool> isClientThreeRdy = new ();
+        public NetworkData _networkData;
         
         public LevelGenerator levelGenerator;
         public NextLevelManager nextLevelManager;
@@ -90,23 +87,7 @@ namespace _2Scripts.Manager
                 }
             }
         }
-
-        public static bool ArePlayersRdy()
-        {
-            switch (NetworkManager.Singleton.ConnectedClients.Count)
-            {
-                case 1:
-                    return isHostRdy.Value;
-                case 2:
-                    return isHostRdy.Value && isClientOneRdy.Value;
-                case 3:
-                    return isHostRdy.Value && isClientOneRdy.Value && isClientTwoRdy.Value;
-                case 4:
-                    return isHostRdy.Value && isClientOneRdy.Value && isClientTwoRdy.Value && isClientThreeRdy.Value;
-            }
-
-            return false;
-        }
+        
 
         public void ResetNumberOfDeadPlayer()
         {

@@ -86,7 +86,7 @@ namespace _2Scripts.ProceduralGeneration
 
         private IEnumerator ChangeState()
         {
-            yield return new WaitUntil(()=>GameManager.ArePlayersRdy());
+            yield return new WaitUntil(()=>GameManager.instance._networkData.ArePlayersRdy());
            
             StartGeneration();
         }
@@ -105,16 +105,16 @@ namespace _2Scripts.ProceduralGeneration
                         switch (indexOfPlayer)
                         {
                             case 0:
-                                GameManager.isHostRdy.Value = true;
+                                GameManager.instance._networkData.isHostRdy.Value = true;
                                 break;
                             case 1:
-                                GameManager.isClientOneRdy.Value = true;
+                                GameManager.instance._networkData.isClientOneRdy.Value = true;
                                 break;
                             case 2:
-                                GameManager.isClientTwoRdy.Value = true;
+                                GameManager.instance._networkData.isClientTwoRdy.Value = true;
                                 break;
                             case 3:
-                                GameManager.isClientThreeRdy.Value = true;
+                                GameManager.instance._networkData.isClientThreeRdy.Value = true;
                                 break;
                         }
                         
